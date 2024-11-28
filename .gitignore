@@ -35,6 +35,9 @@ packages/template-shared/.env
 # turbo
 .turbo
 
+# husky
+.husky
+
 # vercel
 .vercel
 /pnpm-lock.yaml

@@ -507,7 +507,7 @@ const GenerateDetail = (props: Props) => {
                                 <Divider/>
                             </CardContent>
 
-                            {appName === 'webapp-cfo' ? (
+                            {appName === 'prm-cfo' ? (
                                 <CardActions sx={{justifyContent: 'center', mt: 2}}>
                                     {jobApplied ? (
                                         <Typography className='subtitle-pdf-job'>

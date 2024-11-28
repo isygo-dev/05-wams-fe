@@ -144,24 +144,24 @@ const navigation: VerticalNavItemsType = [
                 children: [
                     {
                         title: 'Account',
-                        path: '/pages/account-settings/account'
+                        path: '/apps/ims-account/account-settings/account'
                     },
                     {
                         title: 'Security',
-                        path: '/pages/account-settings/security'
+                        path: '/apps/ims-account/account-settings/security'
                     },
                     {
                         title: 'Billing',
-                        path: '/pages/account-settings/billing'
+                        path: '/apps/ims-account/account-settings/billing'
                     },
                     {
                         title: 'Notifications',
-                        path: '/pages/account-settings/notifications'
+                        path: '/apps/ims-account/account-settings/notifications'
                     },
 
                     {
                         title: 'Connections',
-                        path: '/pages/account-settings/connections'
+                        path: '/apps/ims-account/account-settings/connections'
                     }
                 ]
             },
@@ -352,7 +352,6 @@ const navigation: VerticalNavItemsType = [
         icon: 'tabler:brand-tabler'
     },
     {
-
         title: 'Cards',
         icon: 'tabler:id',
         children: [
@@ -463,7 +462,7 @@ const navigation: VerticalNavItemsType = [
             {
                 title: 'More',
                 path: '/components/more'
-            },
+            }
         ]
     },
     {
@@ -524,7 +523,7 @@ const navigation: VerticalNavItemsType = [
             {
                 title: 'Input Mask',
                 path: '/forms/form-elements/input-mask'
-            },
+            }
         ]
     },
     {
@@ -611,13 +610,13 @@ const navigation: VerticalNavItemsType = [
                 title: 'Raise Support',
                 externalLink: true,
                 openInNewTab: true,
-                path: 'https://novobit.ticksy.com/'
+                path: 'https://isygoit.ticksy.com/'
             },
             {
                 title: 'Documentation',
                 externalLink: true,
                 openInNewTab: true,
-                path: 'https://demos.novobit.eu/vuexy-nextjs-admin-template/documentation'
+                path: 'https://demos.isygoit.eu/vuexy-nextjs-admin-template/documentation'
             }
         ]
     }

@@ -1,6 +1,6 @@
 // ** Type Imports
 import {Palette} from '@mui/material'
-import {Skin} from "../../layouts/types";
+import {Skin} from '../../layouts/types'
 
 const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
     // ** Vars
@@ -107,7 +107,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
             disabledBackground: `rgba(${mainColor}, 0.12)`,
             focus: `rgba(${mainColor}, 0.12)`
         }
-    } as Palette
+    } as unknown as Palette
 }
 
 export default DefaultPalette

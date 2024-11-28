@@ -6,7 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import GlobalStyles from '@mui/material/GlobalStyles'
 import {createTheme, responsiveFontSizes, ThemeProvider} from '@mui/material/styles'
 import themeConfig from "../../configs/themeConfig";
-import Direction from "../../layouts/components/Direction";
+import ThemeDirection from "../../layouts/components/ThemeDirection";
 
 // ** Type Imports
 // ** Theme Config
@@ -38,11 +38,11 @@ const ThemeComponent = (props: Props) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Direction direction={settings.direction}>
+            <ThemeDirection direction={settings.direction}>
                 <CssBaseline/>
                 <GlobalStyles styles={() => GlobalStyling(theme) as any}/>
                 {children}
-            </Direction>
+            </ThemeDirection>
         </ThemeProvider>
     )
 }

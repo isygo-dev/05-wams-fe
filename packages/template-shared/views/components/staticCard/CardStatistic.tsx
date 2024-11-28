@@ -67,7 +67,7 @@ const StatisticCard: React.FC<StatisticCardProps> = ({
                         </Typography>
 
                         <Typography variant='body2' sx={{color: 'rgb(67 64 80)', fontWeight: '600', marginLeft: '8px'}}>
-                            {value} </Typography>
+                            {value.toString()} </Typography>
                         {loading && (
                             <CircularProgress size={12} sx={{ml: 1.5}}/>
                         )}

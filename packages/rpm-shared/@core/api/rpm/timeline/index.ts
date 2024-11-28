@@ -7,6 +7,7 @@ import {
     PermissionPage
 } from "template-shared/@core/types/helper/apiPermissionTypes";
 import {checkPermission} from "template-shared/@core/api/helper/permission";
+import rpmApiUrls from "../../../../configs/rpm_apis";
 
 const TimeLineApis = (t: TFunction) => {
     const permission = PermissionPage.TIMELINE

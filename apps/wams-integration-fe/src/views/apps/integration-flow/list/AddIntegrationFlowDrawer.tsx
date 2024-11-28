@@ -72,7 +72,7 @@ const SidebarAddFlow = (props: SidebarAddCustomerType) => {
     console.log('Form submitted:', data)
     const formData = new FormData()
     formData.append('domain', domain)
-    formData.append('integrationDate', data.integrationDate.toLocaleString())
+    formData.append('integrationDate', data.integrationDate ? data.integrationDate.toLocaleString() : '')
     formData.append('orderName', data.orderName)
     if (file) {
       formData.append('file', file)
@@ -87,6 +87,7 @@ const SidebarAddFlow = (props: SidebarAddCustomerType) => {
   const createNewIntegrationFlow = useMutation({
     mutationFn: (params: FormData) => IntegrationFlowApis(t).createIntegrationFlow(params),
     onSuccess: (res: any) => {
+      handleClose()
       const cachedData: any[] = queryClient.getQueryData('flow') || []
       const updatedData = [...cachedData, res]
       queryClient.setQueryData('flow', updatedData)
@@ -118,7 +119,6 @@ const SidebarAddFlow = (props: SidebarAddCustomerType) => {
   const handleClose = () => {
     toggle()
     reset()
-    setFile(null)
   }
 
   return (
@@ -246,7 +246,7 @@ const SidebarAddFlow = (props: SidebarAddCustomerType) => {
                 sx={{width: '100%'}}
                 startIcon={<Icon icon='tabler:upload'/>}
               >
-                {t('Submit')}
+                {t('Select file')}
               </Button>
               <input type='file' name='file' id='file' style={{display: 'none'}} onChange={handleFileChange}/>
               <Typography>{file ? file.name : ''}</Typography>

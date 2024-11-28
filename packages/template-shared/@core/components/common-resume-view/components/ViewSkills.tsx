@@ -157,7 +157,7 @@ const ViewSkills = (props: SkillsProps) => {
     }
 
     const handleClick = (code: string) => {
-        appName === 'webapp-cfo' ? handlePlayQuiz(code) : handlePdfAnswer(code)
+        appName === 'prm-cfo' ? handlePlayQuiz(code) : handlePdfAnswer(code)
     }
 
     return (
@@ -234,7 +234,7 @@ const ViewSkills = (props: SkillsProps) => {
                                                                                 variant='extended'
                                                                                 size='medium'
                                                                                 onClick={
-                                                                                    !quiz.submitDate && appName === 'webapp-rpm'
+                                                                                    !quiz.submitDate && appName === 'prm-rpm'
                                                                                         ? undefined
                                                                                         : () => checkPermission(permissionApplication, permissionPage, permissionAction) && handleClick(quiz.quizCode)
                                                                                 }

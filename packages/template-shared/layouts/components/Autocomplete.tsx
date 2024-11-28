@@ -102,7 +102,7 @@ const defaultSuggestionsData: DefaultSuggestionsType[] = [
             {
                 icon: 'tabler:settings',
                 suggestion: 'Account Settings',
-                link: '/pages/account-settings/account'
+                link: '/apps/ims-account/account-settings/account'
             }
         ]
     },
@@ -301,7 +301,7 @@ const NoResult = ({value, setOpenDialog}: NoResultProps) => {
                 <ListItem sx={{py: 2}} disablePadding onClick={() => setOpenDialog(false)}>
                     <Box
                         component={Link}
-                        href='/pages/account-settings/account'
+                        href='/apps/ims-account/account-settings/account'
                         sx={{
                             display: 'flex',
                             alignItems: 'center',

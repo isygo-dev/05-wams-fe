@@ -29,8 +29,8 @@ import {
 import {checkPermission} from "template-shared/@core/api/helper/permission";
 import {GridPaginationModel} from "@mui/x-data-grid/models/gridPaginationProps";
 import localStorageKeys from "template-shared/configs/localeStorage";
-import CalendarApis from "cms-shared/@core/api/cms/calendar";
 import {CalendarsType} from "template-shared/@core/types/helper/calendarTypes";
+import CalendarApis from "cms-shared/@core/api/cms/calendar";
 
 interface CellType {
   row: CalendarsType

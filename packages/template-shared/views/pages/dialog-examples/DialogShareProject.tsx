@@ -264,7 +264,7 @@ const DialogShareProject = () => {
                         <Box sx={{display: 'flex', alignItems: 'center', '& svg': {mr: 2}}}>
                             <Icon icon='tabler:users'/>
                             <Typography sx={{fontWeight: 600, fontSize: '0.875rem'}}>
-                                {`Public to ${t(`${themeConfig.templateName}`)} - Novobit Gmbh`}
+                                {`Public to ${t(`${themeConfig.templateName}`)} - ${process.env.NEXT_PUBLIC_COMPANY_NAME}`}
                             </Typography>
                         </Box>
                         <Button sx={{'& svg': {mr: 2}}}>

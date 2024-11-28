@@ -5,7 +5,7 @@ const api_version = '/api/v1'
 let apiUrl_LINK: string | undefined
 
 if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
-    apiUrl_LINK = 'https://lnk.dev.prm.novobit.eu'
+    apiUrl_LINK = 'https://lnk.dev.prm.isygoit.eu'
 
     // apiUrl_LINK = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/link`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'docker-prod') {
@@ -15,11 +15,11 @@ if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-local') {
     apiUrl_LINK = 'http://127.0.0.1:40413'
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-be-local') {
-    apiUrl_LINK = 'https://lnk.dev.prm.novobit.eu'
+    apiUrl_LINK = 'https://lnk.dev.prm.isygoit.eu'
 
     // apiUrl_LINK = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/link`
 } else {
-    apiUrl_LINK = 'https://lnk.dev.prm.novobit.eu'
+    apiUrl_LINK = 'https://lnk.dev.prm.isygoit.eu'
 }
 
 const linkApiUrls = {

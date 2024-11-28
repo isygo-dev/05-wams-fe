@@ -21,7 +21,6 @@ interface Props {
     saveSettings: (values: Settings) => void
 }
 
-
 const shortcuts: ShortcutsType[] = [
     {
         title: 'Calendar',
@@ -57,7 +56,7 @@ const shortcuts: ShortcutsType[] = [
         title: 'Settings',
         icon: 'tabler:settings',
         subtitle: 'Account Settings',
-        url: '/pages/account-settings/account'
+        url: '/apps/ims-account/account-settings/account'
     },
     {
         icon: 'tabler:help',

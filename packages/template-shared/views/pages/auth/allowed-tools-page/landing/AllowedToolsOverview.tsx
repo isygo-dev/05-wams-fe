@@ -12,6 +12,7 @@ import {styled} from '@mui/material/styles'
 import {Tab, Tabs} from '@mui/material'
 import ListItem from '@mui/material/ListItem'
 import {useTranslation} from 'react-i18next'
+import imsApiUrls from "ims-shared/configs/ims_apis";
 
 const AntTabs = styled(Tabs)({
     borderBottom: '1px solid #e8e8e8',
@@ -140,7 +141,11 @@ const AllowedToolsOverview = () => {
                                 </AntTabs>
                                 <Box sx={{mt: 6}}>
                                     {uniqueCat.map((category, index) => (
-                                        <Box key={index} sx={{mb: 4}} ref={el => (categoryRefs.current[index] = el)}>
+                                        <Box key={index}
+                                             sx={{mb: 4}}
+
+                                            //ref={el => (categoryRefs.current[index] = el)} // to be tested
+                                        >
                                             <Typography
                                                 variant='h6'
                                                 sx={{mb: 2, color: activeCategory === category ? '#1890ff' : 'inherit'}}

@@ -5,7 +5,7 @@ const api_version = '/api/v1'
 let apiUrl_INTEGRATION: string | undefined
 
 if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
-    apiUrl_INTEGRATION = 'https://integration.dev.prm.novobit.eu'
+    apiUrl_INTEGRATION = 'https://integration.dev.prm.isygoit.eu'
 
     // apiUrl_PMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/integration`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'docker-prod') {
@@ -21,11 +21,11 @@ if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
 
     // apiUrl_PMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/integration`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-be-local') {
-    apiUrl_INTEGRATION = 'https://integration.dev.prm.novobit.eu'
+    apiUrl_INTEGRATION = 'https://integration.dev.prm.isygoit.eu'
 
     // apiUrl_PMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/integration`
 } else {
-    apiUrl_INTEGRATION = 'https://integration.dev.prm.novobit.eu'
+    apiUrl_INTEGRATION = 'https://integration.dev.prm.isygoit.eu'
 
     // apiUrl_PMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/integration`
 }

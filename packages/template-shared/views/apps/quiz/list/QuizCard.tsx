@@ -143,7 +143,7 @@ const QuizCard = (props: CardItem) => {
 
 
             </CardContent>
-            {appName === 'webapp-cfo' && (
+            {appName === 'prm-cfo' && (
                 <CardContent>
                     {data.startDate && (
                         <Box sx={{display: 'flex'}}>
@@ -169,7 +169,7 @@ const QuizCard = (props: CardItem) => {
 
             )}
             {score ? (<Divider className={Styles.dividerStyle}/>) : null}
-            {appName === 'webapp-cfo' && (
+            {appName === 'prm-cfo' && (
                 <CardContent className={Styles.cardActionFooterStyle}>
                     {score ? (
                         <Box>

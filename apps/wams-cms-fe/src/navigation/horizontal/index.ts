@@ -276,24 +276,24 @@ const navigation = (): HorizontalNavItemsType => {
           children: [
             {
               title: 'Account',
-              path: '/pages/account-settings/account'
+              path: '/apps/ims-account/account-settings/account'
             },
             {
               title: 'Security',
-              path: '/pages/account-settings/security'
+              path: '/apps/ims-account/account-settings/security'
             },
             {
               title: 'Billing',
-              path: '/pages/account-settings/billing'
+              path: '/apps/ims-account/account-settings/billing'
             },
             {
               title: 'Notifications',
-              path: '/pages/account-settings/notifications'
+              path: '/apps/ims-account/account-settings/notifications'
             },
 
             {
               title: 'Connections',
-              path: '/pages/account-settings/connections'
+              path: '/apps/ims-account/account-settings/connections'
             }
           ]
         },

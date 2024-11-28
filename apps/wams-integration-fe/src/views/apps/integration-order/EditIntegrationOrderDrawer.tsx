@@ -42,7 +42,8 @@ const schema = yup.object().shape({
   domain: yup.string().required(),
   mapping: yup.string().required(),
   integrationOrder: yup.string().required(),
-  file: yup.mixed()
+
+
 })
 
 const SidebarEditIntegrationOrder = (props: SidebarEditIntegrationOrderType) => {
@@ -62,7 +63,7 @@ const SidebarEditIntegrationOrder = (props: SidebarEditIntegrationOrderType) => 
     "mapping": dataIntegrationOrder?.mapping,
     "integrationOrder": dataIntegrationOrder?.integrationOrder,
     "file": dataIntegrationOrder?.file as File,
-    "fileId": dataIntegrationOrder?.originalFileName,
+    "originalFileName": dataIntegrationOrder?.originalFileName,
     "extension": dataIntegrationOrder?.extension,
     "type": dataIntegrationOrder?.type,
     "tags": dataIntegrationOrder?.tags,
@@ -107,8 +108,29 @@ const SidebarEditIntegrationOrder = (props: SidebarEditIntegrationOrderType) => 
   })
 
   const onSubmit = (data: IntegrationOrderType) => {
-    data.file = selectedFile
-    IntegrationOrderEditMutation.mutate(data);
+    const formData = new FormData()
+    formData.append('code', data.code)
+    formData.append('name', data.name)
+    formData.append('description', data.description)
+    formData.append('serviceName', data.serviceName)
+    formData.append('mapping', data.mapping)
+    formData.append('domain', data.domain)
+    formData.append('integrationOrder', data.integrationOrder)
+
+
+    const file = selectedFile || dataIntegrationOrder?.file;
+    if (file) {
+      formData.append('file', file);
+      formData.append('originalFileName', file.name);
+      formData.append('extension', file.name.split('.').pop() || 'unknown')
+      formData.append('type', file.type);
+    } else {
+      formData.append('originalFileName', dataIntegrationOrder?.originalFileName || '');
+      formData.append('extension', dataIntegrationOrder?.extension || '')
+    }
+
+
+    IntegrationOrderEditMutation.mutate({formData, id: data.id})
   }
 
   const handleClose = () => {

@@ -1,8 +1,5 @@
-// ** Mock Adapter
 import mock from '../mock'
-
-// ** Types
-import {PermissionRowType} from 'hrm-shared/@core/types/hrm/permissionTypes'
+import {PermissionRowType} from 'template-shared/@core/types/common/permissionTypes'
 
 const data: { permissions: PermissionRowType[] } = {
     permissions: [

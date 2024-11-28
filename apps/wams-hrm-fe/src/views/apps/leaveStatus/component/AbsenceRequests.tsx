@@ -218,7 +218,8 @@ const MyCalendar = ({SubmitError}) => {
                 required={true}
               />
             </DatePickerWrapper>
-            {errors['vacation.startDate'] && <p style={{color: 'red'}}>{errors['vacation.startDate'].message}</p>}
+            {errors['vacation.startDate'] &&
+              <p style={{color: 'red'}}>{errors['vacation.startDate'].message as string}</p>}
           </Grid>
           <Grid item xs={12} sm={4}>
             <DatePickerWrapper
@@ -245,7 +246,7 @@ const MyCalendar = ({SubmitError}) => {
                 highlightDates={highlightedRange}
               />
             </DatePickerWrapper>
-            {errors['vacation.endDate'] && <p style={{color: 'red'}}>{errors['vacation.endDate'].message}</p>}
+            {errors['vacation.endDate'] && <p style={{color: 'red'}}>{errors['vacation.endDate'].message as string}</p>}
           </Grid>
           <Grid item xs={12} sm={4}>
             <FormControlLabel

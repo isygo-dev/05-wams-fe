@@ -10,6 +10,7 @@ import {styled} from '@mui/material/styles'
 import Box from "@mui/material/Box";
 import DocViewer, {DocViewerRenderers} from 'react-doc-viewer'
 import {MiniResume} from "rpm-shared/@core/types/rpm/ResumeTypes";
+import rpmApiUrls from "rpm-shared/configs/rpm_apis";
 
 
 const CustomCloseButton = styled(IconButton)<IconButtonProps>(({theme}) => ({

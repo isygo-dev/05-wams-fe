@@ -1,6 +1,7 @@
 import React from 'react'
 import {Image, StyleSheet, Text, View} from '@react-pdf/renderer'
 import {QuestionDetailsType} from 'quiz-shared/@core/types/quiz/quizCandidateType'
+import quizApiUrls from "quiz-shared/configs/quiz_apis";
 
 const styles = StyleSheet.create({
     container: {

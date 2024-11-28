@@ -38,7 +38,7 @@ const Details = (props: Props) => {
     return (
         <>
             <View style={styles.container}>
-                {presentation != ('' || null) ? (
+                {(presentation != null && presentation != '') ? (
                     <>
                         <TitleGras color='black' titleChildren='Resume.Profile_professional'></TitleGras>
                         <Text style={styles.details}> {presentation} </Text>

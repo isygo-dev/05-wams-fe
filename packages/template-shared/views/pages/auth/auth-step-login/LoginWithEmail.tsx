@@ -16,27 +16,14 @@ import Icon from 'template-shared/@core/components/icon'
 import * as yup from 'yup'
 import {Controller, useForm} from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
-import {useSettings} from 'template-shared/@core/hooks/useSettings'
-import FooterIllustrationsV2 from '../FooterIllustrationsV2'
 import {useTranslation} from 'react-i18next'
 import {useRouter} from 'next/router'
 import {useMutation, useQueryClient} from 'react-query'
 import localStorageKeys from '../../../../configs/localeStorage'
-import {authRequestType} from "ims-shared/@core/types/ims/auth/authRequestTypes";
-import AuthApis from "ims-shared/@core/api/ims/auth";
-
-const LoginIllustration = styled('img')(({theme}) => ({
-    zIndex: 2,
-    maxHeight: 680,
-    marginTop: theme.spacing(12),
-    marginBottom: theme.spacing(12),
-    [theme.breakpoints.down(1540)]: {
-        maxHeight: 550
-    },
-    [theme.breakpoints.down('lg')]: {
-        maxHeight: 500
-    }
-}))
+import {authRequestType} from 'ims-shared/@core/types/ims/auth/authRequestTypes'
+import AuthApis from 'ims-shared/@core/api/ims/auth'
+import Grid from '@mui/material/Grid'
+import ContentLoginRegister from '../../../../@core/components/contentLoginRegister'
 
 const RightWrapper = styled(Box)<BoxProps>(({theme}) => ({
     width: '100%',
@@ -73,9 +60,7 @@ const LoginPageViewByEmail = () => {
     const [rememberMe, setRememberMe] = useState<boolean>(true)
     const router = useRouter()
     const theme = useTheme()
-    const {settings} = useSettings()
     const hidden = useMediaQuery(theme.breakpoints.down('md'))
-    const {skin} = settings
     const queryClient = useQueryClient()
     const emailValue: string = typeof localStorage !== 'undefined' ? localStorage.getItem('email') : ''
 
@@ -104,7 +89,7 @@ const LoginPageViewByEmail = () => {
                 const data: authRequestType = {
                     userName: res[0].code,
                     domain: res[0].domain
-                };
+                }
 
                 localStorage.setItem(localStorageKeys.domain, data.domain)
                 localStorage.setItem(localStorageKeys.userName, data.userName)
@@ -119,7 +104,7 @@ const LoginPageViewByEmail = () => {
             }
         },
         onError: (error: any) => {
-            console.error("Login error: ", error)
+            console.error('Login error: ', error)
         }
     })
 
@@ -128,6 +113,7 @@ const LoginPageViewByEmail = () => {
         onSuccess: (res: any, data: authRequestType) => {
             if (res.authTypeMode === 'OTP') {
                 sessionStorage.setItem(localStorageKeys.domain, data.domain)
+                sessionStorage.setItem(localStorageKeys.otpLength, res.otpLength)
                 sessionStorage.setItem(localStorageKeys.userName, data.userName)
                 sessionStorage.setItem(localStorageKeys.authType, 'OTP')
                 sessionStorage.setItem(localStorageKeys.rememberMe, String(rememberMe))
@@ -160,150 +146,150 @@ const LoginPageViewByEmail = () => {
         onLoginEmailMutation.mutate(data.email)
     }
 
-    const imageSource = skin === 'bordered' ? 'auth-v2-login-illustration-bordered' : 'auth-v2-login-illustration'
-
     return (
-        <Box className='content-right' sx={{backgroundColor: 'background.paper'}}>
-            {!hidden ? (
-                <Box
-                    sx={{
-                        flex: 1,
-                        display: 'flex',
-                        position: 'relative',
-                        alignItems: 'center',
-                        borderRadius: '20px',
-                        justifyContent: 'center',
-                        backgroundColor: 'customColors.bodyBg',
-                        margin: theme => theme.spacing(8, 0, 8, 8)
-                    }}
-                >
-                    <LoginIllustration alt='login-illustration'
-                                       src={`/images/pages/${imageSource}-${theme.palette.mode}.png`}/>
-                    <FooterIllustrationsV2/>
-                </Box>
-            ) : null}
-            <RightWrapper>
-                <Box
-                    sx={{
-                        p: [6, 12],
-                        height: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
-                    <Box sx={{width: '100%', maxWidth: 400}}>
-                        <img src='/images/favicon-logo.png' alt='apple-touch-icon.png' width={216} height={'100%'}/>
-                        <Box sx={{my: 6}}>
-                            <Typography sx={{mb: 1.5, fontWeight: 500, fontSize: '1.625rem', lineHeight: 1.385}}>
-                                {`${t('Welcome')}! 👋🏻`}
-                            </Typography>
-                            <Typography sx={{color: 'text.secondary'}}>{t('Login.sign-in')}</Typography>
-                        </Box>
-                        <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
-                            <FormControl fullWidth sx={{mb: 4}}>
-                                <Controller
-                                    name='email'
-                                    control={control}
-                                    rules={{required: true}}
-                                    render={({field: {value, onChange, onBlur}}) => (
-                                        <TextField
-                                            label={t('Email')}
-                                            value={value}
-                                            onBlur={onBlur}
-                                            onChange={onChange}
-                                            id='form-props-read-only-input'
-                                            error={Boolean(errors.email)}
-                                        />
-                                    )}
-                                />
-                                {errors.email && (
-                                    <FormHelperText sx={{color: 'error.main'}}>{errors.email.message}</FormHelperText>
-                                )}
-                            </FormControl>
-                            <Box
-                                sx={{
-                                    mb: 1.75,
-                                    display: 'flex',
-                                    flexWrap: 'wrap',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between'
-                                }}
-                            >
-                                <FormControlLabel
-                                    label={t('Login.Remember Me')}
-                                    control={<Checkbox checked={rememberMe}
-                                                       onChange={e => setRememberMe(e.target.checked)}/>}
-                                />
-                            </Box>
-                            <Button fullWidth size='large' type='submit' variant='contained' sx={{mb: 4}}>
-                                {t('Login.Login')}
-                            </Button>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    flexWrap: 'wrap',
-                                    justifyContent: 'center'
-                                }}
-                            >
-                                <Typography
-                                    sx={{color: 'text.secondary', mr: 2}}>{t('Login.New on our platform')}</Typography>
-                                <Typography variant='body2'>
-                                    <LinkStyled href='/register' sx={{fontSize: '1rem'}}>
-                                        {t('Login.Create an account')}
-                                    </LinkStyled>
+        <Grid container spacing={3} minHeight={'100vh'} mt={0}>
+            <Grid
+                item
+                md={6}
+                sm={6}
+                xs={12}
+                xl={7}
+                sx={{backgroundColor: 'background.paper', minHeight: '100vh', height: '100%'}}
+            >
+                <ContentLoginRegister hidden={hidden}/>
+            </Grid>
+            <Grid
+                item
+                md={hidden ? 12 : 6}
+                sm={hidden ? 12 : 6}
+                xs={hidden ? 12 : 12}
+                xl={hidden ? 12 : 5}
+                sx={{background: 'white'}}
+            >
+                <RightWrapper sx={{margin: 'auto', height: '100%'}}>
+                    <Box
+                        sx={{
+                            p: [6, 12],
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <Box sx={{width: '100%', maxWidth: 400}}>
+                            <img src='/images/favicon-logo.png' alt='apple-touch-icon.png' width={216} height={'100%'}/>
+                            <Box sx={{my: 6}}>
+                                <Typography sx={{mb: 1.5, fontWeight: 500, fontSize: '1.625rem', lineHeight: 1.385}}>
+                                    {`${t('Welcome')}! 👋🏻`}
                                 </Typography>
+                                <Typography sx={{color: 'text.secondary'}}>{t('Login.sign-in')}</Typography>
                             </Box>
-                            <Divider
-                                sx={{
-                                    fontSize: '0.875rem',
-                                    color: 'text.disabled',
-                                    '& .MuiDivider-wrapper': {px: 6},
-                                    my: theme => `${theme.spacing(6)} !important`
-                                }}
-                            >
-                                or
-                            </Divider>
-                            <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                <IconButton
-                                    href='/'
-                                    component={Link}
-                                    sx={{color: '#497ce2'}}
-                                    onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                            <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+                                <FormControl fullWidth sx={{mb: 4}}>
+                                    <Controller
+                                        name='email'
+                                        control={control}
+                                        rules={{required: true}}
+                                        render={({field: {value, onChange, onBlur}}) => (
+                                            <TextField
+                                                label={t('Email')}
+                                                value={value}
+                                                onBlur={onBlur}
+                                                onChange={onChange}
+                                                id='form-props-read-only-input'
+                                                error={Boolean(errors.email)}
+                                            />
+                                        )}
+                                    />
+                                    {errors.email && <FormHelperText
+                                        sx={{color: 'error.main'}}>{errors.email.message}</FormHelperText>}
+                                </FormControl>
+                                <Box
+                                    sx={{
+                                        mb: 1.75,
+                                        display: 'flex',
+                                        flexWrap: 'wrap',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between'
+                                    }}
                                 >
-                                    <Icon icon='mdi:facebook'/>
-                                </IconButton>
-                                <IconButton
-                                    href='/'
-                                    component={Link}
-                                    sx={{color: '#1da1f2'}}
-                                    onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                                    <FormControlLabel
+                                        label={t('Login.Remember Me')}
+                                        control={<Checkbox checked={rememberMe}
+                                                           onChange={e => setRememberMe(e.target.checked)}/>}
+                                    />
+                                </Box>
+                                <Button fullWidth size='large' type='submit' variant='contained' sx={{mb: 4}}>
+                                    {t('Login.Login')}
+                                </Button>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        flexWrap: 'wrap',
+                                        justifyContent: 'center'
+                                    }}
                                 >
-                                    <Icon icon='mdi:twitter'/>
-                                </IconButton>
-                                <IconButton
-                                    href='/'
-                                    component={Link}
-                                    onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
-                                    sx={{color: theme => (theme.palette.mode === 'light' ? '#272727' : 'grey.300')}}
+                                    <Typography sx={{
+                                        color: 'text.secondary',
+                                        mr: 2
+                                    }}>{t('Login.New on our platform')}</Typography>
+                                    <Typography variant='body2'>
+                                        <LinkStyled href='/register' sx={{fontSize: '1rem'}}>
+                                            {t('Login.Create an account')}
+                                        </LinkStyled>
+                                    </Typography>
+                                </Box>
+                                <Divider
+                                    sx={{
+                                        fontSize: '0.875rem',
+                                        color: 'text.disabled',
+                                        '& .MuiDivider-wrapper': {px: 6},
+                                        my: theme => `${theme.spacing(6)} !important`
+                                    }}
                                 >
-                                    <Icon icon='mdi:github'/>
-                                </IconButton>
-                                <IconButton
-                                    href='/'
-                                    component={Link}
-                                    sx={{color: '#db4437'}}
-                                    onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
-                                >
-                                    <Icon icon='mdi:google'/>
-                                </IconButton>
-                            </Box>
-                        </form>
+                                    or
+                                </Divider>
+                                <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                    <IconButton
+                                        href='/'
+                                        component={Link}
+                                        sx={{color: '#497ce2'}}
+                                        onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                                    >
+                                        <Icon icon='mdi:facebook'/>
+                                    </IconButton>
+                                    <IconButton
+                                        href='/'
+                                        component={Link}
+                                        sx={{color: '#1da1f2'}}
+                                        onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                                    >
+                                        <Icon icon='mdi:twitter'/>
+                                    </IconButton>
+                                    <IconButton
+                                        href='/'
+                                        component={Link}
+                                        onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                                        sx={{color: theme => (theme.palette.mode === 'light' ? '#272727' : 'grey.300')}}
+                                    >
+                                        <Icon icon='mdi:github'/>
+                                    </IconButton>
+                                    <IconButton
+                                        href='/'
+                                        component={Link}
+                                        sx={{color: '#db4437'}}
+                                        onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                                    >
+                                        <Icon icon='mdi:google'/>
+                                    </IconButton>
+                                </Box>
+                            </form>
+                        </Box>
                     </Box>
-                </Box>
-            </RightWrapper>
-        </Box>
+                </RightWrapper>
+            </Grid>
+        </Grid>
     )
 }
 

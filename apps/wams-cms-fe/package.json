@@ -1,5 +1,5 @@
 {
-  "name": "WEBAPP-CMS",
+  "name": "PRM-CMS",
   "version": "1.1.0",
   "private": true,
   "scripts": {
@@ -24,17 +24,9 @@
     "eslint": "^8.48.0",
     "pdfjs-dist": "4.4.168",
     "react-pdf": "9.1.0",
-    "@types/react": "^17.0.38",
+    "@types/react": "18.3.12",
     "react-quill": "^2.0.0",
-    "mms-shared": "workspace:*",
-    "sms-shared": "workspace:*",
-    "link-shared": "workspace:*",
     "cms-shared": "workspace:*",
-    "hrm-shared": "workspace:*",
-    "quiz-shared": "workspace:*",
-    "rpm-shared": "workspace:*",
-    "integration-shared": "workspace:*",
-    "kms-shared": "workspace:*",
     "ims-shared": "workspace:*",
     "template-shared": "workspace:*"
   },

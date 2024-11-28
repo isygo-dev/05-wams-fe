@@ -13,6 +13,7 @@ export type IntegrationFlowType = {
     updateDate?: Date
     createdBy?: string
     updatedBy?: string
+    fileContent?: string
 }
 
 export interface IntegrationFlowData {

@@ -1,5 +1,5 @@
 {
-  "name": "wams",
+  "name": "PRM",
   "private": true,
   "scripts": {
     "build:docker-dev": "turbo run build:docker-dev",
@@ -17,7 +17,7 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install"
   },
-  "packageManager": "pnpm@9.12.2",
+  "packageManager": "pnpm@9.12.3",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -32,9 +32,9 @@
     ]
   },
   "dependencies": {
-    "@babel/core": "^7.25.2",
-    "@casl/ability": "6.3.3",
-    "@casl/react": "3.1.0",
+    "@babel/core": "7.26.0",
+    "@casl/ability": "6.7.2",
+    "@casl/react": "4.0.0",
     "@emotion/cache": "11.10.5",
     "@emotion/react": "11.10.6",
     "@emotion/server": "11.10.0",
@@ -120,6 +120,9 @@
     "stompjs": "^2.3.3",
     "stylis": "4.1.3",
     "stylis-plugin-rtl": "2.1.1",
+    "uuid": "^10.0.0",
+    "xml2js": "^0.6.2",
+    "yup": "1.0.2",
     "mms-shared": "workspace:*",
     "sms-shared": "workspace:*",
     "link-shared": "workspace:*",
@@ -130,10 +133,7 @@
     "integration-shared": "workspace:*",
     "kms-shared": "workspace:*",
     "ims-shared": "workspace:*",
-    "template-shared": "workspace:*",
-    "uuid": "^10.0.0",
-    "xml2js": "^0.6.2",
-    "yup": "1.0.2"
+    "template-shared": "workspace:*"
   },
   "devDependencies": {
     "@iconify/iconify": "3.1.0",
@@ -148,7 +148,7 @@
     "@types/nprogress": "0.2.0",
     "@types/payment": "2.1.4",
     "@types/prismjs": "1.26.0",
-    "@types/react": "^17.0.80",
+    "@types/react": "18.3.12",
     "@types/react-credit-cards": "0.8.1",
     "@types/react-datepicker": "4.10.0",
     "@types/react-draft-wysiwyg": "1.13.4",
@@ -168,7 +168,7 @@
     "prettier": "^3.3.3",
     "tsconfig": "workspace:*",
     "turbo": "^1.13.4",
-    "typescript": "4.9.5"
+    "typescript": "5.6.3"
   },
   "pnpm": {
     "overrides": {
@@ -184,6 +184,6 @@
     "@react-pdf/pdfkit": "3.0.4"
   },
   "resolutions": {
-    "@types/react": "^17.0.38"
+    "@types/react": "18.3.12"
   }
 }

@@ -285,6 +285,8 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
 
 
               <FormControl fullWidth sx={{mb: 4}}>
+
+
                 <label htmlFor='file' style={{alignItems: 'center', cursor: 'pointer'}}>
                   <Button
                     color='primary'
@@ -293,7 +295,7 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
                     sx={{width: '100%'}}
                     startIcon={<Icon icon='tabler:upload'/>}
                   >
-                    Select File
+                    Select Validation file
                   </Button>
                   <input type='file' name='file' id='file' style={{display: 'none'}} onChange={handleFileChange}/>
                   <a>{file ? file.name : ''}</a>

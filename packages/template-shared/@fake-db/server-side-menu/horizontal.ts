@@ -278,24 +278,24 @@ const navigation: HorizontalNavItemsType = [
                 children: [
                     {
                         title: 'Account',
-                        path: '/pages/account-settings/account'
+                        path: '/apps/ims-account/account-settings/account'
                     },
                     {
                         title: 'Security',
-                        path: '/pages/account-settings/security'
+                        path: '/apps/ims-account/account-settings/security'
                     },
                     {
                         title: 'Billing',
-                        path: '/pages/account-settings/billing'
+                        path: '/apps/ims-account/account-settings/billing'
                     },
                     {
                         title: 'Notifications',
-                        path: '/pages/account-settings/notifications'
+                        path: '/apps/ims-account/account-settings/notifications'
                     },
 
                     {
                         title: 'Connections',
-                        path: '/pages/account-settings/connections'
+                        path: '/apps/ims-account/account-settings/connections'
                     }
                 ]
             },
@@ -627,14 +627,14 @@ const navigation: HorizontalNavItemsType = [
                 icon: 'tabler:lifebuoy',
                 externalLink: true,
                 openInNewTab: true,
-                path: 'https://novobit.ticksy.com/'
+                path: 'https://' + `${process.env.NEXT_PUBLIC_COMPANY_NAME}` + '.ticksy.com/'
             },
             {
                 title: 'Documentation',
                 icon: 'tabler:file-text',
                 externalLink: true,
                 openInNewTab: true,
-                path: 'https://demos.novobit.eu/vuexy-nextjs-admin-template/documentation'
+                path: 'https://demos.' + `${process.env.NEXT_PUBLIC_COMPANY_NAME}` + '.eu/vuexy-nextjs-admin-template/documentation'
             }
         ]
     }

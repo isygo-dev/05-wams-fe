@@ -45,7 +45,7 @@ const TemplateJobDrawer = (props: Props) => {
         handleRowOptionsClose()
     }
     const submit = () => {
-        const jobTemplate: JobTemplate = {domain: 'novobit.eu', title: title, jobOffer: job}
+        const jobTemplate: JobTemplate = {domain: 'isygoit.eu', title: title, jobOffer: job}
         updateTemplate.mutate(jobTemplate)
     }
 

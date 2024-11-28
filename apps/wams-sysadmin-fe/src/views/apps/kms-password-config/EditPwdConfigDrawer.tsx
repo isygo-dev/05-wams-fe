@@ -36,13 +36,15 @@ const Header = styled(Box)<BoxProps>(({theme}) => ({
 
 const schema = yup.object().shape({
   domain: yup.string().required(),
+  type: yup.string().required(),
   pattern: yup.string().required(),
   charSetType: yup.string().required(),
-  initialPassword: yup.string().required('password is required.'),
-  minLenght: yup.number().required(),
-  maxLenth: yup.number().required(),
-  lifeDays: yup.number().required()
+  initial: yup.string().required(),
+  minLength: yup.number().required(),
+  maxLength: yup.number().required(),
+  lifeTime: yup.number().required()
 })
+
 const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
   const {t} = useTranslation()
   const queryClient = useQueryClient()
@@ -108,14 +110,6 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{mb: 4}}>
             <Controller
-              name='code'
-              control={control}
-              rules={{required: true}}
-              render={({field: {value}}) => <TextField size='small' disabled value={value} label={t('code')}/>}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
-            <Controller
               name='domain'
               control={control}
               rules={{required: true}}
@@ -124,6 +118,8 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                   size='small'
                   value={value}
                   label={t('Domain.Domain')}
+                  name='domain'
+                  defaultValue=''
                   onChange={onChange}
                   disabled
                   error={Boolean(errors.domain)}
@@ -132,6 +128,45 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
             />
             {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
           </FormControl>
+
+          <FormControl fullWidth sx={{mb: 4}}>
+            <InputLabel
+              id='validation-type-select'
+              error={Boolean(errors.type)}
+              htmlFor='validation-type-select'
+            >
+              {t('Password.Type')}
+            </InputLabel>
+            <Controller
+              name='type'
+              control={control}
+              rules={{required: true}}
+              render={({field: {value, onChange}}) => (
+                <Select
+                  size='small'
+                  value={value}
+                  label='type'
+                  onChange={e => {
+                    onChange(e)
+                  }}
+                  error={Boolean(errors.type)}
+                  labelId='validation-type-select'
+                  aria-describedby='validation-type-select'
+                >
+                  <MenuItem value='PWD'>PWD</MenuItem>
+                  <MenuItem value='OTP'>OTP</MenuItem>
+                  <MenuItem value='QRC'>QRC</MenuItem>
+                  <MenuItem value='TOKEN'>TOKEN</MenuItem>
+                </Select>
+              )}
+            />
+            {errors.type && (
+              <FormHelperText sx={{color: 'error.main'}} id='validation-type-select'>
+                This type is required
+              </FormHelperText>
+            )}
+          </FormControl>
+
           <FormControl fullWidth sx={{mb: 4}}>
             <Controller
               name='pattern'
@@ -143,19 +178,21 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                   value={value}
                   label={t('Password.Pattern')}
                   onChange={onChange}
+                  placeholder='enter pattern'
                   error={Boolean(errors.pattern)}
                 />
               )}
             />
             {errors.pattern && <FormHelperText sx={{color: 'error.main'}}>{errors.pattern.message}</FormHelperText>}
           </FormControl>
+
           <FormControl fullWidth sx={{mb: 4}}>
             <InputLabel
               id='validation-type-select'
               error={Boolean(errors.charSetType)}
               htmlFor='validation-type-select'
             >
-              {t('Password.Type')}
+              {t('Password.CharSetType')}
             </InputLabel>
             <Controller
               name='charSetType'
@@ -174,9 +211,9 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                   aria-describedby='validation-type-select'
                 >
                   <MenuItem value='ALL'>ALL</MenuItem>
-                  <MenuItem value='NUMERIC'>Numeric</MenuItem>
-                  <MenuItem value='ALPHA'>Alpha</MenuItem>
-                  <MenuItem value='ALPHANUM'>Alphanum</MenuItem>
+                  <MenuItem value='NUMERIC'>NUMERIC</MenuItem>
+                  <MenuItem value='ALPHA'>ALPHA</MenuItem>
+                  <MenuItem value='ALPHANUM'>ALPHANUM</MenuItem>
                 </Select>
               )}
             />
@@ -186,9 +223,10 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
               </FormHelperText>
             )}
           </FormControl>
+
           <FormControl fullWidth sx={{mb: 4}}>
             <Controller
-              name='initialPassword'
+              name='initial'
               control={control}
               rules={{required: true}}
               render={({field: {value, onChange}}) => (
@@ -196,19 +234,21 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                   size='small'
                   type='text'
                   value={value}
-                  label={t('Password.Password')}
+                  label={t('Password.Initial')}
                   onChange={onChange}
-                  error={Boolean(errors.initialPassword)}
+                  placeholder='enter initial password'
+                  error={Boolean(errors.initial)}
                 />
               )}
             />
-            {errors.initialPassword && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.initialPassword.message}</FormHelperText>
+            {errors.initial && (
+              <FormHelperText sx={{color: 'error.main'}}>{errors.initial.message}</FormHelperText>
             )}
           </FormControl>
+
           <FormControl fullWidth sx={{mb: 4}}>
             <Controller
-              name='minLenght'
+              name='minLength'
               control={control}
               rules={{required: true}}
               render={({field: {value, onChange}}) => (
@@ -216,19 +256,21 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                   size='small'
                   type='number'
                   value={value}
-                  label={t('Password.minLenght')}
+                  label={t('Password.MinLength')}
                   onChange={onChange}
-                  error={Boolean(errors.minLenght)}
+                  placeholder='enter minLength'
+                  error={Boolean(errors.minLength)}
                 />
               )}
             />
-            {errors.minLenght && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.minLenght.message}</FormHelperText>
+            {errors.minLength && (
+              <FormHelperText sx={{color: 'error.main'}}>{errors.minLength.message}</FormHelperText>
             )}
           </FormControl>
+
           <FormControl fullWidth sx={{mb: 4}}>
             <Controller
-              name='maxLenth'
+              name='maxLength'
               control={control}
               rules={{required: true}}
               render={({field: {value, onChange}}) => (
@@ -236,17 +278,21 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                   size='small'
                   type='number'
                   value={value}
-                  label={t('Password.maxLenght')}
+                  label={t('Password.MaxLength')}
                   onChange={onChange}
-                  error={Boolean(errors.maxLenth)}
+                  placeholder='enter maxLength'
+                  error={Boolean(errors.maxLength)}
                 />
               )}
             />
-            {errors.maxLenth && <FormHelperText sx={{color: 'error.main'}}>{errors.maxLenth.message}</FormHelperText>}
+            {errors.maxLength && (
+              <FormHelperText sx={{color: 'error.main'}}>{errors.maxLength.message}</FormHelperText>
+            )}
           </FormControl>
+
           <FormControl fullWidth sx={{mb: 4}}>
             <Controller
-              name='lifeDays'
+              name='lifeTime'
               control={control}
               rules={{required: true}}
               render={({field: {value, onChange}}) => (
@@ -254,14 +300,18 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                   size='small'
                   type='number'
                   value={value}
-                  label={t('Password.lifeDays')}
+                  label={t('Password.LifeTime')}
                   onChange={onChange}
-                  error={Boolean(errors.lifeDays)}
+                  placeholder='enter lifeTime'
+                  error={Boolean(errors.lifeTime)}
                 />
               )}
             />
-            {errors.lifeDays && <FormHelperText sx={{color: 'error.main'}}>{errors.lifeDays.message}</FormHelperText>}
+            {errors.lifeTime && (
+              <FormHelperText sx={{color: 'error.main'}}>{errors.lifeTime.message}</FormHelperText>
+            )}
           </FormControl>
+
           <Box sx={{display: 'flex', alignItems: 'center'}}>
             <Button type='submit' variant='contained' sx={{mr: 3}}>
               Submit

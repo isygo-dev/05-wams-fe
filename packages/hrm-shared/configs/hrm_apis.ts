@@ -4,7 +4,7 @@ const api_version = '/api/v1'
 let apiUrl_HRM: string | undefined
 
 if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
-    apiUrl_HRM = 'https://hrm.dev.prm.novobit.eu'
+    apiUrl_HRM = 'https://hrm.dev.prm.isygoit.eu'
 
     // apiUrl_HRM = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/hrm`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'docker-prod') {
@@ -20,11 +20,11 @@ if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
 
     // apiUrl_HRM = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/hrm`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-be-local') {
-    apiUrl_HRM = 'https://hrm.dev.prm.novobit.eu'
+    apiUrl_HRM = 'https://hrm.dev.prm.isygoit.eu'
 
     // apiUrl_HRM = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/hrm`
 } else {
-    apiUrl_HRM = 'https://hrm.dev.prm.novobit.eu'
+    apiUrl_HRM = 'https://hrm.dev.prm.isygoit.eu'
 
     // apiUrl_HRM = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/hrm`
 }

@@ -41,13 +41,13 @@ const TabConnections = () => {
         {
             title: t('Connections.Twitter'),
             isConnected: true,
-            username: '@Novobit Gmbh',
+            username: '@' + `${process.env.NEXT_PUBLIC_COMPANY_NAME}`,
             logo: '/images/logos/twitter.png'
         },
         {
             title: t('Connections.Instagram'),
             isConnected: true,
-            username: '@Novobit Gmbh',
+            username: '@' + `${process.env.NEXT_PUBLIC_COMPANY_NAME}`,
             logo: '/images/logos/instagram.png'
         },
         {

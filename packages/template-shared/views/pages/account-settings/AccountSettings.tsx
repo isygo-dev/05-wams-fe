@@ -17,14 +17,14 @@ import TabNotifications from './TabNotifications'
 import {useTranslation} from 'react-i18next'
 import {useQuery} from 'react-query'
 import {checkPermission} from 'template-shared/@core/api/helper/permission'
-import AccountApis from "ims-shared/@core/api/ims/account";
+import AccountApis from 'ims-shared/@core/api/ims/account'
 import {
     PermissionAction,
     PermissionApplication,
     PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import Icon from "../../../@core/components/icon";
-import imsApiUrls from "ims-shared/configs/ims_apis"
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import Icon from '../../../@core/components/icon'
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 
 const TabList = styled(MuiTabList)<TabListProps>(({theme}) => ({
     border: '0 !important',
@@ -61,7 +61,7 @@ const AccountSettings = ({tab, id}: { tab: string; id: number | null }) => {
         setIsLoading(true)
         setActiveTab(value)
         if (!id) {
-            router.push(`/pages/account-settings/${value.toLowerCase()}`).then(() => setIsLoading(false))
+            router.push(`/apps/ims-account/account-settings/${value.toLowerCase()}`).then(() => setIsLoading(false))
         } else {
             router.push(`/apps/ims-account/view/${value.toLowerCase()}/${id}`).then(() => setIsLoading(false))
         }

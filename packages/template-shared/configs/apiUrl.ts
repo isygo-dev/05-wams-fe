@@ -9,41 +9,41 @@ let apiUrl_SCUI: string | undefined
 //let apiUrl_PMS: string | undefined
 
 if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
-    apiUrl_GATEWAY = 'https://gateway.dev.prm.novobit.eu'
-    apiUrl_CMS = 'https://cms.dev.prm.novobit.eu'
-    apiUrl_SCUI = 'https://ai.smartcode.novobit.eu'
+    apiUrl_GATEWAY = 'https://gateway.dev.prm.isygoit.eu'
+    apiUrl_CMS = 'https://cms.dev.prm.isygoit.eu'
+    apiUrl_SCUI = 'https://ai.smartcode.isygoit.eu'
 
-    // apiUrl_LMS = 'https://lms.dev.prm.novobit.eu'
-    // apiUrl_PMS = 'https://pms.dev.prm.novobit.eu'
+    // apiUrl_LMS = 'https://lms.dev.prm.isygoit.eu'
+    // apiUrl_PMS = 'https://pms.dev.prm.isygoit.eu'
     // apiUrl_GATEWAY = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}`
     // apiUrl_CMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/cms`
-    // apiUrl_SCUI = 'https://ai.smartcode.novobit.eu'
+    // apiUrl_SCUI = 'https://ai.smartcode.isygoit.eu'
     // apiUrl_LMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/lms`
     // apiUrl_PMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/pms`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'docker-prod') {
     apiUrl_GATEWAY = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}`
     apiUrl_CMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/cms`
-    apiUrl_SCUI = 'https://ai.smartcode.novobit.eu'
+    apiUrl_SCUI = 'https://ai.smartcode.isygoit.eu'
 
     // apiUrl_LMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/lms`
     // apiUrl_PMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/pms`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'docker-qa') {
     apiUrl_GATEWAY = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}`
     apiUrl_CMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/cms`
-    apiUrl_SCUI = 'https://ai.smartcode.novobit.eu'
+    apiUrl_SCUI = 'https://ai.smartcode.isygoit.eu'
 
     // apiUrl_LMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/lms`
     // apiUrl_PMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/pms`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-local') {
     apiUrl_GATEWAY = 'http://127.0.0.1:8060'
     apiUrl_CMS = 'http://127.0.0.1:40407'
-    apiUrl_SCUI = 'https://ai.smartcode.novobit.eu'
+    apiUrl_SCUI = 'https://ai.smartcode.isygoit.eu'
 
     // apiUrl_LMS = 'http://127.0.0.1:40410'
     // apiUrl_PMS = 'http://127.0.0.1:40411'
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-be-local') {
-    apiUrl_GATEWAY = 'https://gateway.dev.prm.novobit.eu'
-    apiUrl_CMS = 'https://cms.dev.prm.novobit.eu'
+    apiUrl_GATEWAY = 'https://gateway.dev.prm.isygoit.eu'
+    apiUrl_CMS = 'https://cms.dev.prm.isygoit.eu'
     apiUrl_SCUI = 'http://127.0.0.1:5000'
 
     // apiUrl_LMS = 'http://127.0.0.1:40410'
@@ -56,12 +56,12 @@ if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
     // apiUrl_LMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/lms`
     // apiUrl_PMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/pms`
 } else {
-    apiUrl_GATEWAY = 'https://gateway.dev.prm.novobit.eu'
-    apiUrl_CMS = 'https://cms.dev.prm.novobit.eu'
-    apiUrl_SCUI = 'https://ai.smartcode.novobit.eu'
+    apiUrl_GATEWAY = 'https://gateway.dev.prm.isygoit.eu'
+    apiUrl_CMS = 'https://cms.dev.prm.isygoit.eu'
+    apiUrl_SCUI = 'https://ai.smartcode.isygoit.eu'
 
-    // apiUrl_LMS = 'https://lms.dev.prm.novobit.eu'
-    // apiUrl_PMS = 'https://pms.dev.prm.novobit.eu'
+    // apiUrl_LMS = 'https://lms.dev.prm.isygoit.eu'
+    // apiUrl_PMS = 'https://pms.dev.prm.isygoit.eu'
 }
 
 const apiUrls = {

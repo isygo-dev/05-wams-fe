@@ -183,7 +183,7 @@ function PostList({user, contactsAccount, posts}) {
 
   const countLikePost = (post: PostType) => {
     if (post.usersAccountCode == null || post.usersAccountCode.length == 0) {
-      return ''
+      return null
     } else if (post.usersAccountCode.length < 1000) {
       return post.usersAccountCode.length
     } else {
@@ -193,7 +193,7 @@ function PostList({user, contactsAccount, posts}) {
 
   const countDislikePost = (post: PostType) => {
     if (post.usersAccountCodeDislike == null || post.usersAccountCodeDislike.length == 0) {
-      return ''
+      return null
     } else if (post.usersAccountCodeDislike.length < 1000) {
       return post.usersAccountCodeDislike.length
     } else {
@@ -203,7 +203,7 @@ function PostList({user, contactsAccount, posts}) {
 
   const countComments = (comments: CommentType[]) => {
     if (comments == null || comments.length == 0) {
-      return ''
+      return null
     } else if (comments.length < 1000) {
       return comments.length
     } else {
@@ -213,7 +213,7 @@ function PostList({user, contactsAccount, posts}) {
 
   const countLikeComment = (comment: CommentType) => {
     if (comment.usersAccountCode == null || comment.usersAccountCode.length == 0) {
-      return ''
+      return null
     } else if (comment.usersAccountCode.length < 1000) {
       return comment.usersAccountCode.length
     } else {
@@ -427,7 +427,7 @@ function PostList({user, contactsAccount, posts}) {
                           </Tooltip>
                         )}
 
-                        {countLikePost(post) > 0 && (
+                        {countLikePost(post) != null && (
                           <Button
                             onClick={() => handleTypographyClick(post.usersAccountCode)}
                             className={'btnActionLink'}
@@ -470,7 +470,7 @@ function PostList({user, contactsAccount, posts}) {
                           </Tooltip>
                         )}
 
-                        {countDislikePost(post) > 0 && (
+                        {countDislikePost(post) != null && (
                           <Button
                             onClick={() => handleTypographyClick(post.usersAccountCodeDislike)}
                             className={'btnActionLink'}
@@ -503,7 +503,7 @@ function PostList({user, contactsAccount, posts}) {
                         </Button>
                       </Tooltip>
 
-                      {countComments(post.comments) > 0 && (
+                      {countComments(post.comments) != null && (
                         <Button
                           className={'btnActionLink'}
                           sx={{

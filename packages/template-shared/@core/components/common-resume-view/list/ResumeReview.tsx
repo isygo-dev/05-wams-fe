@@ -4,6 +4,7 @@ import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import DocViewer, {DocViewerRenderers} from "react-doc-viewer";
+import rpmApiUrls from "rpm-shared/configs/rpm_apis";
 
 interface CardItem {
     id: number,

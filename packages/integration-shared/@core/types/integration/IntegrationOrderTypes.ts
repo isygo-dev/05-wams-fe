@@ -12,7 +12,7 @@ export type IntegrationOrderType = {
     type?: string
     tags?: string[]
     file?: File | null
-    fileId: string
+    fileId?: string
 
     //Audit info
     createDate?: any

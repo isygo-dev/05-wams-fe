@@ -161,35 +161,35 @@ const searchData: AppBarSearchType[] = [
     },
     {
         id: 23,
-        url: '/pages/account-settings/account',
+        url: '/apps/ims-account/account-settings/account',
         icon: 'tabler:settings',
         title: 'Account Settings',
         category: 'appsPages'
     },
     {
         id: 24,
-        url: '/pages/account-settings/security',
+        url: '/apps/ims-account/account-settings/security',
         icon: 'tabler:lock',
         title: 'Account Settings - Security',
         category: 'appsPages'
     },
     {
         id: 25,
-        url: '/pages/account-settings/billing',
+        url: '/apps/ims-account/account-settings/billing',
         icon: 'tabler:currency-dollar',
         title: 'Account Settings - Billing',
         category: 'appsPages'
     },
     {
         id: 26,
-        url: '/pages/account-settings/notifications',
+        url: '/apps/ims-account/account-settings/notifications',
         icon: 'tabler:bell',
         title: 'Account Settings - Notifications',
         category: 'appsPages'
     },
     {
         id: 27,
-        url: '/pages/account-settings/connections',
+        url: '/apps/ims-account/account-settings/connections',
         icon: 'tabler:link',
         title: 'Account Settings - Connections',
         category: 'appsPages'

@@ -49,15 +49,26 @@ interface charSetType {
   [key: string]: ThemeColor
 }
 
+interface authType {
+  [key: string]: ThemeColor
+}
+
 interface CellType {
   row: PasswordConfigType
 }
 
-const TypeObj: charSetType = {
+const charSetTypeObj: charSetType = {
   ALL: 'success',
   ALPHA: 'secondary',
   ALPHANUM: 'info',
   NUMERIC: 'warning'
+}
+
+const authTypeObj: authType = {
+  PWD: 'success',
+  OTP: 'secondary',
+  QRC: 'info',
+  TOKEN: 'warning'
 }
 
 const PasswordConfigList = () => {
@@ -157,9 +168,10 @@ const PasswordConfigList = () => {
         </Box>
       )
     },
+
     {
       flex: 0.15,
-      field: 'charSetType',
+      field: 'type',
       minWidth: 170,
       headerName: t('Password.Type') as string,
       renderCell: ({row}: CellType) => (
@@ -167,13 +179,60 @@ const PasswordConfigList = () => {
           rounded
           skin='light'
           size='small'
-          label={row.charSetType}
-          color={TypeObj[row.charSetType]}
+          label={row.type}
+          color={authTypeObj[row.type]}
 
           /* sx={{textTransform: 'capitalize'}} */
         />
       )
     },
+
+    {
+      flex: 0.15,
+      field: 'charSetType',
+      minWidth: 170,
+      headerName: t('Password.CharsetType') as string,
+      renderCell: ({row}: CellType) => (
+        <CustomChip
+          rounded
+          skin='light'
+          size='small'
+          label={row.charSetType}
+          color={charSetTypeObj[row.charSetType]}
+
+          /* sx={{textTransform: 'capitalize'}} */
+        />
+      )
+    },
+
+    {
+      flex: 0.1,
+      minWidth: 110,
+      field: 'minLength',
+      headerName: t('Password.MinLength') as string,
+      renderCell: ({row}: CellType) => (
+        <Box sx={{display: 'flex', alignItems: 'center'}}>
+          <Typography noWrap sx={{color: 'text.secondary' /* , textTransform: 'capitalize' */}}>
+            {row.minLength}
+          </Typography>
+        </Box>
+      )
+    },
+
+    {
+      flex: 0.1,
+      minWidth: 110,
+      field: 'maxLength',
+      headerName: t('Password.MaxLength') as string,
+      renderCell: ({row}: CellType) => (
+        <Box sx={{display: 'flex', alignItems: 'center'}}>
+          <Typography noWrap sx={{color: 'text.secondary' /* , textTransform: 'capitalize' */}}>
+            {row.maxLength}
+          </Typography>
+        </Box>
+      )
+    },
+
     {
       flex: 0.1,
       minWidth: 110,
@@ -187,6 +246,7 @@ const PasswordConfigList = () => {
         </Box>
       )
     },
+
     {
       flex: 0.1,
       minWidth: 140,

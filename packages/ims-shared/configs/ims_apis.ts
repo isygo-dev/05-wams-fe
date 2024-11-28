@@ -4,7 +4,7 @@ const api_version = '/api/v1'
 let apiUrl_IMS: string | undefined
 
 if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
-    apiUrl_IMS = 'https://ims.dev.prm.novobit.eu'
+    apiUrl_IMS = 'https://ims.dev.prm.isygoit.eu'
 
     // apiUrl_IMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/ims`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'docker-prod') {
@@ -20,11 +20,11 @@ if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
 
     // apiUrl_IMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/ims`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-be-local') {
-    apiUrl_IMS = 'https://ims.dev.prm.novobit.eu'
+    apiUrl_IMS = 'https://ims.dev.prm.isygoit.eu'
 
     // apiUrl_IMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/ims`
 } else {
-    apiUrl_IMS = 'https://ims.dev.prm.novobit.eu'
+    apiUrl_IMS = 'https://ims.dev.prm.isygoit.eu'
 
     // apiUrl_IMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/ims`
 }

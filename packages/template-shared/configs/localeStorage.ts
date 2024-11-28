@@ -13,7 +13,8 @@ const localStorageKeys = {
     token: 'token',
     dashboardLink: 'dashboardLink',
     SpringBootProject: 'SpringBootProject',
-    paginationSize: 'pagination'
+    paginationSize: 'pagination',
+    otpLength: 'otpLength'
 }
 
 export default localStorageKeys

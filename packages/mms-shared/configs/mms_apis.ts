@@ -5,7 +5,7 @@ const api_version = '/api/v1'
 let apiUrl_MMS: string | undefined
 
 if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
-    apiUrl_MMS = 'https://mms.dev.prm.novobit.eu'
+    apiUrl_MMS = 'https://mms.dev.prm.isygoit.eu'
 
     // apiUrl_MMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/mms`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'docker-prod') {
@@ -21,11 +21,11 @@ if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
 
     // apiUrl_MMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/mms`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-be-local') {
-    apiUrl_MMS = 'https://mms.dev.prm.novobit.eu'
+    apiUrl_MMS = 'https://mms.dev.prm.isygoit.eu'
 
     // apiUrl_MMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/mms`
 } else {
-    apiUrl_MMS = 'https://mms.dev.prm.novobit.eu'
+    apiUrl_MMS = 'https://mms.dev.prm.isygoit.eu'
 
     // apiUrl_MMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/mms`
 }

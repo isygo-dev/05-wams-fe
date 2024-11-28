@@ -200,7 +200,7 @@ const IntegrationFlow = () => {
         return (
           <Box sx={{display: 'flex', alignItems: 'center'}}>
             <Typography noWrap sx={{color: 'text.secondary'}}>
-              {row.integrationDate}
+              {row.integrationDate.toDateString()}
             </Typography>
           </Box>
         )
@@ -415,16 +415,16 @@ const IntegrationFlow = () => {
             handleFilter={handleFilter}
             toggle={toggleAddFlowDrawer}
             permissionApplication={PermissionApplication.IMS}
-            permissionPage={PermissionPage.CUSTOMER}
+            permissionPage={PermissionPage.INTEGRATION_FLOW}
             permissionAction={PermissionAction.WRITE}
           />
-          {checkPermission(PermissionApplication.IMS, PermissionPage.CUSTOMER, PermissionAction.READ) &&
+          {checkPermission(PermissionApplication.IMS, PermissionPage.INTEGRATION_FLOW, PermissionAction.READ) &&
             renderViewBasedOnMode()
           }
         </Card>
       </Grid>
       {!isLoadingProfileUser && addFlowOpen &&
-        checkPermission(PermissionApplication.IMS, PermissionPage.CUSTOMER, PermissionAction.WRITE) && (
+        checkPermission(PermissionApplication.IMS, PermissionPage.INTEGRATION_FLOW, PermissionAction.WRITE) && (
           <AddFlowDrawer open={addFlowOpen} domain={profileUser?.domain} toggle={toggleAddFlowDrawer}/>
         )}
       {deleteDialogOpen && (

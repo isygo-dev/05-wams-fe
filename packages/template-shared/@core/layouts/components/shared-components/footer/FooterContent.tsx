@@ -34,8 +34,8 @@ const FooterContent = () => {
             <Typography sx={{mr: 2}} style={{whiteSpace: 'pre-wrap'}}>
                 {`© ${new Date().getFullYear()} ${systemInfo ? 'v' + systemInfo.version : ''}`}
                 {`  -  `}
-                <LinkStyled target='_blank' href='https://novobit.eu'>
-                    Novobit Gmbh
+                <LinkStyled target='_blank' href='https://isygoit.eu'>
+                    `${process.env.NEXT_PUBLIC_COMPANY_NAME}`
                 </LinkStyled>
             </Typography>
             {hidden ? null : (
@@ -45,10 +45,10 @@ const FooterContent = () => {
                     </LinkStyled>
 
                     <LinkStyled target='_blank'
-                                href='https://demos.novobit.eu/vuexy-nextjs-admin-template/documentation'>
+                                href='https://demos.isygoit.eu/vuexy-nextjs-admin-template/documentation'>
                         Documentation
                     </LinkStyled>
-                    <LinkStyled target='_blank' href='https://novobit.ticksy.com'>
+                    <LinkStyled target='_blank' href='https://isygoit.ticksy.com'>
                         Support
                     </LinkStyled>
                 </Box>

@@ -9,10 +9,34 @@ import {
 } from "template-shared/@core/types/helper/apiPermissionTypes";
 import {TFunction} from 'i18next'
 import {checkPermission} from 'template-shared/@core/api/helper/permission'
-import {IntegrationOrderType} from "integration-shared/@core/types/integration/IntegrationOrderTypes";
+
 
 const IntegrationOrderApis = (t: TFunction) => {
     const permission = PermissionPage.INTEGRATION_ORDER
+
+    const getCountIntegrationOrder = async () => {
+        if (!checkPermission(PermissionApplication.INTEGRATION, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
+
+            return
+        }
+        const response = await AppQuery(`${integrationApiUrls.apiUrl_INTEGRATION_Order_EndPoint}/count`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (response.status == 204) {
+            return 0
+        }
+        const data = await response.json()
+
+        return data
+
+    }
 
     const getIntegrationOrders = async () => {
         if (!checkPermission(PermissionApplication.INTEGRATION, permission, PermissionAction.READ)) {
@@ -20,8 +44,32 @@ const IntegrationOrderApis = (t: TFunction) => {
 
             return
         }
-
         const response = await AppQuery(`${integrationApiUrls.apiUrl_INTEGRATION_Order_EndPoint}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (response.status == 204) {
+            return 0
+        }
+        const data = await response.json()
+
+        return data
+
+    }
+
+    const getPaginationIntegrationOrders = async (page: number, size: number) => {
+        if (!checkPermission(PermissionApplication.INTEGRATION, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
+
+            return
+        }
+
+        const response = await AppQuery(`${integrationApiUrls.apiUrl_INTEGRATION_Order_EndPoint}/${page}/${size}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -62,30 +110,14 @@ const IntegrationOrderApis = (t: TFunction) => {
         return await response.json()
     }
 
-    const updateIntegrationOrder = async (data: IntegrationOrderType) => {
+    const updateIntegrationOrder = async ({formData, id}: { formData: FormData; id: number }) => {
         if (!checkPermission(PermissionApplication.INTEGRATION, permission, PermissionAction.READ)) {
             console.warn('Permission denied on read ' + t(permission))
 
             return
         }
 
-        const formData = new FormData()
-        formData.append('name', data.name)
-        formData.append('description', data.description)
-        formData.append('serviceName', data.serviceName)
-        formData.append('mapping', data.mapping)
-        formData.append('domain', data.domain)
-        formData.append('integrationOrder', data.integrationOrder)
-
-        const file = data.file
-        if (file != null || file != undefined) {
-            formData.append('file', data.file)
-            formData.append('originalFileName', file.name)
-            formData.append('extension', file.name.split('.').pop() || 'unknown')
-            formData.append('type', file.type)
-        }
-
-        const response = await AppQuery(`${integrationApiUrls.apiUrl_INTEGRATION_Order_FileUpdate_EndPoint}?id=${data.id}`, {
+        const response = await AppQuery(`${integrationApiUrls.apiUrl_INTEGRATION_Order_FileUpdate_EndPoint}?id=${id}`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -170,7 +202,6 @@ const IntegrationOrderApis = (t: TFunction) => {
         )
 
         if (response.ok) {
-            return await response.json()
             const blob = await response.blob()
             const url = URL.createObjectURL(blob)
             const link = document.createElement('a')
@@ -181,11 +212,14 @@ const IntegrationOrderApis = (t: TFunction) => {
             link.click()
             document.body.removeChild(link)
             URL.revokeObjectURL(url)
+
         }
     }
 
     return {
+        getCountIntegrationOrder,
         getIntegrationOrders,
+        getPaginationIntegrationOrders,
         addIntegrationOrder,
         updateIntegrationOrder,
         deleteIntegrationOrder,

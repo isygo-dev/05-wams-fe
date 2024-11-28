@@ -22,11 +22,10 @@ import {useAuth} from '../../../../hooks/useAuth'
 
 // ** Type Imports
 import {Settings} from '../../../context/settingsContext'
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 import {useQuery, useQueryClient} from 'react-query'
 import {UserDataType} from '../../../../context/types'
-import localStorageKeys from "../../../../configs/localeStorage";
-
+import localStorageKeys from '../../../../configs/localeStorage'
 
 interface Props {
     settings: Settings
@@ -165,7 +164,8 @@ const UserDropdown = (props: Props) => {
                     </Box>
                 </Box>
                 <Divider sx={{my: theme => `${theme.spacing(2)} !important`}}/>
-                <MenuItemStyled sx={{p: 0}} onClick={() => handleDropdownClose('/pages/account-settings/account')}>
+                <MenuItemStyled sx={{p: 0}}
+                                onClick={() => handleDropdownClose('/apps/ims-account/account-settings/account')}>
                     <Box sx={styles}>
                         <Icon icon='tabler:user-check'/>
                         My Profile

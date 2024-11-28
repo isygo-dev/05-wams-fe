@@ -48,6 +48,7 @@ import {
 import {checkPermission} from "../../../api/helper/permission";
 import DomainApis from "ims-shared/@core/api/ims/domain";
 import ResumeApis from "rpm-shared/@core/api/rpm/resume";
+import rpmApiUrls from "rpm-shared/configs/rpm_apis";
 
 interface ResumeViewProps {
     resumeDetailsData: ResumeTypes

@@ -195,14 +195,14 @@ const FlowList = () => {
     /*integrationDate column*/
     {
       field: 'integrationDate',
-      headerName: t('Email') as string,
+      headerName: t('Integration Date') as string,
       flex: 1,
 
       renderCell: ({row}: CellType) => {
         return (
           <Box sx={{display: 'flex', alignItems: 'center'}}>
             <Typography noWrap sx={{color: 'text.secondary'}}>
-              {row.integrationDate}
+              {row.integrationDate.toDateString()}
             </Typography>
           </Box>
         )

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, ReactNode, useState} from 'react'
+import React, {ChangeEvent, KeyboardEvent, ReactNode, useEffect, useState} from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
@@ -20,7 +20,7 @@ import localStorageKeys from '../../../../configs/localeStorage'
 import {useTranslation} from 'react-i18next'
 import {useRouter} from 'next/router'
 import {useMutation} from 'react-query'
-import AuthApis from "ims-shared/@core/api/ims/auth";
+import AuthApis from 'ims-shared/@core/api/ims/auth'
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({theme}) => ({
@@ -43,52 +43,23 @@ const CleaveInput = styled(Cleave)(({theme}) => ({
     }
 }))
 
-const otpValue_4_Didigts: { [key: string]: string } = {
-    val1: '',
-    val2: '',
-    val3: '',
-    val4: '',
-}
-
-const otpValue_6_Didigts: { [key: string]: string } = {
-    val1: '',
-    val2: '',
-    val3: '',
-    val4: '',
-    val5: '',
-    val6: '',
-}
-
-const otpValue_8_Didigts: { [key: string]: string } = {
-    val1: '',
-    val2: '',
-    val3: '',
-    val4: '',
-    val5: '',
-    val6: '',
-    val7: '',
-    val8: '',
-}
-
-const otpValue_10_Didigts: { [key: string]: string } = {
-    val1: '',
-    val2: '',
-    val3: '',
-    val4: '',
-    val5: '',
-    val6: '',
-    val7: '',
-    val8: '',
-    val9: '',
-    val10: '',
-}
-
 const OtpView = () => {
+    const [otpLengthValue, setOtpLengthValue] = useState<number>()
+
+    useEffect(() => {
+        const otpLength = sessionStorage.getItem(localStorageKeys.otpLength)
+        console.log('otpLength', otpLength)
+        if (otpLength) {
+            setOtpLengthValue(Number(otpLength))
+        } else {
+            setOtpLengthValue(4)
+        }
+    }, [])
+
     // ** State
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [otpCode, setOtpCode] = useState<number[]>([])
     const auth = useAuth()
-
     const {t} = useTranslation()
 
     // ** Hooks
@@ -96,9 +67,8 @@ const OtpView = () => {
     const {
         control,
         handleSubmit,
-        reset,
         formState: {errors}
-    } = useForm({defaultValues: otpValue_4_Didigts})
+    } = useForm({defaultValues: []})
 
     // ** Vars
     const errorsArray = Object.keys(errors)
@@ -156,7 +126,6 @@ const OtpView = () => {
     }
 
     const onSubmit = () => {
-        console.log(otpValue_4_Didigts)
         const request: LoginParams = {
             domain: sessionStorage.getItem(localStorageKeys.domain) || localStorage.getItem(localStorageKeys.domain) || '',
             application: process.env.NEXT_PUBLIC_APP_NAME || '',
@@ -172,27 +141,37 @@ const OtpView = () => {
     }
 
     const renderInputs = () => {
-        return Object.keys(otpValue_4_Didigts).map((val, index) => (
-            <Controller
-                key={val}
-                name={val}
-                control={control}
-                rules={{required: true}}
-                render={({field: {value, onChange}}) => (
-                    <Box
-                        type='tel'
-                        maxLength={1}
-                        value={value}
-                        autoFocus={index === 0}
-                        component={CleaveInput}
-                        onKeyDown={handleKeyDown}
-                        onChange={(event: ChangeEvent) => handleChange(event, onChange)}
-                        options={{blocks: [1], numeral: true, numeralPositiveOnly: true}}
-                        sx={{[theme.breakpoints.down('sm')]: {px: `${theme.spacing(2)} !important`}}}
-                    />
-                )}
-            />
-        ))
+        const controllers = []
+
+        for (let i = 1; i <= otpLengthValue; i++) {
+            // const name = `field${i}` as string;
+
+            controllers.push(
+                <Controller
+                    key={i}
+                    name={`field${i}` as any} // Unique name for each field
+                    control={control}
+                    rules={{required: true}}
+                    render={({field: {value, onChange}}) => (
+                        <Box
+                            type='tel'
+                            maxLength={1}
+                            value={value}
+                            autoFocus={i === 1}
+                            component={CleaveInput}
+                            onKeyDown={handleKeyDown}
+                            onChange={(event: ChangeEvent) => handleChange(event, onChange)}
+                            options={{blocks: [1], numeral: true, numeralPositiveOnly: true}}
+                            sx={{
+                                [theme.breakpoints.down('sm')]: {px: `${theme.spacing(2)} !important`}
+                            }}
+                        />
+                    )}
+                />
+            )
+        }
+
+        return <>{controllers}</>
     }
 
     return (

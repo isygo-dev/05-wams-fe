@@ -48,15 +48,14 @@ const Header = styled(Box)<BoxProps>(({theme}) => ({
 
 const schema = yup.object().shape({
   domain: yup.string().required(),
+  type: yup.string().required(),
   pattern: yup.string().required(),
-  initialPassword: yup.string().required()
+  charSetType: yup.string().required(),
+  initial: yup.string().required(),
+  minLength: yup.number().required(),
+  maxLength: yup.number().required(),
+  lifeTime: yup.number().required()
 })
-
-const defaultValues = {
-  domain: '',
-  pattern: '',
-  initialPassword: ''
-}
 
 const SidebarAddPwdConfig = (props: SidebarAddPwdConfigType) => {
   const {t} = useTranslation()
@@ -64,8 +63,13 @@ const SidebarAddPwdConfig = (props: SidebarAddPwdConfigType) => {
   const {open, toggle, domain} = props
   const defaultValues = {
     domain: domain,
+    type: '',
     pattern: '',
-    initialPassword: ''
+    charSetType: '',
+    initial: '',
+    minLength: 4,
+    maxLength: 4,
+    lifeTime: 3
   }
 
   const {
@@ -135,11 +139,11 @@ const SidebarAddPwdConfig = (props: SidebarAddPwdConfigType) => {
                 <Select
                   disabled={checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? false : true}
                   size='small'
+                  value={value}
                   label={t('Domain.Domain')}
                   name='domain'
                   defaultValue=''
                   onChange={onChange}
-                  value={value}
                 >
                   <MenuItem value=''>
                     <em>{t('None')}</em>
@@ -156,6 +160,44 @@ const SidebarAddPwdConfig = (props: SidebarAddPwdConfigType) => {
           </FormControl>
 
           <FormControl fullWidth sx={{mb: 4}}>
+            <InputLabel
+              id='validation-type-select'
+              error={Boolean(errors.type)}
+              htmlFor='validation-type-select'
+            >
+              {t('Password.Type')}
+            </InputLabel>
+            <Controller
+              name='type'
+              control={control}
+              rules={{required: true}}
+              render={({field: {value, onChange}}) => (
+                <Select
+                  size='small'
+                  value={value}
+                  label='type'
+                  onChange={e => {
+                    onChange(e)
+                  }}
+                  error={Boolean(errors.type)}
+                  labelId='validation-type-select'
+                  aria-describedby='validation-type-select'
+                >
+                  <MenuItem value='PWD'>PWD</MenuItem>
+                  <MenuItem value='OTP'>OTP</MenuItem>
+                  <MenuItem value='QRC'>QRC</MenuItem>
+                  <MenuItem value='TOKEN'>TOKEN</MenuItem>
+                </Select>
+              )}
+            />
+            {errors.type && (
+              <FormHelperText sx={{color: 'error.main'}} id='validation-type-select'>
+                This type is required
+              </FormHelperText>
+            )}
+          </FormControl>
+
+          <FormControl fullWidth sx={{mb: 4}}>
             <Controller
               name='pattern'
               control={control}
@@ -166,7 +208,7 @@ const SidebarAddPwdConfig = (props: SidebarAddPwdConfigType) => {
                   value={value}
                   label={t('Password.Pattern')}
                   onChange={onChange}
-                  placeholder='enter your pattern'
+                  placeholder='enter pattern'
                   error={Boolean(errors.pattern)}
                 />
               )}
@@ -175,23 +217,128 @@ const SidebarAddPwdConfig = (props: SidebarAddPwdConfigType) => {
           </FormControl>
 
           <FormControl fullWidth sx={{mb: 4}}>
+            <InputLabel
+              id='validation-type-select'
+              error={Boolean(errors.charSetType)}
+              htmlFor='validation-type-select'
+            >
+              {t('Password.CharSetType')}
+            </InputLabel>
             <Controller
-              name='initialPassword'
+              name='charSetType'
+              control={control}
+              rules={{required: true}}
+              render={({field: {value, onChange}}) => (
+                <Select
+                  size='small'
+                  value={value}
+                  label='charSetType'
+                  onChange={e => {
+                    onChange(e)
+                  }}
+                  error={Boolean(errors.charSetType)}
+                  labelId='validation-type-select'
+                  aria-describedby='validation-type-select'
+                >
+                  <MenuItem value='ALL'>ALL</MenuItem>
+                  <MenuItem value='NUMERIC'>NUMERIC</MenuItem>
+                  <MenuItem value='ALPHA'>ALPHA</MenuItem>
+                  <MenuItem value='ALPHANUM'>ALPHANUM</MenuItem>
+                </Select>
+              )}
+            />
+            {errors.charSetType && (
+              <FormHelperText sx={{color: 'error.main'}} id='validation-type-select'>
+                This type is required
+              </FormHelperText>
+            )}
+          </FormControl>
+
+          <FormControl fullWidth sx={{mb: 4}}>
+            <Controller
+              name='initial'
               control={control}
               rules={{required: true}}
               render={({field: {value, onChange}}) => (
                 <TextField
                   size='small'
+                  type='text'
                   value={value}
-                  label={t('Password.Password')}
+                  label={t('Password.Initial')}
                   onChange={onChange}
-                  placeholder='enter your password'
-                  error={Boolean(errors.initialPassword)}
+                  placeholder='enter initial password'
+                  error={Boolean(errors.initial)}
                 />
               )}
             />
-            {errors.initialPassword && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.initialPassword.message}</FormHelperText>
+            {errors.initial && (
+              <FormHelperText sx={{color: 'error.main'}}>{errors.initial.message}</FormHelperText>
+            )}
+          </FormControl>
+
+          <FormControl fullWidth sx={{mb: 4}}>
+            <Controller
+              name='minLength'
+              control={control}
+              rules={{required: true}}
+              render={({field: {value, onChange}}) => (
+                <TextField
+                  size='small'
+                  type='number'
+                  value={value}
+                  label={t('Password.MinLength')}
+                  onChange={onChange}
+                  placeholder='enter minLength'
+                  error={Boolean(errors.minLength)}
+                />
+              )}
+            />
+            {errors.minLength && (
+              <FormHelperText sx={{color: 'error.main'}}>{errors.minLength.message}</FormHelperText>
+            )}
+          </FormControl>
+
+          <FormControl fullWidth sx={{mb: 4}}>
+            <Controller
+              name='maxLength'
+              control={control}
+              rules={{required: true}}
+              render={({field: {value, onChange}}) => (
+                <TextField
+                  size='small'
+                  type='number'
+                  value={value}
+                  label={t('Password.MaxLength')}
+                  onChange={onChange}
+                  placeholder='enter maxLength'
+                  error={Boolean(errors.maxLength)}
+                />
+              )}
+            />
+            {errors.maxLength && (
+              <FormHelperText sx={{color: 'error.main'}}>{errors.maxLength.message}</FormHelperText>
+            )}
+          </FormControl>
+
+          <FormControl fullWidth sx={{mb: 4}}>
+            <Controller
+              name='lifeTime'
+              control={control}
+              rules={{required: true}}
+              render={({field: {value, onChange}}) => (
+                <TextField
+                  size='small'
+                  type='number'
+                  value={value}
+                  label={t('Password.LifeTime')}
+                  onChange={onChange}
+                  placeholder='enter lifeTime'
+                  error={Boolean(errors.lifeTime)}
+                />
+              )}
+            />
+            {errors.lifeTime && (
+              <FormHelperText sx={{color: 'error.main'}}>{errors.lifeTime.message}</FormHelperText>
             )}
           </FormControl>
 

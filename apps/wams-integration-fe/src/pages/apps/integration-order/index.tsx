@@ -1,5 +1,5 @@
 // ** React Imports
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {DataGrid, GridApi, GridColDef, GridColumnVisibilityModel} from '@mui/x-data-grid'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -23,6 +23,10 @@ import {IntegrationOrderType} from "integration-shared/@core/types/integration/I
 import EditIntegrationOrderDrawer from "../../../views/apps/integration-order/EditIntegrationOrderDrawer";
 import AccountApis from "ims-shared/@core/api/ims/account";
 import IntegrationOrderApis from "integration-shared/@core/api/integration/order";
+import IntegrationOrderCard from "../../../views/apps/integration-order/IntegrationOrderCard";
+import {GridPaginationModel} from "@mui/x-data-grid/models/gridPaginationProps";
+import localStorageKeys from "template-shared/configs/localeStorage";
+import PaginationCard from "template-shared/@core/components/card-pagination";
 
 const IntegrationOrderList = () => {
   const {t} = useTranslation()
@@ -42,7 +46,18 @@ const IntegrationOrderList = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const [editIntegrationOrderOpen, setEditIntegrationOrderOpen] = useState<boolean>(false)
-  const [paginationModel, setPaginationModel] = useState({page: 0, pageSize: 10})
+  const [disabledNextBtn, setDisabledNextBtn] = useState<boolean>(false)
+  const [paginationPage, setPaginationPage] = useState<number>(0)
+  const [paginationModel, setPaginationModel] =
+    useState<GridPaginationModel>({
+        page: paginationPage,
+        pageSize: localStorage.getItem(localStorageKeys.paginationSize) &&
+        Number(localStorage.getItem(localStorageKeys.paginationSize)) > 9 ?
+          Number(localStorage.getItem(localStorageKeys.paginationSize)) : 20
+      }
+    )
+
+  const {data: countIntegrationOrder} = useQuery(`countIntegrationOrder`, IntegrationOrderApis(t).getCountIntegrationOrder)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false)
   const toggleEditIntegrationOrderDrawer = () => setEditIntegrationOrderOpen(!editIntegrationOrderOpen)
   const toggleAddIntegrationOrderDrawer = () => setAddIntegrationOrderOpen(!addIntegrationOrderOpen)
@@ -62,7 +77,10 @@ const IntegrationOrderList = () => {
     setEditDataIntegrationOrder(data)
   }
 
-  const {data: integrationOrder, isLoading} = useQuery(`integrationOrder`, IntegrationOrderApis(t).getIntegrationOrders)
+  const {
+    data: integrationOrder,
+    isLoading
+  } = useQuery(`integrationOrder`, () => IntegrationOrderApis(t).getPaginationIntegrationOrders(paginationModel.page, paginationModel.pageSize))
 
   const integrationOrderMutationDelete = useMutation({
     mutationFn: (id: number) => IntegrationOrderApis(t).deleteIntegrationOrder(id),
@@ -120,6 +138,20 @@ const IntegrationOrderList = () => {
       return cardView
     }
   }
+
+  useEffect(() => {
+    const getPage = localStorage.getItem(localStorageKeys.paginationSize)
+    if (!getPage || Number(getPage) < 9) {
+      localStorage.removeItem(localStorageKeys.paginationSize)
+      localStorage.setItem(localStorageKeys.paginationSize, '20')
+    } else {
+      setPaginationModel({
+        page: paginationPage,
+        pageSize: Number(localStorage.getItem(localStorageKeys.paginationSize))
+      })
+    }
+  }, [setPaginationModel])
+
 
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState<GridColumnVisibilityModel>({
     createDate: false,
@@ -222,6 +254,65 @@ const IntegrationOrderList = () => {
       )
     }
   ]
+
+
+  const onChangePagination = async (item: any) => {
+    if (item.pageSize !== paginationModel.pageSize) {
+
+      setPaginationModel(item)
+      localStorage.removeItem(localStorageKeys.paginationSize)
+      localStorage.setItem(localStorageKeys.paginationSize, item.pageSize)
+      const apiList = await IntegrationOrderApis(t).getPaginationIntegrationOrders(0, item.pageSize)
+      queryClient.removeQueries('integrationOrder')
+      queryClient.setQueryData('integrationOrder', apiList)
+
+      setPaginationPage(0)
+      setPaginationModel({page: 0, pageSize: item.pageSize})
+      setDisabledNextBtn(false)
+    }
+  }
+
+  const onChangePage = async (item) => {
+
+    let newPagination: GridPaginationModel
+    if (item === 'backIconButtonProps') {
+      newPagination = {
+        page: paginationModel.page - 1,
+        pageSize: paginationModel.pageSize
+
+      }
+      const apiList = await IntegrationOrderApis(t).getPaginationIntegrationOrders(newPagination.page, newPagination.pageSize)
+      if (apiList && apiList.length > 0) {
+        queryClient.removeQueries('integrationOrder')
+        queryClient.setQueryData('integrationOrder', apiList)
+        setPaginationPage(newPagination.page)
+        setPaginationModel(newPagination)
+      }
+      setDisabledNextBtn(false)
+
+    } else if (item === 'nextIconButtonProps') {
+
+      newPagination = {
+        page: paginationModel.page + 1,
+        pageSize: paginationModel.pageSize
+
+      }
+      const apiList = await IntegrationOrderApis(t).getPaginationIntegrationOrders(newPagination.page, newPagination.pageSize)
+      if (apiList && apiList.length > 0) {
+
+        queryClient.removeQueries('integrationOrder')
+        queryClient.setQueryData('integrationOrder', apiList)
+        setPaginationPage(newPagination.page)
+        setPaginationModel(newPagination)
+      } else {
+
+        setDisabledNextBtn(true)
+      }
+    }
+
+  }
+
+
   const gridView = (
     <Box className={Styles.boxTable}>
       <DataGrid
@@ -237,12 +328,31 @@ const IntegrationOrderList = () => {
         columns={columns}
         disableRowSelectionOnClick
         pageSizeOptions={themeConfig.pageSizeOptions}
-        paginationModel={paginationModel}
-        onPaginationModelChange={setPaginationModel}
+        onPaginationModelChange={onChangePagination}
+
         slotProps={{
           pagination: {
+
+            count: countIntegrationOrder,
+            page: paginationPage,
+            labelDisplayedRows: ({page, count}) =>
+              `${t('pagination footer')} ${page + 1} - ${paginationModel.pageSize} of ${count}`
+
+            ,
             labelRowsPerPage: t('Rows_per_page'),
-            labelDisplayedRows: ({from, to, count}) => t('pagination footer', {from, to, count})
+            nextIconButtonProps: {
+              'onClick': () => onChangePage('nextIconButtonProps'),
+              disabled: disabledNextBtn || integrationOrder?.length < paginationModel.pageSize,
+
+            },
+            backIconButtonProps: {
+              'onClick': () => onChangePage('backIconButtonProps'),
+              disabled: paginationModel.page === 0,
+            }
+          },
+          toolbar: {
+            showQuickFilter: true,
+            quickFilterProps: {debounceMs: 500}
           }
         }}
         apiRef={dataGridApiRef as React.MutableRefObject<GridApiCommunity>}
@@ -256,10 +366,23 @@ const IntegrationOrderList = () => {
         integrationOrder.map((item, index) => {
           return (
             <Grid key={index} item xs={6} sm={6} md={4} lg={12 / 5}>
-
+              <IntegrationOrderCard
+                handleDownload={onDownload}
+                data={item}
+                onDeleteClick={handleOpenDeleteDialog}
+                onEditClick={handleOpenEdit}
+              />
             </Grid>
           )
         })}{' '}
+      <PaginationCard paginationModel={paginationModel}
+                      onChangePagination={onChangePagination}
+                      paginationPage={paginationPage}
+                      countList={countIntegrationOrder}
+                      disabledNextBtn={disabledNextBtn}
+                      ListLength={integrationOrder?.length}
+                      onChangePage={onChangePage}
+      />
     </Grid>
   )
 
