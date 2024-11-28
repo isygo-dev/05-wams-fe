@@ -1,0 +1,172 @@
+html,
+body {
+  min-height: 100%;
+}
+
+#__next {
+  height: 100%;
+}
+
+main {
+  padding-top: 0.5rem !important;
+}
+
+code {
+  font-family: 'Public Sans', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+  'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  padding: 0.1rem 0.4rem;
+  font-size: 90%;
+  color: #d400ff;
+  border-radius: 0.1335rem;
+}
+
+code:not([class*='language-']):before,
+code:not([class*='language-']):after {
+  content: '`';
+}
+
+code[class*='language-'] {
+  padding: 0;
+}
+
+
+.middle {
+  transition: .3s ease;
+  opacity: 0;
+  position: absolute;
+  background-color: rgba(210, 231, 221, 0.56);
+
+}
+
+.middle:hover {
+  opacity: .8;
+}
+
+.first-avatar:hover + .middle {
+  opacity: .8;
+}
+
+.accordion-tools {
+  text-align: left;
+  box-shadow: none !important;
+  width: 100%;
+}
+
+.loading-indicator:before {
+  content: '';
+  background-color: rgba(51, 48, 60, 0.7);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.loading-indicator:before {
+  content: '';
+  background-color: rgba(51, 48, 60, 0.7);
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+}
+
+.loading-indicator:after {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10001;
+}
+
+.loading-indicator:after {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 5px;
+  background-color: white;
+  animation: loading 1s infinite;
+}
+
+.loading-indicator:after:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-indicator:after:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-indicator:after:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loading {
+  0% {
+    transform: scale(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0.7;
+  }
+}
+
+.badge-status-list span {
+  right: auto !important;
+}
+
+.accordion-expanded .Mui-expanded:first-of-type {
+
+  margin: 10px 0 !important;
+}
+
+.accordion-expanded {
+  margin-top: 0.5rem !important;
+}
+
+.button-padding-style {
+  padding: 0.4rem 1.5rem !important;
+  font-size: 12px !important;
+  text-transform: capitalize !important;
+}
+
+.button-padding-style svg {
+  font-size: 1.2rem !important;
+}
+
+
+.default-link {
+  text-decoration: none;
+}
+
+.default-link .link-card {
+  height: 100%;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  background: white;
+  box-shadow: 0 0 10px #00000014;
+  border-radius: 6px;
+  border: 0;
+  padding: 31px 20px;
+  transition: transform 1s, border 2s;
+}
+
+.link-card:hover {
+  transform: translateY(-10px);
+  border: 1px solid #9e9e9e57;
+}
+
+label.MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-outlined.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-outlined.css-iwe1q8-MuiFormLabel-root-MuiInputLabel-root {
+  top: -8px;
+}

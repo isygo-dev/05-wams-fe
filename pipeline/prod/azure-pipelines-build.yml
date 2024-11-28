@@ -1,0 +1,48 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  - master
+resources:
+  - repo: self
+variables:
+  tag: '$(Build.BuildId)'
+stages:
+  - stage: Build
+    displayName: Build image
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          #vmImage: 'ubuntu-latest'
+          name: Default
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '16.14.0'
+            displayName: 'Install Node.js'
+          - script: |
+              npm install -g pnpm
+            displayName: 'install pnpm'
+            env:
+              NODE_OPTIONS: --max_old_space_size=64384
+          - script: |
+              npm install turbo --global
+            displayName: 'install turbo'
+            env:
+              NODE_OPTIONS: --max_old_space_size=64384
+          #Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+          - script: |
+              pnpm install
+            displayName: 'pnpm install'
+            env:
+              NODE_OPTIONS: --max_old_space_size=64384
+          - script: |
+              pnpm run build:docker
+            displayName: 'pnpm run build:docker'
+            env:
+              NODE_OPTIONS: --max_old_space_size=64384
+      - job: Clean
+        workspace:
+          clean: all # what to clean up before the job runs - outputs | resources | all  

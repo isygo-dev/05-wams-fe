@@ -1,0 +1,124 @@
+import {AppQuery} from 'template-shared/@core/utils/fetchWrapper'
+import kmsApiUrls from "kms-shared/configs/kms_apis"
+import toast from 'react-hot-toast'
+import {TFunction} from 'i18next'
+import {checkPermission} from 'template-shared/@core/api/helper/permission'
+import {
+    PermissionAction,
+    PermissionApplication,
+    PermissionPage
+} from "template-shared/@core/types/helper/apiPermissionTypes";
+import {PasswordConfigData, PasswordConfigType} from "kms-shared/@core/types/kms/passwordConfigTypes";
+
+const PasswordConfigApis = (t: TFunction) => {
+    const permission = PermissionPage.PASSWORD_CONFIG
+
+    const getPasswordConfigurations = async () => {
+        if (!checkPermission(PermissionApplication.KMS, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
+
+            return
+        }
+
+        const response = await AppQuery(`${kmsApiUrls.apiUrl_KMS_ConfigPassword_EndPoint}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (!response.ok) {
+            return
+        }
+
+        return await response.json()
+    }
+
+    const addPasswordConfiguration = async (data: PasswordConfigData) => {
+        if (!checkPermission(PermissionApplication.KMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on add ' + t(permission))
+
+            return
+        }
+
+        const response = await AppQuery(`${kmsApiUrls.apiUrl_KMS_ConfigPassword_EndPoint}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('PasswordConfiguration.added_added_successfully'))
+        }
+
+        return await response.json()
+    }
+
+    const deletePasswordConfiguration = async (id: number) => {
+        if (!checkPermission(PermissionApplication.KMS, permission, PermissionAction.DELETE)) {
+            console.warn('Permission denied on delete ' + t(permission))
+
+            return
+        }
+
+        const response = await AppQuery(`${kmsApiUrls.apiUrl_KMS_ConfigPassword_EndPoint}?id=${id}`, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('PasswordConfiguration.deleted_added_successfully'))
+        }
+
+        return id
+    }
+
+    const updatePasswordConfiguration = async (data: PasswordConfigType) => {
+        if (!checkPermission(PermissionApplication.KMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
+
+            return
+        }
+
+        const response = await AppQuery(`${kmsApiUrls.apiUrl_KMS_ConfigPassword_EndPoint}?id=${data.id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('PasswordConfiguration.updated_added_successfully'))
+        }
+
+        return await response.json()
+    }
+
+    return {
+        getPasswordConfigurations,
+        addPasswordConfiguration,
+        deletePasswordConfiguration,
+        updatePasswordConfiguration
+    }
+}
+
+export default PasswordConfigApis

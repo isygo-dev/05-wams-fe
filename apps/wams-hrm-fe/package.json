@@ -1,0 +1,44 @@
+{
+  "name": "WEBAPP-HRM",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "set NEXT_PUBLIC_PROFILE=dev-local&& next dev -p 4006",
+    "build:docker-dev": "set NEXT_PUBLIC_PROFILE=docker-dev&& next build",
+    "build:docker-prod": "set NEXT_PUBLIC_PROFILE=docker-prod&& next build",
+    "build:docker-qa": "set NEXT_PUBLIC_PROFILE=docker-qa&& next build",
+    "build:dev-local": "set NEXT_PUBLIC_PROFILE=dev-local&& next build",
+    "build:dev-be-local": "set NEXT_PUBLIC_PROFILE=dev-be-local&& next build",
+    "build:development": "set NEXT_PUBLIC_PROFILE=development&& next build",
+    "start:docker-dev": "set NEXT_PUBLIC_PROFILE=docker-dev&& next start -p 4006",
+    "start:docker-prod": "set NEXT_PUBLIC_PROFILE=docker-prod&& next start -p 4006",
+    "start:docker-qa": "set NEXT_PUBLIC_PROFILE=docker-qa&& next start -p 4006",
+    "start:dev-local": "set NEXT_PUBLIC_PROFILE=dev-local&& next start -p 4006",
+    "start:dev-be-local": "set NEXT_PUBLIC_PROFILE=dev-be-local&& next start -p 4006",
+    "export": "next export",
+    "lint": "eslint  \"src/**/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+    "build:icons": "tsc -b ../../packages/template-shared/iconify-bundle && node src/iconify-bundle/bundle-icons-react.js"
+  },
+  "dependencies": {
+    "eslint": "^8.48.0",
+    "pdfjs-dist": "4.4.168",
+    "react-pdf": "9.1.0",
+    "@types/react": "^17.0.38",
+    "react-quill": "^2.0.0",
+    "mms-shared": "workspace:*",
+    "sms-shared": "workspace:*",
+    "link-shared": "workspace:*",
+    "cms-shared": "workspace:*",
+    "hrm-shared": "workspace:*",
+    "quiz-shared": "workspace:*",
+    "rpm-shared": "workspace:*",
+    "integration-shared": "workspace:*",
+    "kms-shared": "workspace:*",
+    "ims-shared": "workspace:*",
+    "template-shared": "workspace:*"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*"
+  }
+}

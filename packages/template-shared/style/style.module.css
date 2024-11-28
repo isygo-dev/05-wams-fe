@@ -1,0 +1,163 @@
+.boxTable {
+    padding: 0px 18px 18px 18px;
+}
+
+.tableStyleNov {
+    box-shadow: 0px 3px 9px 1px rgba(51, 48, 60, 0.03),
+    0px 8px 9px 0px rgba(51, 48, 60, 0.02),
+    0px 1px 6px 4px rgba(51, 48, 60, 0.01);
+
+}
+
+.tableStyleNov p {
+    font-size: 0.8rem !important;
+}
+
+.tableStyleNov .MuiDataGrid-columnHeaderTitle {
+    font-size: 0.7rem !important;
+
+}
+
+.avatarTable {
+    font-size: 0.8rem !important;
+    width: 29px !important;
+    height: 29px !important;
+}
+
+.tableStyleNov {
+    overflow-x: auto;
+}
+
+.tableStyleNov ::-webkit-scrollbar {
+    width: 5px !important;
+    height: 8px !important;
+    background-color: rgba(170, 170, 170, 0.26) !important; /* or add it to the track */
+
+}
+
+.cardContentStyle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.cardHover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cardTitle {
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Add a thumb */
+.tableStyleNov ::-webkit-scrollbar-thumb {
+    background: rgba(70, 69, 69, 0.5) !important;
+    border-radius: 30px;
+}
+
+.sizeListItem {
+    transform: translateX(-16px) !important;
+}
+
+.sizeListItem li {
+    font-size: 0.8rem !important;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.sizeBadge span {
+    right: auto !important;
+    font-size: 0.7rem;
+    padding: 11px 8px;
+    border-radius: 7px;
+}
+
+.sizeCustomChip {
+    height: 25px !important;
+}
+
+.sizeCustomChip span {
+    font-size: 0.7rem !important;
+    text-transform: capitalize;
+
+}
+
+.sizeIcon svg {
+    font-size: 1.2rem !important;
+}
+
+.tableClassicDesign th {
+
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+.tableClassicDesign td {
+
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+.tableClassicDesign p {
+    font-size: 0.8rem !important;
+}
+
+.tableClassicDesign button svg {
+    font-size: 1.2rem !important;
+}
+
+.cardHeaderTitle span {
+    font-size: 1.1rem !important;
+}
+
+.chipsStyle span {
+    font-size: 10px;
+    padding: 7px !important;
+}
+
+.dividerStyle {
+    margin: 0 .6rem !important;
+    border-top: 1px solid #8080807a !important;
+}
+
+.cardContentStyle {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+
+}
+
+.cardTitle {
+    font-size: 0.9rem !important;
+}
+
+.cardContentStyle p {
+    font-size: 0.85rem !important;
+}
+
+.cardActionFooterStyle {
+    padding-left: .5rem !important;
+    padding-right: .1rem !important;
+    padding-top: unset !important;
+    padding-bottom: unset !important;
+}
+
+/*.customCard {
+    height: 300px;
+    overflow: auto;
+}*/
+.selectPagination {
+    border: none !important;
+    max-width: 77px;
+    margin-right: 13px;
+    box-shadow: none !important;
+}
+
+.selectPagination fieldset {
+
+    border: none !important;
+}

@@ -1,0 +1,100 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  - development
+resources:
+  - repo: self
+variables:
+  tag: '$(Build.BuildId)'
+stages:
+  - stage: Build
+    displayName: Build image
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          #vmImage: 'ubuntu-latest'
+          name: Default
+        steps:
+          - task: Docker@2
+            displayName: Build and push gateway image to container registry
+            inputs:
+              command: buildAndPush
+              repository: webapp/frontend/gateway
+              buildContext: ./
+              dockerfile: 'dockerfiles/dev/gateway-dev.Dockerfile'
+              containerRegistry: 'prmDockerHubDev'
+              tags: |
+                fe,gateway,dev
+          - task: Docker@2
+            displayName: Build and push sysadmin image to container registry
+            inputs:
+              command: buildAndPush
+              repository: webapp/frontend/sysadmin
+              buildContext: ./
+              dockerfile: 'dockerfiles/dev/sysadmin-dev.Dockerfile'
+              containerRegistry: 'prmDockerHubDev'
+              tags: |
+                fe,sysadmin,dev
+          - task: Docker@2
+            displayName: Build and push rpm image to container registry
+            inputs:
+              command: buildAndPush
+              repository: webapp/frontend/rpm
+              buildContext: ./
+              dockerfile: 'dockerfiles/dev/rpm-dev.Dockerfile'
+              containerRegistry: 'prmDockerHubDev'
+              tags: |
+                fe,rpm,dev
+          - task: Docker@2
+            displayName: Build and push cms image to container registry
+            inputs:
+              command: buildAndPush
+              repository: webapp/frontend/cms
+              buildContext: ./
+              dockerfile: 'dockerfiles/dev/cms-dev.Dockerfile'
+              containerRegistry: 'prmDockerHubDev'
+              tags: |
+                fe,cms,dev
+          - task: Docker@2
+            displayName: Build and push cfo image to container registry
+            inputs:
+              command: buildAndPush
+              repository: webapp/frontend/cfo
+              buildContext: ./
+              dockerfile: 'dockerfiles/dev/cfo-dev.Dockerfile'
+              containerRegistry: 'prmDockerHubDev'
+              tags: |
+                fe,cfo,dev
+          - task: Docker@2
+            displayName: Build and push quizz image to container registry
+            inputs:
+              command: buildAndPush
+              repository: webapp/frontend/quizz
+              buildContext: ./
+              dockerfile: 'dockerfiles/dev/quiz-dev.Dockerfile'
+              containerRegistry: 'prmDockerHubDev'
+              tags: |
+                fe,quizz,dev
+          - task: Docker@2
+            displayName: Build and push hrm image to container registry
+            inputs:
+              command: buildAndPush
+              repository: webapp/frontend/hrm
+              buildContext: ./
+              dockerfile: 'dockerfiles/dev/hrm-dev.Dockerfile'
+              containerRegistry: 'prmDockerHubDev'
+              tags: |
+                fe,hrm,dev
+          - task: Docker@2
+            displayName: Build and push link image to container registry
+            inputs:
+              command: buildAndPush
+              repository: webapp/frontend/link
+              buildContext: ./
+              dockerfile: 'dockerfiles/dev/link-dev.Dockerfile'
+              containerRegistry: 'prmDockerHubDev'
+              tags: |
+                fe,link,dev

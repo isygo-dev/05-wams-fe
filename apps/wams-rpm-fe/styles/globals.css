@@ -1,0 +1,440 @@
+html,
+body {
+  min-height: 100%;
+}
+
+#__next {
+  height: 100%;
+}
+
+main {
+  padding-top: 0.5rem !important;
+}
+
+code {
+  font-family: 'Public Sans', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+  'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  padding: 0.1rem 0.4rem;
+  font-size: 90%;
+  color: #d400ff;
+  border-radius: 0.1335rem;
+}
+
+code:not([class*='language-']):before,
+code:not([class*='language-']):after {
+  content: '`';
+}
+
+code[class*='language-'] {
+  padding: 0;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  background-color: #04AA6D;
+
+}
+
+.container:hover .middle {
+  opacity: .5;
+}
+
+.list-workflow {
+  margin: 20px 0;
+  max-height: 70vh;
+  overflow: auto !important;
+}
+
+.bloc-list-workflow {
+  overflow: scroll !important;
+  height: calc(100vh - 272px);
+  display: -webkit-box;
+}
+
+.bloc-workflow {
+  width: 328px !important;
+  border: none;
+  border-right: 1px dashed #cac9cd;
+  height: auto;
+  display: table;
+  min-width: 328px;
+}
+
+.bloc-workflow .center-sticky {
+  position: sticky;
+  top: 0;
+  padding: 20px;
+  box-shadow: 1px 3px 1px #d4d2d8;
+  z-index: 100;
+  border-radius: 0;
+}
+
+.bloc-workflow .bloc-title {
+
+  text-align: left;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.bloc-workflow .bloc-workflow-card {
+  margin-top: 18px;
+  padding: 0 20px 20px 20px;
+}
+
+.bloc-workflow-card .css-1neqqor-MuiPaper-root-MuiCard-root {
+  padding: 0 !important;
+}
+
+.bloc-workflow-card .bloc-title-card {
+  font-size: 14px;
+  font-weight: bold;
+  /*color: rgba(51, 48, 60, 0.87);*/
+  margin-bottom: 11px;
+  margin-top: 7px;
+}
+
+.bloc-list-workflow::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Handle */
+.bloc-list-workflow::-webkit-scrollbar-thumb {
+  background: #a9a5a5;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.bloc-list-workflow::-webkit-scrollbar-thumb:hover {
+  background: #7a7676f2;
+}
+
+.list-workflow::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Handle */
+.list-workflow::-webkit-scrollbar-thumb {
+  background: #a9a5a5;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.list-workflow::-webkit-scrollbar-thumb:hover {
+  background: #7a7676f2;
+}
+
+.mr-6 {
+  margin-right: 6px !important;
+}
+
+.list-workflow .css-jg8mb9-MuiList-root .MuiListItem-container .MuiListItem-root {
+  padding-right: 2rem !important;
+}
+
+.list-workflow .detail-workflow {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.center-align {
+  text-align: center;
+  justify-content: center !important;
+}
+
+.bg-selected-state {
+  background: rgba(115, 103, 240, 0.16) !important;
+  color: #7367F0;
+
+}
+
+.bg-state:focus {
+  background: #7367F0 !important;
+  color: white !important;
+}
+
+.toggle-selected .Mui-selected {
+  background-color: rgb(125 112 237) !important;
+  color: white !important;
+}
+
+@media (max-width: 899px) {
+  .toggle-change {
+    padding-top: 0px !important;
+  }
+
+  .toggle-change .MuiBox-root.css-mmgj0c {
+    justify-content: left;
+    padding-left: 20px;
+  }
+
+  .serch-align {
+    padding-top: 1rem !important;
+  }
+
+  .serch-align .MuiBox-root.css-vicq74 {
+    justify-content: left;
+    padding-top: 0px;
+  }
+
+  .p0-mobile {
+    padding-left: 0px !important;
+  }
+}
+
+.documentPdfView .react-pdf__Page__textContent.textLayer {
+  display: none !important;
+}
+
+.documentPdfView .react-pdf__Page__annotations.annotationLayer {
+  display: none !important;
+}
+
+.gridCulomn-resum-detail {
+  height: 1039px;
+  overflow: scroll;
+}
+
+@media (max-width: 901px) {
+  .gridCulomn-resum-detail {
+
+    height: auto;
+    overflow: hidden;
+  }
+}
+
+.gridCulomn-resum-detail::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Handle */
+.gridCulomn-resum-detail::-webkit-scrollbar-thumb {
+  background: #a9a5a5;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.gridCulomn-resum-detail::-webkit-scrollbar-thumb:hover {
+  background: #7a7676f2;
+}
+
+.scrollDocumentPdfView::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Handle */
+.scrollDocumentPdfView::-webkit-scrollbar-thumb {
+  background: #a9a5a5;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.scrollDocumentPdfView::-webkit-scrollbar-thumb:hover {
+  background: #7a7676f2;
+}
+
+.small-input-data input {
+  padding: 8.5px 14px;
+}
+
+.css-1fh66jl-MuiFormLabel-root-MuiInputLabel-root {
+  top: -8px !important;
+}
+
+.ql-container.ql-snow {
+  min-height: 100px;
+}
+
+.pdfPage {
+  width: 21cm;
+  height: 29.7cm;
+  margin: auto
+}
+
+.pdfPage .title-pdf-job {
+  font-weight: 600;
+  font-size: 19px;
+}
+
+.pdfPage .subtitle-pdf-job {
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.pdfPage .text-pdf-job u {
+  font-size: 16px !important;
+  font-weight: 500;
+
+}
+
+.pdfPage span {
+  font-size: 16px !important;
+  font-weight: 500;
+}
+
+.pdfPage em {
+  font-size: 16px !important;
+  font-weight: 500;
+}
+
+.pdfPage .text-pdf-job {
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.pdfPage .list-items {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+
+.loading-indicator:before {
+  content: '';
+  background-color: rgba(51, 48, 60, 0.7);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.loading-indicator:before {
+  content: '';
+  background-color: rgba(51, 48, 60, 0.7);
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+}
+
+.loading-indicator:after {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10001;
+}
+
+.loading-indicator:after {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 5px;
+  background-color: white;
+  animation: loading 1s infinite;
+}
+
+.loading-indicator:after:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-indicator:after:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-indicator:after:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loading {
+  0% {
+    transform: scale(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0.7;
+  }
+}
+
+.button-padding-style {
+  padding: 0.4rem 1.5rem !important;
+  font-size: 12px !important;
+  text-transform: capitalize !important;
+}
+
+.button-padding-style svg {
+  font-size: 1.2rem !important;
+}
+
+
+.title-card {
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+}
+
+.title-card span {
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+}
+
+.accordion-expanded .Mui-expanded:first-of-type {
+
+  margin: 8px 0 !important;
+}
+
+.accordion-expanded {
+  margin-top: 0.5rem !important;
+}
+
+
+.default-link {
+  text-decoration: none;
+}
+
+.default-link .link-card {
+  height: 100%;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  background: white;
+  box-shadow: 0 0 10px #00000014;
+  border-radius: 6px;
+  border: 0;
+  padding: 31px 20px;
+  transition: transform 1s, border 2s;
+}
+
+.link-card:hover {
+  transform: translateY(-10px);
+  border: 1px solid #9e9e9e57;
+}
+
+.changeAlign {
+  justify-content: right;
+  text-align: right;
+}
+
+.changeAlignText {
+  justify-content: right;
+  text-align: right;
+}
+
+@media (max-width: 546px) {
+  .changeAlign {
+    justify-content: left;
+    text-align: left;
+  }
+}
+
+label.MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-outlined.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-outlined.css-iwe1q8-MuiFormLabel-root-MuiInputLabel-root {
+  top: -8px;
+}

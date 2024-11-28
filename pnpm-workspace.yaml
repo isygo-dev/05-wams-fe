@@ -1,0 +1,12 @@
+#pnpm run build:docker-prod
+packages:
+  #- "apps/*"
+  #- "apps/wams-integration-fe"
+  #- "apps/wams-rpm-fe"
+  #- "apps/wams-hrm-fe"
+  #- "apps/wams-cms-fe"
+  #- "apps/wams-gateway-fe"
+  #- "apps/wams-quizz-fe"
+  #- "apps/wams-facade-fe"
+  - "apps/wams-sysadmin-fe"
+  - "packages/*"
