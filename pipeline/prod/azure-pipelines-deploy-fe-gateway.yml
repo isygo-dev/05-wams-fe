@@ -25,6 +25,6 @@ stages:
               repository: webapp/frontend/gateway
               buildContext: ./
               dockerfile: 'dockerfiles/prod/gateway-prod.Dockerfile'
-              containerRegistry: 'prmDockerHubProd'
+              containerRegistry: 'DockerHub'
               tags: |
                 fe,gateway,prod

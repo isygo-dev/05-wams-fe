@@ -25,6 +25,6 @@ stages:
               repository: webapp/frontend/cfo
               buildContext: ./
               dockerfile: 'dockerfiles/dev/cfo-dev.Dockerfile'
-              containerRegistry: 'prmDockerHubDev'
+              containerRegistry: 'DockerHub'
               tags: |
                 fe,cfo,dev

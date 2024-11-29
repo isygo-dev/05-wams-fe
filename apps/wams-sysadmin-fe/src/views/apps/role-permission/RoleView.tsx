@@ -433,7 +433,7 @@ const RoleView = (props: propsType) => {
                               src={
                                 tool.imagePath
                                   ? `${imsApiUrls.apiUrl_IMS_Application_ImageDownload_EndPoint}/${tool.id}`
-                                  : '/images/favicon.png'
+                                  : '/images/favicon_vertical.png'
                               }
                               sx={{cursor: 'pointer'}}
                             ></Avatar>

@@ -5,7 +5,7 @@ const api_version = '/api/v1'
 let apiUrl_RPM: string | undefined
 
 if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
-    apiUrl_RPM = 'https://rpm.dev.prm.isygoit.eu'
+    apiUrl_RPM = 'https://rpm.dev.wams.isygoit.eu'
 
     // apiUrl_RPM = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/rpm`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'docker-prod') {
@@ -21,11 +21,11 @@ if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
 
     // apiUrl_RPM = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/rpm`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-be-local') {
-    apiUrl_RPM = 'https://rpm.dev.prm.isygoit.eu'
+    apiUrl_RPM = 'https://rpm.dev.wams.isygoit.eu'
 
     // apiUrl_RPM = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/rpm`
 } else {
-    apiUrl_RPM = 'https://rpm.dev.prm.isygoit.eu'
+    apiUrl_RPM = 'https://rpm.dev.wams.isygoit.eu'
 
     // apiUrl_RPM = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/rpm`
 }

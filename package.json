@@ -1,5 +1,5 @@
 {
-  "name": "PRM",
+  "name": "WAMS",
   "private": true,
   "scripts": {
     "build:docker-dev": "turbo run build:docker-dev",
@@ -126,11 +126,11 @@
     "mms-shared": "workspace:*",
     "sms-shared": "workspace:*",
     "link-shared": "workspace:*",
-    "cms-shared": "workspace:*",
-    "hrm-shared": "workspace:*",
-    "quiz-shared": "workspace:*",
     "rpm-shared": "workspace:*",
+    "hrm-shared": "workspace:*",
     "integration-shared": "workspace:*",
+    "cms-shared": "workspace:*",
+    "quiz-shared": "workspace:*",
     "kms-shared": "workspace:*",
     "ims-shared": "workspace:*",
     "template-shared": "workspace:*"

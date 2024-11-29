@@ -25,6 +25,6 @@ stages:
               repository: webapp/frontend/hrm
               buildContext: ./
               dockerfile: 'dockerfiles/prod/hrm-prod.Dockerfile'
-              containerRegistry: 'prmDockerHubProd'
+              containerRegistry: 'DockerHub'
               tags: |
                 fe,hrm,prod

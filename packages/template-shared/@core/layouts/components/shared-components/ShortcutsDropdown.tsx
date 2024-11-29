@@ -176,7 +176,7 @@ const ShortcutsDropdown = (props: Props) => {
                                                 src={
                                                     shortcut.icon
                                                         ? `${imsApiUrls.apiUrl_IMS_Application_ImageDownload_EndPoint}/${shortcut.id}`
-                                                        : '/images/favicon.png'
+                                                        : '/images/favicon_vertical.png'
                                                 }
                                                 alt='icon'
                                             />

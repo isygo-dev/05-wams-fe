@@ -74,7 +74,7 @@ const ContentLoginRegister = ({hidden}) => {
                 borderRadius: '20px',
                 justifyContent: 'center',
 
-                // backgroundColor: 'customColors.bodyBg',
+                //backgroundColor: 'customColors.bodyBg',
                 margin: 'auto',
                 height: '97vh'
             }}
@@ -88,7 +88,7 @@ const ContentLoginRegister = ({hidden}) => {
                             <Box className='keen-slider__slide' textAlign={'center'}>
                                 <img
                                     src={`/images/pages/${imageSource}-${theme.palette.mode}-1.png`}
-                                    alt='swiper 0'
+                                    alt='swiper 1'
                                     style={{maxHeight: '92vh'}}
                                 />
                             </Box>

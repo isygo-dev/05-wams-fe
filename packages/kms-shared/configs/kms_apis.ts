@@ -4,7 +4,7 @@ const api_version = '/api/v1'
 let apiUrl_KMS: string | undefined
 
 if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
-    apiUrl_KMS = 'https://kms.dev.prm.isygoit.eu'
+    apiUrl_KMS = 'https://kms.dev.wams.isygoit.eu'
 
     // apiUrl_KMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/kms`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'docker-prod') {
@@ -20,11 +20,11 @@ if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
 
     // apiUrl_KMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/kms`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-be-local') {
-    apiUrl_KMS = 'https://kms.dev.prm.isygoit.eu'
+    apiUrl_KMS = 'https://kms.dev.wams.isygoit.eu'
 
     // apiUrl_KMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/kms`
 } else {
-    apiUrl_KMS = 'https://kms.dev.prm.isygoit.eu'
+    apiUrl_KMS = 'https://kms.dev.wams.isygoit.eu'
 
     // apiUrl_KMS = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/kms`
 }

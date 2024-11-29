@@ -180,7 +180,7 @@ const OtpView = () => {
                 <Card>
                     <CardContent sx={{p: theme => `${theme.spacing(10.5, 8, 8)} !important`}}>
                         <div style={{textAlign: 'center'}}>
-                            <img src='/images/favicon-logo.png' alt={'favicon-logo.png'} width={130}
+                            <img src='/images/favicon-vertical-logo.png' alt={'favicon-vertical-logo.png'} width={130}
                                  height={'100%'}></img>
                         </div>
                         <Box sx={{mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
@@ -195,7 +195,7 @@ const OtpView = () => {
                             <Typography sx={{mb: 1.5, color: 'text.secondary'}}>{t('send_otp_code_parag')}</Typography>
                         </Box>
                         <Typography sx={{fontWeight: 500, color: 'text.secondary'}}>
-                            {t('Type_your_4_digit_security_code')}
+                            {t('TYPE_YOUR_SECURITY_CODE')}
                         </Typography>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <CleaveWrapper

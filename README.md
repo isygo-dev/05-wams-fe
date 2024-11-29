@@ -1,6 +1,6 @@
-# 04-prm-be
+# 05-wams-fe
 
-> PRM front-end.
+> Multi repository front-end.
 
 # Technology Stack
 
@@ -22,11 +22,11 @@
 - Install Intellij IDEA last version (Ultimate or Community) from https://www.jetbrains.com/idea/download/other.html
 - Install Node.js 20.18.0 from https://nodejs.org/dist/v20.18.0/node-v20.18.0-win-x64.zip
 
-### PRM front
+### WAMS front
 
-- clone the PRM project from https://github.com/PRM/05-prm-fe
+- clone the project from https://github.com/your-org/05-wams-fe
 - Open the project with Intellij IDEA (open as maven project)
-- Run: npm install -g pnpm@8.15.7
+- Run: npm install -g pnpm@9.12.3
 - Run: npm install turbo --global
 - Run: pnpm install
 - Run: pnpm run build:docker-prod

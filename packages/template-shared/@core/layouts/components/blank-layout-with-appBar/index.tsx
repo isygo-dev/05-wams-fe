@@ -47,7 +47,7 @@ const BlankLayoutAppBar = () => {
                 }}
             >
                 <LinkStyled href='/'>
-                    <Image width={45} height={35} src="/images/favicon.png" alt="logo"/>
+                    <Image width={45} height={35} src="/images/favicon_vertical.png" alt="logo"/>
 
                     <Typography
                         variant='h6'

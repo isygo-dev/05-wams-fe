@@ -177,7 +177,8 @@ const LoginPageViewByEmail = () => {
                         }}
                     >
                         <Box sx={{width: '100%', maxWidth: 400}}>
-                            <img src='/images/favicon-logo.png' alt='apple-touch-icon.png' width={216} height={'100%'}/>
+                            <img src='/images/favicon-horizontal-logo.png' alt='favicon-horizontal-logo.png' width={216}
+                                 height={'100%'}/>
                             <Box sx={{my: 6}}>
                                 <Typography sx={{mb: 1.5, fontWeight: 500, fontSize: '1.625rem', lineHeight: 1.385}}>
                                     {`${t('Welcome')}! 👋🏻`}

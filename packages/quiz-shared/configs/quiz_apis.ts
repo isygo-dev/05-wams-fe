@@ -5,7 +5,7 @@ const api_version = '/api/v1'
 let apiUrl_QUIZ: string | undefined
 
 if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
-    apiUrl_QUIZ = 'https://quiz.dev.prm.isygoit.eu'
+    apiUrl_QUIZ = 'https://quiz.dev.wams.isygoit.eu'
 
     // apiUrl_QUIZ = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/quiz`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'docker-prod') {
@@ -21,11 +21,11 @@ if (process.env.NEXT_PUBLIC_PROFILE === 'docker-dev') {
 
     // apiUrl_QUIZ = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/quiz`
 } else if (process.env.NEXT_PUBLIC_PROFILE === 'dev-be-local') {
-    apiUrl_QUIZ = 'https://quiz.dev.prm.isygoit.eu'
+    apiUrl_QUIZ = 'https://quiz.dev.wams.isygoit.eu'
 
     // apiUrl_QUIZ = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/quiz`
 } else {
-    apiUrl_QUIZ = 'https://quiz.dev.prm.isygoit.eu'
+    apiUrl_QUIZ = 'https://quiz.dev.wams.isygoit.eu'
 
     // apiUrl_QUIZ = `${process.env.NEXT_PUBLIC_FE_GATEWAY_URL}/quiz`
 }

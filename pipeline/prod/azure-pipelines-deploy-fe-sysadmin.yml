@@ -25,6 +25,6 @@ stages:
               repository: webapp/frontend/sysadmin
               buildContext: ./
               dockerfile: 'dockerfiles/prod/sysadmin-prod.Dockerfile'
-              containerRegistry: 'prmDockerHubProd'
+              containerRegistry: 'DockerHub'
               tags: |
                 fe,sysadmin,prod

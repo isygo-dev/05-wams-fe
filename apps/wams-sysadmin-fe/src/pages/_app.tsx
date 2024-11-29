@@ -173,7 +173,7 @@ const App = (props: ExtendedAppProps) => {
 
   const aclAbilities = Component.acl ?? defaultACLObj
 
-  const title = 'PRM - ' + t(`${themeConfig.templateName}`)
+  const title = 'WAMS - ' + t(`${themeConfig.templateName}`)
 
   useEffect(() => {
     const getPaginationSize = localStorage.getItem(localStorageKeys.paginationSize)
@@ -191,7 +191,7 @@ const App = (props: ExtendedAppProps) => {
             <title>{title}</title>
             <meta
               name='description'
-              content={`${themeConfig.templateName} – PRM Template`}
+              content={`${themeConfig.templateName} – WAMS Template`}
             />
             <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template'/>
             <meta name='viewport' content='initial-scale=1, width=device-width'/>

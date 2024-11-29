@@ -7,8 +7,6 @@ import localStorageKeys from '../../../../configs/localeStorage'
 import {useMutation} from 'react-query'
 import {UserDataType} from '../../../../context/types'
 import {AccountDto} from "ims-shared/@core/types/ims/accountTypes";
-import jwt from 'jsonwebtoken'
-import {SCUI_setLanguage} from "../../../api/scui";
 import AccountApis from "ims-shared/@core/api/ims/account";
 
 interface Props {
@@ -33,25 +31,8 @@ const LanguageDropdown = ({settings, saveSettings}: Props) => {
             accountId,
             lang
         }
-
-        const token = localStorage.getItem(localStorageKeys.authorityToken)
-        const oldTokenDecoded = jwt.decode(token, {complete: true})
-
-        console.log()
-        if (oldTokenDecoded.payload['log-app'] == 'SmartCode-UI') {
-            setLanguageFunct.mutate({
-                language: lang
-            })
-        }
         updateLanguage.mutate(dataEdit)
     }
-
-    const setLanguageFunct = useMutation({
-        mutationFn: (data: any) => SCUI_setLanguage(data),
-        onSuccess: (res: any) => {
-            console.log(res)
-        }
-    })
 
     const updateLanguage = useMutation({
         mutationFn: (data: any) => AccountApis(t).updateAccountLanguage(data.accountId, data.lang),

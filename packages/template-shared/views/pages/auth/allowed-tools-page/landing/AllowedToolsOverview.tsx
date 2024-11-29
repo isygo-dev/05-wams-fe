@@ -185,7 +185,7 @@ const AllowedToolsOverview = () => {
                                                                                 src={
                                                                                     app.imagePath
                                                                                         ? `${imsApiUrls.apiUrl_IMS_Application_ImageDownload_EndPoint}/${app.id}`
-                                                                                        : '/images/favicon.png'
+                                                                                        : '/images/favicon_vertical.png'
                                                                                 }
                                                                                 alt={app.title}
                                                                             />

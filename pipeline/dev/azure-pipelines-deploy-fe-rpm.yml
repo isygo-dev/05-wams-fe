@@ -25,6 +25,6 @@ stages:
               repository: webapp/frontend/rpm
               buildContext: ./
               dockerfile: 'dockerfiles/dev/rpm-dev.Dockerfile'
-              containerRegistry: 'prmDockerHubDev'
+              containerRegistry: 'DockerHub'
               tags: |
                 fe,rpm,dev
