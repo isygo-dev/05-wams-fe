@@ -24,7 +24,7 @@
 
 ### WAMS front
 
-- clone the project from https://github.com/your-org/05-wams-fe
+- Clone the project from https://github.com/your-org/05-wams-fe
 - Open the project with Intellij IDEA (open as maven project)
 - Run: npm install -g pnpm@9.12.3
 - Run: npm install turbo --global
