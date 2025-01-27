@@ -1,0 +1,258 @@
+html,
+body {
+  min-height: 100%;
+}
+
+main {
+  padding-top: 0.5rem !important;
+}
+
+#__next {
+  height: 100%;
+}
+
+code {
+  font-family: 'Public Sans', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+  'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  padding: 0.1rem 0.4rem;
+  font-size: 90%;
+  color: #d400ff;
+  border-radius: 0.1335rem;
+}
+
+code:not([class*='language-']):before,
+code:not([class*='language-']):after {
+  content: '`';
+}
+
+code[class*='language-'] {
+  padding: 0;
+}
+
+
+.middle {
+  transition: .3s ease;
+  opacity: 0;
+  position: absolute;
+  background-color: rgba(210, 231, 221, 0.56);
+
+}
+
+.middle:hover {
+  opacity: .8;
+}
+
+.first-avatar:hover + .middle {
+  opacity: .8;
+}
+
+.accordion-tools {
+  text-align: left;
+  box-shadow: none !important;
+  width: 100%;
+}
+
+.fullWidthRepeater {
+  width: 100%
+}
+
+
+.fullWidthRepeater div:first-child {
+  width: 100%
+}
+
+.loading-indicator:before {
+  content: '';
+  background-color: rgba(51, 48, 60, 0.7);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.loading-indicator:before {
+  content: '';
+  background-color: rgba(51, 48, 60, 0.7);
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+}
+
+.loading-indicator:after {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10001;
+}
+
+.loading-indicator:after {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 5px;
+  background-color: white;
+  animation: loading 1s infinite;
+}
+
+.loading-indicator:after:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-indicator:after:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-indicator:after:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loading {
+  0% {
+    transform: scale(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0.7;
+  }
+}
+
+.button-padding-style {
+  padding: 0.4rem 1.5rem !important;
+  font-size: 12px !important;
+  text-transform: capitalize !important;
+}
+
+.button-padding-style svg {
+  font-size: 1.2rem !important;
+}
+
+.pl-4-rem {
+  padding-left: 4rem;
+}
+
+.sidebarQuiz {
+  margin-top: 23px;
+  width: 71px;
+  height: fit-content;
+  background: white;
+  box-shadow: 0px 3px 9px 1px rgba(51, 48, 60, 0.03), 0px 8px 9px 0px rgba(51, 48, 60, 0.02), 0px 1px 6px 4px rgba(51, 48, 60, 0.01);
+
+}
+
+.display-card-flex {
+  display: flex;
+}
+
+.disable-before {
+  padding: 0 !important;
+  margin: 0;
+}
+
+.disable-before li:before {
+  content: none
+
+}
+
+.disable-before.style-child-timeline {
+  padding-inline-start: 2px !important;
+}
+
+.disable-before.style-child-timeline li {
+  min-height: 32px !important;
+}
+
+.style-separator .style-separator-dot {
+
+  margin: 2.5px 0 !important;
+}
+
+.style-text-subtitle {
+  margin-bottom: 0px !important;
+  padding-bottom: 0 !important;
+  padding-left: 6px !important;
+  padding-top: 0 !important;
+  margin-top: 0px !important;
+}
+
+.fast-link {
+
+  color: inherit;
+  text-decoration: none;
+}
+
+.fast-link:hover {
+  text-decoration: underline;
+}
+
+.show-sidebar {
+  position: relative;
+  margin: 0px !important;
+
+  width: 100%;
+
+}
+
+@media (max-width: 900px) {
+
+  .show-sidebar {
+
+    width: auto;
+  }
+}
+
+@media (max-width: 700px) {
+
+  .display-card-flex {
+    display: block !important;
+  }
+}
+
+.accordion-expanded .Mui-expanded:first-of-type {
+
+  margin: 10px 0 !important;
+}
+
+.accordion-expanded {
+  margin-top: 0.5rem !important;
+}
+
+
+.default-link {
+  text-decoration: none;
+}
+
+.default-link .link-card {
+  height: 100%;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  background: white;
+  box-shadow: 0 0 10px #00000014;
+  border-radius: 6px;
+  border: 0;
+  padding: 31px 20px;
+  transition: transform 1s, border 2s;
+}
+
+.link-card:hover {
+  transform: translateY(-10px);
+  border: 1px solid #9e9e9e57;
+}
+
+label.MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-outlined.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-outlined.css-iwe1q8-MuiFormLabel-root-MuiInputLabel-root {
+  top: -8px;
+}
