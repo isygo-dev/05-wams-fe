@@ -8,7 +8,7 @@ export enum PermissionApplication {
     QUIZ = 'quiz-service.',
     CMS = 'calendar-service',
     LINK = 'link-service',
-    INTEGRATION = 'integration-data'
+    INTEGRATION = 'integration-data',
 }
 
 export enum PermissionPage {
@@ -60,7 +60,8 @@ export enum PermissionPage {
     POST = '.post.',
     BLOG = '.blog.',
     BLOG_TALK = '.blogtalk.',
-    PROPERTY = '.property.'
+    PROPERTY = '.property.',
+
 }
 
 export enum PermissionAction {

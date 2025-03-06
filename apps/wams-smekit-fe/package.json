@@ -26,7 +26,7 @@
     "react-pdf": "9.1.0",
     "@types/react": "18.3.12",
     "react-quill": "^2.0.0",
-    "smekit-shared": "workspace:*",
+    "wams-smekit-fe": "workspace:*",
     "ims-shared": "workspace:*",
     "template-shared": "workspace:*"
   },

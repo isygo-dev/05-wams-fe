@@ -51,6 +51,7 @@ type Item =
     | 'Codification'
     | 'IntegrationOrder'
     | 'flow'
+    | 'Category'
 
 
 type Props = {

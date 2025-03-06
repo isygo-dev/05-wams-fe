@@ -101,7 +101,7 @@ const AccountList = () => {
     isLoading: isLoadingCount
   } = useQuery('accountsCount', () => AccountApis(t).getAccountsCount())
 
-  const mutationDelete = useMutation({
+  const switchDelete = useMutation({
     mutationFn: (id: number) => AccountApis(t).deleteAccountById(id),
     onSuccess: (id: number) => {
       if (id) {
@@ -616,7 +616,7 @@ const AccountList = () => {
         })}
 
       <PaginationCard paginationModel={paginationModel}
-                      onChangePagination={onChangePagination}
+                        onChangePagination={onChangePagination}
                       paginationPage={paginationPage}
                       countList={accountsCount}
                       disabledNextBtn={disabledNextBtn}

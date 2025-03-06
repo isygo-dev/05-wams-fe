@@ -72,33 +72,42 @@ const QuizCandidateApis = (t: TFunction) => {
         return await response.json()
     }
 
-    const addQuizCandidateAnswer = async (quizCode, accountCode, candidateQuizAnswer: QuizAnswerType) => {
-        if (!checkPermission(PermissionApplication.QUIZ, permission, PermissionAction.WRITE)) {
+    const addQuizCandidateAnswer = async (
+                         quizCode,
+                         accountCode,
+                          candidateQuizAnswer: QuizAnswerType
+                                         ) => {
+        if (!checkPermission(
+            PermissionApplication.QUIZ,
+            permission,
+            PermissionAction.WRITE))
+            {
             console.warn('Permission denied on add ' + t(permission))
 
             return
-        }
-
-        const response = await AppQuery(
-            `${quizApiUrls.apiUrl_QUIZ_QuizCandidateAnswer_EndPoint}?quizCode=${quizCode}&accountCode=${accountCode}`,
-            {
-                method: 'PUT',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify(candidateQuizAnswer)
             }
-        )
 
-        if (!response.ok) {
-            return
-        } else {
-            toast.success(t('Quiz.candidate answer_added_successfully'))
-        }
+            const response = await AppQuery(
+                `${quizApiUrls.apiUrl_QUIZ_QuizCandidateAnswer_EndPoint}?quizCode=${quizCode}&accountCode=${accountCode}`,
+                {
+                        method: 'PUT',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*'
+                        },
+                        body: JSON.stringify(candidateQuizAnswer)
+                    }
+                )
 
-        return await response.json()
+                if (!response.ok) {
+                    return
+                                    }
+                else {
+                    toast.success(t('Quiz.candidate answer_added_successfully'))
+                    }
+
+             return await response.json()
     }
 
     const getQuizReport = async (quizCode, accountCode) => {

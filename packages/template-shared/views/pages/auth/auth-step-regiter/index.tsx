@@ -124,8 +124,8 @@ const AuthStepRegister = () => {
                                                     <Icon
                                                         icon={
                                                             showPassword
-                                                                ? 'fluent:slide-text-edit-24-regular'
-                                                                : 'fluent:slide-text-edit-24-regular-off'
+                                                                ? 'fluent:eye-20-regular'
+                                                                : 'fluent:eye-off-20-regular'
                                                         }
                                                         fontSize={20}
                                                     />

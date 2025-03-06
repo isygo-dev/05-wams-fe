@@ -3,6 +3,10 @@
   "wams-cfo": "Kandidatenportal",
   "wams-cms": "Kalender",
   "wams-gw": "Gateway",
+  "DISABLED": "Deaktiviert",
+  "ENABLED": "Aktiviert",
+  "See more": "Mehr anzeigen",
+  "See less" : "Weniger anzeigen",
   "wams-hrm": "Personalwesen",
   "wams-quiz": "Quiz",
   "wams-rpm": "Partnerrekrutierung",
@@ -12,6 +16,7 @@
   "SmartCode-UI": "SmartCode UI",
   "is_Blog": "Es ist ein Blog",
   "Blogs": "Blogs",
+  "Templates": "Vorlagen",
   "AuditInfo": {
     "createDate": "Erstellungsdatum",
     "createdBy": "Erstellt von",
