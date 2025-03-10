@@ -107,7 +107,6 @@ const AuthorCard = (props: CardItem) => {
           </Accordion>
         </Box>
       </CardContent>
-      <Divider className={Styles.dividerStyle} />
 
     </Card>
   )

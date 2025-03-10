@@ -164,7 +164,6 @@ const Category = () => {
   })
   const [paginationPage, setPaginationPage] = useState<number>(0)
   const [disabledNextBtn, setDisabledNextBtn] = useState<boolean>(false)
-  // const [updateStatusDialogOpen, setUpdateStatusDialogOpen] = useState<boolean>(false)
 
   const dataGridApiRef = React.useRef<GridApi>()
 

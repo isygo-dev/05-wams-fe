@@ -90,11 +90,13 @@ const TemplateCard = (props: CardItem) => {
       <Divider className={Styles.dividerStyle} />
       <CardContent>
         <Box className={Styles.cardContentStyle}>
+
           <Typography className={Styles.cardTitle} variant="h6">
-            {data?.name ?? undefined}
+            {data?.name || 'No name provided'}
           </Typography>
-          <Typography sx={{ color: "text.secondary" }}>{data?.domain ?? undefined}</Typography>
-          <Typography sx={{ color: "text.secondary" }}>{data?.version ?? undefined}</Typography>
+          <Typography sx={{ color: "text.secondary" }}>
+            {data?.domain || 'Domain not specified'}
+          </Typography>
 
           <Accordion sx={{ textAlign: "left", boxShadow: "none !important", width: "100%" }}>
             <AccordionSummary

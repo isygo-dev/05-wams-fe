@@ -52,6 +52,8 @@ type Item =
     | 'IntegrationOrder'
     | 'flow'
     | 'Category'
+    | 'Author'
+
 
 
 type Props = {

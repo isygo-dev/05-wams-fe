@@ -31,6 +31,7 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
+    url: yup.string().required("Url is required"),
     description: yup.string().required("Description is required"),
   });
 
@@ -131,7 +132,22 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
               )}
             />
           </FormControl>
-
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <Controller
+              name='url'
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  size='small'
+                  {...field}
+                  label='url'
+                  placeholder='Enter url'
+                  error={Boolean(errors.url)}
+                  helperText={errors.url?.message}
+                />
+              )}
+            />
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='description'

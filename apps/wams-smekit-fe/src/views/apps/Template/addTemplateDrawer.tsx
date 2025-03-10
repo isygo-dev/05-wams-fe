@@ -15,15 +15,25 @@ import IconButton from "@mui/material/IconButton";
 import Icon from "template-shared/@core/components/icon";
 import Box, { BoxProps } from "@mui/material/Box";
 import { addTemplate, updateTemplate } from "../../../api/template";
-import { useMutation, useQueryClient } from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import toast from "react-hot-toast";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
-import {InputLabel, MenuItem, Select} from "@mui/material";
+import {FormHelperText, InputLabel, MenuItem, Select} from "@mui/material";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { fetchAll } from "../../../api/category";
 import { CategoryType } from "../../../types/category";
+import {AuthorType} from "../../../types/author";
+import {fetchAllAuthor} from "../../../api/author";
+import {checkPermission} from "template-shared/@core/api/helper/permission";
+import {
+  PermissionAction,
+  PermissionApplication,
+  PermissionPage
+} from "template-shared/@core/types/helper/apiPermissionTypes";
+import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
+import DomainApis from "ims-shared/@core/api/ims/domain";
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -58,13 +68,20 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
   });
 
   const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [authors, setAuthors] = useState<AuthorType[]>([]);
+  const {data: domainList, isFetched: isFetchedDomains} = useQuery('domains', DomainApis(t).getDomains)
 
   useEffect(() => {
     const loadCategories = async () => {
       const categoriesData = await fetchAll();
       setCategories(categoriesData);
     };
+    const loadAuthors = async () => {
+      const authorsData = await fetchAllAuthor();
+      setAuthors(authorsData);
+    };
     loadCategories();
+    loadAuthors();
   }, []);
 
 
@@ -107,7 +124,11 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
   const onSubmit = (data: CategoryTemplateType) => {
     console.log('Données envoyées au backend :', data);
     const categoryData = categories?.find(c => c.id === data.categoryId);
+    const authordata = authors?.find(a => a.id === data.authorId);
     data.category = categoryData
+    data.author = authordata
+    console.log("Données soumises :", data);  // Vérifie si authorId est valide
+
     if (data.id) {
       updateTemplateMutation.mutate(data);
     } else {
@@ -137,6 +158,34 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
       </Header>
       <Box sx={{ p: 6 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl fullWidth sx={{mb: 4}}>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <Controller
+              name='domain'
+              control={control}
+              rules={{required: true}}
+              render={({field: {value, onChange}}) => (
+                <Select
+                  disabled={checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? false : true}
+                  size='small'
+                  label={t('Domain.Domain')}
+                  name='domain'
+                  onChange={onChange}
+                  value={value}
+                >
+                  <MenuItem value=''>
+                    <em>{t('None')}</em>
+                  </MenuItem>
+                  {domainList?.map((domain: DomainType) => (
+                    <MenuItem key={domain.id} value={domain.name}>
+                      {domain.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+            {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name="name"
@@ -198,6 +247,28 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
                   error={Boolean(errors.fileName)}
                   helperText={errors.fileName?.message}
                 />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <Controller
+              name="authorId"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  select
+                  label="author"
+                  size="small"
+                  error={Boolean(errors.author)}
+                  helperText={errors.author ? errors.author.message : ''}
+                >
+                  {authors.map((author) => (
+                    <MenuItem key={author.id} value={author.id}>
+                      {author.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
               )}
             />
           </FormControl>

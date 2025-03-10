@@ -19,6 +19,7 @@ export interface CategoryTemplateType {
   typeTl: IEnumTemplateLanguage
 
   author: AuthorType
+  authorId?:number
   category: CategoryType
   categoryId?: number
   tag:tagType

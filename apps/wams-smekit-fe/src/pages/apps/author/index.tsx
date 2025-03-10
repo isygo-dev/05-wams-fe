@@ -64,7 +64,6 @@ const Author =()=>{
   const [showDialogue, setShowDialogue] = useState<boolean>(false);
   const [selectId, setSelectId] = useState<number | undefined>(undefined)
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [newStatus, setNewStatus] = useState<boolean>(false)
   const [paginationPage, setPaginationPage] = useState<number>(0)
   const [disabledNextBtn, setDisabledNextBtn] = useState<boolean>(false)
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState<GridColumnVisibilityModel>({

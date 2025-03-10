@@ -2,7 +2,7 @@ import apiUrls from "../../config/apiUrl";
 import { AppQuery } from "template-shared/@core/utils/fetchWrapper";
 import { CategoryTemplateType } from "../../types/categoryTemplateType";
 import imsApiUrls from "ims-shared/configs/ims_apis";
-import { getUserDomainFromToken } from "template-shared/@core/api/helper/permission";
+import toast from "react-hot-toast";
 
 export const fetchAllTemplate = async () => {
   const response = await AppQuery(apiUrls.apiUrl_smekit_Template_StorageConfigEndpoint, {
@@ -19,41 +19,28 @@ export const fetchAllTemplate = async () => {
 
     return oneAccount;
   }
-};
+}
+
+
 
 export const addTemplate = async (data: CategoryTemplateType) => {
-  console.log("Données envoyées :", data);
-
-  const userDomain = getUserDomainFromToken();
-
-  const updatedData = {
-    ...data,
-    domain: userDomain,
-    category: {
-      ...data.category,
-      domain: userDomain
-    }
-  };
-
-  const response = await AppQuery(
-    `${apiUrls.apiUrl_smekit_Template_StorageConfigEndpoint}`,
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedData),
-    }
-  );
+  const response = await AppQuery(`${apiUrls.apiUrl_smekit_Template_StorageConfigEndpoint}`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify(data)
+  })
 
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    return
+  } else {
+    toast.success('Account.added_successfully')
   }
 
-  const res = await response.json();
-
-  return res;
+  return await response.json()
 };
 
 

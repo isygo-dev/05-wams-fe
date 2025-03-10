@@ -86,7 +86,7 @@ const Template = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const dataGridApiRef = React.useRef<GridApi>()
 
-  const { data: userData, isLoading: isLoadingUseData } = useQuery('userData', getUserConnect);
+  const { isLoading: isLoadingUseData } = useQuery('userData', getUserConnect);
 
   const toggleViewMode = () => {
     if (isMobile && viewMode === 'auto') {
@@ -187,6 +187,7 @@ const Template = () => {
   }
   const handleUpdateClick = (item: CategoryTemplateType) => {
     item.categoryId = item?.category?.id
+    item.authorId =item?.author?.id
     setSelectedTemplate(item);
     setShowDialogue(true);
   }
@@ -290,6 +291,17 @@ const Template = () => {
       )
     }
 ,
+    {
+      flex: 0.1,
+      field: 'author',
+      minWidth: 100,
+      headerName: t('author') as string,
+      renderCell: ({ row }: CellType) => (
+        <Typography sx={{ color: 'text.secondary' }}>
+          {row.author?.name || t('No author')}
+        </Typography>
+      )
+    },
 
     // /*Description column*/
     //
