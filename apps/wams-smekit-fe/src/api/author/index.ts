@@ -27,16 +27,16 @@ export const fetchAllAuthor = async () => {
   return authors;
 };
 
-export const addAuthor = async (data: AuthorType) => {
+export const addAuthor = async (data: FormData) => {
   console.log("[addAuthor] Envoi de la requête POST avec les données :", data);
 
-  const response = await AppQuery(apiUrls.apiUrl_smekit_Author_StorageConfigEndpoint, {
+  const response = await AppQuery(apiUrls.apiUrl_smekit_Author_Image_Endpoint, {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      'Access-Control-Allow-Origin': '*'
     },
-    body: JSON.stringify(data),
+    body: data,
   });
 
   console.log("[addAuthor] Statut de la réponse :", response.status);

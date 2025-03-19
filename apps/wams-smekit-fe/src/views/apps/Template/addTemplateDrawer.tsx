@@ -127,7 +127,8 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
     const authordata = authors?.find(a => a.id === data.authorId);
     data.category = categoryData
     data.author = authordata
-    console.log("Données soumises :", data);  // Vérifie si authorId est valide
+    console.log("Données soumises :", data);
+
 
     if (data.id) {
       updateTemplateMutation.mutate(data);
@@ -265,7 +266,7 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
                 >
                   {authors.map((author) => (
                     <MenuItem key={author.id} value={author.id}>
-                      {author.name}
+                      {`${author.firstname} ${author.lastname || ''}`.trim()}
                     </MenuItem>
                   ))}
                 </TextField>

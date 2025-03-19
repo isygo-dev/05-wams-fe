@@ -1,9 +1,11 @@
 export interface AuthorType {
   id?: number
-  name: string
+  firstname: string
+  lastname: string
+  domain: string
   description: string
-  url: string
   code: string
+  imagePath: string
 
   //Audit info
   createDate: string

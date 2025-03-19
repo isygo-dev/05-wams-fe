@@ -2,6 +2,7 @@
 import 'dotenv/config' // Import and load dotenv
 
 let apiUrl_SMEKIT: string | undefined
+const api_version = '/api/v1'
 
 
 console.log('process.env.NEXT_PUBLIC_PROFILE ', process.env.NEXT_PUBLIC_PROFILE)
@@ -31,8 +32,9 @@ const apiUrls = {
   apiUrl_SMEKIT,
   apiUrl_smekit_Category_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/category',
   apiUrl_smekit_Template_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/template',
+  apiUrl_smekit_Author_Image_Endpoint: apiUrl_SMEKIT + '/api/v1/private/Author/image',
   apiUrl_smekit_Author_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/Author',
-
+  apiUrl_smekit_Author_ImageDownload_Endpoint: apiUrl_SMEKIT + api_version + '/private/Author/image/download'
 
 }
 

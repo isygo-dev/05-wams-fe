@@ -7,7 +7,7 @@ import CardHeader from "@mui/material/CardHeader";
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import Box from "@mui/material/Box";
-import { ToggleButton, ToggleButtonGroup} from "@mui/material";
+import {Avatar, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import Icon from "template-shared/@core/components/icon";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/system";
@@ -34,17 +34,18 @@ import AddAuthorDrawer from "../../../views/apps/Author/AddAuthorDrawer";
 import DeleteCommonDialog from "template-shared/@core/components/DeleteCommonDialog";
 
 import toast from "react-hot-toast";
+import apiUrls from "../../../config/apiUrl";
 
 const initialValue: AuthorType =
   {
+    domain: "", firstname: "", lastname: "",
     code: "",
     createDate: "",
     createdBy: "",
     description: "",
-    name: "",
     updateDate: "",
     updatedBy: "",
-    url: ""
+    imagePath: ""
 
   }
 interface CellType {
@@ -52,7 +53,7 @@ interface CellType {
 }
 
 const Author =()=>{
-  const {data:AuthorList , isLoading} = useQuery('AuthorType', fetchAllAuthor);
+  const {data:authorList , isLoading} = useQuery('authorList', fetchAllAuthor);
   const {t} = useTranslation();
   const [viewMode, setViewMode] = useState('auto')
   const theme = useTheme()
@@ -65,7 +66,7 @@ const Author =()=>{
   const [selectId, setSelectId] = useState<number | undefined>(undefined)
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [paginationPage, setPaginationPage] = useState<number>(0)
-  const [disabledNextBtn, setDisabledNextBtn] = useState<boolean>(false)
+  const [, setDisabledNextBtn] = useState<boolean>(false)
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState<GridColumnVisibilityModel>({
     createDate: false,
     createdBy: false,
@@ -105,7 +106,7 @@ const Author =()=>{
     setValue(val)
     if (val.trim() === '') {
     } else {
-      const resumesCopie = [...AuthorList]
+      const resumesCopie = [...authorList]
       const filtered = resumesCopie.filter(
         row =>
           row.name.toLowerCase().includes(val.trim().toLowerCase()) ||
@@ -134,22 +135,48 @@ const Author =()=>{
   }
 
   const defaultColumns: GridColDef[] = [
-
+    {
+      field: 'photo',
+      headerName: t('Photo') as string,
+      type: 'string',
+      flex: 0.1,
+      renderCell: ({row}: CellType) => (
+        <Avatar className={Styles.avatarTable}
+                src={row.imagePath ? `${apiUrls.apiUrl_smekit_Author_ImageDownload_Endpoint}/${row.id}?${Date.now()}` : ''}
+                alt={row.firstname}
+        />
+      )
+    },
+    {
+      flex: 0.1,
+      field: 'code',
+      minWidth: 100,
+      headerName: t('Code') as string,
+      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.code}</Typography>
+    },
 
     /*Name column*/
     {
       flex: 0.1,
-      field: 'name',
+      field: 'firstName',
       minWidth: 100,
-      headerName: t('Name') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.name}</Typography>
+      headerName: t('FirstName') as string,
+      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.firstname}</Typography>
     },
     {
       flex: 0.1,
-      field: 'url',
+      field: 'lastName',
       minWidth: 100,
-      headerName: t('url') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.url}</Typography>
+      headerName: t('LastName') as string,
+      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.lastname}</Typography>
+    },
+
+    {
+      flex: 0.1,
+      field: 'domaine',
+      minWidth: 100,
+      headerName: t('Domaine') as string,
+      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.domain}</Typography>
     },
 
     /*create Date column*/
@@ -245,14 +272,14 @@ const Author =()=>{
               </IconButton>
             </Tooltip>
           )}
-          {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.WRITE) && (
-            <Tooltip title={t('Action.Edit')}>
-              <IconButton
-                className={Styles.sizeIcon} sx={{color: 'text.secondary'}} onClick={() => handleUpdateClick(row)}>
-                <Icon icon='tabler:edit'/>
-              </IconButton>
-            </Tooltip>
-          )}
+          {/*{checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.WRITE) && (*/}
+          {/*  <Tooltip title={t('Action.Edit')}>*/}
+          {/*    <IconButton*/}
+          {/*      className={Styles.sizeIcon} sx={{color: 'text.secondary'}} onClick={() => handleUpdateClick(row)}>*/}
+          {/*      <Icon icon='tabler:edit'/>*/}
+          {/*    </IconButton>*/}
+          {/*  </Tooltip>*/}
+          {/*)}*/}
         </Box>
       )
     }
@@ -285,7 +312,7 @@ const Author =()=>{
         className={Styles.tableStyleNov}
         columnHeaderHeight={themeConfig.columnHeaderHeight}
         rowHeight={themeConfig.rowHeight}
-        rows={AuthorList || []}
+        rows={authorList || []}
         columnVisibilityModel={columnVisibilityModel}
         onColumnVisibilityModelChange={newModel => setColumnVisibilityModel(newModel)}
         columns={columns}
@@ -306,15 +333,17 @@ const Author =()=>{
   )
   const cardView = (
     <Grid container spacing={3} sx={{mb: 2, padding: '15px'}}>
-      {AuthorList &&
-        Array.isArray(AuthorList) &&
-        AuthorList.map((author, index) => {
+      {authorList &&
+        Array.isArray(authorList) &&
+        authorList.map((author, index) => {
           return (
             <Grid key={index} item xs={6} sm={6} md={4} lg={12 / 5}>
               <AuthorCard
                 data={author}
                 onDeleteClick={handleDeleteClick}
                 onViewClick={handleUpdateClick}
+                imageUrl={apiUrls.apiUrl_smekit_Author_ImageDownload_Endpoint}
+
               />
             </Grid>
 

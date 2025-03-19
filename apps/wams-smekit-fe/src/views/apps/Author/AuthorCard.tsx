@@ -22,15 +22,18 @@ import {
 } from "@mui/material";
 import React from "react";
 import Styles from "template-shared/style/style.module.css";
+import Avatar from "@mui/material/Avatar";
 
 interface CardItem {
   data: AuthorType | undefined;
   onDeleteClick: (rowId: number) => void | undefined;
   onViewClick: (author: AuthorType) => void;
+  imageUrl: string
+
 }
 
 const AuthorCard = (props: CardItem) => {
-  const { data, onDeleteClick, onViewClick } = props;
+  const { data, onDeleteClick, onViewClick ,imageUrl} = props;
   const { t } = useTranslation();
 
 
@@ -85,9 +88,23 @@ const AuthorCard = (props: CardItem) => {
       <Divider className={Styles.dividerStyle} />
       <CardContent>
         <Box className={Styles.cardContentStyle}>
-          <Typography className={Styles.cardTitle} variant="h6">
-            {data?.name ?? undefined}
+          <Avatar
+            sx={{width: '81px', height: '81px'}}
+            src={data.imagePath ? `${imageUrl}/${data.id}` : ''}
+
+          />
+          <Typography className={Styles.cardTitle} variant='h6'>
+            {data.firstname} {data.lastname}
           </Typography>
+
+          <Typography sx={{color: 'text.secondary'}}>
+            {data.domain}
+          </Typography>
+
+          <Typography sx={{color: 'text.secondary'}}>
+            {data.code}
+          </Typography>
+
           <Accordion sx={{ textAlign: "left", boxShadow: "none !important", width: "100%" }}>
             <AccordionSummary
               sx={{ padding: "0px" }}

@@ -175,7 +175,7 @@ const Template = () => {
           return typeof value === "string" && value.toLowerCase().includes(val.trim().toLowerCase());
         })
       );
-      if (filtered.length > 0) {
+      if (filtered?.length > 0) {
         console.log(filtered);
       }
     }
@@ -298,7 +298,7 @@ const Template = () => {
       headerName: t('author') as string,
       renderCell: ({ row }: CellType) => (
         <Typography sx={{ color: 'text.secondary' }}>
-          {row.author?.name || t('No author')}
+          {row.author?.firstname || t('No author')}
         </Typography>
       )
     },
@@ -499,7 +499,7 @@ const Template = () => {
     <Grid container spacing={3} sx={{mb: 2, padding: '15px'}}>
       {categoryTemplate &&
         Array.isArray(categoryTemplate) &&
-        categoryTemplate.map((Template, index) => {
+        categoryTemplate?.map((Template, index) => {
           return (
             <Grid key={index} item xs={6} sm={6} md={4} lg={12 / 5}>
               <TemplateCard
@@ -522,7 +522,7 @@ const Template = () => {
         className={Styles.tableStyleNov}
         columnHeaderHeight={themeConfig.columnHeaderHeight}
         rowHeight={themeConfig.rowHeight}
-        rows={categoryTemplate }
+        rows={categoryTemplate || []}
         columnVisibilityModel={columnVisibilityModel}
         onColumnVisibilityModelChange={newModel => setColumnVisibilityModel(newModel)}
         columns={columns}

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, {useState} from 'react';
 import Typography from "@mui/material/Typography";
-import { useMutation, useQueryClient } from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
@@ -16,6 +16,16 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { AuthorType } from "../../../types/author";
 import { addAuthor, updateAuthor } from "../../../api/author";
+import {Avatar, FormHelperText, InputLabel, MenuItem, Select} from "@mui/material";
+import {checkPermission} from "template-shared/@core/api/helper/permission";
+import {
+  PermissionAction,
+  PermissionApplication,
+  PermissionPage
+} from "template-shared/@core/types/helper/apiPermissionTypes";
+import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
+import DomainApis from "ims-shared/@core/api/ims/domain";
+import apiUrls from "../../../config/apiUrl";
 
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -26,14 +36,23 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
+  const {data: domainList} = useQuery('domains', DomainApis(t).getDomains)
   const queryClient = useQueryClient();
-
+  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
   const schema = yup.object().shape({
-    name: yup.string().required("Name is required"),
-    url: yup.string().required("Url is required"),
+    firstname: yup.string().required("firstname is required"),
+    lastname: yup.string().required("lastname is required"),
     description: yup.string().required("Description is required"),
+    domain: yup.string().required("Domain is required"),
   });
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('file changed', event)
+
+    const file = event.target.files?.[0]
+    setSelectedFile(file)
+  }
+
 
   const {
     reset,
@@ -47,17 +66,28 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
   });
 
 
-  const onSubmit = (data: AuthorType) => {
+  const onSubmit = (data: AuthorType) =>  {
     console.log(" Data sent to API:", data);
-    if (data.id) {
-      updateAuthorMutation.mutate(data);
-    } else {
-      addAuthorMutation.mutate(data);
+    const formData = new FormData();
+    if (selectedFile) {
+      formData.append('file', selectedFile)
+      formData.append('fileName', selectedFile.name)
     }
+    formData.append('firstname', data.firstname);
+    formData.append('lastname', data.lastname);
+    formData.append('description', data.description);
+    formData.append('domain', data.domain);
+
+    if (author?.id) {
+      updateAuthorMutation.mutate({ ...data, id: author.id });
+    } else {
+      addAuthorMutation.mutate(formData);
+    }
+
   };
 
   const addAuthorMutation = useMutation({
-    mutationFn: (data: AuthorType) => addAuthor(data),
+    mutationFn: (formData: FormData) => addAuthor(formData),
     onSuccess: (res: AuthorType) => {
       if (res) {
         queryClient.invalidateQueries('AuthorType');
@@ -116,38 +146,89 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
       </Header>
       <Box sx={{ p: 6 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl fullWidth sx={{mb: 4}}>
+            <label htmlFor='file' style={{alignItems: 'center', cursor: 'pointer', display: 'flex'}}>
+              <Avatar
+                src={
+                  selectedFile
+                    ? URL.createObjectURL(selectedFile)
+                    : `${apiUrls.apiUrl_smekit_Author_Image_Endpoint}/${author?.id}`
+                }
+                sx={{cursor: 'pointer'}}
+              ></Avatar>
+              <Button
+                color='primary'
+                variant='outlined'
+                component='span'
+                sx={{width: '100%'}}
+                startIcon={<Icon icon='tabler:upload'/>}
+              >
+                {t('Photo')}
+              </Button>
+              <input type='file' name='file' id='file' style={{display: 'none'}} onChange={handleFileChange}/>
+            </label>
+          </FormControl>
+          <FormControl fullWidth sx={{mb: 4}}>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <Controller
+              name='domain'
+              control={control}
+              rules={{required: true}}
+              render={({field: {value, onChange}}) => (
+                <Select
+                  disabled={checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? false : true}
+                  size='small'
+                  label={t('Domain.Domain')}
+                  name='domain'
+                  onChange={onChange}
+                  value={value}
+                >
+                  <MenuItem value=''>
+                    <em>{t('None')}</em>
+                  </MenuItem>
+                  {domainList?.map((domain: DomainType) => (
+                    <MenuItem key={domain.id} value={domain.name}>
+                      {domain.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+            {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
+          </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='name'
+              name='firstname'
               control={control}
               render={({ field }) => (
                 <TextField
                   size='small'
                   {...field}
-                  label='Name'
-                  placeholder='Enter name'
-                  error={Boolean(errors.name)}
-                  helperText={errors.name?.message}
+                  label='FirstName'
+                  placeholder='Enter firstname'
+                  error={Boolean(errors.firstname)}
+                  helperText={errors.firstname?.message}
                 />
               )}
             />
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='url'
+              name='lastname'
               control={control}
               render={({ field }) => (
                 <TextField
                   size='small'
                   {...field}
-                  label='url'
-                  placeholder='Enter url'
-                  error={Boolean(errors.url)}
-                  helperText={errors.url?.message}
+                  label='LastName'
+                  placeholder='Enter lastname'
+                  error={Boolean(errors.lastname)}
+                  helperText={errors.lastname?.message}
                 />
               )}
             />
           </FormControl>
+
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='description'
