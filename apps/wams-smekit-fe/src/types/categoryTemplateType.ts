@@ -8,7 +8,8 @@ export interface CategoryTemplateType {
   name: string
   description: string
   path: string
-  fileName: string
+  file: File | null
+  originalFileName: string | undefined
   extension: string
   editionDate: Date
   source: string
@@ -18,14 +19,13 @@ export interface CategoryTemplateType {
   typeTv: IEnumTemplateVisibility
   typeTl: IEnumTemplateLanguage
 
-  author: AuthorType
+  author?: AuthorType
   authorId?:number
-  category: CategoryType
+  category?: CategoryType
   categoryId?: number
   tag:tagType
 
   type: string
-  originalFileName: string
 
   //Audit info
   createDate: string

@@ -34,8 +34,13 @@ import Typography from "@mui/material/Typography";
 import Moment from "react-moment";
 import {GridPaginationModel} from "@mui/x-data-grid/models/gridPaginationProps";
 import localStorageKeys from "template-shared/configs/localeStorage";
-import ResumeApis from "rpm-shared/@core/api/rpm/resume";
-import {deleteTemplate, fetchAllTemplate, getUserConnect, updateTemplate} from "../../../api/template";
+import {
+  deleteTemplate, downloadTemplateFile,
+  fetchAllTemplate, getTemplateCount,
+  getTemplatesByPage,
+  getUserConnect,
+  updateTemplate
+} from "../../../api/template";
 import AddTemplateDrawer from "../../../views/apps/Template/addTemplateDrawer";
 import DeleteCommonDialog from "template-shared/@core/components/DeleteCommonDialog";
 import toast from "react-hot-toast";
@@ -44,6 +49,7 @@ import UpdateVisibility from "../../../views/apps/Template/updateVisibility";
 
 const initialValue: CategoryTemplateType =
   {
+    file: undefined,
     extension: " ", version: " ",
     typeTs: IEnumDocTempStatus.EDITING,
     typeTv: IEnumTemplateVisibility.PRV,
@@ -53,7 +59,6 @@ const initialValue: CategoryTemplateType =
     createDate: "",
     createdBy: "",
     editionDate: undefined,
-    fileName: "",
     originalFileName: "",
     path: "",
     source: "",
@@ -69,15 +74,19 @@ interface CellType {
   row: CategoryTemplateType
 }
 const Template = () => {
+  const {
+    data: countTemplate,
+    isLoading: isLoadingCountTemplate,
+  } = useQuery('countTemplate', getTemplateCount, )
+  const [disabledNextBtn, setDisabledNextBtn] = useState<boolean>(false)
+
   const { data: categoryTemplate, isLoading } = useQuery('categoryTemplate', fetchAllTemplate);
   const {t} = useTranslation();
   const [selectId, setSelectId] = useState<number | undefined>(undefined)
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [value, setValue] = useState<string>('')
   const [showDialogue, setShowDialogue] = useState<boolean>(false);
-  const [paginationPage, setPaginationPage] = useState<number>(0)
   const [SelectedTemplate,setSelectedTemplate] =useState<CategoryTemplateType>(initialValue)
-  const [, setDisabledNextBtn] = useState<boolean>(false)
   const [newStatus, setNewStatus] = useState<boolean>(false)
   const [viewMode, setViewMode] = useState('auto')
   const theme = useTheme()
@@ -101,48 +110,53 @@ const Template = () => {
     updateDate: false,
     updatedBy: false
   })
-  const onChangePagination = async (item: any) => {
-    if (item.pageSize !== paginationModel.pageSize) {
-      setPaginationModel(item)
-      localStorage.removeItem(localStorageKeys.paginationSize)
-      localStorage.setItem(localStorageKeys.paginationSize, item.pageSize)
-      const apiList = await ResumeApis(t).getResumesByPage(0, item.pageSize)
-      queryClient.removeQueries('resumes')
-      queryClient.setQueryData('resumes', apiList)
-      setPaginationPage(0)
-      setPaginationModel({page: 0, pageSize: item.pageSize})
-      setDisabledNextBtn(false)
-    }
-  }
-  const [paginationModel, setPaginationModel] =
-    useState<GridPaginationModel>({
-        page: paginationPage,
-        pageSize: localStorage.getItem(localStorageKeys.paginationSize) &&
-        Number(localStorage.getItem(localStorageKeys.paginationSize)) > 9 ?
-          Number(localStorage.getItem(localStorageKeys.paginationSize)) : 20
+
+  const handlePaginationChange = async (newModel: GridPaginationModel) => {
+    try {
+      if (newModel.pageSize !== paginationModel.pageSize) {
+        localStorage.setItem(localStorageKeys.paginationSize, String(newModel.pageSize));
       }
-    )
+
+      const apiList = await getTemplatesByPage(newModel.page, newModel.pageSize);
+
+      queryClient.setQueryData('categoryTemplate', apiList);
+      setPaginationModel(newModel);
+
+      setDisabledNextBtn(apiList.length < newModel.pageSize);
+    } catch (error) {
+      console.error('Erreur de pagination:', error);
+      toast.error('Échec du chargement des données');
+    }
+  };
+
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: 0,
+    pageSize: localStorage.getItem(localStorageKeys.paginationSize)
+      ? Number(localStorage.getItem(localStorageKeys.paginationSize))
+      : 20
+  })
+
+
   const toggleAddTemplate = () => {
     setSelectedTemplate(initialValue);
     setShowDialogue(true)
   }
   const deleteTemplateMutation = useMutation({
-    mutationFn: () => deleteTemplate(selectId),
-    onSuccess: (res: any) => {
-      if (res) {
-
-        setDeleteDialog(false)
-        const updatedItems = ((queryClient.getQueryData('categoryTemplate') as CategoryTemplateType[]) || []).filter(item => item.id !== res)
-        queryClient.setQueryData('categoryTemplate', updatedItems)
-        toast.success("Template deleted successfully")
-        setSelectId(undefined)
-
-
-      }
+    mutationFn: () => deleteTemplate(selectId!),
+    onSuccess: (res: number) => {
+      setDeleteDialog(false);
+      const updatedItems = ((queryClient.getQueryData('categoryTemplate') as CategoryTemplateType[]) || []).filter(item => item.id !== res);
+      queryClient.setQueryData('categoryTemplate', updatedItems);
+      toast.success("Template deleted successfully");
+      setSelectId(undefined);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || 'Failed to delete template');
     }
   })
+
   const updatTemplateMutation = useMutation({
-    mutationFn: (data: CategoryTemplateType) => updateTemplate(data),
+    mutationFn: (data: FormData) => updateTemplate(data),
     onSuccess: (res: CategoryTemplateType) => {
       if (res) {
 
@@ -186,11 +200,14 @@ const Template = () => {
     setDeleteDialog(true)
   }
   const handleUpdateClick = (item: CategoryTemplateType) => {
-    item.categoryId = item?.category?.id
-    item.authorId =item?.author?.id
-    setSelectedTemplate(item);
+    const dataToSend = {
+      ...item,
+      authorId: item.author?.id,
+      categoryId: item.category?.id
+    };
+    setSelectedTemplate(dataToSend);
     setShowDialogue(true);
-  }
+  };
   const handleSwitchVisibility = (data: CategoryTemplateType , e: any) => {
     setNewStatus(true)
     setSelectedTemplate(data)
@@ -203,14 +220,56 @@ const Template = () => {
     setSelectedTemplate(undefined)
 
   }
-  const handleConfirmation =() => {
-    if (SelectedTemplate.typeTv === IEnumTemplateVisibility.PRV) {
-      SelectedTemplate.typeTv = IEnumTemplateVisibility.PB
-    }else {
-      SelectedTemplate.typeTv = IEnumTemplateVisibility.PRV
+  const downloadTemplateMutation = useMutation({
+    mutationFn: downloadTemplateFile,
+    onSuccess: () => {
+      toast.success("Template téléchargé avec succès !");
+    },
+    onError: (error: any) => {
+      toast.error(`Erreur lors du téléchargement : ${error.message}`);
     }
-    updatTemplateMutation.mutate(SelectedTemplate);
+  });
+
+  function onDownload(row) {
+    downloadTemplateMutation.mutate({id: row.id, originalFileName: row.originalFileName})
   }
+  const handleConfirmation = () => {
+    if (SelectedTemplate) {
+      const updatedTemplate = { ...SelectedTemplate };
+      updatedTemplate.typeTv = SelectedTemplate.typeTv === IEnumTemplateVisibility.PRV
+        ? IEnumTemplateVisibility.PB
+        : IEnumTemplateVisibility.PRV;
+
+      const formData = new FormData();
+      formData.append('id', String(updatedTemplate.id));
+      formData.append('typeTv', updatedTemplate.typeTv);
+
+
+
+      updatTemplateMutation.mutate(formData);
+    }
+  };
+
+
+    React.useEffect(() => {
+      if (categoryTemplate && !isLoading) {
+        console.log("Données des templates récupérées:", categoryTemplate);
+
+        if (Array.isArray(categoryTemplate)) {
+          categoryTemplate.forEach((template, index) => {
+            console.log(`Template #${index + 1}:`, {
+              id: template.id,
+              name: template.name,
+              author: template.author ? `${template.author.firstname} ${template.author.lastname}` : 'Non défini',
+              category: template.category?.name || 'Non défini',
+              typeTv: template.typeTv,
+              typeTs: template.typeTs
+            });
+          });
+        }
+      }
+    }, [categoryTemplate, isLoading]);
+
   const defaultColumns: GridColDef[] = [
     /*Domain column*/
     {
@@ -235,13 +294,7 @@ const Template = () => {
       headerName: t('path') as string,
       renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.path}</Typography>
     },
-    {
-      flex: 0.1,
-      field: t('fileName'),
-      minWidth: 100,
-      headerName: t('fileName') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.fileName}</Typography>
-    },
+
     {
       flex: 0.1,
       field: 'extension',
@@ -249,28 +302,17 @@ const Template = () => {
       headerName: t('extension') as string,
       renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.extension}</Typography>
     },
-    {
-      flex: 0.1,
-      field: 'editionDate',
-      minWidth: 100,
-      headerName: t('editionDate') as string,
-      renderCell: ({row}: CellType) => <>
-        {
-          row.editionDate && <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
-              <Moment format='DD-MM-YYYY'>{row.editionDate}</Moment>
-            </Typography>
-          </Box>
-        }
 
-      </>
-    },
     {
       flex: 0.1,
       field: 'version',
       minWidth: 100,
-      headerName: t('version') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.version}</Typography>
+      headerName: t('Version') as string,
+      renderCell: ({row}: CellType) => (
+        <Typography sx={{color: 'text.secondary'}}>
+          {row.version || '1.0.0'}
+        </Typography>
+      )
     },
     {
       flex: 0.1,
@@ -281,58 +323,31 @@ const Template = () => {
     },
     {
       flex: 0.1,
-      field: 'category',
-      minWidth: 100,
-      headerName: t('category') as string,
-      renderCell: ({ row }: CellType) => (
-        <Typography sx={{ color: 'text.secondary' }}>
-          {row.category?.name || t('No Category')}
-        </Typography>
-      )
-    }
-,
-    {
-      flex: 0.1,
       field: 'author',
       minWidth: 100,
       headerName: t('author') as string,
       renderCell: ({ row }: CellType) => (
-        <Typography sx={{ color: 'text.secondary' }}>
-          {row.author?.firstname || t('No author')}
+        <Typography>
+          {row.author
+            ? `${row.author.firstname} ${row.author.lastname}`
+            : row.authorId
+              ? 'Chargement...'
+              : t('No author')
+          }
         </Typography>
       )
     },
-
-    // /*Description column*/
-    //
-    // {
-    //   flex: 0.1,
-    //   field: 'description',
-    //   minWidth: 100,
-    //   headerName: t('Description') as string,
-    //   renderCell: ({ row }: CellType) => {
-    //     const [expanded, setExpanded] = React.useState(false);
-    //     const maxLength = 30;
-    //
-    //     const handleToggle = () => setExpanded(!expanded);
-    //
-    //     return (
-    //       <Typography sx={{ color: 'text.secondary', whiteSpace: 'pre-line' }}>
-    //         {expanded ? row.description : `${row.description.slice(0, maxLength)}... `}
-    //         {row.description.length > maxLength && (
-    //           <Button
-    //             variant="text"
-    //             size="small"
-    //             sx={{ textTransform: 'none', padding: 0, minWidth: 'auto' }}
-    //             onClick={handleToggle}
-    //           >
-    //             {expanded ? t('See less') : t('See more')}
-    //           </Button>
-    //         )}
-    //       </Typography>
-    //     );
-    //   }
-    // },
+    {
+      flex: 0.1,
+      field: 'category',
+      minWidth: 100,
+      headerName: t('category') as string,
+      renderCell: ({ row }: CellType) => (
+        <Typography>
+          {row.category?.name || (row.categoryId ? 'Chargement...' : t('No Category'))}
+        </Typography>
+      )
+    },
 
     {
       flex: 0.1,
@@ -463,7 +478,7 @@ const Template = () => {
       field: 'actions',
       headerName: '' as string,
       align: 'right',
-      maxWidth: 150,
+      maxWidth: 180,
       flex: 1,
       renderCell: ({row}: CellType) => (
         <Box sx={{display: 'flex', alignItems: 'center'}}>
@@ -489,7 +504,13 @@ const Template = () => {
                 <Icon icon='tabler:edit'/>
               </IconButton>
             </Tooltip>
+
           )}
+          <Tooltip title={t('Action.Download') as string}>
+            <IconButton className={Styles.sizeIcon} sx={{color: 'text.secondary'}} onClick={() => onDownload(row)}>
+              <Icon icon='material-symbols:download'/>
+            </IconButton>
+          </Tooltip>
         </Box>
       )
     }
@@ -515,6 +536,7 @@ const Template = () => {
 
     </Grid>
   )
+
   const gridView = (
     <Box className={Styles.boxTable}>
       <DataGrid
@@ -524,17 +546,31 @@ const Template = () => {
         rowHeight={themeConfig.rowHeight}
         rows={categoryTemplate || []}
         columnVisibilityModel={columnVisibilityModel}
-        onColumnVisibilityModelChange={newModel => setColumnVisibilityModel(newModel)}
+        onColumnVisibilityModelChange={setColumnVisibilityModel}
         columns={columns}
         disableRowSelectionOnClick
         pageSizeOptions={themeConfig.pageSizeOptions}
         paginationModel={paginationModel}
-        onPaginationModelChange={onChangePagination}
-
+        onPaginationModelChange={handlePaginationChange}
+        rowCount={countTemplate || 0}
+        paginationMode="server"
         slotProps={{
+          pagination: {
+            count: countTemplate,
+            page: paginationModel.page,
+            labelDisplayedRows: ({ from, to, count }) =>
+              `${t('pagination footer')} ${from} - ${to} ${t('of')} ${count}`,
+            labelRowsPerPage: t('Rows_per_page'),
+            nextIconButtonProps: {
+              disabled: disabledNextBtn || (categoryTemplate?.length || 0) < paginationModel.pageSize,
+            },
+            backIconButtonProps: {
+              disabled: paginationModel.page === 0,
+            }
+          },
           toolbar: {
             showQuickFilter: true,
-            quickFilterProps: {debounceMs: 500}
+            quickFilterProps: { debounceMs: 500 }
           }
         }}
         apiRef={dataGridApiRef}
@@ -553,9 +589,9 @@ const Template = () => {
     }
   }
 
-  return  (
+  return (
     <>
-      {!isLoading && !isLoadingUseData && (
+      {!isLoading && !isLoadingUseData && !isLoadingCountTemplate && (
         <Grid container spacing={6.5}>
           <Grid item xs={12}>
             <Card>
@@ -590,11 +626,8 @@ const Template = () => {
                   categoryTemplate={SelectedTemplate}
                   showDialogue={showDialogue}
                   setShowDialogue={setShowDialogue}
-
-                  //userData={userData}
                 />
               )}
-
               <DeleteCommonDialog
                 open={deleteDialog}
                 setOpen={setDeleteDialog}
@@ -611,8 +644,7 @@ const Template = () => {
             </Card>
           </Grid>
         </Grid>
-      )
-      }
+      )}
     </>
   )
 }

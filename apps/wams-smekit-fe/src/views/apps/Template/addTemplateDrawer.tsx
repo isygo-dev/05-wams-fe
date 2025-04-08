@@ -35,6 +35,7 @@ import {
 import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
 import DomainApis from "ims-shared/@core/api/ims/domain";
 
+
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -45,20 +46,36 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const [file, setFile] = useState<File | null>(null)
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
     description: yup.string().required("Description is required"),
     path: yup.string().required("Path is required"),
-    fileName: yup.string().required("File name is required"),
     categoryId: yup.number().required("Category is required"),
     typeTs: yup.string().required("Status type is required"),
     typeTv: yup.string().required("Visibility type is required"),
-    typeTl: yup.string().required("Language type is required")
-  });
+    typeTl: yup.string().required("Language type is required"),
+    file: yup.mixed().when('id', {
+      is: (id: number) => !id,
+      then: (schema) => schema.required("File is required"),
+      otherwise: (schema) => schema.notRequired()
+    })
+  })
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files
+    if (files && files.length > 0) {
+      setFile(files[0])
+      setValue('file', files[0])
+    }
+    trigger('file')
+  }
 
   const {
     reset,
     handleSubmit,
+    setValue,
+    trigger,
     control,
     formState: { errors }
   } = useForm<CategoryTemplateType>({
@@ -69,7 +86,7 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
 
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [authors, setAuthors] = useState<AuthorType[]>([]);
-  const {data: domainList, isFetched: isFetchedDomains} = useQuery('domains', DomainApis(t).getDomains)
+  const {data: domainList} = useQuery('domains', DomainApis(t).getDomains)
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -91,7 +108,7 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
   };
 
   const updateTemplateMutation = useMutation({
-    mutationFn: (data: CategoryTemplateType) => updateTemplate(data),
+    mutationFn: (formData: FormData) => updateTemplate(formData),
     onSuccess: (res: CategoryTemplateType) => {
       if (res) {
         const cachedData: CategoryTemplateType[] = queryClient.getQueryData('categoryTemplate') || [];
@@ -106,37 +123,87 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
       }
     }
   });
-
   const addTemplateMutation = useMutation({
-    mutationFn: (data: CategoryTemplateType) => addTemplate(data),
+    mutationFn: (formData: FormData) => addTemplate(formData),
     onSuccess: (res: CategoryTemplateType) => {
-      if (res) {
-        const cachedData = (queryClient.getQueryData('categoryTemplate') as any[]) || [];
-        const updatedData = [...cachedData];
-        updatedData.push(res);
-        queryClient.setQueryData('categoryTemplate', updatedData);
-        toast.success("Template added successfully");
-        handleClose();
-      }
+      queryClient.setQueryData('categoryTemplate', (old: CategoryTemplateType[] = []) => [...old, res]);
+      toast.success(t('Template added successfully'));
+      handleClose();
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || t('Failed to add template'));
     }
   });
 
-  const onSubmit = (data: CategoryTemplateType) => {
-    console.log('Données envoyées au backend :', data);
-    const categoryData = categories?.find(c => c.id === data.categoryId);
-    const authordata = authors?.find(a => a.id === data.authorId);
-    data.category = categoryData
-    data.author = authordata
-    console.log("Données soumises :", data);
+  //
+  // const onSubmit = (data: CategoryTemplateType) => {
+  //   console.log('Données envoyées au backend :', data);
+  //   const categoryData = categories?.find(c => c.id === data.categoryId);
+  //   const authordata = authors?.find(a => a.id === data.authorId);
+  //   data.category = categoryData
+  //   data.author = authordata
+  //   console.log("Données soumises :", data);
+  //
+  //
+  //   if (data.id) {
+  //     updateTemplateMutation.mutate(data);
+  //   } else {
+  //     addTemplateMutation.mutate(data);
+  //   }
+  // };
 
+  const onSubmit = async (data: CategoryTemplateType) => {
+    try {
+      const formData = new FormData();
 
-    if (data.id) {
-      updateTemplateMutation.mutate(data);
-    } else {
-      addTemplateMutation.mutate(data);
+      formData.append('name', data.name);
+      formData.append('description', data.description);
+      formData.append('path', data.path);
+      formData.append('categoryId', data.categoryId.toString());
+      formData.append('typeTs', data.typeTs);
+      formData.append('typeTv', data.typeTv);
+      formData.append('typeTl', data.typeTl);
+
+      if (data.file) {
+        formData.append('file', data.file);
+        formData.append('incrementVersion', 'true');
+      } else if (!data.id) {
+        throw new Error("File is required for new templates");
+      }
+
+      // Ajoutez les données relationnelles
+      if (data.authorId) {
+        formData.append('authorId', data.authorId.toString());
+      }
+      if (data.domain) {
+        formData.append('domain', data.domain);
+      }
+
+      if (data.id) {
+        formData.append('id', data.id.toString());
+        const updatedTemplate = await updateTemplateMutation.mutateAsync(formData);
+
+        queryClient.setQueryData('categoryTemplate', (old: CategoryTemplateType[] = []) => {
+          return old.map(item =>
+            item.id === updatedTemplate.id
+              ? {
+                ...updatedTemplate,
+                author: item.author || authors.find(a => a.id === updatedTemplate.authorId),
+                category: item.category || categories.find(c => c.id === updatedTemplate.categoryId)
+              }
+              : item
+          );
+        });
+      } else {
+        await addTemplateMutation.mutateAsync(formData);
+      }
+
+      handleClose();
+      toast.success(t('Operation succeeded'));
+    } catch (error) {
+      toast.error(error.message || t('Failed to submit template'));
     }
   };
-
 
   return (
     <Drawer
@@ -159,6 +226,34 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
       </Header>
       <Box sx={{ p: 6 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
+
+          <FormControl fullWidth sx={{mb: 4}}>
+            <label htmlFor='file' style={{alignItems: 'center', cursor: 'pointer'}}>
+              <Button
+                color='primary'
+                variant='outlined'
+                component='span'
+                sx={{width: '100%'}}
+                startIcon={<Icon icon='tabler:upload'/>}
+              >
+                {t('Template.Template')}
+              </Button>
+              <input
+                type='file'
+                name='file'
+                id='file'
+                style={{display: 'none'}}
+                onChange={handleFileChange}
+                accept=".pdf,.doc,.docx"
+              />
+              <Typography variant='body2' sx={{mt: 1}}>
+                {file ? file.name : t('No file selected')}
+              </Typography>
+            </label>
+            {errors.file && (
+              <FormHelperText sx={{color: 'error.main'}}>{errors.file.message}</FormHelperText>
+            )}
+          </FormControl>
           <FormControl fullWidth sx={{mb: 4}}>
             <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
             <Controller
@@ -235,65 +330,78 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
               )}
             />
           </FormControl>
+          {/*<FormControl fullWidth sx={{ mb: 4 }}>*/}
+          {/*  <Controller*/}
+          {/*    name="fileName"*/}
+          {/*    control={control}*/}
+          {/*    render={({ field }) => (*/}
+          {/*      <TextField*/}
+          {/*        size="small"*/}
+          {/*        {...field}*/}
+          {/*        label="File Name"*/}
+          {/*        placeholder="Enter file name"*/}
+          {/*        error={Boolean(errors.fileName)}*/}
+          {/*        helperText={errors.fileName?.message}*/}
+          {/*      />*/}
+          {/*    )}*/}
+          {/*  />*/}
+          {/*</FormControl>*/}
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <Controller
-              name="fileName"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  size="small"
-                  {...field}
-                  label="File Name"
-                  placeholder="Enter file name"
-                  error={Boolean(errors.fileName)}
-                  helperText={errors.fileName?.message}
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 4 }}>
+            <InputLabel>Author</InputLabel>
             <Controller
               name="authorId"
               control={control}
               render={({ field }) => (
-                <TextField
+                <Select
                   {...field}
-                  select
-                  label="author"
-                  size="small"
-                  error={Boolean(errors.author)}
-                  helperText={errors.author ? errors.author.message : ''}
+                  label="Author"
+                  value={field.value || ''}
                 >
+                  <MenuItem value="" disabled>
+                    {t('Select an author')}
+                  </MenuItem>
                   {authors.map((author) => (
                     <MenuItem key={author.id} value={author.id}>
                       {`${author.firstname} ${author.lastname || ''}`.trim()}
                     </MenuItem>
                   ))}
-                </TextField>
+                </Select>
               )}
             />
+            {errors.authorId && (
+              <FormHelperText sx={{ color: 'error.main' }}>
+                {errors.authorId?.message}
+              </FormHelperText>
+            )}
           </FormControl>
+
           <FormControl fullWidth sx={{ mb: 4 }}>
+            <InputLabel>Category</InputLabel>
             <Controller
               name="categoryId"
               control={control}
               render={({ field }) => (
-                <TextField
+                <Select
                   {...field}
-                  select
-                  label="Catégorie"
-                  size="small"
-                  error={Boolean(errors.category)}
-                  helperText={errors.category ? errors.category.message : ''}
+                  label="Category"
+                  value={field.value || ''}
                 >
+                  <MenuItem value="" disabled>
+                    {t('Select a category')}
+                  </MenuItem>
                   {categories.map((category) => (
                     <MenuItem key={category.id} value={category.id}>
                       {category.name}
                     </MenuItem>
                   ))}
-                </TextField>
+                </Select>
               )}
             />
+            {errors.categoryId && (
+              <FormHelperText sx={{ color: 'error.main' }}>
+                {errors.categoryId?.message}
+              </FormHelperText>
+            )}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller

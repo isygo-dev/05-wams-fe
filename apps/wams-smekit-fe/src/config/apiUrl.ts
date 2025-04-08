@@ -31,7 +31,10 @@ if (process.env.NEXT_PUBLIC_PROFILE === 'docker') {
 const apiUrls = {
   apiUrl_SMEKIT,
   apiUrl_smekit_Category_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/category',
-  apiUrl_smekit_Template_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/template',
+  apiUrl_smekit_Template_FetchAll_Endpoint: apiUrl_SMEKIT + '/api/v1/private/template',
+  apiUrl_smekit_Template_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/templatefile/file',
+  apiUrl_smekit_TemplateDownload_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/templatefile/file/download',
+  apiUrl_smekit_Template_Count_Endpoint : apiUrl_SMEKIT + '/api/v1/private/template/count',
   apiUrl_smekit_Author_Image_Endpoint: apiUrl_SMEKIT + '/api/v1/private/Author/image',
   apiUrl_smekit_Author_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/Author',
   apiUrl_smekit_Author_ImageDownload_Endpoint: apiUrl_SMEKIT + api_version + '/private/Author/image/download'
