@@ -50,7 +50,6 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
     description: yup.string().required("Description is required"),
-    path: yup.string().required("Path is required"),
     categoryId: yup.number().required("Category is required"),
     typeTs: yup.string().required("Status type is required"),
     typeTv: yup.string().required("Visibility type is required"),
@@ -107,50 +106,46 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
     reset();
   };
 
-  const updateTemplateMutation = useMutation({
-    mutationFn: (formData: FormData) => updateTemplate(formData),
-    onSuccess: (res: CategoryTemplateType) => {
-      if (res) {
-        const cachedData: CategoryTemplateType[] = queryClient.getQueryData('categoryTemplate') || [];
-        const index = cachedData.findIndex(obj => obj.id === res.id);
-        if (index !== -1) {
-          const updatedData = [...cachedData];
-          updatedData[index] = res;
-          queryClient.setQueryData('categoryTemplate', updatedData);
-        }
-        toast.success("Template updated successfully");
-        handleClose();
-      }
-    }
-  });
   const addTemplateMutation = useMutation({
     mutationFn: (formData: FormData) => addTemplate(formData),
-    onSuccess: (res: CategoryTemplateType) => {
-      queryClient.setQueryData('categoryTemplate', (old: CategoryTemplateType[] = []) => [...old, res]);
+    onSuccess: (newTemplate) => {
+      const author = authors.find(a => a.id === newTemplate.authorId);
+      const category = categories.find(c => c.id === newTemplate.categoryId);
+
+      const completeTemplate = {
+        ...newTemplate,
+        author,
+        category
+      };
+
+      queryClient.setQueryData('categoryTemplate', (old: CategoryTemplateType[] = []) => [
+        ...old,
+        completeTemplate
+      ]);
+
       toast.success(t('Template added successfully'));
       handleClose();
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || t('Failed to add template'));
+    }
+  });
+  const updateTemplateMutation = useMutation({
+    mutationFn: (formData: FormData) => updateTemplate(formData),
+    onSuccess: (updatedTemplate) => {
+      const author = authors.find(a => a.id === updatedTemplate.authorId);
+      const category = categories.find(c => c.id === updatedTemplate.categoryId);
+
+      queryClient.setQueryData('categoryTemplate', (old: CategoryTemplateType[] = []) =>
+        old.map(item =>
+          item.id === updatedTemplate.id
+            ? { ...updatedTemplate, author, category }
+            : item
+        )
+      );
+
+      toast.success("Template updated successfully")
+      handleClose();
     }
   });
 
-  //
-  // const onSubmit = (data: CategoryTemplateType) => {
-  //   console.log('Données envoyées au backend :', data);
-  //   const categoryData = categories?.find(c => c.id === data.categoryId);
-  //   const authordata = authors?.find(a => a.id === data.authorId);
-  //   data.category = categoryData
-  //   data.author = authordata
-  //   console.log("Données soumises :", data);
-  //
-  //
-  //   if (data.id) {
-  //     updateTemplateMutation.mutate(data);
-  //   } else {
-  //     addTemplateMutation.mutate(data);
-  //   }
-  // };
 
   const onSubmit = async (data: CategoryTemplateType) => {
     try {
@@ -158,7 +153,6 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
 
       formData.append('name', data.name);
       formData.append('description', data.description);
-      formData.append('path', data.path);
       formData.append('categoryId', data.categoryId.toString());
       formData.append('typeTs', data.typeTs);
       formData.append('typeTv', data.typeTv);
@@ -166,12 +160,8 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
 
       if (data.file) {
         formData.append('file', data.file);
-        formData.append('incrementVersion', 'true');
-      } else if (!data.id) {
-        throw new Error("File is required for new templates");
       }
 
-      // Ajoutez les données relationnelles
       if (data.authorId) {
         formData.append('authorId', data.authorId.toString());
       }
@@ -181,29 +171,18 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
 
       if (data.id) {
         formData.append('id', data.id.toString());
-        const updatedTemplate = await updateTemplateMutation.mutateAsync(formData);
-
-        queryClient.setQueryData('categoryTemplate', (old: CategoryTemplateType[] = []) => {
-          return old.map(item =>
-            item.id === updatedTemplate.id
-              ? {
-                ...updatedTemplate,
-                author: item.author || authors.find(a => a.id === updatedTemplate.authorId),
-                category: item.category || categories.find(c => c.id === updatedTemplate.categoryId)
-              }
-              : item
-          );
-        });
+        await updateTemplateMutation.mutateAsync(formData);
       } else {
+        if (!data.file) {
+          throw new Error("File is required for new templates");
+        }
         await addTemplateMutation.mutateAsync(formData);
       }
 
-      handleClose();
-      toast.success(t('Operation succeeded'));
     } catch (error) {
       toast.error(error.message || t('Failed to submit template'));
     }
-  };
+  }
 
   return (
     <Drawer
@@ -314,22 +293,7 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 4 }}>
-            <Controller
-              name="path"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  size="small"
-                  {...field}
-                  label="Path"
-                  placeholder="Enter path"
-                  error={Boolean(errors.path)}
-                  helperText={errors.path?.message}
-                />
-              )}
-            />
-          </FormControl>
+
           {/*<FormControl fullWidth sx={{ mb: 4 }}>*/}
           {/*  <Controller*/}
           {/*    name="fileName"*/}

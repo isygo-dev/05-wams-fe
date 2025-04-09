@@ -80,7 +80,26 @@ const Template = () => {
   } = useQuery('countTemplate', getTemplateCount, )
   const [disabledNextBtn, setDisabledNextBtn] = useState<boolean>(false)
 
-  const { data: categoryTemplate, isLoading } = useQuery('categoryTemplate', fetchAllTemplate);
+  // const { data: categoryTemplate, isLoading } = useQuery('categoryTemplate', fetchAllTemplate)
+
+  const { data: categoryTemplate, isLoading } = useQuery(
+    'categoryTemplate',
+    fetchAllTemplate,
+    {
+      staleTime: 0,
+      select: (data) => {
+        if (Array.isArray(data)) {
+          return data.map(item => ({
+            ...item,
+            author: item.author || null,
+            category: item.category || null
+          }));
+        }
+
+        return data;
+      }
+    }
+  );
   const {t} = useTranslation();
   const [selectId, setSelectId] = useState<number | undefined>(undefined)
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -157,25 +176,37 @@ const Template = () => {
 
   const updatTemplateMutation = useMutation({
     mutationFn: (data: FormData) => updateTemplate(data),
-    onSuccess: (res: CategoryTemplateType) => {
+    onSuccess: (res: any) => {
+
       if (res) {
 
-        const cachedData: CategoryTemplateType[] = queryClient.getQueryData('categoryTemplate') || []
-        const index = cachedData.findIndex(obj => obj.id === res.id)
-        if (index !== -1) {
-          const updatedData = [...cachedData]
-          updatedData[index] = res
-          queryClient.setQueryData('categoryTemplate', updatedData)
-        }
+        queryClient.setQueryData('categoryTemplate', (old: CategoryTemplateType[] | undefined) => {
+          if (!old) return [res];
+
+          return old.map(item => {
+            if (item.id === res.id) {
+
+              return {
+                ...res,
+                author: res.author || item.author,
+                category: res.category || item.category
+              };
+            }
+
+            return item;
+          });
+        });
+
         toast.success("Template updated successfully");
-        setNewStatus(false)
-        setSelectedTemplate(undefined)
-
-
-
+        setNewStatus(false);
+        setSelectedTemplate(undefined);
       }
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || 'Failed to update template');
     }
-  })
+  });
+
   const handleFilter = (val: string) => {
     setValue(val);
     if (val.trim() === '') {
@@ -208,9 +239,9 @@ const Template = () => {
     setSelectedTemplate(dataToSend);
     setShowDialogue(true);
   };
-  const handleSwitchVisibility = (data: CategoryTemplateType , e: any) => {
-    setNewStatus(true)
-    setSelectedTemplate(data)
+  const handleSwitchVisibility = (data: CategoryTemplateType, e: any) => {
+    setNewStatus(true);
+    setSelectedTemplate(data);
   }
   const handleDelete = () => {
     deleteTemplateMutation.mutate()
@@ -235,23 +266,37 @@ const Template = () => {
   }
   const handleConfirmation = () => {
     if (SelectedTemplate) {
-      const updatedTemplate = { ...SelectedTemplate };
-      updatedTemplate.typeTv = SelectedTemplate.typeTv === IEnumTemplateVisibility.PRV
-        ? IEnumTemplateVisibility.PB
-        : IEnumTemplateVisibility.PRV;
+      const updatedTemplate = {
+        ...SelectedTemplate,
+        typeTv: SelectedTemplate.typeTv === IEnumTemplateVisibility.PRV
+          ? IEnumTemplateVisibility.PB
+          : IEnumTemplateVisibility.PRV
+      };
 
       const formData = new FormData();
+
       formData.append('id', String(updatedTemplate.id));
+      formData.append('name', updatedTemplate.name);
+      formData.append('description', updatedTemplate.description || '');
+      formData.append('domain', updatedTemplate.domain);
+      formData.append('type', updatedTemplate.type);
+      formData.append('typeTs', updatedTemplate.typeTs);
+      formData.append('typeTl', updatedTemplate.typeTl);
       formData.append('typeTv', updatedTemplate.typeTv);
+      formData.append('version', updatedTemplate.version || '1.0.0');
+      formData.append('source', updatedTemplate.source || '');
+      formData.append('path', updatedTemplate.path || '');
+      formData.append('extension', updatedTemplate.extension || '');
+      formData.append('originalFileName', updatedTemplate.originalFileName || '');
 
-
+      formData.append('authorId', updatedTemplate.author?.id ? String(updatedTemplate.author.id) : '');
+      formData.append('categoryId', updatedTemplate.category?.id ? String(updatedTemplate.category.id) : '');
 
       updatTemplateMutation.mutate(formData);
     }
   };
 
-
-    React.useEffect(() => {
+  React.useEffect(() => {
       if (categoryTemplate && !isLoading) {
         console.log("Données des templates récupérées:", categoryTemplate);
 
@@ -330,9 +375,7 @@ const Template = () => {
         <Typography>
           {row.author
             ? `${row.author.firstname} ${row.author.lastname}`
-            : row.authorId
-              ? 'Chargement...'
-              : t('No author')
+            : t('No author')
           }
         </Typography>
       )
@@ -344,7 +387,7 @@ const Template = () => {
       headerName: t('category') as string,
       renderCell: ({ row }: CellType) => (
         <Typography>
-          {row.category?.name || (row.categoryId ? 'Chargement...' : t('No Category'))}
+          {row.category?.name || t('No Category')}
         </Typography>
       )
     },
@@ -528,6 +571,7 @@ const Template = () => {
                 onDeleteClick={handleDeleteClick}
                 onSwitchStatus={handleSwitchVisibility}
                 onViewClick={handleUpdateClick}
+                onDownloadClick={onDownload}
               />
             </Grid>
 

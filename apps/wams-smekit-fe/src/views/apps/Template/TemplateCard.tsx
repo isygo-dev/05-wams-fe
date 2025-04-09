@@ -19,27 +19,39 @@ import {
   AccordionSummary,
   AccordionDetails,
   Switch,
-  CardActions
+  CardActions, FormControlLabel
 } from "@mui/material";
 import React from "react";
 import Styles from "template-shared/style/style.module.css";
 import CustomChip from "template-shared/@core/components/mui/chip";
-import {CategoryTemplateType} from "../../../types/categoryTemplateType";
+import {CategoryTemplateType, IEnumTemplateVisibility} from "../../../types/categoryTemplateType";
+import {MiniResume} from "rpm-shared/@core/types/rpm/ResumeTypes";
+import template from "../../../pages/apps/template";
 
 interface CardItem {
   data: CategoryTemplateType | undefined;
   onDeleteClick: (rowId: number) => void | undefined;
   onViewClick: (template: CategoryTemplateType) => void;
+  onDownloadClick: (item: CategoryTemplateType) => void
   onSwitchStatus: (data: CategoryTemplateType, status: boolean) => void;
 }
 
 const TemplateCard = (props: CardItem) => {
-  const { data, onDeleteClick, onViewClick, onSwitchStatus } = props;
+  const { data, onDeleteClick, onViewClick, onSwitchStatus,onDownloadClick } = props;
   const { t } = useTranslation();
 
 
 
-  const status = data.type === 'ENABLED'
+  if (!data) {
+    return null;
+  }
+
+  const isPublic = data.typeTv === IEnumTemplateVisibility.PB;
+  const hasWritePermission = checkPermission(
+    PermissionApplication.IMS,
+    PermissionPage.ACCOUNT,
+    PermissionAction.WRITE
+  );
 
   return (
     <Card>
@@ -84,6 +96,14 @@ const TemplateCard = (props: CardItem) => {
                 </IconButton>
               </Tooltip>
             )}
+            {checkPermission(PermissionApplication.IMS, PermissionPage.ROLE_INFO, PermissionAction.READ) && (
+              <Tooltip title={t('Action.Download') as string}>
+              <IconButton size='small' sx={{color: 'text.secondary'}}
+                          onClick={() => onDownloadClick(data)}>
+                <Icon icon='material-symbols:download'/>
+              </IconButton>
+            </Tooltip>
+            )}
           </Box>
         }
       />
@@ -119,21 +139,38 @@ const TemplateCard = (props: CardItem) => {
       </CardContent>
       <Divider className={Styles.dividerStyle} />
       <CardActions className={Styles.cardActionFooterStyle}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-          <CustomChip rounded size='small' skin='light' color='warning' label={data.type}/>
-          <Tooltip title={t(data?.type)}>
-            {checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.WRITE) ? (
-              <Switch
-                checked={status}
-                onChange={(e) => onSwitchStatus(data, e.target.checked)}
-              />
-            ) : (
-              <Switch checked={data.type === 'ENABLED'}/>
-            )}
+        <Box sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+          px: 2,
+          pb: 1
+        }}>
+          <CustomChip
+            rounded
+            size='small'
+            skin='light'
+            color={isPublic ? 'success' : 'error'}
+            label={t(data.typeTv)}
+          />
+
+          <Tooltip title={t(data.typeTv)}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isPublic}
+                  onChange={(e) => onSwitchStatus(data, e.target.checked)}
+                  color={isPublic ? 'success' : 'error'}
+                  disabled={!hasWritePermission}
+                />
+              }
+              label=""
+              sx={{ m: 0 }}
+            />
           </Tooltip>
         </Box>
       </CardActions>
-
     </Card>
   );
 };
