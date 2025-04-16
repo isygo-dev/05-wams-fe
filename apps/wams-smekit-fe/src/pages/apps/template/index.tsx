@@ -45,6 +45,7 @@ import AddTemplateDrawer from "../../../views/apps/Template/addTemplateDrawer";
 import DeleteCommonDialog from "template-shared/@core/components/DeleteCommonDialog";
 import toast from "react-hot-toast";
 import UpdateVisibility from "../../../views/apps/Template/updateVisibility";
+import TemplatePreviewDialog from "../../../views/apps/Template/TemplatePreviewDialog";
 
 
 const initialValue: CategoryTemplateType =
@@ -101,6 +102,9 @@ const Template = () => {
     }
   );
   const {t} = useTranslation();
+  const [menuOpen, setMenuOpen] = useState<number | null>(null)
+  const [anchorEls, setAnchorEls] = useState<(null | HTMLElement)[]>([])
+
   const [selectId, setSelectId] = useState<number | undefined>(undefined)
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [value, setValue] = useState<string>('')
@@ -230,6 +234,17 @@ const Template = () => {
     setSelectId(rowId)
     setDeleteDialog(true)
   }
+
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewTemplate, setPreviewTemplate] = useState<CategoryTemplateType | null>(null);
+
+  const handleFilePreview = (template: CategoryTemplateType) => {
+    setPreviewTemplate(template);
+    setPreviewOpen(true);
+  };
+  const closeFilePreview = () => {
+    setPreviewOpen(false);
+  };
   const handleUpdateClick = (item: CategoryTemplateType) => {
     const dataToSend = {
       ...item,
@@ -423,6 +438,22 @@ const Template = () => {
       }
     }
     ,
+    {
+      flex: 0.1,
+      field: 'originalFileName',
+      minWidth: 100,
+      headerName: `${t('File Name')}`as string,
+      renderCell: ({ row }: CellType) => {
+        return (
+          <Tooltip title={t(row?.originalFileName)}>
+            <Typography sx={{ color: 'text.secondary' }}>
+              {t(row.originalFileName)}
+            </Typography>
+          </Tooltip>
+        );
+      }
+    }
+    ,
 
     {
       flex: 0.1,
@@ -563,21 +594,18 @@ const Template = () => {
     <Grid container spacing={3} sx={{mb: 2, padding: '15px'}}>
       {categoryTemplate &&
         Array.isArray(categoryTemplate) &&
-        categoryTemplate?.map((Template, index) => {
-          return (
-            <Grid key={index} item xs={6} sm={6} md={4} lg={12 / 5}>
-              <TemplateCard
-                data={Template}
-                onDeleteClick={handleDeleteClick}
-                onSwitchStatus={handleSwitchVisibility}
-                onViewClick={handleUpdateClick}
-                onDownloadClick={onDownload}
-              />
-            </Grid>
-
-          )
-        })}
-
+        categoryTemplate.map((template, index) => (
+          <Grid key={index} item xs={6} sm={6} md={4} lg={12/5}>
+            <TemplateCard
+              data={template}
+              onDeleteClick={handleDeleteClick}
+              onSwitchStatus={handleSwitchVisibility}
+              onViewClick={handleUpdateClick}
+              onDownloadClick={onDownload}
+              onPreviewClick={handleFilePreview}
+            />
+          </Grid>
+        ))}
     </Grid>
   )
 
@@ -685,6 +713,13 @@ const Template = () => {
                 handleConfirmation={handleConfirmation}
                 handleClose={handleClose}
               />
+              {previewOpen && previewTemplate && (
+                <TemplatePreviewDialog
+                  open={previewOpen}
+                  onCloseClick={closeFilePreview}
+                  templatePreview={previewTemplate}
+                />
+              )}
             </Card>
           </Grid>
         </Grid>

@@ -25,19 +25,20 @@ import React from "react";
 import Styles from "template-shared/style/style.module.css";
 import CustomChip from "template-shared/@core/components/mui/chip";
 import {CategoryTemplateType, IEnumTemplateVisibility} from "../../../types/categoryTemplateType";
-import {MiniResume} from "rpm-shared/@core/types/rpm/ResumeTypes";
-import template from "../../../pages/apps/template";
+
 
 interface CardItem {
   data: CategoryTemplateType | undefined;
   onDeleteClick: (rowId: number) => void | undefined;
   onViewClick: (template: CategoryTemplateType) => void;
-  onDownloadClick: (item: CategoryTemplateType) => void
+  onDownloadClick: (item: CategoryTemplateType) => void;
   onSwitchStatus: (data: CategoryTemplateType, status: boolean) => void;
+  onPreviewClick?: (item: CategoryTemplateType) => void;
+
 }
 
 const TemplateCard = (props: CardItem) => {
-  const { data, onDeleteClick, onViewClick, onSwitchStatus,onDownloadClick } = props;
+  const { data, onDeleteClick, onViewClick, onSwitchStatus,onDownloadClick,onPreviewClick } = props;
   const { t } = useTranslation();
 
 
@@ -104,6 +105,15 @@ const TemplateCard = (props: CardItem) => {
               </IconButton>
             </Tooltip>
             )}
+            <Tooltip title={t('Action.Preview') as string}>
+              <IconButton
+                size='small'
+                sx={{color: 'text.secondary'}}
+                onClick={() => onPreviewClick(data)}
+              >
+                <Icon icon='solar:document-bold'/>
+              </IconButton>
+            </Tooltip>
           </Box>
         }
       />
