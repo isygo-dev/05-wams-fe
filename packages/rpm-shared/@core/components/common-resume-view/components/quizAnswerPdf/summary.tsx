@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 24,
         textAlign: 'center',
-        fontStyle: 'bold',
+        fontStyle: 'normal',
         flexGrow: 1
     },
     score: {

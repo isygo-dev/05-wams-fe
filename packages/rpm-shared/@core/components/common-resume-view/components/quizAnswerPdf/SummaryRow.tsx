@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         alignItems: "center",
         height: 24,
-        fontStyle: "bold"
+        fontStyle: "normal"
     },
     score: {
         width: "70%",

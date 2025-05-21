@@ -3,7 +3,7 @@ import {useRouter} from 'next/router'
 import {useQuery} from 'react-query'
 import {useTranslation} from "react-i18next";
 import JobOfferApis from "rpm-shared/@core/api/rpm/job-offer";
-import ViewJobOfferDrawer from "template-shared/views/apps/job-offer/ViewJobOfferDrawer";
+import ViewJobOfferDrawer from "rpm-shared/views/apps/job-offer/ViewJobOfferDrawer";
 
 const JobView = () => {
   const {t} = useTranslation()
