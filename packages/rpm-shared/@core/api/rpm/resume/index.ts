@@ -36,7 +36,21 @@ const ResumeApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getResumesByPage = async (page: number, size: number) => {
@@ -59,7 +73,21 @@ const ResumeApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getResumes = async () => {
@@ -82,7 +110,21 @@ const ResumeApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getResumeById = async (id: number) => {
@@ -105,7 +147,21 @@ const ResumeApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const addResume = async (resume: FormData) => {
@@ -130,7 +186,21 @@ const ResumeApis = (t: TFunction) => {
             toast.success(t('Resume.created_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const addResumeAccount = async (resume: ResumeTypes) => {
@@ -156,7 +226,21 @@ const ResumeApis = (t: TFunction) => {
             toast.success(t('Resume.account_added_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const deleteResume = async (id: number) => {
@@ -207,7 +291,21 @@ const ResumeApis = (t: TFunction) => {
             toast.success(t('Resume.updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateResumeReview = async (data: ResumeShareInfo) => {
@@ -233,7 +331,21 @@ const ResumeApis = (t: TFunction) => {
             toast.success(t('Resume.updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const shareResume = async (data: { id: number; request: ShareResumeRequestDto }) => {
@@ -259,7 +371,21 @@ const ResumeApis = (t: TFunction) => {
             toast.success(t('Resume.shared_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateResumePicture = async (data: { id: number; file: Blob }) => {
@@ -286,7 +412,21 @@ const ResumeApis = (t: TFunction) => {
             toast.success(t('Resume.picture_updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const uploadResumeFile = async (data: { id: number; file: Blob }) => {
@@ -313,7 +453,21 @@ const ResumeApis = (t: TFunction) => {
             toast.success(t('Resume.File_uploaded_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const downloadResumeFile = async (data: { id: number; originalFileName: string }) => {
@@ -361,7 +515,21 @@ const ResumeApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const addResumeCandidate = async (data: ResumeTypes) => {
@@ -390,7 +558,21 @@ const ResumeApis = (t: TFunction) => {
             toast.success(t('Resume.candidate account_added_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const applyForJobOffer = async (data: JobApplicationType) => {
@@ -416,7 +598,21 @@ const ResumeApis = (t: TFunction) => {
             toast.success(t('Resume.Apply_to_job_executed_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     return {

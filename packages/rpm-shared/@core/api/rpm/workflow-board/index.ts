@@ -34,7 +34,21 @@ const WorkflowBoardApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const addWorkflowBoard = async (data: WorkflowsBoardData) => {
@@ -60,7 +74,21 @@ const WorkflowBoardApis = (t: TFunction) => {
             toast.success(t('WorkflowBoard.added_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const deleteWorkflowBoard = async (id: number) => {
@@ -111,7 +139,21 @@ const WorkflowBoardApis = (t: TFunction) => {
             toast.success(t('WorkflowBoard.updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getWorkflowBoardWatcherEmails = async (request: AvailableEmailsRequest) => {
@@ -137,7 +179,21 @@ const WorkflowBoardApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getWorkflowBoardStates = async (wbCode: string) => {
@@ -160,7 +216,21 @@ const WorkflowBoardApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     return {

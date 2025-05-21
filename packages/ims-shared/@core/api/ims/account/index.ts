@@ -35,7 +35,21 @@ const AccountApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateAccountLanguage = async (id: number, language: string) => {
@@ -64,7 +78,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.language_updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAccountDetails = async () => {
@@ -87,7 +115,21 @@ const AccountApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAccountProfile = async () => {
@@ -110,7 +152,21 @@ const AccountApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateAccountAdminStatus = async (data: RequestStatus) => {
@@ -138,7 +194,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.admin_status_updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateAccountIsAdminFlag = async (data: RequestIsAdmin) => {
@@ -166,7 +236,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.admin_flag_updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAccountsSessionStatus = async () => {
@@ -189,7 +273,21 @@ const AccountApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAccountEmailsByDomain = async () => {
@@ -212,7 +310,21 @@ const AccountApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAccounts = async () => {
@@ -235,7 +347,21 @@ const AccountApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAccountsCount = async () => {
@@ -258,7 +384,21 @@ const AccountApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAccountsByPage = async (page: number, size: number) => {
@@ -281,7 +421,21 @@ const AccountApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const resendAccountCredentialsEmail = async id => {
@@ -357,7 +511,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.added_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateAccount = async (data: AccountDto) => {
@@ -383,7 +551,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.email_updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateAccountPicture = async (data: { id: number; file: Blob }) => {
@@ -410,7 +592,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.picture_updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAccountById = async (id: number) => {
@@ -433,7 +629,21 @@ const AccountApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateAccountDetails = async (data: AccountDetails) => {
@@ -459,7 +669,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const changePassword = async (data: { oldPassword: string; newPassword: string }) => {
@@ -486,7 +710,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.password_updated_Successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateAuthType = async (data: { domain: string; userName: string }) => {
@@ -512,7 +750,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.auth_type_updated_Successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const uploadPicture = async (data: { id: number; file: Blob }) => {
@@ -539,7 +791,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.picture_updated_Successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateProfile = async (data: AccountDto) => {
@@ -565,7 +831,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.profile_updated_Successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateUserAccount = async (data: { account: AccountDto; id: number }) => {
@@ -591,7 +871,21 @@ const AccountApis = (t: TFunction) => {
             toast.success(t('Account.updated_Successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     return {

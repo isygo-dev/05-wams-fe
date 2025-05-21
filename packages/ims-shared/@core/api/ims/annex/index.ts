@@ -33,7 +33,21 @@ const AnnexApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAnnexesCount = async () => {
@@ -56,7 +70,21 @@ const AnnexApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAnnexesByPage = async (page: number, size: number) => {
@@ -79,7 +107,21 @@ const AnnexApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const deleteAnnexById = async (id: number) => {
@@ -130,7 +172,21 @@ const AnnexApis = (t: TFunction) => {
             toast.success(t('Annex_added_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const updateAnnex = async (param: AnnexType) => {
@@ -156,7 +212,21 @@ const AnnexApis = (t: TFunction) => {
             toast.success(t('Annex_updated_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAnnexByTableCode = async (code: string) => {
@@ -177,7 +247,21 @@ const AnnexApis = (t: TFunction) => {
 
         if (!response.ok) {
             return
-        } else return await response.json()
+        } else         // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const getAnnexByTableCodeAndReference = async (code: string, reference: string) => {
@@ -203,7 +287,21 @@ const AnnexApis = (t: TFunction) => {
             return
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     return {

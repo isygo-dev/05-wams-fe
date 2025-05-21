@@ -4,8 +4,8 @@ import {useMutation, useQuery} from 'react-query'
 import {useTranslation} from 'react-i18next'
 import Typography from "@mui/material/Typography";
 import ResumeApis from "rpm-shared/@core/api/rpm/resume";
-import ViewResumeDrawer from "template-shared/@core/components/common-resume-view/list/ViewResumeDrawer";
 import {ResumeTypes} from "rpm-shared/@core/types/rpm/ResumeTypes";
+import ViewResumeDrawer from "rpm-shared/@core/components/common-resume-view/list/ViewResumeDrawer";
 
 const ResumeView = () => {
   const {t} = useTranslation()

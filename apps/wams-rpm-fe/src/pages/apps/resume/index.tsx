@@ -42,9 +42,9 @@ import localStorageKeys from "template-shared/configs/localeStorage";
 import PaginationCard from "template-shared/@core/components/card-pagination";
 import AccountApis from "ims-shared/@core/api/ims/account";
 import ResumeApis from "rpm-shared/@core/api/rpm/resume";
-import ShareDrawer from "template-shared/@core/components/common-resume-view/list/ShareDrawer";
-import ApplicationjobOffer from "template-shared/@core/components/common-resume-view/list/ApplicationJob";
 import {MiniResume, ResumeTypes} from "rpm-shared/@core/types/rpm/ResumeTypes";
+import ApplicationjobOffer from "rpm-shared/@core/components/common-resume-view/list/ApplicationJob";
+import ShareDrawer from "rpm-shared/@core/components/common-resume-view/list/ShareDrawer";
 
 interface CellType {
   row: MiniResume

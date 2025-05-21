@@ -3,10 +3,10 @@ import {useMutation, useQuery} from 'react-query'
 import {useAuth} from 'template-shared/hooks/useAuth'
 import {useTranslation} from 'react-i18next'
 import ResumeApis from "rpm-shared/@core/api/rpm/resume";
-import ViewResumeDrawer from "template-shared/@core/components/common-resume-view/list/ViewResumeDrawer";
 import {AddressTypes} from "ims-shared/@core/types/ims/addressTypes";
 import {ResumeDetails} from "rpm-shared/@core/types/rpm/ResumeDetails";
 import {ResumeTypes} from "rpm-shared/@core/types/rpm/ResumeTypes";
+import ViewResumeDrawer from "rpm-shared/@core/components/common-resume-view/list/ViewResumeDrawer";
 
 const ResumeViewCfo = () => {
   const {t} = useTranslation()

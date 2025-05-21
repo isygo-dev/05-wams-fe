@@ -38,7 +38,21 @@ const JobOfferAdditionalFilesApis = (t: TFunction) => {
             toast.success(t('JobOffer.File_uploaded_successfully'))
         }
 
-        return await response.json()
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return []; // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+            console.warn("[API] Expected JSON but received:", contentType);
+
+            return null;
+        }
+
+        const result = await response.json();
+
+        return result;
     }
 
     const downloadAdditionalFile = async (data: {
