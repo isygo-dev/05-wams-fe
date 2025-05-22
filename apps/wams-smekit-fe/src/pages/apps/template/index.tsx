@@ -2,13 +2,17 @@ import {useMutation, useQuery, useQueryClient} from "react-query";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useTranslation} from "react-i18next";
-import {Switch, ToggleButton, ToggleButtonGroup} from "@mui/material";
+import {
+  Avatar,
+  Switch,
+  ToggleButton,
+  ToggleButtonGroup
+} from "@mui/material";
 import Icon from "template-shared/@core/components/icon";
 import Box from "@mui/material/Box";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import {useTheme} from "@mui/system";
+
 import TableHeader from "template-shared/views/table/TableHeader";
 import {GridApiCommunity} from "@mui/x-data-grid/internals";
 import {
@@ -35,9 +39,11 @@ import Moment from "react-moment";
 import {GridPaginationModel} from "@mui/x-data-grid/models/gridPaginationProps";
 import localStorageKeys from "template-shared/configs/localeStorage";
 import {
-  deleteTemplate, downloadTemplateFile,
-  fetchAllTemplate, getTemplateCount,
-  getTemplatesByPage,
+  deleteTemplate,
+  downloadTemplateFile,
+  fetchAllTemplate,
+  getTemplateCount,
+  getTemplatesByCategory,
   getUserConnect,
   updateTemplate
 } from "../../../api/template";
@@ -46,112 +52,162 @@ import DeleteCommonDialog from "template-shared/@core/components/DeleteCommonDia
 import toast from "react-hot-toast";
 import UpdateVisibility from "../../../views/apps/Template/updateVisibility";
 import TemplatePreviewDialog from "../../../views/apps/Template/TemplatePreviewDialog";
+import {useRouter} from "next/navigation";
+import {fetchAll, getCategoryByPage} from "../../../api/category";
+import CategorySelector from "../../../views/apps/Template/CategorySelector";
+import TreeViewCategoriesTemplates from "../../../views/apps/Template/TreeViewCategoriesTemplates";
+import PinIcon from "../../../views/apps/FavoriteTemplate/PinIcon";
 
+const initialValue: CategoryTemplateType = {
+  isFavorite: false,
+  file: undefined,
+  extension: " ",
+  version: " ",
+  typeTs: IEnumDocTempStatus.EDITING,
+  typeTv: IEnumTemplateVisibility.PRV,
+  typeTl: IEnumTemplateLanguage.EN,
+  author: undefined,
+  category: undefined,
+  createDate: "",
+  createdBy: "",
+  editionDate: undefined,
+  originalFileName: "",
+  path: "",
+  source: "",
+  tag: undefined,
+  updateDate: "",
+  updatedBy: "",
+  domain: '',
+  name: '',
+  type: IEnumCategoryType.ENABLED,
+  description: ''
+}
 
-const initialValue: CategoryTemplateType =
-  {
-    file: undefined,
-    extension: " ", version: " ",
-    typeTs: IEnumDocTempStatus.EDITING,
-    typeTv: IEnumTemplateVisibility.PRV,
-    typeTl: IEnumTemplateLanguage.EN,
-    author: undefined,
-    category: undefined,
-    createDate: "",
-    createdBy: "",
-    editionDate: undefined,
-    originalFileName: "",
-    path: "",
-    source: "",
-    tag: undefined,
-    updateDate: "",
-    updatedBy: "",
-    domain: '',
-    name: '',
-    type: IEnumCategoryType.ENABLED,
-    description: ''
-  }
 interface CellType {
   row: CategoryTemplateType
 }
+
+const ViewToggleButtons = ({ viewMode, onViewModeChange }) => {
+  return (
+    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, margin: 2 }}>
+      <ToggleButtonGroup
+        exclusive
+        value={viewMode}
+        onChange={onViewModeChange}
+        aria-label="view mode selection"
+      >
+        <ToggleButton value="grid" aria-label="grid view">
+          <Icon icon="ic:baseline-view-list" />
+        </ToggleButton>
+        <ToggleButton value="card" aria-label="card view">
+          <Icon icon="ic:baseline-view-module" />
+        </ToggleButton>
+        <ToggleButton value="tree" aria-label="tree view">
+          <Icon icon="ic:outline-account-tree" />
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Box>
+  );
+}
+
 const Template = () => {
   const {
     data: countTemplate,
     isLoading: isLoadingCountTemplate,
-  } = useQuery('countTemplate', getTemplateCount, )
+  } = useQuery('countTemplate', getTemplateCount)
   const [disabledNextBtn, setDisabledNextBtn] = useState<boolean>(false)
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
+  const [categories, setCategories] = useState<any[]>([])
+  const {t} = useTranslation()
+  const [selectId, setSelectId] = useState<number | undefined>(undefined)
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  const [value, setValue] = useState<string>('')
+  const [showDialogue, setShowDialogue] = useState<boolean>(false)
+  const [SelectedTemplate, setSelectedTemplate] = useState<CategoryTemplateType>(initialValue)
+  const [newStatus, setNewStatus] = useState<boolean>(false)
 
-  // const { data: categoryTemplate, isLoading } = useQuery('categoryTemplate', fetchAllTemplate)
+  const [viewMode, setViewMode] = useState<'grid' | 'card' | 'tree'>('grid')
+  const queryClient = useQueryClient()
+  const dataGridApiRef = React.useRef<GridApi>()
+  const { isLoading: isLoadingUseData } = useQuery('userData', getUserConnect)
+  const { data: allCategories } = useQuery('categories', fetchAll)
+  const [filteredData, setFilteredData] = useState<CategoryTemplateType[] | null>(null)
+  const [, setPaginationPage] = useState<number>(0)
 
   const { data: categoryTemplate, isLoading } = useQuery(
-    'categoryTemplate',
-    fetchAllTemplate,
+    ['categoryTemplate', selectedCategory],
+    () => selectedCategory ? getTemplatesByCategory(selectedCategory) : fetchAllTemplate(),
     {
-      staleTime: 0,
       select: (data) => {
         if (Array.isArray(data)) {
           return data.map(item => ({
             ...item,
             author: item.author || null,
-            category: item.category || null
-          }));
+            category: item.category || null,
+            isFavorite: item.isFavorite || false
+          }))
         }
 
-        return data;
+        return data
       }
     }
-  );
-  const {t} = useTranslation();
-  const [menuOpen, setMenuOpen] = useState<number | null>(null)
-  const [anchorEls, setAnchorEls] = useState<(null | HTMLElement)[]>([])
+  )
 
-  const [selectId, setSelectId] = useState<number | undefined>(undefined)
-  const [deleteDialog, setDeleteDialog] = useState(false);
-  const [value, setValue] = useState<string>('')
-  const [showDialogue, setShowDialogue] = useState<boolean>(false);
-  const [SelectedTemplate,setSelectedTemplate] =useState<CategoryTemplateType>(initialValue)
-  const [newStatus, setNewStatus] = useState<boolean>(false)
-  const [viewMode, setViewMode] = useState('auto')
-  const theme = useTheme()
-  const queryClient = useQueryClient();
+  useEffect(() => {
+    if (allCategories) {
+      setCategories(allCategories)
+    }
+  }, [allCategories])
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const dataGridApiRef = React.useRef<GridApi>()
+  // const toggleViewMode = () => {
+  //   if (isMobile && viewMode === 'auto') {
+  //     setViewMode(prevViewMode => (prevViewMode === 'auto' ? 'grid' : 'card'))
+  //   } else if (!isMobile && viewMode === 'auto') {
+  //     setViewMode(prevViewMode => (prevViewMode === 'auto' ? 'card' : 'grid'))
+  //   } else setViewMode(prevViewMode => (prevViewMode === 'grid' ? 'card' : 'grid'))
+  // }
 
-  const { isLoading: isLoadingUseData } = useQuery('userData', getUserConnect);
-
-  const toggleViewMode = () => {
-    if (isMobile && viewMode === 'auto') {
-      setViewMode(prevViewMode => (prevViewMode === 'auto' ? 'grid' : 'card'))
-    } else if (!isMobile && viewMode === 'auto') {
-      setViewMode(prevViewMode => (prevViewMode === 'auto' ? 'card' : 'grid'))
-    } else setViewMode(prevViewMode => (prevViewMode === 'grid' ? 'card' : 'grid'))
-  }
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState<GridColumnVisibilityModel>({
     createDate: false,
     createdBy: false,
     updateDate: false,
-    updatedBy: false
+    updatedBy: false,
+    categories:false
   })
-
-  const handlePaginationChange = async (newModel: GridPaginationModel) => {
-    try {
-      if (newModel.pageSize !== paginationModel.pageSize) {
-        localStorage.setItem(localStorageKeys.paginationSize, String(newModel.pageSize));
-      }
-
-      const apiList = await getTemplatesByPage(newModel.page, newModel.pageSize);
-
-      queryClient.setQueryData('categoryTemplate', apiList);
-      setPaginationModel(newModel);
-
-      setDisabledNextBtn(apiList.length < newModel.pageSize);
-    } catch (error) {
-      console.error('Erreur de pagination:', error);
-      toast.error('Échec du chargement des données');
+  const handleViewModeChange = (event, newViewMode) => {
+    if (newViewMode !== null) {
+      setViewMode(newViewMode);
     }
-  };
+  }
 
+  // const handlePaginationChange = async (newModel: GridPaginationModel) => {
+  //   try {
+  //     if (newModel.pageSize !== paginationModel.pageSize) {
+  //       localStorage.setItem(localStorageKeys.paginationSize, String(newModel.pageSize))
+  //     }
+  //
+  //     const apiList = await getTemplatesByPage(newModel.page, newModel.pageSize)
+  //     queryClient.setQueryData('categoryTemplate', apiList)
+  //     setPaginationModel(newModel)
+  //     setDisabledNextBtn(apiList.length < newModel.pageSize)
+  //   } catch (error) {
+  //     console.error('Erreur de pagination:', error)
+  //     toast.error('Échec du chargement des données')
+  //   }
+  // }
+  const onChangePagination = async (item: any) => {
+    if (item.pageSize !== paginationModel.pageSize) {
+      setPaginationModel(item)
+      localStorage.removeItem(localStorageKeys.paginationSize)
+      localStorage.setItem(localStorageKeys.paginationSize, item.pageSize)
+      const apiList =  getCategoryByPage(0, item.pageSize)
+      queryClient.removeQueries('resumes')
+      queryClient.setQueryData('resumes', apiList)
+      setPaginationPage(0)
+      setPaginationModel({page: 0, pageSize: item.pageSize})
+      setDisabledNextBtn(false)
+    }
+  }
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
     pageSize: localStorage.getItem(localStorageKeys.paginationSize)
@@ -159,74 +215,74 @@ const Template = () => {
       : 20
   })
 
-
   const toggleAddTemplate = () => {
-    setSelectedTemplate(initialValue);
+    setSelectedTemplate(initialValue)
     setShowDialogue(true)
   }
+
   const deleteTemplateMutation = useMutation({
     mutationFn: () => deleteTemplate(selectId!),
     onSuccess: (res: number) => {
-      setDeleteDialog(false);
-      const updatedItems = ((queryClient.getQueryData('categoryTemplate') as CategoryTemplateType[]) || []).filter(item => item.id !== res);
-      queryClient.setQueryData('categoryTemplate', updatedItems);
-      toast.success("Template deleted successfully");
-      setSelectId(undefined);
+      if (res) {
+        queryClient.invalidateQueries('categoryTemplate');
+        setDeleteDialog(false)
+        const updatedItems = ((queryClient.getQueryData('categoryTemplate') as CategoryTemplateType[]) || []).filter(item => item.id !== res)
+        queryClient.setQueryData('categoryTemplate', updatedItems)
+        toast.success("Template deleted successfully")
+        setSelectId(undefined)
+      }
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to delete template');
+      setDeleteDialog(false)
+      setSelectId(undefined)
     }
   })
 
   const updatTemplateMutation = useMutation({
     mutationFn: (data: FormData) => updateTemplate(data),
     onSuccess: (res: any) => {
-
       if (res) {
-
         queryClient.setQueryData('categoryTemplate', (old: CategoryTemplateType[] | undefined) => {
-          if (!old) return [res];
+          if (!old) return [res]
 
           return old.map(item => {
             if (item.id === res.id) {
-
               return {
                 ...res,
                 author: res.author || item.author,
                 category: res.category || item.category
-              };
+              }
             }
 
-            return item;
-          });
-        });
-
-        toast.success("Template updated successfully");
-        setNewStatus(false);
-        setSelectedTemplate(undefined);
+            return item
+          })
+        })
+        toast.success("Template updated successfully")
+        setNewStatus(false)
+        setSelectedTemplate(undefined)
       }
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to update template');
+      toast.error(error.message || 'Failed to update template')
     }
-  });
+  })
 
   const handleFilter = (val: string) => {
     setValue(val);
     if (val.trim() === '') {
+      setFilteredData(null)
+
       return;
     } else {
-      const categoryTemplateCopie = Array.isArray(categoryTemplate) ? categoryTemplate : [];
-      const filtered = categoryTemplateCopie.filter(row =>
+      const dataToFilter = categoryTemplate || [];
+      const filtered = dataToFilter.filter(row =>
         Object.keys(row).some((key) => {
-          const value = row[key as keyof CategoryTemplateType];
+          const value = row[key as keyof CategoryTemplateType]
 
           return typeof value === "string" && value.toLowerCase().includes(val.trim().toLowerCase());
         })
       );
-      if (filtered?.length > 0) {
-        console.log(filtered);
-      }
+      setFilteredData(filtered);
     }
   }
 
@@ -234,51 +290,55 @@ const Template = () => {
     setSelectId(rowId)
     setDeleteDialog(true)
   }
-
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewTemplate, setPreviewTemplate] = useState<CategoryTemplateType | null>(null);
+  const handleTreeDeleteClick = (template: CategoryTemplateType) => {
+    handleDeleteClick(template.id);
+  };
+  const [previewOpen, setPreviewOpen] = useState(false)
+  const [previewTemplate, setPreviewTemplate] = useState<CategoryTemplateType | null>(null)
 
   const handleFilePreview = (template: CategoryTemplateType) => {
-    setPreviewTemplate(template);
-    setPreviewOpen(true);
-  };
-  const closeFilePreview = () => {
-    setPreviewOpen(false);
-  };
-  const handleUpdateClick = (item: CategoryTemplateType) => {
-    const dataToSend = {
-      ...item,
-      authorId: item.author?.id,
-      categoryId: item.category?.id
-    };
-    setSelectedTemplate(dataToSend);
-    setShowDialogue(true);
-  };
-  const handleSwitchVisibility = (data: CategoryTemplateType, e: any) => {
-    setNewStatus(true);
-    setSelectedTemplate(data);
+    setPreviewTemplate(template)
+    setPreviewOpen(true)
   }
+
+  const closeFilePreview = () => {
+    setPreviewOpen(false)
+  }
+
+  const handleSwitchVisibility = (data: CategoryTemplateType, e: any) => {
+    setNewStatus(true)
+    setSelectedTemplate(data)
+  }
+
   const handleDelete = () => {
     deleteTemplateMutation.mutate()
   }
+
+  const router = useRouter()
+
+  const handleUpdateClick = (CategoryTemplate) => {
+    router.push(`/apps/template/view/update/${CategoryTemplate.id}`)
+  }
+
   const handleClose =() => {
     setNewStatus(false)
     setSelectedTemplate(undefined)
-
   }
+
   const downloadTemplateMutation = useMutation({
     mutationFn: downloadTemplateFile,
     onSuccess: () => {
-      toast.success("Template téléchargé avec succès !");
+      toast.success("Template téléchargé avec succès !")
     },
     onError: (error: any) => {
-      toast.error(`Erreur lors du téléchargement : ${error.message}`);
+      toast.error(`Erreur lors du téléchargement : ${error.message}`)
     }
-  });
+  })
 
   function onDownload(row) {
     downloadTemplateMutation.mutate({id: row.id, originalFileName: row.originalFileName})
   }
+
   const handleConfirmation = () => {
     if (SelectedTemplate) {
       const updatedTemplate = {
@@ -286,52 +346,80 @@ const Template = () => {
         typeTv: SelectedTemplate.typeTv === IEnumTemplateVisibility.PRV
           ? IEnumTemplateVisibility.PB
           : IEnumTemplateVisibility.PRV
-      };
-
-      const formData = new FormData();
-
-      formData.append('id', String(updatedTemplate.id));
-      formData.append('name', updatedTemplate.name);
-      formData.append('description', updatedTemplate.description || '');
-      formData.append('domain', updatedTemplate.domain);
-      formData.append('type', updatedTemplate.type);
-      formData.append('typeTs', updatedTemplate.typeTs);
-      formData.append('typeTl', updatedTemplate.typeTl);
-      formData.append('typeTv', updatedTemplate.typeTv);
-      formData.append('version', updatedTemplate.version || '1.0.0');
-      formData.append('source', updatedTemplate.source || '');
-      formData.append('path', updatedTemplate.path || '');
-      formData.append('extension', updatedTemplate.extension || '');
-      formData.append('originalFileName', updatedTemplate.originalFileName || '');
-
-      formData.append('authorId', updatedTemplate.author?.id ? String(updatedTemplate.author.id) : '');
-      formData.append('categoryId', updatedTemplate.category?.id ? String(updatedTemplate.category.id) : '');
-
-      updatTemplateMutation.mutate(formData);
-    }
-  };
-
-  React.useEffect(() => {
-      if (categoryTemplate && !isLoading) {
-        console.log("Données des templates récupérées:", categoryTemplate);
-
-        if (Array.isArray(categoryTemplate)) {
-          categoryTemplate.forEach((template, index) => {
-            console.log(`Template #${index + 1}:`, {
-              id: template.id,
-              name: template.name,
-              author: template.author ? `${template.author.firstname} ${template.author.lastname}` : 'Non défini',
-              category: template.category?.name || 'Non défini',
-              typeTv: template.typeTv,
-              typeTs: template.typeTs
-            });
-          });
-        }
       }
-    }, [categoryTemplate, isLoading]);
+
+      const formData = new FormData()
+      formData.append('id', String(updatedTemplate.id))
+      formData.append('name', updatedTemplate.name)
+      formData.append('description', updatedTemplate.description || '')
+      formData.append('domain', updatedTemplate.domain)
+      formData.append('type', updatedTemplate.type)
+      formData.append('typeTs', updatedTemplate.typeTs)
+      formData.append('typeTl', updatedTemplate.typeTl)
+      formData.append('typeTv', updatedTemplate.typeTv)
+      formData.append('version', updatedTemplate.version || '1.0.0')
+      formData.append('source', updatedTemplate.source || '')
+      formData.append('path', updatedTemplate.path || '')
+      formData.append('extension', updatedTemplate.extension || '')
+      formData.append('originalFileName', updatedTemplate.originalFileName || '')
+      formData.append('authorId', updatedTemplate.author?.id ? String(updatedTemplate.author.id) : '')
+      formData.append('categoryId', updatedTemplate.category?.id ? String(updatedTemplate.category.id) : '')
+
+      updatTemplateMutation.mutate(formData)
+    }
+  }
+
+  const getFileTypeIcon = (extension) => {
+    if (!extension) return "mdi:file-outline"
+    const ext = extension.toLowerCase()
+    switch (ext) {
+      case "pdf": return "mdi:file-pdf-box"
+      case "doc": return "mdi:file-word-outline"
+      case "docx": return "mdi:file-word-outline"
+      case "xls": return "mdi:file-excel-outline"
+      case "xlsx": return "mdi:file-excel-outline"
+      case "ppt": return "mdi:file-powerpoint-outline"
+      case "pptx": return "mdi:file-powerpoint-outline"
+      case "txt": return "mdi:file-document-outline"
+      default: return "mdi:file-outline"
+    }
+  }
+
+  const getFileTypeColor = (extension) => {
+    if (!extension) return "text.secondary"
+    const ext = extension.toLowerCase()
+    switch (ext) {
+      case "pdf": return "error.main"
+      case "doc": return "primary.main"
+      case "docx": return "primary.main"
+      case "xls": return "success.main"
+      case "xlsx": return "success.main"
+      case "ppt": return "warning.main"
+      case "pptx": return "warning.main"
+      default: return "text.secondary"
+    }
+  }
 
   const defaultColumns: GridColDef[] = [
-    /*Domain column*/
+    {
+      flex: 0.1,
+      field: ' ',
+      minWidth: 20,
+      renderCell: ({ row }) => (
+        <Avatar
+          sx={{
+            width: 30,
+            height: 30,
+            bgcolor: 'transparent',
+            color: getFileTypeColor(row.extension),
+            '& .MuiSvgIcon-root': { fontSize: '2rem' },
+            '& svg': { fontSize: '2rem' }
+          }}
+        >
+          <Icon icon={getFileTypeIcon(row.extension)} fontSize="large"/>
+        </Avatar>
+      )
+    },
     {
       flex: 0.1,
       field: 'domain',
@@ -339,47 +427,12 @@ const Template = () => {
       headerName: t('Domain.Domain') as string,
       renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.domain}</Typography>
     },
-
     {
       flex: 0.1,
       field: t('name'),
       minWidth: 100,
       headerName: t('Name') as string,
       renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.name}</Typography>
-    },
-    {
-      flex: 0.1,
-      field: t('path'),
-      minWidth: 100,
-      headerName: t('path') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.path}</Typography>
-    },
-
-    {
-      flex: 0.1,
-      field: 'extension',
-      minWidth: 100,
-      headerName: t('extension') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.extension}</Typography>
-    },
-
-    {
-      flex: 0.1,
-      field: 'version',
-      minWidth: 100,
-      headerName: t('Version') as string,
-      renderCell: ({row}: CellType) => (
-        <Typography sx={{color: 'text.secondary'}}>
-          {row.version || '1.0.0'}
-        </Typography>
-      )
-    },
-    {
-      flex: 0.1,
-      field: 'source',
-      minWidth: 100,
-      headerName: t('source') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.source}</Typography>
     },
     {
       flex: 0.1,
@@ -395,6 +448,7 @@ const Template = () => {
         </Typography>
       )
     },
+
     {
       flex: 0.1,
       field: 'category',
@@ -406,7 +460,6 @@ const Template = () => {
         </Typography>
       )
     },
-
     {
       flex: 0.1,
       field: 'typeTs',
@@ -419,7 +472,7 @@ const Template = () => {
               {t(row.typeTs)}
             </Typography>
           </Tooltip>
-        );
+        )
       }
     },
     {
@@ -434,34 +487,16 @@ const Template = () => {
               {t(row.typeTl)}
             </Typography>
           </Tooltip>
-        );
+        )
       }
-    }
-    ,
-    {
-      flex: 0.1,
-      field: 'originalFileName',
-      minWidth: 100,
-      headerName: `${t('File Name')}`as string,
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Tooltip title={t(row?.originalFileName)}>
-            <Typography sx={{ color: 'text.secondary' }}>
-              {t(row.originalFileName)}
-            </Typography>
-          </Tooltip>
-        );
-      }
-    }
-    ,
-
+    },
     {
       flex: 0.1,
       field: 'TemplateVisibility',
       minWidth: 100,
       headerName: `${t('Visibility')}` as string,
       renderCell: ({ row }: CellType) => {
-        const status = row.typeTv === IEnumTemplateVisibility.PB;
+        const status = row.typeTv === IEnumTemplateVisibility.PB
 
         return (
           <Typography sx={{ color: 'text.secondary' }}>
@@ -472,12 +507,9 @@ const Template = () => {
               />
             </Tooltip>
           </Typography>
-        );
+        )
       }
     },
-
-
-    /*create Date column*/
     {
       field: 'createDate',
       minWidth: 140,
@@ -493,8 +525,6 @@ const Template = () => {
         )
       }
     },
-
-    /*createdBy column*/
     {
       field: 'createdBy',
       minWidth: 140,
@@ -510,8 +540,6 @@ const Template = () => {
         )
       }
     },
-
-    /*Last update Date column*/
     {
       field: 'updateDate',
       flex: 0.15,
@@ -527,8 +555,6 @@ const Template = () => {
         )
       }
     },
-
-    /*updatedBy column*/
     {
       field: 'updatedBy',
       flex: 0.15,
@@ -550,62 +576,106 @@ const Template = () => {
     ...defaultColumns,
     {
       field: 'actions',
-      headerName: '' as string,
+      headerName: ('') as string,
       align: 'right',
-      maxWidth: 180,
-      flex: 1,
+      width: 200,
+      sortable: false,
+      filterable: false,
       renderCell: ({row}: CellType) => (
-        <Box sx={{display: 'flex', alignItems: 'center'}}>
-          <Tooltip title={t(row.description)}>
-            <IconButton
-              className={Styles.sizeIcon} sx={{color: 'text.secondary'}}>
-              <Icon icon='tabler:info-circle'/>
-            </IconButton>
-          </Tooltip>
+        <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+          <PinIcon
+            templateId={row.id}
+            isPinned={row.isFavorite}
+            onToggle={(newStatus) => {
+              queryClient.setQueryData(['categoryTemplate'], (old: CategoryTemplateType[] | undefined) => {
+                if (!old) return old
+
+                return old.map(item =>
+                  item.id === row.id ? {...item, isFavorite: newStatus} : item
+                );
+              });
+            }}
+
+        />
+
+          {row.description && (
+            <Tooltip title={t(row.description)}>
+              <IconButton
+                size="small"
+                sx={{color: 'text.secondary'}}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Icon icon='tabler:info-circle'/>
+              </IconButton>
+            </Tooltip>
+          )}
+
+          {/* Bouton de suppression */}
           {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (
             <Tooltip title={t('Action.Delete')}>
               <IconButton
-                className={Styles.sizeIcon} sx={{color: 'text.secondary'}}
-                onClick={() => handleDeleteClick(row.id)}>
+                size="small"
+                sx={{color: 'text.secondary'}}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteClick(row.id);
+                }}
+              >
                 <Icon icon='tabler:trash'/>
               </IconButton>
             </Tooltip>
           )}
+
+          {/* Bouton d'édition */}
           {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.WRITE) && (
             <Tooltip title={t('Action.Edit')}>
               <IconButton
-                className={Styles.sizeIcon} sx={{color: 'text.secondary'}} onClick={() => handleUpdateClick(row)}>
+                size="small"
+                sx={{color: 'text.secondary'}}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleUpdateClick(row);
+                }}
+              >
                 <Icon icon='tabler:edit'/>
               </IconButton>
             </Tooltip>
-
           )}
-          <Tooltip title={t('Action.Download') as string}>
-            <IconButton className={Styles.sizeIcon} sx={{color: 'text.secondary'}} onClick={() => onDownload(row)}>
+
+          {/* Bouton de téléchargement */}
+          <Tooltip title={t('Action.Download')}>
+            <IconButton
+              size="small"
+              sx={{ color: 'text.secondary' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDownload(row);
+              }}
+              disabled={!row.originalFileName}
+            >
               <Icon icon='material-symbols:download'/>
             </IconButton>
           </Tooltip>
         </Box>
       )
     }
+
   ]
 
   const cardView = (
     <Grid container spacing={3} sx={{mb: 2, padding: '15px'}}>
-      {categoryTemplate &&
-        Array.isArray(categoryTemplate) &&
-        categoryTemplate.map((template, index) => (
-          <Grid key={index} item xs={6} sm={6} md={4} lg={12/5}>
-            <TemplateCard
-              data={template}
-              onDeleteClick={handleDeleteClick}
-              onSwitchStatus={handleSwitchVisibility}
-              onViewClick={handleUpdateClick}
-              onDownloadClick={onDownload}
-              onPreviewClick={handleFilePreview}
-            />
-          </Grid>
-        ))}
+      {(filteredData || categoryTemplate)?.map((template, index) => (
+        <Grid key={index} item xs={6} sm={6} md={4} lg={12/5}>
+          <TemplateCard
+            data={template}
+            onDeleteClick={handleDeleteClick}
+            onSwitchStatus={handleSwitchVisibility}
+            onViewClick={handleUpdateClick}
+            onDownloadClick={onDownload}
+            onPreviewClick={handleFilePreview}
+          />
+        </Grid>
+      ))}
     </Grid>
   )
 
@@ -616,14 +686,14 @@ const Template = () => {
         className={Styles.tableStyleNov}
         columnHeaderHeight={themeConfig.columnHeaderHeight}
         rowHeight={themeConfig.rowHeight}
-        rows={categoryTemplate || []}
+        rows={filteredData || categoryTemplate || []}
         columnVisibilityModel={columnVisibilityModel}
         onColumnVisibilityModelChange={setColumnVisibilityModel}
         columns={columns}
         disableRowSelectionOnClick
         pageSizeOptions={themeConfig.pageSizeOptions}
         paginationModel={paginationModel}
-        onPaginationModelChange={handlePaginationChange}
+        onPaginationModelChange={onChangePagination}
         rowCount={countTemplate || 0}
         paginationMode="server"
         slotProps={{
@@ -649,15 +719,31 @@ const Template = () => {
       />
     </Box>
   )
+
   const renderViewBasedOnMode = () => {
-    if (isMobile && viewMode === 'auto') {
-      return cardView
-    } else if (!isMobile && viewMode === 'auto') {
-      return gridView
+    if (viewMode === 'tree') {
+      return (
+        <TreeViewCategoriesTemplates
+          categories={categories}
+          templates={filteredData || categoryTemplate || []}
+          onUpdateClick={handleUpdateClick}
+          onDownload={onDownload}
+          onDeleteClick={handleTreeDeleteClick}
+        />
+      );
     } else if (viewMode === 'grid') {
-      return gridView
-    } else if (viewMode === 'card') {
-      return cardView
+      return gridView;
+    } else {
+      return (
+        <>
+          <CategorySelector
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            categories={categories || []}
+          />
+          {cardView}
+        </>
+      );
     }
   }
 
@@ -667,22 +753,13 @@ const Template = () => {
         <Grid container spacing={6.5}>
           <Grid item xs={12}>
             <Card>
-              <CardHeader title={t('Templates')}/>
-              <Box sx={{display: 'flex', justifyContent: 'center', gap: 2, margin: 2}}>
-                <ToggleButtonGroup
-                  exclusive
-                  value={viewMode}
-                  onChange={toggleViewMode}
-                  aria-label="text alignment"
-                >
-                  <ToggleButton value="grid" aria-label="grid view">
-                    <Icon icon="ic:baseline-view-list"/>
-                  </ToggleButton>
-                  <ToggleButton value="card" aria-label="card view">
-                    <Icon icon="ic:baseline-view-module"/>
-                  </ToggleButton>
-                </ToggleButtonGroup>
-              </Box>
+              <CardHeader title={t('Templates')} />
+
+              <ViewToggleButtons
+                viewMode={viewMode}
+                onViewModeChange={handleViewModeChange}
+              />
+
               <TableHeader
                 dataGridApi={dataGridApiRef as React.MutableRefObject<GridApiCommunity>}
                 value={value}
@@ -692,14 +769,18 @@ const Template = () => {
                 permissionPage={PermissionPage.APP_PARAMETER}
                 permissionAction={PermissionAction.WRITE}
               />
+
               {renderViewBasedOnMode()}
+
               {showDialogue && (
                 <AddTemplateDrawer
                   categoryTemplate={SelectedTemplate}
                   showDialogue={showDialogue}
                   setShowDialogue={setShowDialogue}
+
                 />
               )}
+
               <DeleteCommonDialog
                 open={deleteDialog}
                 setOpen={setDeleteDialog}
@@ -707,12 +788,14 @@ const Template = () => {
                 onDelete={handleDelete}
                 item="Template"
               />
+
               <UpdateVisibility
                 open={newStatus}
                 setOpen={setNewStatus}
                 handleConfirmation={handleConfirmation}
                 handleClose={handleClose}
               />
+
               {previewOpen && previewTemplate && (
                 <TemplatePreviewDialog
                   open={previewOpen}
@@ -727,4 +810,5 @@ const Template = () => {
     </>
   )
 }
+
 export default Template

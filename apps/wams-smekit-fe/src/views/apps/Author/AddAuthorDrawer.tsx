@@ -26,6 +26,7 @@ import {
 import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
 import DomainApis from "ims-shared/@core/api/ims/domain";
 import apiUrls from "../../../config/apiUrl";
+import MuiPhoneNumber from "material-ui-phone-number";
 
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -41,10 +42,12 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
   const queryClient = useQueryClient();
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
   const schema = yup.object().shape({
-    firstname: yup.string().required("firstname is required"),
-    lastname: yup.string().required("lastname is required"),
-    description: yup.string().required("Description is required"),
-    domain: yup.string().required("Domain is required"),
+    firstname: yup.string().required(t("firstname is required")),
+    lastname: yup.string().required(t("lastname is required")),
+    phone: yup.string().required(t("Phone Number is required")),
+    domain: yup.string().required(t("Domain is required")),
+    email: yup.string().required(t("E-mail is required")),
+
   });
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log('file changed', event)
@@ -52,12 +55,15 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
     const file = event.target.files?.[0]
     setSelectedFile(file)
   }
-
-
+  const handleClose = () => {
+    setShowDialogue(false);
+    reset();
+  };
   const {
     reset,
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<AuthorType>({
     defaultValues: author,
@@ -75,8 +81,10 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
     }
     formData.append('firstname', data.firstname);
     formData.append('lastname', data.lastname);
-    formData.append('description', data.description);
+    formData.append('phone', data.phone);
     formData.append('domain', data.domain);
+    formData.append('email', data.email);
+
 
     if (author?.id) {
       updateAuthorMutation.mutate({ ...data, id: author.id });
@@ -101,7 +109,14 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
 
 
   const updateAuthorMutation = useMutation({
-    mutationFn: (data: AuthorType) => updateAuthor(data),
+    mutationFn: (data: AuthorType) => {
+      const formData = new FormData();
+      Object.keys(data).forEach(key => {
+        formData.append(key, data[key]);
+      });
+
+      return updateAuthor(formData);
+    },
     onSuccess: (res: AuthorType) => {
       if (res) {
         queryClient.invalidateQueries('AuthorType');
@@ -114,16 +129,10 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
         }
         toast.success("Author updated successfully");
         handleClose();
-
-
       }
     }
-  })
+  });
 
-  const handleClose = () => {
-    setShowDialogue(false);
-    reset();
-  };
 
   return (
     <Drawer
@@ -146,6 +155,111 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
       </Header>
       <Box sx={{ p: 6 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
+
+          <FormControl fullWidth sx={{ mb: 4 }} size="small">
+            <InputLabel id="Domaine-select-label">{t('Domain.Domain')}</InputLabel>
+            <Controller
+              name='domain'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <Select
+                  labelId="Domaine-select-label"
+                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
+                  size='small'
+                  label={t('Domaine')}
+                  name='Domaine'
+                  onChange={onChange}
+                  value={value || ''}
+                >
+                  <MenuItem value=''>
+                    <em>{t('None')}</em>
+                  </MenuItem>
+                  {domainList?.map((domain: DomainType) => (
+                    <MenuItem key={domain.id} value={domain.name}>
+                      {domain.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+          </FormControl>
+
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <Controller
+              name='firstname'
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  size='small'
+                  {...field}
+                  label={t('FirstName')}
+                  placeholder={t('Enter firstname')}
+                  error={Boolean(errors.firstname)}
+                  helperText={errors.firstname?.message}
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <Controller
+              name='lastname'
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  size='small'
+                  {...field}
+                  label={t('LastName')}
+                  placeholder={t('Enter lastname')}
+                  error={Boolean(errors.lastname)}
+                  helperText={errors.lastname?.message}
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <Controller
+              name='email'
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  size='small'
+                  {...field}
+                  label={t('email')}
+                  placeholder={t('Enter email')}
+                  error={Boolean(errors.email)}
+                  helperText={errors.lastname?.message}
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{mb: 4}}>
+            <Controller
+              name='phone'
+              control={control}
+              rules={{required: true}}
+              render={({field: {value}}) => (
+                <MuiPhoneNumber
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  defaultCountry={"tn"}
+                  countryCodeEditable={true}
+                  label={t('Phone_Number')}
+                  value={value}
+                  onChange={(e) => {
+                    const updatedValue = e.replace(/\s+/g, '')
+                    setValue('phone', updatedValue)
+                  }}
+                  error={Boolean(errors.phone)}
+                />
+
+              )}
+            />
+            {errors.phone && <FormHelperText sx={{color: 'error.main'}}>{errors.phone.message}</FormHelperText>}
+          </FormControl>
+
           <FormControl fullWidth sx={{mb: 4}}>
             <label htmlFor='file' style={{alignItems: 'center', cursor: 'pointer', display: 'flex'}}>
               <Avatar
@@ -167,83 +281,6 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
               </Button>
               <input type='file' name='file' id='file' style={{display: 'none'}} onChange={handleFileChange}/>
             </label>
-          </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
-            <Controller
-              name='domain'
-              control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
-                <Select
-                  disabled={checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? false : true}
-                  size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
-                  onChange={onChange}
-                  value={value}
-                >
-                  <MenuItem value=''>
-                    <em>{t('None')}</em>
-                  </MenuItem>
-                  {domainList?.map((domain: DomainType) => (
-                    <MenuItem key={domain.id} value={domain.name}>
-                      {domain.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              )}
-            />
-            {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 4 }}>
-            <Controller
-              name='firstname'
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  size='small'
-                  {...field}
-                  label='FirstName'
-                  placeholder='Enter firstname'
-                  error={Boolean(errors.firstname)}
-                  helperText={errors.firstname?.message}
-                />
-              )}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ mb: 4 }}>
-            <Controller
-              name='lastname'
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  size='small'
-                  {...field}
-                  label='LastName'
-                  placeholder='Enter lastname'
-                  error={Boolean(errors.lastname)}
-                  helperText={errors.lastname?.message}
-                />
-              )}
-            />
-          </FormControl>
-
-          <FormControl fullWidth sx={{ mb: 4 }}>
-            <Controller
-              name='description'
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  size='small'
-                  {...field}
-                  label='Description'
-                  placeholder='Enter description'
-                  error={Boolean(errors.description)}
-                  helperText={errors.description?.message}
-                />
-              )}
-            />
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button type='submit' variant='contained' sx={{ mr: 3 }} >

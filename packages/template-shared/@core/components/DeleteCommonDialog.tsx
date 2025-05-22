@@ -107,7 +107,7 @@ const DeleteCommonDialog = (props: Props) => {
                         <Typography variant='h4' sx={{mb: 5, color: 'text.secondary'}}>
                             {t('Are you sure')}
                         </Typography>
-                        <Typography>{t('You want to delete this') + ' ' + t(item + '.' + item) + '!'}</Typography>
+                        <Typography>{t('You want to delete this') +' !'}</Typography>
                     </Box>
                 </DialogContent>
                 <DialogActions

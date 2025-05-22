@@ -28,7 +28,8 @@
     "react-quill": "^2.0.0",
     "wams-smekit-fe": "workspace:*",
     "ims-shared": "workspace:*",
-    "template-shared": "workspace:*"
+    "template-shared": "workspace:*",
+    "react-draft-wysiwyg": "^1.15.0"
   },
   "devDependencies": {
     "tsconfig": "workspace:*"

@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {deleteCategory, fetchAll, updateCategory} from "../../../api/category";
+import {deleteCategory, fetchAll, getCategoryByPage, updateCategory} from "../../../api/category";
 import Box from '@mui/material/Box';
 import Icon from "template-shared/@core/components/icon";
 import {CategoryType, IEnumCategoryType} from "../../../types/category";
@@ -12,7 +12,7 @@ import {useTranslation} from "react-i18next";
 import toast from "react-hot-toast";
 import DeleteCommonDialog from "template-shared/@core/components/DeleteCommonDialog";
 import AddCategoryDrawer from "../../../views/apps/category/addCatgoryDrawer";
-import {Switch, ToggleButton, ToggleButtonGroup} from "@mui/material";
+import {Avatar, Chip, Switch, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/system";
 import Styles from "template-shared/style/style.module.css";
@@ -22,7 +22,6 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import {GridPaginationModel} from "@mui/x-data-grid/models/gridPaginationProps";
 import localStorageKeys from "template-shared/configs/localeStorage";
-import ResumeApis from "rpm-shared/@core/api/rpm/resume";
 import TableHeader from "template-shared/views/table/TableHeader";
 import Moment from "react-moment";
 import {checkPermission} from "template-shared/@core/api/helper/permission";
@@ -34,20 +33,16 @@ import {
 import {GridApiCommunity} from "@mui/x-data-grid/internals";
 import CategoryCard from "../../../views/apps/category/CategoryCard";
 import UpdateStatus from "../../../views/apps/category/updateStatus";
-
-// const Header = styled(Box)<BoxProps>(({ theme }) => ({
-//   display: 'flex',
-//   alignItems: 'center',
-//   padding: theme.spacing(6),
-//   justifyContent: 'space-between'
-// }))
+import apiUrls from "../../../config/apiUrl";
 
 const initialValue: CategoryType =
   {
     domain: '',
     name: '',
     type: IEnumCategoryType.ENABLED,
-    description: ''
+    description: '',
+    imagePath:'',
+    tagName: []
   }
 
 
@@ -92,7 +87,7 @@ const Category = () => {
   })
 
   const handleConfirmation =() => {
-     if (selectedCategory.type === IEnumCategoryType.ENABLED) {
+    if (selectedCategory.type === IEnumCategoryType.ENABLED) {
       selectedCategory.type = IEnumCategoryType.DISABLED
     }else {
       selectedCategory.type = IEnumCategoryType.ENABLED
@@ -116,15 +111,16 @@ const Category = () => {
     mutationFn: () => deleteCategory(selectId),
     onSuccess: (res: any) => {
       if (res) {
-
         setDeleteDialog(false)
         const updatedItems = ((queryClient.getQueryData('categoryList') as CategoryType[]) || []).filter(item => item.id !== res)
         queryClient.setQueryData('categoryList', updatedItems)
         toast.success("Category deleted successfully")
         setSelectId(undefined)
-
-
       }
+    },
+    onError: (error: Error) => {
+      setDeleteDialog(false)
+      setSelectId(undefined)
     }
   })
 
@@ -160,16 +156,28 @@ const Category = () => {
     createDate: false,
     createdBy: false,
     updateDate: false,
-    updatedBy: false
+    updatedBy: false,
+    tags: false
   })
   const [paginationPage, setPaginationPage] = useState<number>(0)
-  const [disabledNextBtn, setDisabledNextBtn] = useState<boolean>(false)
+  const [, setDisabledNextBtn] = useState<boolean>(false)
 
   const dataGridApiRef = React.useRef<GridApi>()
 
 
   const defaultColumns: GridColDef[] = [
-    /*Domain column*/
+    {
+      field: 'photo',
+      headerName: t('Photo') as string,
+      type: 'string',
+      flex: 0.1,
+      renderCell: ({row}: CellType) => (
+        <Avatar className={Styles.avatarTable}
+                src={row.imagePath ? `${apiUrls.apiUrl_smekit_Category_ImageDownload_Endpoint}/${row.id}?${Date.now()}` : ''}
+                alt={row.name}
+        />
+      )
+    },
     {
       flex: 0.1,
       field: 'domain',
@@ -186,57 +194,55 @@ const Category = () => {
       headerName: t('Name') as string,
       renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.name}</Typography>
     },
-
-    // /*Description column*/
-    //
-    // {
-    //   flex: 0.1,
-    //   field: 'description',
-    //   minWidth: 100,
-    //   headerName: t('Description') as string,
-    //   renderCell: ({ row }: CellType) => {
-    //     const [expanded, setExpanded] = React.useState(false);
-    //     const maxLength = 30;
-    //
-    //     const handleToggle = () => setExpanded(!expanded);
-    //
-    //     return (
-    //       <Typography sx={{ color: 'text.secondary', whiteSpace: 'pre-line' }}>
-    //         {expanded ? row.description : `${row.description.slice(0, maxLength)}... `}
-    //         {row.description.length > maxLength && (
-    //           <Button
-    //             variant="text"
-    //             size="small"
-    //             sx={{ textTransform: 'none', padding: 0, minWidth: 'auto' }}
-    //             onClick={handleToggle}
-    //           >
-    //             {expanded ? t('See less') : t('See more')}
-    //           </Button>
-    //         )}
-    //       </Typography>
-    //     );
-    //   }
-    // },
-
     {
       flex: 0.1,
       field: 'type',
       minWidth: 100,
-      headerName: `${t('ENABLED')} / ${t('DISABLED')}` as string,
+      headerName: `${t('ENABLED')} ` as string,
       renderCell: ({row}: CellType) => {
 
-          const status = row.type === 'ENABLED';
+        const status = row.type === 'ENABLED';
 
-          return <Typography sx={{color: 'text.secondary'}}>
-                  <Tooltip title={t(row?.type)}>
-                    <Switch checked={status}
-                            onChange={(e) => handleSwitchStatus(row, e.target.checked)}
-                    />
-                  </Tooltip>
-          </Typography>
+        return <Typography sx={{color: 'text.secondary'}}>
+          <Tooltip title={t(row?.type)}>
+            <Switch checked={status}
+                    onChange={(e) => handleSwitchStatus(row, e.target.checked)}
+            />
+          </Tooltip>
+        </Typography>
 
       }
     },
+
+    /*Tags column*/
+    {
+      flex: 0.2,
+      field: 'tags',
+      minWidth: 150,
+      headerName: t('Tags') as string,
+      renderCell: ({row}: CellType) => (
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+          {row.tagName && row.tagName.length > 0 ? (
+            row.tagName.map((tag, index) => (
+              <Chip
+                key={index}
+                label={tag.tagName}
+                size="small"
+                sx={{
+                  '& .MuiChip-label': {
+                    color: 'primary.main',
+                    fontWeight: 'medium'
+                  }
+                }}
+              />
+            ))
+          ) : (
+            <Typography sx={{color: 'text.secondary'}}>{t('No tags')}</Typography>
+          )}
+        </Box>
+      )
+    },
+
 
     /*create Date column*/
     {
@@ -360,7 +366,7 @@ const Category = () => {
       setPaginationModel(item)
       localStorage.removeItem(localStorageKeys.paginationSize)
       localStorage.setItem(localStorageKeys.paginationSize, item.pageSize)
-      const apiList = await ResumeApis(t).getResumesByPage(0, item.pageSize)
+      const apiList =  getCategoryByPage(0, item.pageSize)
       queryClient.removeQueries('resumes')
       queryClient.setQueryData('resumes', apiList)
       setPaginationPage(0)
@@ -409,7 +415,7 @@ const Category = () => {
                 onDeleteClick={handleDeleteClick}
                 onSwitchStatus={handleSwitchStatus}
                 onViewClick={handleUpdateClick}
-              />
+                imageUrl={apiUrls.apiUrl_smekit_Category_ImageDownload_Endpoint}/>
             </Grid>
 
           )
@@ -427,7 +433,11 @@ const Category = () => {
         row =>
           row.name.toLowerCase().includes(val.trim().toLowerCase()) ||
           row.type.toLowerCase().includes(val.trim().toLowerCase()) ||
-          row.domain.toLowerCase().includes(val.trim().toLowerCase())
+          row.domain.toLowerCase().includes(val.trim().toLowerCase()) ||
+          (row.tagName && row.tagName.some(tag =>
+              tag.tagName.toLowerCase().includes(val.trim().toLowerCase())
+            )
+          ) || []
       )
       if (filtered) {
         console.log(filtered)
@@ -507,11 +517,11 @@ const Category = () => {
               />
 
               <UpdateStatus
-              open={newStatus}
-              setOpen={setNewStatus}
-               handleConfirmation={handleConfirmation}
-              handleClose={handleClose}
-            />
+                open={newStatus}
+                setOpen={setNewStatus}
+                handleConfirmation={handleConfirmation}
+                handleClose={handleClose}
+              />
             </Card>
           </Grid>
         </Grid>

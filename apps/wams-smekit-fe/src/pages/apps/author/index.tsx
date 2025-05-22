@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {AuthorType} from "../../../types/author";
-import {deleteAuthor, fetchAllAuthor} from "../../../api/author";
+import {deleteAuthor, fetchAllAuthor, getAuthorByPage} from "../../../api/author";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -35,14 +35,15 @@ import DeleteCommonDialog from "template-shared/@core/components/DeleteCommonDia
 
 import toast from "react-hot-toast";
 import apiUrls from "../../../config/apiUrl";
+import {useRouter} from "next/navigation";
 
 const initialValue: AuthorType =
   {
+    email: "", extension: "", file: undefined, fileName: "", originalFileName: "", path: "", phone: "", type: "",
     domain: "", firstname: "", lastname: "",
     code: "",
     createDate: "",
     createdBy: "",
-    description: "",
     updateDate: "",
     updatedBy: "",
     imagePath: ""
@@ -71,8 +72,14 @@ const Author =()=>{
     createDate: false,
     createdBy: false,
     updateDate: false,
-    updatedBy: false
+    updatedBy: false,
+    phone: false,
+    email: false,
+
   })
+  const [, setPreviewOpen] = useState(false);
+  const [, setPreviewTemplate] = useState<AuthorType | null>(null);
+
   const [paginationModel, setPaginationModel] =
     useState<GridPaginationModel>({
         page: paginationPage,
@@ -94,7 +101,7 @@ const Author =()=>{
       setPaginationModel(item)
       localStorage.removeItem(localStorageKeys.paginationSize)
       localStorage.setItem(localStorageKeys.paginationSize, item.pageSize)
-      const apiList = await ResumeApis(t).getResumesByPage(0, item.pageSize)
+      const apiList = getAuthorByPage(0, item.pageSize)
       queryClient.removeQueries('author')
       queryClient.setQueryData('author', apiList)
       setPaginationPage(0)
@@ -109,7 +116,8 @@ const Author =()=>{
       const resumesCopie = [...authorList]
       const filtered = resumesCopie.filter(
         row =>
-          row.name.toLowerCase().includes(val.trim().toLowerCase()) ||
+          row.firstname.toLowerCase().includes(val.trim().toLowerCase()) ||
+          row.lastname.toLowerCase().includes(val.trim().toLowerCase()) ||
           row.type.toLowerCase().includes(val.trim().toLowerCase()) ||
           row.domain.toLowerCase().includes(val.trim().toLowerCase())
       )
@@ -123,10 +131,10 @@ const Author =()=>{
     setSelectId(rowId)
     setDeleteDialog(true)
   }
+  const router = useRouter()
 
-  const handleUpdateClick = (item: AuthorType) => {
-    setSelectedAuthor(item);
-    setShowDialogue(true);
+  const handleUpdateClick = (author) => {
+    router.push(`/apps/author/view/update/${author.id}`);
   }
 
   const toggleAddAuthor = () => {
@@ -177,6 +185,20 @@ const Author =()=>{
       minWidth: 100,
       headerName: t('Domaine') as string,
       renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.domain}</Typography>
+    },
+    {
+      flex: 0.1,
+      field: 'email',
+      minWidth: 100,
+      headerName: t('email') as string,
+      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.email}</Typography>
+    },
+    {
+      flex: 0.1,
+      field: 'phone',
+      minWidth: 100,
+      headerName: t('phone') as string,
+      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.phone}</Typography>
     },
 
     /*create Date column*/
@@ -257,12 +279,25 @@ const Author =()=>{
       flex: 1,
       renderCell: ({row}: CellType) => (
         <Box sx={{display: 'flex', alignItems: 'center'}}>
-          <Tooltip title={t(row.description)}>
-            <IconButton
-              className={Styles.sizeIcon} sx={{color: 'text.secondary'}}>
-              <Icon icon='tabler:info-circle'/>
-            </IconButton>
-          </Tooltip>
+          {/*<Tooltip title={t(row.description)}>*/}
+          {/*  <IconButton*/}
+          {/*    className={Styles.sizeIcon} sx={{color: 'text.secondary'}}>*/}
+          {/*    <Icon icon='tabler:info-circle'/>*/}
+          {/*  </IconButton>*/}
+          {/*</Tooltip>*/}
+          {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (
+            <Tooltip title={t('Action.update')}>
+              <IconButton
+                className={Styles.sizeIcon}
+                sx={{ color: 'text.secondary' }}
+                onClick={() => handleUpdateClick(row)}
+              >
+                <Icon icon="tabler:edit" />
+              </IconButton>
+            </Tooltip>
+
+
+          )}
           {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (
             <Tooltip title={t('Action.Delete')}>
               <IconButton
@@ -300,7 +335,10 @@ const Author =()=>{
       }
     }
   })
-
+  const handlePreviewClick = (author: AuthorType) => {
+    setPreviewTemplate(author);
+    setPreviewOpen(true);
+  }
   const handleDelete = () => {
     deleteAuthorMutation.mutate()
   }
@@ -340,6 +378,7 @@ const Author =()=>{
             <Grid key={index} item xs={6} sm={6} md={4} lg={12 / 5}>
               <AuthorCard
                 data={author}
+                onPreviewClick={handlePreviewClick}
                 onDeleteClick={handleDeleteClick}
                 onViewClick={handleUpdateClick}
                 imageUrl={apiUrls.apiUrl_smekit_Author_ImageDownload_Endpoint}
@@ -370,7 +409,7 @@ const Author =()=>{
         <Grid container spacing={6.5}>
           <Grid item xs={12}>
           <Card>
-            <CardHeader title={t('Author')}/>
+            <CardHeader title={t('Authors')}/>
             <Box sx={{display: 'flex', justifyContent: 'center', gap: 2, margin: 2}}>
               <ToggleButtonGroup
                 exclusive
@@ -403,6 +442,9 @@ const Author =()=>{
                 setShowDialogue={setShowDialogue}
               />
             )}
+
+
+
             <DeleteCommonDialog
               open={deleteDialog}
               setOpen={setDeleteDialog}

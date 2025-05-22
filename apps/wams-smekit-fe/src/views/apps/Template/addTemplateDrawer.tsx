@@ -15,38 +15,61 @@ import IconButton from "@mui/material/IconButton";
 import Icon from "template-shared/@core/components/icon";
 import Box, { BoxProps } from "@mui/material/Box";
 import { addTemplate, updateTemplate } from "../../../api/template";
-import {useMutation, useQuery, useQueryClient} from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import toast from "react-hot-toast";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
-import {FormHelperText, InputLabel, MenuItem, Select} from "@mui/material";
+import { FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, Switch } from "@mui/material";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { fetchAll } from "../../../api/category";
 import { CategoryType } from "../../../types/category";
-import {AuthorType} from "../../../types/author";
-import {fetchAllAuthor} from "../../../api/author";
-import {checkPermission} from "template-shared/@core/api/helper/permission";
+import { AuthorType } from "../../../types/author";
+import { fetchAllAuthor } from "../../../api/author";
+import { checkPermission } from "template-shared/@core/api/helper/permission";
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
 } from "template-shared/@core/types/helper/apiPermissionTypes";
-import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
+import { DomainType } from "ims-shared/@core/types/ims/domainTypes";
 import DomainApis from "ims-shared/@core/api/ims/domain";
-
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
   justifyContent: 'space-between'
-}));
+}))
+const FormSection = styled(Box)<BoxProps>(({ theme }) => ({
+  marginBottom: theme.spacing(4)
+}))
+const SectionTitle = styled(Typography)<BoxProps>(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  fontWeight: 600,
+  fontSize: '0.875rem'
+}))
+const FileUploadContainer = styled(Box)<BoxProps>(({ theme }) => ({
+  border: `1px dashed ${theme.palette.primary.main}`,
+  borderRadius: theme.shape.borderRadius,
+  padding: theme.spacing(4),
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: theme.palette.background.default,
+  cursor: 'pointer',
+  transition: 'background-color 0.2s ease',
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover
+  }
+}))
 
 const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const [file, setFile] = useState<File | null>(null)
+  const [file, setFile] = useState<File | null>(null);
+
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
     description: yup.string().required("Description is required"),
@@ -54,38 +77,48 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
     typeTs: yup.string().required("Status type is required"),
     typeTv: yup.string().required("Visibility type is required"),
     typeTl: yup.string().required("Language type is required"),
+    version: yup.string().notRequired(),
     file: yup.mixed().when('id', {
       is: (id: number) => !id,
       then: (schema) => schema.required("File is required"),
       otherwise: (schema) => schema.notRequired()
     })
-  })
+  });
+
+  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newType = event.target.checked ? IEnumTemplateVisibility.PRV : IEnumTemplateVisibility.PB;
+    setValue('typeTv', newType, { shouldValidate: true });
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files
+    const files = event.target.files;
     if (files && files.length > 0) {
-      setFile(files[0])
-      setValue('file', files[0])
+      setFile(files[0]);
+      setValue('file', files[0]);
     }
-    trigger('file')
-  }
+    trigger('file');
+  };
 
   const {
     reset,
     handleSubmit,
     setValue,
     trigger,
+    watch,
     control,
     formState: { errors }
   } = useForm<CategoryTemplateType>({
-    defaultValues: categoryTemplate,
+    defaultValues:{ ...categoryTemplate,
+    version: categoryTemplate?.version || '1'},
     mode: 'all',
     resolver: yupResolver(schema)
   });
 
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [authors, setAuthors] = useState<AuthorType[]>([]);
-  const {data: domainList} = useQuery('domains', DomainApis(t).getDomains)
+  const { data: domainList } = useQuery('domains', DomainApis(t).getDomains);
+  const typeTv = watch('typeTv');
+  const isPrivate = typeTv === IEnumTemplateVisibility.PRV;
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -99,7 +132,6 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
     loadCategories();
     loadAuthors();
   }, []);
-
 
   const handleClose = () => {
     setShowDialogue(false);
@@ -123,8 +155,13 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
         completeTemplate
       ]);
 
+      queryClient.invalidateQueries('categoryTemplate');
+
       toast.success(t('Template added successfully'));
       handleClose();
+    },
+    onError: (error) => {
+      toast.error( t('Failed to add template'));
     }
   });
   const updateTemplateMutation = useMutation({
@@ -141,11 +178,10 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
         )
       );
 
-      toast.success("Template updated successfully")
+      toast.success("Template updated successfully");
       handleClose();
     }
   });
-
 
   const onSubmit = async (data: CategoryTemplateType) => {
     try {
@@ -157,7 +193,7 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
       formData.append('typeTs', data.typeTs);
       formData.append('typeTv', data.typeTv);
       formData.append('typeTl', data.typeTl);
-
+      formData.append('version', data.id ? (data.version || '1') : '1');
       if (data.file) {
         formData.append('file', data.file);
       }
@@ -170,11 +206,10 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
       }
 
       if (data.id) {
-        formData.append('id', data.id.toString());
         await updateTemplateMutation.mutateAsync(formData);
       } else {
         if (!data.file) {
-          throw new Error("File is required for new templates");
+          throw new Error(t("File is required for new templates"));
         }
         await addTemplateMutation.mutateAsync(formData);
       }
@@ -182,7 +217,8 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
     } catch (error) {
       toast.error(error.message || t('Failed to submit template'));
     }
-  }
+  };
+  const isEditMode = Boolean(categoryTemplate?.id);
 
   return (
     <Drawer
@@ -205,48 +241,83 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
       </Header>
       <Box sx={{ p: 6 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-
-          <FormControl fullWidth sx={{mb: 4}}>
-            <label htmlFor='file' style={{alignItems: 'center', cursor: 'pointer'}}>
-              <Button
-                color='primary'
-                variant='outlined'
-                component='span'
-                sx={{width: '100%'}}
-                startIcon={<Icon icon='tabler:upload'/>}
-              >
-                {t('Template.Template')}
-              </Button>
+          <FormSection>
+            <SectionTitle>{t('Template File')}</SectionTitle>
+            <FormControl fullWidth>
               <input
                 type='file'
                 name='file'
                 id='file'
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 onChange={handleFileChange}
                 accept=".pdf,.doc,.docx"
               />
-              <Typography variant='body2' sx={{mt: 1}}>
-                {file ? file.name : t('No file selected')}
-              </Typography>
-            </label>
-            {errors.file && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.file.message}</FormHelperText>
-            )}
+              <label htmlFor='file'>
+                <FileUploadContainer>
+                  <Icon icon='tabler:upload' fontSize="2rem" color="primary" />
+                  <Typography variant='body1' sx={{ mt: 2, fontWeight: 500 }}>
+                    {t('Upload Template File')}
+                  </Typography>
+                  <Typography variant='body2' sx={{ mt: 1, color: 'text.secondary' }}>
+                    {file ? file.name : isEditMode ? t('Upload new file (optional)') : t('Click to browse (.pdf, .doc, .docx)')}
+                  </Typography>
+                  {file && (
+                    <Button
+                      size="small"
+                      color="error"
+                      sx={{ mt: 2 }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setFile(null);
+                        setValue('file', null);
+                      }}
+                    >
+                      {t('Remove')}
+                    </Button>
+                  )}
+                </FileUploadContainer>
+              </label>
+              {errors.file && (
+                <FormHelperText error>{errors.file.message}</FormHelperText>
+              )}
+            </FormControl>
+          </FormSection>
+
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <Controller
+              name="version"
+              control={control}
+              defaultValue="1"
+              render={({ field }) => (
+                <TextField
+                  size="small"
+                  {...field}
+                  label={t('Version')}
+                  placeholder="1"
+                  error={Boolean(errors.version)}
+                  helperText={errors.version?.message}
+                  sx={{ display: 'none' }}
+                />
+              )}
+            />
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+
+
+          <FormControl fullWidth sx={{ mb: 4 }} size="small">
+            <InputLabel id="domain-select-label">{t('Domain.Domain')}</InputLabel>
             <Controller
               name='domain'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <Select
-                  disabled={checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? false : true}
+                  labelId="domain-select-label"
+                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
                   size='small'
                   label={t('Domain.Domain')}
                   name='domain'
                   onChange={onChange}
-                  value={value}
+                  value={value || ''}
                 >
                   <MenuItem value=''>
                     <em>{t('None')}</em>
@@ -259,8 +330,9 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
+            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
           </FormControl>
+
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name="name"
@@ -269,24 +341,27 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
                 <TextField
                   size="small"
                   {...field}
-                  label="Name"
-                  placeholder="Enter name"
+                  label={t('Name')}
+                  placeholder={t('Enter name')}
                   error={Boolean(errors.name)}
                   helperText={errors.name?.message}
                 />
               )}
             />
           </FormControl>
+
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name="description"
+              name='description'
               control={control}
               render={({ field }) => (
                 <TextField
-                  size="small"
+                  multiline
+                  rows={4}
+                  size='small'
                   {...field}
-                  label="Description"
-                  placeholder="Enter description"
+                  label={t('Description')}
+                  placeholder={t('Enter description')}
                   error={Boolean(errors.description)}
                   helperText={errors.description?.message}
                 />
@@ -294,31 +369,17 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
             />
           </FormControl>
 
-          {/*<FormControl fullWidth sx={{ mb: 4 }}>*/}
-          {/*  <Controller*/}
-          {/*    name="fileName"*/}
-          {/*    control={control}*/}
-          {/*    render={({ field }) => (*/}
-          {/*      <TextField*/}
-          {/*        size="small"*/}
-          {/*        {...field}*/}
-          {/*        label="File Name"*/}
-          {/*        placeholder="Enter file name"*/}
-          {/*        error={Boolean(errors.fileName)}*/}
-          {/*        helperText={errors.fileName?.message}*/}
-          {/*      />*/}
-          {/*    )}*/}
-          {/*  />*/}
-          {/*</FormControl>*/}
-          <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel>Author</InputLabel>
+          <FormControl fullWidth sx={{ mb: 4 }} size="small">
+            <InputLabel id="author-select-label">{t('Author')}</InputLabel>
             <Controller
               name="authorId"
               control={control}
               render={({ field }) => (
                 <Select
+                  labelId="author-select-label"
                   {...field}
-                  label="Author"
+                  label={t('Author')}
+                  size="small"
                   value={field.value || ''}
                 >
                   <MenuItem value="" disabled>
@@ -339,15 +400,17 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
             )}
           </FormControl>
 
-          <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel>Category</InputLabel>
+          <FormControl fullWidth sx={{ mb: 4 }} size="small">
+            <InputLabel id="category-select-label">{t('Category')}</InputLabel>
             <Controller
               name="categoryId"
               control={control}
               render={({ field }) => (
                 <Select
+                  labelId="category-select-label"
                   {...field}
-                  label="Category"
+                  label={t('Category')}
+                  size="small"
                   value={field.value || ''}
                 >
                   <MenuItem value="" disabled>
@@ -367,69 +430,86 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
               </FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 4 }}>
+
+          <FormControl fullWidth sx={{ mb: 4 }} size="small">
+            <InputLabel id="status-select-label">{t('Status')}</InputLabel>
             <Controller
               name="typeTs"
               control={control}
               render={({ field }) => (
-                <TextField
+                <Select
+                  labelId="status-select-label"
                   {...field}
-                  select
-                  label="Status"
+                  label={t('Status')}
                   size="small"
                   error={Boolean(errors.typeTs)}
-                  helperText={errors.typeTs ? errors.typeTs.message : ''}
                 >
                   {Object.values(IEnumDocTempStatus).map((type) => (
                     <MenuItem key={type} value={type}>{t(type)}</MenuItem>
                   ))}
-                </TextField>
+                </Select>
               )}
             />
+            {errors.typeTs && (
+              <FormHelperText sx={{ color: 'error.main' }}>
+                {errors.typeTs?.message}
+              </FormHelperText>
+            )}
           </FormControl>
 
-          <FormControl fullWidth sx={{ mb: 4 }}>
-            <Controller
-              name="typeTv"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  select
-                  label="Visibility"
-                  size="small"
-                  error={Boolean(errors.typeTv)}
-                  helperText={errors.typeTv ? errors.typeTv.message : ''}
-                >
-                  {Object.values(IEnumTemplateVisibility).map((type) => (
-                    <MenuItem key={type} value={type}>{t(type)}</MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </FormControl>
-
-          <FormControl fullWidth sx={{ mb: 4 }}>
+          <FormControl fullWidth sx={{ mb: 4 }} size="small">
+            <InputLabel id="language-select-label">{t('Language')}</InputLabel>
             <Controller
               name="typeTl"
               control={control}
               render={({ field }) => (
-                <TextField
+                <Select
+                  labelId="language-select-label"
                   {...field}
-                  select
-                  label="Language"
+                  label={t('Language')}
                   size="small"
                   error={Boolean(errors.typeTl)}
-                  helperText={errors.typeTl ? errors.typeTl.message : ''}
                 >
                   {Object.values(IEnumTemplateLanguage).map((type) => (
                     <MenuItem key={type} value={type}>{t(type)}</MenuItem>
                   ))}
-                </TextField>
+                </Select>
               )}
+            />
+            {errors.typeTl && (
+              <FormHelperText sx={{ color: 'error.main' }}>
+                {errors.typeTl?.message}
+              </FormHelperText>
+            )}
+          </FormControl>
+
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <FormControlLabel
+              control={
+                <Controller
+                  name="typeTv"
+                  control={control}
+                  render={({ field }) => (
+                    <Switch
+                      {...field}
+                      checked={isPrivate}
+                      onChange={handleSwitchChange}
+                      color={isPrivate ? 'success' : 'error'}
+                    />
+                  )}
+                />
+              }
+              label={t('Private')}
+              labelPlacement="start"
+              sx={{
+                justifyContent: 'space-between',
+                marginLeft: 0,
+                marginRight: 0
+              }}
             />
           </FormControl>
 
+          {/* Buttons */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button type="submit" variant="contained" sx={{ mr: 3 }}>
               {t('Submit')}
@@ -441,7 +521,7 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
         </form>
       </Box>
     </Drawer>
-  );
-};
+  )
+}
 
-export default AddTemplateDrawer;
+export default AddTemplateDrawer

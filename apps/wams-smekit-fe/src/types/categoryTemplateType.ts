@@ -14,6 +14,7 @@ export interface CategoryTemplateType {
   editionDate: Date
   source: string
   version: string
+  isFavorite: boolean;
 
   typeTs: IEnumDocTempStatus
   typeTv: IEnumTemplateVisibility
@@ -32,6 +33,7 @@ export interface CategoryTemplateType {
   createdBy: string
   updateDate: string
   updatedBy: string
+
 }
 export enum IEnumTemplateLanguage {
   EN = 'EN',
@@ -48,5 +50,5 @@ export enum IEnumTemplateVisibility {
 export enum IEnumDocTempStatus {
   EDITING = 'EDITING',
   VALIDATING = 'VALIDATING',
-  REJECTED='REJECTED'
+  REJECTED = 'REJECTED'
 }

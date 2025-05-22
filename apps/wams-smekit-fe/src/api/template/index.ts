@@ -4,11 +4,12 @@ import imsApiUrls from "ims-shared/configs/ims_apis";
 import toast from "react-hot-toast";
 import {AuthorType} from "../../types/author";
 import {CategoryType} from "../../types/category";
-
-
+import { getUserDomainFromToken } from "template-shared/@core/api/helper/permission";
+import { CategoryTemplateType } from "../../types/categoryTemplateType";
 
 export const fetchAllTemplate = async () => {
-  const response = await AppQuery(apiUrls.apiUrl_smekit_Template_FetchAll_Endpoint, {
+  const userIdentifier = getUserDomainFromToken();
+  const response = await AppQuery(`${apiUrls.apiUrl_smekit_Template_FetchAll_Endpoint}?userIdentifier=${userIdentifier}`, {
     method: 'GET'
   });
 
@@ -22,7 +23,6 @@ export const fetchAllTemplate = async () => {
         template.authorId ? fetchAuthorDetails(template.authorId) : null,
         template.categoryId ? fetchCategoryDetails(template.categoryId) : null
       ]);
-
 
       return { ...template, author, category };
     })
@@ -79,6 +79,7 @@ export const addTemplate = async (data: FormData) => {
     method: 'POST',
     headers: {
       'accept': 'application/json',
+
       // 'Content-Type': 'multipart/form-data',
       'Access-Control-Allow-Origin': '*'
     },
@@ -110,7 +111,48 @@ export const getTemplateCount = async (): Promise<number> => {
 
   return await response.json()
 }
+export const getTemplatePreview = async (templateId, version = 1) => {
+  if (!templateId) {
+    throw new Error('Template ID is required');
+  }
 
+  try {
+    const response = await AppQuery(
+      `${apiUrls.apiUrl_smekit_TemplateDownload_StorageConfigEndpoint}?id=${templateId}&version=${version}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/octet-stream',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('FILE_NOT_FOUND');
+      }
+
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        errorData.message ||
+        `Failed to get template preview: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    return await response.blob();
+  } catch (error) {
+    console.error('Template preview error:', error);
+
+    if (error.message === 'FILE_NOT_FOUND') {
+      throw new Error('Le fichier du template n\'a pas été trouvé sur le serveur');
+    }
+
+    throw new Error(
+      error.message ||
+      'Une erreur inattendue est survenue lors de la récupération de l\'aperçu du template'
+    );
+  }
+}
 
 export const downloadTemplateFile = async (data: { id: number; originalFileName: string }) => {
   const response = await AppQuery(
@@ -164,29 +206,26 @@ export const getUserConnect = async () => {
 };
 export const updateTemplate = async (formData: FormData) => {
   const id = formData.get('id');
-  if (!id) {
-    throw new Error("Template ID is required for update");
-  }
+  if (!id) throw new Error("Template ID is required");
 
   const response = await AppQuery(
     `${apiUrls.apiUrl_smekit_Template_StorageConfigEndpoint}?id=${id}`,
     {
       method: 'PUT',
-      headers: {
-
-      },
       body: formData,
+      headers: {
+        'Accept': 'application/json',
+      },
     }
   );
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new HttpError(errorData);
+    const error = await response.json().catch(() => ({}));
+    throw new HttpError(error);
   }
 
-  return await response.json();
+  return response.json();
 };
-
 export const deleteTemplate = async (id: number) => {
   const response = await AppQuery(`${apiUrls.apiUrl_smekit_Template_FetchAll_Endpoint}?id=${id}`, {
     method: 'DELETE',
@@ -202,4 +241,38 @@ export const deleteTemplate = async (id: number) => {
   }
 
   return id;
-};
+}
+export const getTemplatesByCategory = async (categoryId: number) => {
+  try {
+    const response = await AppQuery(`${apiUrls.apiUrl_smekit_Template_FetchByCategory_Endpoint}/${categoryId}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch templates by category');
+    }
+
+    const templates = await response.json();
+
+    const enhancedTemplates = await Promise.all(
+      templates.map(async template => {
+        const [author, category] = await Promise.all([
+          template.authorId ? fetchAuthorDetails(template.authorId) : null,
+          template.categoryId ? fetchCategoryDetails(template.categoryId) : null
+        ]);
+
+        return { ...template, author, category };
+      })
+    );
+
+    return enhancedTemplates;
+  } catch (error) {
+    console.error('Error fetching templates by category:', error);
+    throw error;
+  }
+}
