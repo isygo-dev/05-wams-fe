@@ -1,98 +1,84 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [
-    "**/.env.*local"
-  ],
-  "globalDotEnv": [
-    ".env"
-  ],
-  "pipeline": {
+  "globalDependencies": ["**/.env.*local", "**/.env"],
+
+  "tasks": {
     "build:docker-dev": {
-      "dependsOn": [
-        "^build:docker-dev"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "dependsOn": ["^build:docker-dev"],
+      "outputs": ["apps/*/.next/**", "!apps/*/.next/cache/**"],
+      "cache": true
     },
-    "build:docker-qa": {
-      "dependsOn": [
-        "^build:docker-qa"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ]
-    },
+
     "build:docker-prod": {
-      "dependsOn": [
-        "^build:docker-prod"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "dependsOn": ["^build:docker-prod"],
+      "outputs": ["apps/*/.next/**", "!apps/*/.next/cache/**"],
+      "cache": true
     },
+
+    "build:docker-qa": {
+      "dependsOn": ["^build:docker-qa"],
+      "outputs": ["apps/*/.next/**", "!apps/*/.next/cache/**"],
+      "cache": true
+    },
+
     "build:dev-local": {
-      "dependsOn": [
-        "^build:dev-local"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "dependsOn": ["^build:dev-local"],
+      "outputs": ["apps/*/.next/**", "!apps/*/.next/cache/**"],
+      "cache": true
     },
+
     "build:dev-be-local": {
-      "dependsOn": [
-        "^build:dev-be-local"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "dependsOn": ["^build:dev-be-local"],
+      "outputs": ["apps/*/.next/**", "!apps/*/.next/cache/**"],
+      "cache": true
     },
+
     "build:development": {
-      "dependsOn": [
-        "^build:development"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "dependsOn": ["^build:development"],
+      "outputs": ["apps/*/.next/**", "!apps/*/.next/cache/**"],
+      "cache": true
     },
+
+    "start:docker-dev": {
+      "dependsOn": ["^start:docker-dev"],
+      "cache": false,
+      "persistent": true
+    },
+
+    "start:docker-prod": {
+      "dependsOn": ["^start:docker-prod"],
+      "cache": false,
+      "persistent": true
+    },
+
+    "start:docker-qa": {
+      "dependsOn": ["^start:docker-qa"],
+      "cache": false,
+      "persistent": true
+    },
+
+    "start:dev-be-local": {
+      "dependsOn": ["^start:dev-be-local"],
+      "cache": false,
+      "persistent": true
+    },
+
     "clean": {
-      "cache": false
-    },
-    "lint": {},
-    "dev": {
       "cache": false,
       "persistent": false
     },
-    "start:docker-dev": {
-      "dependsOn": [
-        "^start:docker-dev"
-      ]
+
+    "lint": {
+      "cache": true
     },
-    "start:docker-prod": {
-      "dependsOn": [
-        "^start:docker-prod"
-      ]
+
+    "dev": {
+      "cache": false,
+      "persistent": true
     },
-    "start:docker-qa": {
-      "dependsOn": [
-        "^start:docker-qa"
-      ]
-    },
-    "start:dev-local": {
-      "dependsOn": [
-        "^start:dev-local"
-      ]
-    },
-    "start:dev-be-local": {
-      "dependsOn": [
-        "^start:dev-be-local"
-      ]
+
+    "test": {
+      "cache": true
     }
   }
 }

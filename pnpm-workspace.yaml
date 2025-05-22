@@ -12,4 +12,5 @@ packages:
   - "apps/wams-quizz-fe"
   - "apps/wams-facade-fe"
   - "apps/wams-sysadmin-fe"
+  - "apps/wams-smekit-fe"
   - "packages/*"

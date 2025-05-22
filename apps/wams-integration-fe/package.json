@@ -2,6 +2,7 @@
   "name": "WAMS-INTEGRATION",
   "version": "1.1.0",
   "private": true,
+  "port": "4012",
   "scripts": {
     "dev": "set NEXT_PUBLIC_PROFILE=dev-local&& next dev -p 4012",
     "build:docker-dev": "set NEXT_PUBLIC_PROFILE=docker-dev&& next build",

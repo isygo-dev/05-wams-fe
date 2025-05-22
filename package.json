@@ -1,7 +1,16 @@
 {
   "name": "WAMS",
   "private": true,
+  "packageManager": "pnpm@9.12.3",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
+    "clean": "turbo run clean",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "cross-env NODE_OPTIONS=--max-old-space-size=4096 tsc --noEmit",
     "build:docker-dev": "turbo run build:docker-dev",
     "build:docker-prod": "turbo run build:docker-prod",
     "build:docker-qa": "turbo run build:docker-qa",
@@ -12,20 +21,15 @@
     "start:docker-prod": "turbo run start:docker-prod",
     "start:docker-qa": "turbo run start:docker-qa",
     "start:dev-be-local": "turbo run start:dev-be-local",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install"
   },
-  "packageManager": "pnpm@9.12.3",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint ",
-      "tsc  --pretty --noEmit --skipLibCheck --jsx preserve --resolveJsonModule --esModuleInterop"
+      "eslint",
+      "tsc --pretty --noEmit --skipLibCheck --jsx preserve --resolveJsonModule --esModuleInterop"
     ],
     "*.{json,js,ts,jsx,tsx,html}": [
       "prettier --write --ignore-unknown"
@@ -69,6 +73,7 @@
     "cleave.js": "1.6.0",
     "clipboard-copy": "4.0.1",
     "clsx": "1.2.1",
+    "cms-shared": "workspace:*",
     "date-fns": "2.29.3",
     "dotenv": "^16.4.5",
     "draft-js": "0.11.7",
@@ -77,20 +82,27 @@
     "grapesjs-plugin-export": "^1.0.12",
     "grapesjs-preset-webpage": "^1.0.3",
     "grapesjs-react": "^4.0.2",
+    "hrm-shared": "workspace:*",
     "html2canvas": "^1.4.1",
     "i18next": "22.4.11",
     "i18next-browser-languagedetector": "7.0.1",
     "i18next-http-backend": "2.2.0",
+    "ims-shared": "workspace:*",
+    "integration-shared": "workspace:*",
     "jsonwebtoken": "9.0.0",
     "jspdf": "^2.5.1",
     "keen-slider": "6.8.5",
+    "kms-shared": "workspace:*",
+    "link-shared": "workspace:*",
     "material-ui-phone-number": "^3.0.0",
+    "mms-shared": "workspace:*",
     "monaco-themes": "^0.4.4",
     "mui-chips-input": "^2.1.5",
     "next": "14.2.5",
     "nprogress": "0.2.0",
     "payment": "2.4.6",
     "prismjs": "1.29.0",
+    "quiz-shared": "workspace:*",
     "react": "18.2.0",
     "react-apexcharts": "1.4.0",
     "react-beautiful-dnd": "^13.1.1",
@@ -116,24 +128,16 @@
     "react-select": "^5.8.0",
     "recharts": "2.4.3",
     "redux": "^4.2.1",
+    "rpm-shared": "workspace:*",
+    "sms-shared": "workspace:*",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
     "stylis": "4.1.3",
     "stylis-plugin-rtl": "2.1.1",
+    "template-shared": "workspace:*",
     "uuid": "^10.0.0",
     "xml2js": "^0.6.2",
-    "yup": "1.0.2",
-    "mms-shared": "workspace:*",
-    "sms-shared": "workspace:*",
-    "cms-shared": "workspace:*",
-    "quiz-shared": "workspace:*",
-    "kms-shared": "workspace:*",
-    "ims-shared": "workspace:*",
-    "link-shared": "workspace:*",
-    "rpm-shared": "workspace:*",
-    "hrm-shared": "workspace:*",
-    "integration-shared": "workspace:*",
-    "template-shared": "workspace:*"
+    "yup": "1.0.2"
   },
   "devDependencies": {
     "@iconify/iconify": "3.1.0",
@@ -155,35 +159,21 @@
     "@types/react-redux": "7.1.25",
     "@types/sockjs-client": "^1.5.4",
     "@types/stompjs": "^2.3.9",
+    "cross-env": "^7.0.3",
+    "depcheck": "^1.4.7",
     "dotenv-cli": "latest",
     "eslint": "^8.57.0",
-    "eslint-config-next": "13.2.4",
-    "eslint-config-prettier": "8.7.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-import-resolver-alias": "1.1.2",
-    "eslint-import-resolver-typescript": "3.5.3",
-    "eslint-plugin-import": "2.27.5",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.7",
-    "prettier": "^3.3.3",
-    "tsconfig": "workspace:*",
-    "turbo": "^1.13.4",
-    "typescript": "5.6.3"
-  },
-  "pnpm": {
-    "overrides": {
-      "@react-pdf/image": "2.2.3",
-      "@react-pdf/pdfkit": "3.0.4"
-    }
-  },
-  "overrides": {
-    "react-credit-cards": {
-      "react": "$react"
-    },
-    "@react-pdf/image": "2.2.3",
-    "@react-pdf/pdfkit": "3.0.4"
-  },
-  "resolutions": {
-    "@types/react": "18.3.12"
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-prettier": "8.8.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-jsx-a11y": "6.6.1",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-react": "7.32.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "husky": "8.0.3",
+    "lint-staged": "13.2.2",
+    "prettier": "3.0.0",
+    "turbo": "^2.5.3",
+    "typescript": "5.1.3"
   }
 }

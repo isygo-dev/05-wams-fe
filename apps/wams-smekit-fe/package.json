@@ -2,6 +2,7 @@
   "name": "WAMS-SMEKIT",
   "version": "1.1.0",
   "private": true,
+  "port": "4009",
   "scripts": {
     "dev": "set NEXT_PUBLIC_PROFILE=dev-local&& next dev -p 4009",
     "build:docker-dev": "set NEXT_PUBLIC_PROFILE=docker-dev&& next build",
@@ -26,7 +27,9 @@
     "react-pdf": "9.1.0",
     "@types/react": "18.3.12",
     "react-quill": "^2.0.0",
-    "smekit-shared": "workspace:*",
+    "mms-shared": "workspace:*",
+    "sms-shared": "workspace:*",
+    "kms-shared": "workspace:*",
     "ims-shared": "workspace:*",
     "template-shared": "workspace:*"
   },

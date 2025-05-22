@@ -2,6 +2,7 @@
   "name": "WAMS-FACADE",
   "version": "1.1.0",
   "private": true,
+  "port": "3000",
   "scripts": {
     "dev": "set NEXT_PUBLIC_PROFILE=dev-local&& next dev -p 3000",
     "build:docker-dev": "set NEXT_PUBLIC_PROFILE=docker-dev&& next build",
