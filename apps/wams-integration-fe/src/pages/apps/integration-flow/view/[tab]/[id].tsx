@@ -1,14 +1,14 @@
 import React from 'react'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import FlowView from '../../../../../views/apps/integration-flow/view/FlowView'
-import {useQuery} from "react-query";
-import IntegrationFlowApis from "integration-shared/@core/api/integration/flow";
-import {useTranslation} from "react-i18next";
+import { useQuery } from 'react-query'
+import IntegrationFlowApis from 'integration-shared/@core/api/integration/flow'
+import { useTranslation } from 'react-i18next'
 
 const FlowDetailView = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const router = useRouter()
-  const {id} = router.query
+  const { id } = router.query
   const {
     data: flowData,
     isLoading,
@@ -23,7 +23,7 @@ const FlowDetailView = () => {
     return <div>Error loading account data</div>
   }
 
-  return <FlowView flowData={flowData}/>
+  return <FlowView flowData={flowData} />
 }
 
 export default FlowDetailView

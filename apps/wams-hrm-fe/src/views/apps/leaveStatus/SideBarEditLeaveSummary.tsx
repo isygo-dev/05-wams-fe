@@ -1,21 +1,21 @@
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import Icon from 'template-shared/@core/components/icon'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import React from 'react'
-import {useMutation, useQueryClient} from 'react-query'
-import {LeaveStatusType} from 'hrm-shared/@core/types/hrm/leaveStatusType'
-import LeaveStatusApis from "hrm-shared/@core/api/hrm/leaveStatus";
+import { useMutation, useQueryClient } from 'react-query'
+import { LeaveStatusType } from 'hrm-shared/@core/types/hrm/leaveStatusType'
+import LeaveStatusApis from 'hrm-shared/@core/api/hrm/leaveStatus'
 
 interface UpdateLeaveStatusType {
   open?: boolean
@@ -23,7 +23,7 @@ interface UpdateLeaveStatusType {
   dataParameter?: LeaveStatusType | undefined
 }
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -46,16 +46,16 @@ const schema = yup.object().shape({
 })
 
 const SideBarUpdateLeaveSummary = (props?: UpdateLeaveStatusType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const {open, toggle, dataParameter} = props
-  const defaultValues = {...dataParameter}
+  const { open, toggle, dataParameter } = props
+  const defaultValues = { ...dataParameter }
   const {
     reset,
     control,
     handleSubmit,
     setValue,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -99,7 +99,7 @@ const SideBarUpdateLeaveSummary = (props?: UpdateLeaveStatusType) => {
   }
 
   const handleLeaveTakenCountChange = (value: number) => {
-    const remainingLeaveCount = calculateRemainingLeaveCount({...defaultValues, leaveTakenCount: value})
+    const remainingLeaveCount = calculateRemainingLeaveCount({ ...defaultValues, leaveTakenCount: value })
     if (remainingLeaveCount != null) {
       setValue('remainingLeaveCount', remainingLeaveCount)
     }
@@ -111,27 +111,27 @@ const SideBarUpdateLeaveSummary = (props?: UpdateLeaveStatusType) => {
       anchor='right'
       variant='temporary'
       onClose={handleClose}
-      ModalProps={{keepMounted: true}}
-      sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+      ModalProps={{ keepMounted: true }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
         <Typography variant='h6'> {t('LeaveStatus.Update_LeaveStatus')}</Typography>
         <IconButton
           size='small'
           onClick={handleClose}
-          sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+          sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
         >
-          <Icon icon='tabler:x' fontSize='1.125rem'/>
+          <Icon icon='tabler:x' fontSize='1.125rem' />
         </IconButton>
       </Header>
-      <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+      <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='leaveCount'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -143,15 +143,15 @@ const SideBarUpdateLeaveSummary = (props?: UpdateLeaveStatusType) => {
               )}
             />
             {errors.leaveCount && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.leaveCount.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.leaveCount.message}</FormHelperText>
             )}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='recoveryLeaveCount'
               control={control}
-              render={({field: {value, onChange}}) => (
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -162,16 +162,15 @@ const SideBarUpdateLeaveSummary = (props?: UpdateLeaveStatusType) => {
               )}
             />
             {errors.recoveryLeaveCount && (
-              <FormHelperText
-                sx={{color: 'error.main'}}>{errors.recoveryLeaveCount.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.recoveryLeaveCount.message}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='recoveryLeaveTaken'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   type='number'
@@ -183,16 +182,15 @@ const SideBarUpdateLeaveSummary = (props?: UpdateLeaveStatusType) => {
               )}
             />
             {errors.recoveryLeaveTaken && (
-              <FormHelperText
-                sx={{color: 'error.main'}}>{errors.recoveryLeaveTaken.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.recoveryLeaveTaken.message}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='leaveTakenCount'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   type='number'
@@ -207,16 +205,16 @@ const SideBarUpdateLeaveSummary = (props?: UpdateLeaveStatusType) => {
               )}
             />
             {errors.leaveTakenCount && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.leaveTakenCount.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.leaveTakenCount.message}</FormHelperText>
             )}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='remainingLeaveCount'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value ?? ''}
@@ -232,13 +230,12 @@ const SideBarUpdateLeaveSummary = (props?: UpdateLeaveStatusType) => {
               )}
             />
             {errors.remainingLeaveCount && (
-              <FormHelperText
-                sx={{color: 'error.main'}}>{errors.remainingLeaveCount.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.remainingLeaveCount.message}</FormHelperText>
             )}
           </FormControl>
 
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   Avatar,
   Box,
@@ -12,58 +12,57 @@ import {
   Typography,
   useMediaQuery
 } from '@mui/material'
-import {DataGrid, GridApi, GridColDef, GridColumnVisibilityModel} from '@mui/x-data-grid'
-import Styles from "template-shared/style/style.module.css"
+import { DataGrid, GridApi, GridColDef, GridColumnVisibilityModel } from '@mui/x-data-grid'
+import Styles from 'template-shared/style/style.module.css'
 import Icon from 'template-shared/@core/components/icon'
 import CustomChip from 'template-shared/@core/components/mui/chip'
 import DeleteCommonDialog from 'template-shared/@core/components/DeleteCommonDialog'
-import {useRouter} from 'next/router'
-import {useTranslation} from 'react-i18next'
-import imsApiUrls from "ims-shared/configs/ims_apis"
-import {useTheme} from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
+import imsApiUrls from 'ims-shared/configs/ims_apis'
+import { useTheme } from '@mui/material/styles'
 import AccountCard from '../../../views/apps/account/AccountCard'
-import UpdateAdminStatusDialog
-  from 'template-shared/@core/components/common-update-admin-status/UpdateAdminStatusDialog'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
-import {GridApiCommunity} from '@mui/x-data-grid/internals'
+import UpdateAdminStatusDialog from 'template-shared/@core/components/common-update-admin-status/UpdateAdminStatusDialog'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { GridApiCommunity } from '@mui/x-data-grid/internals'
 import AddAccountDrawer from '../../../views/apps/account/AddAccountDrawer'
 import TableHeader from 'template-shared/views/table/TableHeader'
-import {checkPermission} from 'template-shared/@core/api/helper/permission'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
 import Moment from 'react-moment'
 import UpdateIsAdminDialog from 'template-shared/@core/components/common-update-is-admin/UpdateIsAdminDialog'
 import themeConfig from 'template-shared/configs/themeConfig'
-import AccountStatisticsContainer from "./accountStatistic/AccountStatisticsContainer";
-import LockResetIcon from '@mui/icons-material/LockReset';
-import {GridPaginationModel} from "@mui/x-data-grid/models/gridPaginationProps";
-import localStorageKeys from "template-shared/configs/localeStorage";
-import PaginationCard from "template-shared/@core/components/card-pagination";
-import AccountApis from "ims-shared/@core/api/ims/account";
-import {AccountDto, systemStatusObj} from "ims-shared/@core/types/ims/accountTypes";
+import AccountStatisticsContainer from './accountStatistic/AccountStatisticsContainer'
+import LockResetIcon from '@mui/icons-material/LockReset'
+import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps'
+import localStorageKeys from 'template-shared/configs/localeStorage'
+import PaginationCard from 'template-shared/@core/components/card-pagination'
+import AccountApis from 'ims-shared/@core/api/ims/account'
+import { AccountDto, systemStatusObj } from 'ims-shared/@core/types/ims/accountTypes'
 
 interface CellType {
   row: AccountDto
 }
 
 const AccountList = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [paginationPage, setPaginationPage] = useState<number>(0)
   const [value, setValue] = useState<string>('')
   const [addAccountOpen, setAddAccountOpen] = useState<boolean>(false)
 
-  const [paginationModel, setPaginationModel] =
-    useState<GridPaginationModel>({
-        page: paginationPage,
-        pageSize: localStorage.getItem(localStorageKeys.paginationSize) &&
-        Number(localStorage.getItem(localStorageKeys.paginationSize)) > 9 ?
-          Number(localStorage.getItem(localStorageKeys.paginationSize)) : 20
-      }
-    )
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: paginationPage,
+    pageSize:
+      localStorage.getItem(localStorageKeys.paginationSize) &&
+      Number(localStorage.getItem(localStorageKeys.paginationSize)) > 9
+        ? Number(localStorage.getItem(localStorageKeys.paginationSize))
+        : 20
+  })
 
   useEffect(() => {
     const getPage = localStorage.getItem(localStorageKeys.paginationSize)
@@ -91,15 +90,13 @@ const AccountList = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const dataGridApiRef = React.useRef<GridApi>()
 
-  const {
-    data: accounts,
-    isLoading
-  } = useQuery('accounts', () => AccountApis(t).getAccountsByPage(paginationModel.page, paginationModel.pageSize))
+  const { data: accounts, isLoading } = useQuery('accounts', () =>
+    AccountApis(t).getAccountsByPage(paginationModel.page, paginationModel.pageSize)
+  )
 
-  const {
-    data: accountsCount,
-    isLoading: isLoadingCount
-  } = useQuery('accountsCount', () => AccountApis(t).getAccountsCount())
+  const { data: accountsCount, isLoading: isLoadingCount } = useQuery('accountsCount', () =>
+    AccountApis(t).getAccountsCount()
+  )
 
   const mutationDelete = useMutation({
     mutationFn: (id: number) => AccountApis(t).deleteAccountById(id),
@@ -107,8 +104,7 @@ const AccountList = () => {
       if (id) {
         setDeleteDialogOpen(false)
         const updatedItems: AccountDto[] =
-          (queryClient.getQueryData('accounts') as AccountDto[])?.filter((item: AccountDto) => item.id !== id) ||
-          []
+          (queryClient.getQueryData('accounts') as AccountDto[])?.filter((item: AccountDto) => item.id !== id) || []
         queryClient.setQueryData('accounts', updatedItems)
       }
     }
@@ -186,11 +182,13 @@ const AccountList = () => {
       headerName: t('Photo') as string,
       flex: 0.15,
       minWidth: 100,
-      renderCell: ({row}: CellType) => (
+      renderCell: ({ row }: CellType) => (
         <Avatar
           className={Styles.avatarTable}
           src={
-            row.imagePath !== 'defaultPhoto.jpg' ? `${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${row.id}` : ''
+            row.imagePath !== 'defaultPhoto.jpg'
+              ? `${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${row.id}`
+              : ''
           }
           alt={row.accountDetails?.firstName}
         />
@@ -203,10 +201,10 @@ const AccountList = () => {
       flex: 0.15,
       minWidth: 170,
       headerName: t('Domain.Domain') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.domain}
             </Typography>
           </Box>
@@ -220,10 +218,10 @@ const AccountList = () => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('Username') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.code}
             </Typography>
           </Box>
@@ -237,10 +235,10 @@ const AccountList = () => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('Employee.Full_Name') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.accountDetails.firstName} {row.accountDetails.lastName}
             </Typography>
           </Box>
@@ -254,9 +252,9 @@ const AccountList = () => {
       flex: 0.25,
       minWidth: 200,
       headerName: t('Email') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Typography noWrap sx={{ color: 'text.secondary' }}>
             {row.email}
           </Typography>
         )
@@ -269,9 +267,9 @@ const AccountList = () => {
       flex: 0.25,
       minWidth: 200,
       headerName: t('Role.Functional_Role') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Typography noWrap sx={{ color: 'text.secondary' }}>
             {row.functionRole}
           </Typography>
         )
@@ -284,14 +282,17 @@ const AccountList = () => {
       minWidth: 140,
       flex: 0.15,
       headerName: t('IsAdmin') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
           <>
             {checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.WRITE) ? (
-              <Switch size={'small'} checked={row.isAdmin}
-                      onChange={e => handleOpenUpdateIsAdmin(row.id, e.target.checked)}/>
+              <Switch
+                size={'small'}
+                checked={row.isAdmin}
+                onChange={e => handleOpenUpdateIsAdmin(row.id, e.target.checked)}
+              />
             ) : (
-              <Switch size={'small'} checked={row.isAdmin} readOnly={true}/>
+              <Switch size={'small'} checked={row.isAdmin} readOnly={true} />
             )}
           </>
         )
@@ -305,10 +306,10 @@ const AccountList = () => {
       minWidth: 155,
       sortable: false,
       headerName: t('lastLoginDate') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary', fontSize: '14px'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary', fontSize: '14px' }}>
               {row.connectionTracking && row.connectionTracking?.length > 0 ? (
                 <Moment format='DD-MM-YYYY HH:mm:ss'>
                   {row.connectionTracking?.length > 0 ? row.connectionTracking[0]?.loginDate : '-'}
@@ -326,16 +327,19 @@ const AccountList = () => {
       flex: 0.15,
       minWidth: 150,
       headerName: t('Admin_Status') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         const status = row.adminStatus === 'ENABLED'
 
         return (
           <>
             {checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.WRITE) ? (
-              <Switch size={'small'} checked={status}
-                      onChange={() => handleOpenUpdateStatusDialog(row.id ?? 0, status)}/>
+              <Switch
+                size={'small'}
+                checked={status}
+                onChange={() => handleOpenUpdateStatusDialog(row.id ?? 0, status)}
+              />
             ) : (
-              <Switch size={'small'} checked={status}/>
+              <Switch size={'small'} checked={status} />
             )}
           </>
         )
@@ -348,7 +352,7 @@ const AccountList = () => {
       flex: 0.15,
       minWidth: 170,
       headerName: t('System_status') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
           <CustomChip
             rounded
@@ -356,7 +360,6 @@ const AccountList = () => {
             className={Styles.sizeCustomChip}
             label={row.systemStatus}
             color={systemStatusObj[row.systemStatus as string]}
-
           />
         )
       }
@@ -368,10 +371,10 @@ const AccountList = () => {
       field: 'origin',
       minWidth: 140,
       headerName: t('Origin') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.origin}
             </Typography>
           </Box>
@@ -385,10 +388,10 @@ const AccountList = () => {
       minWidth: 140,
       flex: 0.15,
       headerName: t('AuditInfo.createDate') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               <Moment format='DD-MM-YYYY'>{row.createDate}</Moment>
             </Typography>
           </Box>
@@ -402,10 +405,10 @@ const AccountList = () => {
       minWidth: 140,
       flex: 0.15,
       headerName: t('AuditInfo.createdBy') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.createdBy}
             </Typography>
           </Box>
@@ -419,10 +422,10 @@ const AccountList = () => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('AuditInfo.updateDate') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               <Moment format='DD-MM-YYYY'>{row.updateDate}</Moment>
             </Typography>
           </Box>
@@ -436,10 +439,10 @@ const AccountList = () => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('AuditInfo.updatedBy') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.updatedBy}
             </Typography>
           </Box>
@@ -448,11 +451,10 @@ const AccountList = () => {
     }
   ]
   const toggleAddAccountDrawer = () => setAddAccountOpen(!addAccountOpen)
-  const {data: profileUser, isLoading: isLoadingProfileUser} = useQuery(
+  const { data: profileUser, isLoading: isLoadingProfileUser } = useQuery(
     'profileUser',
     AccountApis(t).getAccountProfile
   )
-
 
   const columns: GridColDef[] = [
     ...defaultColumns,
@@ -463,16 +465,16 @@ const AccountList = () => {
       sortable: false,
       headerName: '' as string,
       align: 'right',
-      renderCell: ({row}: CellType) => (
-        <Box sx={{display: 'flex', alignItems: 'center'}}>
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.DELETE) ? (
             <Tooltip title={t('Action.Delete')}>
               <IconButton
                 className={Styles.sizeIcon}
-                sx={{color: 'text.secondary'}}
+                sx={{ color: 'text.secondary' }}
                 onClick={() => handleOpenDeleteDialog(row.id ?? 0)}
               >
-                <Icon icon='tabler:trash'/>
+                <Icon icon='tabler:trash' />
               </IconButton>
             </Tooltip>
           ) : null}
@@ -481,12 +483,12 @@ const AccountList = () => {
             <Tooltip title={t('Action.Edit')}>
               <IconButton
                 className={Styles.sizeIcon}
-                sx={{color: 'text.secondary'}}
+                sx={{ color: 'text.secondary' }}
                 onClick={() => {
                   row.id && handleClickView(row.id)
                 }}
               >
-                <Icon icon='fluent:slide-text-edit-24-regular'/>
+                <Icon icon='fluent:slide-text-edit-24-regular' />
               </IconButton>
             </Tooltip>
           ) : null}
@@ -495,12 +497,12 @@ const AccountList = () => {
             <Tooltip title={t('Action.ResetPassword')}>
               <IconButton
                 className={Styles.sizeIcon}
-                sx={{color: 'text.secondary'}}
+                sx={{ color: 'text.secondary' }}
                 onClick={() => {
                   row.id && handleResendEmailCreation(row.id)
                 }}
               >
-                <LockResetIcon/>
+                <LockResetIcon />
               </IconButton>
             </Tooltip>
           ) : null}
@@ -518,12 +520,12 @@ const AccountList = () => {
       queryClient.removeQueries('accounts')
       queryClient.setQueryData('accounts', apiList)
       setPaginationPage(0)
-      setPaginationModel({page: 0, pageSize: item.pageSize})
+      setPaginationModel({ page: 0, pageSize: item.pageSize })
       setDisabledNextBtn(false)
     }
   }
 
-  const onChangePage = async (item) => {
+  const onChangePage = async item => {
     let newPagination: GridPaginationModel
     if (item === 'backIconButtonProps') {
       newPagination = {
@@ -574,21 +576,21 @@ const AccountList = () => {
           pagination: {
             count: accountsCount,
             page: paginationPage,
-            labelDisplayedRows: ({page, count}) =>
+            labelDisplayedRows: ({ page, count }) =>
               `${t('pagination footer')} ${page + 1} - ${paginationModel.pageSize} of ${count}`,
             labelRowsPerPage: t('Rows_per_page'),
             nextIconButtonProps: {
-              'onClick': () => onChangePage('nextIconButtonProps'),
-              disabled: disabledNextBtn || accounts?.length < paginationModel.pageSize,
+              onClick: () => onChangePage('nextIconButtonProps'),
+              disabled: disabledNextBtn || accounts?.length < paginationModel.pageSize
             },
             backIconButtonProps: {
-              'onClick': () => onChangePage('backIconButtonProps'),
-              disabled: paginationModel.page === 0,
+              onClick: () => onChangePage('backIconButtonProps'),
+              disabled: paginationModel.page === 0
             }
           },
           toolbar: {
             showQuickFilter: true,
-            quickFilterProps: {debounceMs: 500}
+            quickFilterProps: { debounceMs: 500 }
           }
         }}
         apiRef={dataGridApiRef as React.MutableRefObject<GridApiCommunity>}
@@ -597,7 +599,7 @@ const AccountList = () => {
   )
 
   const cardView = (
-    <Grid container spacing={3} sx={{mb: 2, padding: '15px'}}>
+    <Grid container spacing={3} sx={{ mb: 2, padding: '15px' }}>
       {accounts &&
         Array.isArray(accounts) &&
         accounts.map((item, index) => {
@@ -615,30 +617,31 @@ const AccountList = () => {
           )
         })}
 
-      <PaginationCard paginationModel={paginationModel}
-                      onChangePagination={onChangePagination}
-                      paginationPage={paginationPage}
-                      countList={accountsCount}
-                      disabledNextBtn={disabledNextBtn}
-                      ListLength={accounts?.length}
-                      onChangePage={onChangePage}
+      <PaginationCard
+        paginationModel={paginationModel}
+        onChangePagination={onChangePagination}
+        paginationPage={paginationPage}
+        countList={accountsCount}
+        disabledNextBtn={disabledNextBtn}
+        ListLength={accounts?.length}
+        onChangePage={onChangePage}
       />
     </Grid>
   )
 
   return !isLoading && !isLoadingCount ? (
     <>
-      <AccountStatisticsContainer/>
+      <AccountStatisticsContainer />
       <Grid container spacing={6.5}>
         <Grid item xs={12}>
           <Card>
-            <Box sx={{display: 'flex', justifyContent: 'center', gap: 2, margin: 2}}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, margin: 2 }}>
               <ToggleButtonGroup exclusive value={viewMode} onChange={toggleViewMode} aria-label='text alignment'>
                 <ToggleButton value='grid' aria-label='left aligned'>
-                  <Icon icon='ic:baseline-view-list'/>
+                  <Icon icon='ic:baseline-view-list' />
                 </ToggleButton>
                 <ToggleButton value='card' aria-label='center aligned'>
-                  <Icon icon='ic:baseline-view-module'/>
+                  <Icon icon='ic:baseline-view-module' />
                 </ToggleButton>
               </ToggleButtonGroup>
             </Box>
@@ -652,14 +655,15 @@ const AccountList = () => {
               permissionPage={PermissionPage.ACCOUNT}
               permissionAction={PermissionAction.WRITE}
             />
-            {checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.READ) ? (
-              renderViewBasedOnMode()
-            ) : null}
+            {checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.READ)
+              ? renderViewBasedOnMode()
+              : null}
           </Card>
         </Grid>
-        {!isLoadingProfileUser && addAccountOpen &&
+        {!isLoadingProfileUser &&
+          addAccountOpen &&
           checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.WRITE) && (
-            <AddAccountDrawer open={addAccountOpen} toggle={toggleAddAccountDrawer} domain={profileUser?.domain}/>
+            <AddAccountDrawer open={addAccountOpen} toggle={toggleAddAccountDrawer} domain={profileUser?.domain} />
           )}
         {deleteDialogOpen &&
           checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.DELETE) && (

@@ -1,9 +1,8 @@
 // ** Type import
-import {VerticalNavItemsType} from 'template-shared/@core/layouts/types'
-import {t} from "i18next";
+import { VerticalNavItemsType } from 'template-shared/@core/layouts/types'
+import { t } from 'i18next'
 
 const Navigation = (): VerticalNavItemsType => {
-
   return [
     {
       sectionTitle: 'Apps & Pages'
@@ -11,12 +10,12 @@ const Navigation = (): VerticalNavItemsType => {
     {
       title: t('Dashboard'),
       icon: 'tabler:home',
-      path: '/apps/dashboard',
+      path: '/apps/dashboard'
     },
     {
       title: t('fav'),
       icon: 'tabler:home',
-      path: '/apps/CustomTemplates',
+      path: '/apps/CustomTemplates'
     },
     {
       sectionTitle: 'Content Management'
@@ -24,17 +23,17 @@ const Navigation = (): VerticalNavItemsType => {
     {
       title: t('Categories'),
       icon: 'tabler:category',
-      path: '/apps/category',
+      path: '/apps/category'
     },
     {
       title: t('Authors'),
       icon: 'tabler:users',
-      path: '/apps/author',
+      path: '/apps/author'
     },
     {
       title: t('Templates'),
       icon: 'tabler:template',
-      path: '/apps/template',
+      path: '/apps/template'
     }
   ]
 }

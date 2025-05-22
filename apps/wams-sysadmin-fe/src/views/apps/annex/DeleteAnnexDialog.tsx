@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -7,7 +7,6 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Icon from 'template-shared/@core/components/icon'
 
-
 type Props = {
   open: boolean
   setOpen: (val: boolean) => void
@@ -15,9 +14,7 @@ type Props = {
 }
 
 const DeleteAnnexDialog = (props: Props) => {
-
-
-  const {open, setOpen} = props
+  const { open, setOpen } = props
 
   // ** States
   const [userInput] = useState<string>('yes')
@@ -27,15 +24,13 @@ const DeleteAnnexDialog = (props: Props) => {
 
   const handleSecondDialogClose = () => setSecondDialogOpen(false)
 
-
   const handleConfirmation = () => {
     handleClose()
-
   }
 
   return (
     <>
-      <Dialog fullWidth open={open} onClose={handleClose} sx={{'& .MuiPaper-root': {width: '100%', maxWidth: 512}}}>
+      <Dialog fullWidth open={open} onClose={handleClose} sx={{ '& .MuiPaper-root': { width: '100%', maxWidth: 512 } }}>
         <DialogContent
           sx={{
             px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
@@ -49,11 +44,11 @@ const DeleteAnnexDialog = (props: Props) => {
               alignItems: 'center',
               flexDirection: 'column',
               justifyContent: 'center',
-              '& svg': {mb: 8, color: 'warning.main'}
+              '& svg': { mb: 8, color: 'warning.main' }
             }}
           >
-            <Icon icon='tabler:alert-circle' fontSize='5.5rem'/>
-            <Typography variant='h4' sx={{mb: 5, color: 'text.secondary'}}>
+            <Icon icon='tabler:alert-circle' fontSize='5.5rem' />
+            <Typography variant='h4' sx={{ mb: 5, color: 'text.secondary' }}>
               Are you sure?
             </Typography>
             <Typography>You want to delete this !</Typography>
@@ -66,7 +61,7 @@ const DeleteAnnexDialog = (props: Props) => {
             pb: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
           }}
         >
-          <Button variant='contained' sx={{mr: 2}} onClick={() => handleConfirmation()}>
+          <Button variant='contained' sx={{ mr: 2 }} onClick={() => handleConfirmation()}>
             Delete
           </Button>
           <Button variant='outlined' color='secondary' onClick={() => handleClose()}>
@@ -78,7 +73,7 @@ const DeleteAnnexDialog = (props: Props) => {
         fullWidth
         open={secondDialogOpen}
         onClose={handleSecondDialogClose}
-        sx={{'& .MuiPaper-root': {width: '100%', maxWidth: 512}}}
+        sx={{ '& .MuiPaper-root': { width: '100%', maxWidth: 512 } }}
       >
         <DialogContent>
           <Box
@@ -92,14 +87,14 @@ const DeleteAnnexDialog = (props: Props) => {
               }
             }}
           >
-            <Icon fontSize='5.5rem' icon={userInput === 'yes' ? 'tabler:circle-check' : 'tabler:circle-x'}/>
-            <Typography variant='h4' sx={{mb: 8}}>
+            <Icon fontSize='5.5rem' icon={userInput === 'yes' ? 'tabler:circle-check' : 'tabler:circle-x'} />
+            <Typography variant='h4' sx={{ mb: 8 }}>
               {userInput === 'yes' ? 'Suspended!' : 'Cancelled'}
             </Typography>
             <Typography>{userInput === 'yes' ? 'User has been suspended.' : 'Cancelled Suspension :)'}</Typography>
           </Box>
         </DialogContent>
-        <DialogActions sx={{justifyContent: 'center'}}>
+        <DialogActions sx={{ justifyContent: 'center' }}>
           <Button variant='contained' color='success' onClick={handleSecondDialogClose}>
             OK
           </Button>

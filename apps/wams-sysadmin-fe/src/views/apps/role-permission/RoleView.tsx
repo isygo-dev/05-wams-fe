@@ -1,7 +1,7 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import React, {Fragment, useEffect, useState} from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import FormHelperText from '@mui/material/FormHelperText'
@@ -15,11 +15,11 @@ import StepLabel from '@mui/material/StepLabel'
 import StepperCustomDot from 'template-shared/views/forms/form-wizard/StepperCustomDot'
 import Icon from 'template-shared/@core/components/icon'
 import Divider from '@mui/material/Divider'
-import CardContent, {CardContentProps} from '@mui/material/CardContent'
-import {styled} from '@mui/material/styles'
-import MuiStep, {StepProps} from '@mui/material/Step'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import CardContent, { CardContentProps } from '@mui/material/CardContent'
+import { styled } from '@mui/material/styles'
+import MuiStep, { StepProps } from '@mui/material/Step'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import FormControl from '@mui/material/FormControl'
 import * as yup from 'yup'
 import Checkbox from '@mui/material/Checkbox'
@@ -29,32 +29,32 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction'
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 import ButtonGroup from '@mui/material/ButtonGroup'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import Tooltip from '@mui/material/Tooltip'
 import PermissionCard from './PermissionCard'
-import {useMutation} from 'react-query'
-import {ApplicationType} from "ims-shared/@core/types/ims/applicationTypes";
-import {Box} from '@mui/material'
-import {checkPermission} from 'template-shared/@core/api/helper/permission'
+import { useMutation } from 'react-query'
+import { ApplicationType } from 'ims-shared/@core/types/ims/applicationTypes'
+import { Box } from '@mui/material'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import RolePermissionApis from "ims-shared/@core/api/ims/role-permission";
-import {hexToRGBA} from "template-shared/@core/utils/hex-to-rgba";
-import {ListCheckBox, RolePermission, RoleTypes} from "ims-shared/@core/types/ims/roleTypes";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import RolePermissionApis from 'ims-shared/@core/api/ims/role-permission'
+import { hexToRGBA } from 'template-shared/@core/utils/hex-to-rgba'
+import { ListCheckBox, RolePermission, RoleTypes } from 'ims-shared/@core/types/ims/roleTypes'
 
-const StepperHeaderContainer = styled(CardContent)<CardContentProps>(({theme}) => ({
+const StepperHeaderContainer = styled(CardContent)<CardContentProps>(({ theme }) => ({
   borderRight: `1px solid ${theme.palette.divider}`,
   [theme.breakpoints.down('md')]: {
     borderRight: 0,
     borderBottom: `1px solid ${theme.palette.divider}`
   }
 }))
-const Step = styled(MuiStep)<StepProps>(({theme}) => ({
+const Step = styled(MuiStep)<StepProps>(({ theme }) => ({
   '& .MuiStepLabel-root': {
     paddingTop: 0
   },
@@ -82,7 +82,7 @@ type propsType = {
   applicationList: ApplicationType[]
 }
 const RoleView = (props: propsType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const [activeStep, setActiveStep] = useState<number>(0)
   const [checkedPermission, setCheckedPermission] = useState<ListCheckBox[]>([])
   const [checked, setChecked] = useState<ApplicationType[]>(props.roleDetailsData.allowedTools)
@@ -218,7 +218,7 @@ const RoleView = (props: propsType) => {
   const {
     control,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -296,91 +296,82 @@ const RoleView = (props: propsType) => {
         return (
           <Fragment>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='code'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value}}) => <TextField size='small' disabled value={value} label={t('code')}/>}
+                  rules={{ required: true }}
+                  render={({ field: { value } }) => <TextField size='small' disabled value={value} label={t('code')} />}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='name'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       value={value}
                       label={t('name')}
                       placeholder='name'
                       onChange={
-                        checkPermission(
-                          PermissionApplication.IMS,
-                          PermissionPage.ROLE_INFO,
-                          PermissionAction.WRITE
-                        ) && onChange
+                        checkPermission(PermissionApplication.IMS, PermissionPage.ROLE_INFO, PermissionAction.WRITE) &&
+                        onChange
                       }
                       error={Boolean(errors.name)}
                     />
                   )}
                 />
-                {errors.name && <FormHelperText sx={{color: 'error.main'}}>{errors.name.message}</FormHelperText>}
+                {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
               </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='domain'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value}}) => (
-                    <TextField disabled size='small' value={value} label={t('Domain.Domain')}/>
+                  rules={{ required: true }}
+                  render={({ field: { value } }) => (
+                    <TextField disabled size='small' value={value} label={t('Domain.Domain')} />
                   )}
                 />
               </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth sx={{mb: 4}}>
-
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='level'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       value={value}
                       label={t('Level')}
                       placeholder='0'
                       onChange={
-                        checkPermission(
-                          PermissionApplication.IMS,
-                          PermissionPage.ROLE_INFO,
-                          PermissionAction.WRITE
-                        ) && onChange
+                        checkPermission(PermissionApplication.IMS, PermissionPage.ROLE_INFO, PermissionAction.WRITE) &&
+                        onChange
                       }
                       error={Boolean(errors.level)}
                     />
                   )}
                 />
-                {errors.level && <FormHelperText sx={{color: 'error.main'}}>{errors.level.message}</FormHelperText>}
+                {errors.level && <FormHelperText sx={{ color: 'error.main' }}>{errors.level.message}</FormHelperText>}
               </FormControl>
-
-
             </Grid>
             <Grid item xs={12} sm={12}>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='description'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       rows={4}
@@ -390,11 +381,8 @@ const RoleView = (props: propsType) => {
                       value={value}
                       label={t('Description')}
                       onChange={
-                        checkPermission(
-                          PermissionApplication.IMS,
-                          PermissionPage.ROLE_INFO,
-                          PermissionAction.WRITE
-                        ) && onChange
+                        checkPermission(PermissionApplication.IMS, PermissionPage.ROLE_INFO, PermissionAction.WRITE) &&
+                        onChange
                       }
                       placeholder='description'
                       error={Boolean(errors.description)}
@@ -402,7 +390,7 @@ const RoleView = (props: propsType) => {
                   )}
                 />
                 {errors.description && (
-                  <FormHelperText sx={{color: 'error.main'}}>{errors.description.message}</FormHelperText>
+                  <FormHelperText sx={{ color: 'error.main' }}>{errors.description.message}</FormHelperText>
                 )}
               </FormControl>
             </Grid>
@@ -417,7 +405,7 @@ const RoleView = (props: propsType) => {
                 <TextField
                   size='small'
                   fullWidth
-                  sx={{mr: 4, mb: 2}}
+                  sx={{ mr: 4, mb: 2 }}
                   placeholder='Search Application'
                   onChange={e => handleFilterApplications(e.target.value)}
                 />
@@ -435,10 +423,10 @@ const RoleView = (props: propsType) => {
                                   ? `${imsApiUrls.apiUrl_IMS_Application_ImageDownload_EndPoint}/${tool.id}`
                                   : '/images/favicon_vertical.png'
                               }
-                              sx={{cursor: 'pointer'}}
+                              sx={{ cursor: 'pointer' }}
                             ></Avatar>
                           </ListItemAvatar>
-                          <ListItemText id={`checkbox-list-label-${index}`} primary={tool.name}/>
+                          <ListItemText id={`checkbox-list-label-${index}`} primary={tool.name} />
                           <ListItemSecondaryAction>
                             <Checkbox
                               id={`checkbox-list-label-check-${index}`}
@@ -446,7 +434,7 @@ const RoleView = (props: propsType) => {
                               tabIndex={-1}
                               disableRipple
                               checked={checked.some(r => r.code === tool.code)}
-                              inputProps={{'aria-labelledby': `checkbox-list-label-${index}`}}
+                              inputProps={{ 'aria-labelledby': `checkbox-list-label-${index}` }}
                             />
                           </ListItemSecondaryAction>
                         </ListItemButton>
@@ -493,7 +481,6 @@ const RoleView = (props: propsType) => {
     window.addEventListener('scroll', listenScrollEvent)
   }, [state])
 
-
   const renderContent = () => {
     if (activeStep === steps.length) {
       return (
@@ -517,11 +504,11 @@ const RoleView = (props: propsType) => {
               }}
             >
               <Grid item xs={12}>
-                <Typography variant='body2' sx={{fontWeight: 600, color: 'text.primary'}}>
+                <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.primary' }}>
                   {steps[activeStep].title} : ({defaultValues.name})
                 </Typography>
               </Grid>
-              <Grid item xs={12} sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+              <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Button
                   size='small'
                   variant='outlined'
@@ -534,14 +521,12 @@ const RoleView = (props: propsType) => {
                 </Button>
                 <ButtonGroup variant='contained' aria-label='outlined primary button group'>
                   {checkPermission(PermissionApplication.IMS, PermissionPage.ROLE_INFO, PermissionAction.WRITE) && (
-                    <Button size='small' type='submit'
-                            className={'button-padding-style'}>
+                    <Button size='small' type='submit' className={'button-padding-style'}>
                       {t('Save')}
                     </Button>
                   )}
                   {activeStep < steps.length - 1 && (
-                    <Button size='small' onClick={handleSubmit(handleNext)}
-                            className={'button-padding-style'}>
+                    <Button size='small' onClick={handleSubmit(handleNext)} className={'button-padding-style'}>
                       {t('Next')}
                     </Button>
                   )}
@@ -558,14 +543,14 @@ const RoleView = (props: propsType) => {
   return (
     <Grid container>
       <Grid item md={12}>
-        <Card sx={{display: 'flex', flexDirection: {xs: 'column', md: 'row'}, overflow: 'initial'}}>
+        <Card sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, overflow: 'initial' }}>
           <StepperHeaderContainer>
-            <StepperWrapper sx={{height: '100%'}}>
+            <StepperWrapper sx={{ height: '100%' }}>
               <Stepper
                 activeStep={activeStep}
                 orientation='vertical'
                 connector={<></>}
-                sx={{height: '100%', minWidth: '15rem'}}
+                sx={{ height: '100%', minWidth: '15rem' }}
               >
                 {steps.map((step, index) => {
                   const RenderAvatar = activeStep >= index ? CustomAvatar : Avatar
@@ -576,15 +561,15 @@ const RoleView = (props: propsType) => {
                         <div className='step-label'>
                           <RenderAvatar
                             variant='rounded'
-                            {...(activeStep >= index && {skin: 'light'})}
-                            {...(activeStep === index && {skin: 'filled'})}
-                            {...(activeStep >= index && {color: 'primary'})}
+                            {...(activeStep >= index && { skin: 'light' })}
+                            {...(activeStep === index && { skin: 'filled' })}
+                            {...(activeStep >= index && { color: 'primary' })}
                             sx={{
-                              ...(activeStep === index && {boxShadow: theme => theme.shadows[3]}),
-                              ...(activeStep > index && {color: theme => hexToRGBA(theme.palette.primary.main, 0.4)})
+                              ...(activeStep === index && { boxShadow: theme => theme.shadows[3] }),
+                              ...(activeStep > index && { color: theme => hexToRGBA(theme.palette.primary.main, 0.4) })
                             }}
                           >
-                            <Icon icon={step.icon}/>
+                            <Icon icon={step.icon} />
                           </RenderAvatar>
                           <div>
                             <Typography className='step-title'>{step.title}</Typography>
@@ -597,8 +582,8 @@ const RoleView = (props: propsType) => {
               </Stepper>
             </StepperWrapper>
           </StepperHeaderContainer>
-          <Divider sx={{m: '0 !important'}}/>
-          <CardContent sx={{width: '100%'}}>{renderContent()}</CardContent>
+          <Divider sx={{ m: '0 !important' }} />
+          <CardContent sx={{ width: '100%' }}>{renderContent()}</CardContent>
         </Card>
       </Grid>
     </Grid>

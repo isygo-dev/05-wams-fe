@@ -1,34 +1,33 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
-import {Controller, useForm} from 'react-hook-form'
-import {MuiChipsInput} from 'mui-chips-input'
+import { Controller, useForm } from 'react-hook-form'
+import { MuiChipsInput } from 'mui-chips-input'
 import Icon from 'template-shared/@core/components/icon'
-import {useTranslation} from 'react-i18next'
-import {yupResolver} from '@hookform/resolvers/yup'
+import { useTranslation } from 'react-i18next'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
-import {Checkbox, FormControlLabel, InputLabel, MenuItem, Select} from '@mui/material'
-import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { Checkbox, FormControlLabel, InputLabel, MenuItem, Select } from '@mui/material'
+import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import {checkPermission} from "template-shared/@core/api/helper/permission";
-import EmailInputMask from "template-shared/views/forms/form-elements/input-mask/EmailInputMask";
-import MuiPhoneNumber from "material-ui-phone-number";
-import DomainApis from "ims-shared/@core/api/ims/domain";
-import ResumeApis from "rpm-shared/@core/api/rpm/resume";
-import {ResumeTypes} from "rpm-shared/@core/types/rpm/ResumeTypes";
-
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
+import EmailInputMask from 'template-shared/views/forms/form-elements/input-mask/EmailInputMask'
+import MuiPhoneNumber from 'material-ui-phone-number'
+import DomainApis from 'ims-shared/@core/api/ims/domain'
+import ResumeApis from 'rpm-shared/@core/api/rpm/resume'
+import { ResumeTypes } from 'rpm-shared/@core/types/rpm/ResumeTypes'
 
 interface SidebarAddResumeType {
   open: boolean
@@ -49,7 +48,7 @@ interface ResumeData {
   isLinkedToUser: boolean
 }
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -57,9 +56,9 @@ const Header = styled(Box)<BoxProps>(({theme}) => ({
 }))
 
 const SidebarAddResume = (props: SidebarAddResumeType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const {data: domainList, isFetched: isFetchedDomains} = useQuery('domains', DomainApis(t).getDomains)
+  const { data: domainList, isFetched: isFetchedDomains } = useQuery('domains', DomainApis(t).getDomains)
   const [linkedUser, setLinkedUser] = useState<boolean>(true)
   const [file, setFile] = useState<File | null>(null)
   const schema = yup.object().shape({
@@ -82,7 +81,7 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
   }
 
   // ** Props
-  const {open, toggle} = props
+  const { open, toggle } = props
 
   const {
     reset,
@@ -90,7 +89,7 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
     setValue,
     trigger,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm<ResumeData>({
     defaultValues: {
       email: '',
@@ -157,30 +156,34 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
           anchor='right'
           variant='temporary'
           onClose={handleClose}
-          ModalProps={{keepMounted: true}}
-          sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+          ModalProps={{ keepMounted: true }}
+          sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
         >
           <Header>
             <Typography variant='h6'>{t('Action.Add') as string}</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
-              sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+              sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
             >
-              <Icon icon='tabler:x' fontSize='1.125rem'/>
+              <Icon icon='tabler:x' fontSize='1.125rem' />
             </IconButton>
           </Header>
-          <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+          <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
                 <Controller
                   name='domain'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <Select
-                      disabled={checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? false : true}
+                      disabled={
+                        checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                          ? false
+                          : true
+                      }
                       size='small'
                       label={t('Domain.Domain')}
                       name='domain'
@@ -199,14 +202,14 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
                     </Select>
                   )}
                 />
-                {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
+                {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='title'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       value={value}
@@ -217,14 +220,14 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
                     />
                   )}
                 />
-                {errors.title && <FormHelperText sx={{color: 'error.main'}}>{errors.title.message}</FormHelperText>}
+                {errors.title && <FormHelperText sx={{ color: 'error.main' }}>{errors.title.message}</FormHelperText>}
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='firstName'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       value={value}
@@ -236,15 +239,15 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
                   )}
                 />
                 {errors.firstName && (
-                  <FormHelperText sx={{color: 'error.main'}}>{errors.firstName.message}</FormHelperText>
+                  <FormHelperText sx={{ color: 'error.main' }}>{errors.firstName.message}</FormHelperText>
                 )}
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='lastName'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       value={value}
@@ -256,39 +259,35 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
                   )}
                 />
                 {errors.lastName && (
-                  <FormHelperText sx={{color: 'error.main'}}>{errors.lastName.message}</FormHelperText>
+                  <FormHelperText sx={{ color: 'error.main' }}>{errors.lastName.message}</FormHelperText>
                 )}
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='email'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
-                    <EmailInputMask
-                      value={value}
-                      onChange={onChange}
-                      error={!!errors.email}
-                    />
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <EmailInputMask value={value} onChange={onChange} error={!!errors.email} />
                   )}
                 />
-                {errors.email && <FormHelperText sx={{color: 'error.main'}}>{errors.email.message}</FormHelperText>}
+                {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='phone'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value } }) => (
                     <MuiPhoneNumber
-                      variant="outlined"
+                      variant='outlined'
                       fullWidth
-                      size="small"
-                      defaultCountry={"tn"}
+                      size='small'
+                      defaultCountry={'tn'}
                       countryCodeEditable={true}
                       label={t('Phone_Number')}
                       value={value}
-                      onChange={(e) => {
+                      onChange={e => {
                         const updatedValue = e.replace(/\s+/g, '')
                         setValue('phone', updatedValue)
                       }}
@@ -296,43 +295,43 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
                     />
                   )}
                 />
-                {errors.phone && <FormHelperText sx={{color: 'error.main'}}>{errors.phone.message}</FormHelperText>}
+                {errors.phone && <FormHelperText sx={{ color: 'error.main' }}>{errors.phone.message}</FormHelperText>}
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='tags'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
-                    <MuiChipsInput size='small' value={value} label='Tags' onChange={onChange}/>
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <MuiChipsInput size='small' value={value} label='Tags' onChange={onChange} />
                   )}
                 />
-                {errors.tags && <FormHelperText sx={{color: 'error.main'}}>{errors.tags.message}</FormHelperText>}
+                {errors.tags && <FormHelperText sx={{ color: 'error.main' }}>{errors.tags.message}</FormHelperText>}
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
-                <label htmlFor='file' style={{alignItems: 'center', cursor: 'pointer'}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
+                <label htmlFor='file' style={{ alignItems: 'center', cursor: 'pointer' }}>
                   <Button
                     color='primary'
                     variant='outlined'
                     component='span'
-                    sx={{width: '100%'}}
-                    startIcon={<Icon icon='tabler:upload'/>}
+                    sx={{ width: '100%' }}
+                    startIcon={<Icon icon='tabler:upload' />}
                   >
                     {t('Resume.Resume')}
                   </Button>
-                  <input type='file' name='file' id='file' style={{display: 'none'}} onChange={handleFileChange}/>
+                  <input type='file' name='file' id='file' style={{ display: 'none' }} onChange={handleFileChange} />
                   <a>{file ? file.name : ''}</a>
                 </label>
-                {errors.file && <FormHelperText sx={{color: 'error.main'}}>{errors.file.message}</FormHelperText>}
+                {errors.file && <FormHelperText sx={{ color: 'error.main' }}>{errors.file.message}</FormHelperText>}
               </FormControl>
 
               <FormControlLabel
-                control={<Checkbox checked={linkedUser} onChange={handleLinkedUser}/>}
+                control={<Checkbox checked={linkedUser} onChange={handleLinkedUser} />}
                 label={t('Is Linked to User')}
               />
 
-              <Box sx={{display: 'flex', alignItems: 'center'}}>
-                <Button type='submit' variant='contained' sx={{mr: 3}}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Button type='submit' variant='contained' sx={{ mr: 3 }}>
                   {t('Submit') as string}
                 </Button>
                 <Button variant='outlined' color='secondary' onClick={handleClose}>

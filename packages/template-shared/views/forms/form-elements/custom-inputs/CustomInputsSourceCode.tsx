@@ -1,5 +1,5 @@
 export const CustomCheckboxBasicJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -62,7 +62,7 @@ export default BasicCustomCheckbox
 )
 
 export const CustomCheckboxImgJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -125,7 +125,7 @@ export default CustomCheckboxWithImages
 )
 
 export const CustomCheckboxIconsJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -199,7 +199,7 @@ export default CustomCheckboxWithIcons
 )
 
 export const CustomRadioIconsJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -272,7 +272,7 @@ export default CustomRadioWithIcons
 )
 
 export const CustomRadioBasicJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -334,7 +334,7 @@ export default BasicCustomRadio
 )
 
 export const CustomRadioImgJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -396,7 +396,7 @@ export default CustomRadioWithImages
 )
 
 export const CustomCheckboxBasicTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -462,7 +462,7 @@ export default BasicCustomCheckbox
 )
 
 export const CustomCheckboxIconsTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -544,7 +544,7 @@ export default CustomCheckboxWithIcons
 )
 
 export const CustomCheckboxImgTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -610,7 +610,7 @@ export default CustomCheckboxWithImages
 )
 
 export const CustomRadioIconsTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { ChangeEvent, useState } from 'react'
 
@@ -692,7 +692,7 @@ export default CustomRadioWithIcons
 )
 
 export const CustomRadioBasicTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { ChangeEvent, useState } from 'react'
 
@@ -758,7 +758,7 @@ export default BasicCustomRadio
 )
 
 export const CustomRadioImgTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { ChangeEvent, useState } from 'react'
 

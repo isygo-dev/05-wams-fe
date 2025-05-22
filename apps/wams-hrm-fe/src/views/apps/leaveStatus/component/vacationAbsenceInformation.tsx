@@ -1,17 +1,17 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {useTranslation} from 'react-i18next'
+import React, { useContext, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import {AccordionSummary, Card, CardContent, Grid} from '@mui/material'
+import { AccordionSummary, Card, CardContent, Grid } from '@mui/material'
 import CardHeader from '@mui/material/CardHeader'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import {LeaveStatusContext} from '../../../../pages/apps/leaveStatus/view/[id]'
+import { LeaveStatusContext } from '../../../../pages/apps/leaveStatus/view/[id]'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
-import {Controller, useFormContext} from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
-export function VacationAbsenceInformation({refetch}) {
-  const {t} = useTranslation()
+export function VacationAbsenceInformation({ refetch }) {
+  const { t } = useTranslation()
   const LeaveStatus = useContext(LeaveStatusContext)
   const [updatedLeaveData, setUpdatedLeaveData] = useState(LeaveStatus.LeaveStatusData)
 
@@ -20,7 +20,7 @@ export function VacationAbsenceInformation({refetch}) {
     setUpdatedLeaveData(LeaveStatus.LeaveStatusData)
   }, [LeaveStatus.LeaveStatusData])
 
-  const {control} = useFormContext()
+  const { control } = useFormContext()
   const total =
     updatedLeaveData.leaveCount +
     updatedLeaveData.recoveryLeaveCount -
@@ -28,9 +28,9 @@ export function VacationAbsenceInformation({refetch}) {
 
   return (
     <Grid container direction='column' spacing={2}>
-      <Card sx={{height: '100%'}}>
+      <Card sx={{ height: '100%' }}>
         <CardHeader
-          expandIcon={<ExpandMoreIcon/>}
+          expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'
           id='panel1a-header'
           title={
@@ -41,7 +41,7 @@ export function VacationAbsenceInformation({refetch}) {
           }
         />
 
-        <Divider sx={{mt: 2, mb: 2}}/>
+        <Divider sx={{ mt: 2, mb: 2 }} />
         <AccordionSummary aria-controls='panel1a-content' id='panel1a-header'>
           <Typography variant='h6'>{t('LeaveStatus.Available_Budget')}</Typography>
         </AccordionSummary>
@@ -52,7 +52,7 @@ export function VacationAbsenceInformation({refetch}) {
                 name={`leaveCount`}
                 control={control}
                 defaultValue={updatedLeaveData.leaveCount || 0}
-                render={({field}) => (
+                render={({ field }) => (
                   <TextField
                     size='small'
                     disabled
@@ -69,7 +69,7 @@ export function VacationAbsenceInformation({refetch}) {
                 name={`recoveryLeaveCount`}
                 control={control}
                 defaultValue={updatedLeaveData.recoveryLeaveCount || 0}
-                render={({field}) => (
+                render={({ field }) => (
                   <TextField
                     size='small'
                     disabled
@@ -108,7 +108,7 @@ export function VacationAbsenceInformation({refetch}) {
                 name={`remainingLeaveCount`}
                 control={control}
                 defaultValue={updatedLeaveData.remainingLeaveCount || total}
-                render={({field}) => (
+                render={({ field }) => (
                   <TextField
                     size='small'
                     value={updatedLeaveData.remainingLeaveCount || 0}

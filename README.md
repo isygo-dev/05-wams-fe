@@ -4,15 +4,15 @@
 
 # Technology Stack
 
- Component  | Technology 
-------------|------------
- node       | 20.18.0    
- react      | 17.0.38    
- npm        | 6.1.1      
- pnpm       | 8.15.7     
- eslint     | 8.48.0     
- turbo      | latest     
- typescript | 5.6.3      
+| Component  | Technology |
+| ---------- | ---------- |
+| node       | 20.18.0    |
+| react      | 17.0.38    |
+| npm        | 6.1.1      |
+| pnpm       | 8.15.7     |
+| eslint     | 8.48.0     |
+| turbo      | latest     |
+| typescript | 5.6.3      |
 
 # Getting Started
 
@@ -30,5 +30,3 @@
 - Run: npm install turbo --global
 - Run: pnpm install
 - Run: pnpm run build:docker-prod
-
-

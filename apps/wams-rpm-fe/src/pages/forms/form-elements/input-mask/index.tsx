@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 
 // ** Custom Components Imports
@@ -19,7 +19,7 @@ import InputMaskExamples from 'template-shared/views/forms/form-elements/input-m
 // ** Source code imports
 import * as source from 'template-shared/views/forms/form-elements/input-mask/InputMaskSourceCode'
 
-const LinkStyled = styled(Link)(({theme}) => ({
+const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   color: theme.palette.primary.main
 }))
@@ -46,7 +46,7 @@ const InputMask = () => {
               jsx: source.InputMaskExamplesJSXCode
             }}
           >
-            <InputMaskExamples/>
+            <InputMaskExamples />
           </CardSnippet>
         </Grid>
       </Grid>

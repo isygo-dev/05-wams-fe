@@ -1,6 +1,6 @@
-import {useMutation, useQueryClient} from 'react-query'
-import {Controller, useForm} from 'react-hook-form'
-import React, {useState} from 'react'
+import { useMutation, useQueryClient } from 'react-query'
+import { Controller, useForm } from 'react-hook-form'
+import React, { useState } from 'react'
 import Icon from 'template-shared/@core/components/icon'
 import CustomChip from 'template-shared/@core/components/mui/chip'
 import {
@@ -14,24 +14,26 @@ import {
   FormControlLabel,
   TextField
 } from '@mui/material'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import IconButton from '@mui/material/IconButton'
-import {CloseIcon} from 'next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon'
+import { CloseIcon } from 'next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon'
 import Tooltip from '@mui/material/Tooltip'
-import linkApiUrls from "link-shared/configs/link_apis"
+import linkApiUrls from 'link-shared/configs/link_apis'
 import Checkbox from '@mui/material/Checkbox'
-import PostApis from "link-shared/@core/api/link/post";
-import {PostType} from "link-shared/@core/types/link/PostTypes";
-import {BlogType} from "link-shared/@core/types/link/BlogTypes";
+import PostApis from 'link-shared/@core/api/link/post'
+import { PostType } from 'link-shared/@core/types/link/PostTypes'
+import { BlogType } from 'link-shared/@core/types/link/BlogTypes'
 
-const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue}) => {
+const PostDialogue = ({ isOpen, setIsOpen, user, defaultValues, setDefaultValue }) => {
   console.log('defaultValues', defaultValues)
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
   const [isChecked, setIsChecked] = useState<boolean>(defaultValues?.isBlog ? defaultValues.isBlog : false)
 
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const [pathChange, setPathChange] = useState(
-    defaultValues?.imagePath !== null ? `${linkApiUrls.apiUrl_LINK_Post_ImageDownload_EndPoint}/${defaultValues?.id}` : ''
+    defaultValues?.imagePath !== null
+      ? `${linkApiUrls.apiUrl_LINK_Post_ImageDownload_EndPoint}/${defaultValues?.id}`
+      : ''
   )
   const [docName] = useState(defaultValues?.originalFileName !== null ? defaultValues?.originalFileName : '')
   const [pathChangeVideo, setPathChangeVideo] = useState(
@@ -81,7 +83,7 @@ const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue})
 
   const queryClient = useQueryClient()
 
-  const {handleSubmit, control} = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues,
     mode: 'onChange'
   })
@@ -275,12 +277,12 @@ const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue})
             m: 1
           }}
         >
-          <CloseIcon/>
+          <CloseIcon />
         </IconButton>
       </Tooltip>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent sx={{pt: '0 !important'}}>
+        <DialogContent sx={{ pt: '0 !important' }}>
           {defaultValues?.isBlog ? (
             <CustomChip
               sx={{
@@ -294,7 +296,7 @@ const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue})
             />
           ) : (
             <FormControlLabel
-              control={<Checkbox checked={isChecked} onChange={e => setIsChecked(e.target.checked)}/>}
+              control={<Checkbox checked={isChecked} onChange={e => setIsChecked(e.target.checked)} />}
               label='Is a blog'
               sx={{
                 width: '100%',
@@ -308,11 +310,11 @@ const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue})
           <Controller
             name='title'
             control={control}
-            render={({field: {value, onChange}}) => (
+            render={({ field: { value, onChange } }) => (
               <TextField
                 fullWidth
                 placeholder={'Title'}
-                sx={{mb: 2}}
+                sx={{ mb: 2 }}
                 type='input'
                 size='small'
                 value={value}
@@ -325,11 +327,11 @@ const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue})
           <Controller
             name='talk'
             control={control}
-            render={({field: {value, onChange}}) => (
+            render={({ field: { value, onChange } }) => (
               <TextField
                 fullWidth
                 placeholder={'Text'}
-                sx={{mb: 2}}
+                sx={{ mb: 2 }}
                 type='input'
                 size='small'
                 value={value}
@@ -345,7 +347,7 @@ const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue})
               <Box textAlign={'right'}>
                 <Tooltip title={t('Delete')}>
                   <IconButton onClick={() => deletePicture()}>
-                    <Icon icon={'tabler:x'} color={'primary'}/>
+                    <Icon icon={'tabler:x'} color={'primary'} />
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -367,7 +369,7 @@ const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue})
               <Box textAlign='right'>
                 <Tooltip title={t('Delete')}>
                   <IconButton onClick={deletePicture}>
-                    <Icon icon='tabler:x' color='primary'/>
+                    <Icon icon='tabler:x' color='primary' />
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -380,31 +382,31 @@ const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue})
                     borderRadius: '4px'
                   }}
                 >
-                  <source src={URL.createObjectURL(selectedFile)} type={selectedFile.type}/>
+                  <source src={URL.createObjectURL(selectedFile)} type={selectedFile.type} />
                   Your browser does not support the video tag.
                 </video>
               </Box>
             </Box>
           )}
           {type === 'Document' && selectedFile ? (
-            <div style={{display: 'flex', marginBottom: '7px'}}>
+            <div style={{ display: 'flex', marginBottom: '7px' }}>
               {selectedFile.name.split('.')[1] === 'pdf' && (
                 <>
-                  <Icon icon='tabler:file-type-pdf'/>
+                  <Icon icon='tabler:file-type-pdf' />
                   <span>{selectedFile.name}</span>
                 </>
               )}
 
               {selectedFile.name.split('.')[1] === 'docx' && (
                 <>
-                  <Icon icon='tabler:file-type-docx'/>
+                  <Icon icon='tabler:file-type-docx' />
                   <span>{selectedFile.name}</span>
                 </>
               )}
 
               {selectedFile.name.split('.')[1] === 'pptx' && (
                 <>
-                  <Icon icon='tabler:file-type-ppt'/>
+                  <Icon icon='tabler:file-type-ppt' />
                   <span>{selectedFile.name}</span>
                 </>
               )}
@@ -412,140 +414,140 @@ const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue})
           ) : null}
           {defaultValues?.id
             ? pathChange &&
-            type == 'Media' &&
-            pathChange.trim().length > 0 && (
-              <Box display={'block'}>
-                <Box textAlign={'right'}>
-                  <Tooltip title={t('Delete')}>
-                    <IconButton onClick={() => deletePicture()}>
-                      <Icon icon={'tabler:x'} color={'primary'}/>
-                    </IconButton>
-                  </Tooltip>
+              type == 'Media' &&
+              pathChange.trim().length > 0 && (
+                <Box display={'block'}>
+                  <Box textAlign={'right'}>
+                    <Tooltip title={t('Delete')}>
+                      <IconButton onClick={() => deletePicture()}>
+                        <Icon icon={'tabler:x'} color={'primary'} />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                  <Box textAlign={'center'}>
+                    <img
+                      src={pathChange}
+                      alt={t('Link.Selected_File_Preview')}
+                      style={{
+                        width: 'auto',
+                        borderRadius: '4px',
+                        maxWidth: '100%'
+                      }}
+                    />
+                  </Box>
                 </Box>
-                <Box textAlign={'center'}>
-                  <img
-                    src={pathChange}
-                    alt={t('Link.Selected_File_Preview')}
-                    style={{
-                      width: 'auto',
-                      borderRadius: '4px',
-                      maxWidth: '100%'
-                    }}
-                  />
-                </Box>
-              </Box>
-            )
+              )
             : null}
 
           {defaultValues?.id
             ? pathChangeVideo &&
-            pathChangeVideo.trim().length > 0 && (
-              <Box display={'block'}>
-                <Box textAlign={'right'}>
-                  <Tooltip title={t('Delete')}>
-                    <IconButton onClick={() => deletePicture()}>
-                      <Icon icon={'tabler:x'} color={'primary'}/>
-                    </IconButton>
-                  </Tooltip>
+              pathChangeVideo.trim().length > 0 && (
+                <Box display={'block'}>
+                  <Box textAlign={'right'}>
+                    <Tooltip title={t('Delete')}>
+                      <IconButton onClick={() => deletePicture()}>
+                        <Icon icon={'tabler:x'} color={'primary'} />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                  <Box textAlign={'center'}>
+                    <video
+                      controls
+                      style={{
+                        width: '100%',
+                        maxWidth: '100%',
+                        borderRadius: '4px'
+                      }}
+                    >
+                      <source src={pathChangeVideo} />
+                      Your browser does not support the video tag.
+                    </video>
+                  </Box>
                 </Box>
-                <Box textAlign={'center'}>
-                  <video
-                    controls
-                    style={{
-                      width: '100%',
-                      maxWidth: '100%',
-                      borderRadius: '4px'
-                    }}
-                  >
-                    <source src={pathChangeVideo}/>
-                    Your browser does not support the video tag.
-                  </video>
-                </Box>
-              </Box>
-            )
+              )
             : null}
 
           {selectedFile == null && defaultValues?.id
             ? docName &&
-            docName.trim().length > 0 && (
-              <div style={{display: 'flex', marginBottom: '7px'}}>
-                {docName.split('.')[1] === 'pdf' && (
-                  <>
-                    <Icon icon='tabler:file-type-pdf'/>
-                    <span>{docName}</span>
-                  </>
-                )}
+              docName.trim().length > 0 && (
+                <div style={{ display: 'flex', marginBottom: '7px' }}>
+                  {docName.split('.')[1] === 'pdf' && (
+                    <>
+                      <Icon icon='tabler:file-type-pdf' />
+                      <span>{docName}</span>
+                    </>
+                  )}
 
-                {docName.split('.')[1] === 'docx' && (
-                  <>
-                    <Icon icon='tabler:file-type-docx'/>
-                    <span>{docName}</span>
-                  </>
-                )}
-                {docName.split('.')[1] === 'pptx' && (
-                  <>
-                    <Icon icon='tabler:file-type-ppt'/>
-                    <span>{docName}</span>
-                  </>
-                )}
-              </div>
-            )
+                  {docName.split('.')[1] === 'docx' && (
+                    <>
+                      <Icon icon='tabler:file-type-docx' />
+                      <span>{docName}</span>
+                    </>
+                  )}
+                  {docName.split('.')[1] === 'pptx' && (
+                    <>
+                      <Icon icon='tabler:file-type-ppt' />
+                      <span>{docName}</span>
+                    </>
+                  )}
+                </div>
+              )
             : null}
 
-          <FormControl sx={{mb: 4}}>
-            <div style={{display: 'flex', gap: '10px'}}>
-              <label htmlFor='file-media' style={{alignItems: 'center', cursor: 'pointer', display: 'flex'}}>
+          <FormControl sx={{ mb: 4 }}>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <label htmlFor='file-media' style={{ alignItems: 'center', cursor: 'pointer', display: 'flex' }}>
                 <Tooltip title='Add Media'>
                   <Button
                     color='primary'
                     component='span'
-                    sx={{flexGrow: 1, justifyContent: 'center'}}
-                    startIcon={<Icon icon='tabler:photo'/>}
+                    sx={{ flexGrow: 1, justifyContent: 'center' }}
+                    startIcon={<Icon icon='tabler:photo' />}
                   ></Button>
                 </Tooltip>
                 <input
                   type='file'
                   name='file-media'
                   id='file-media'
-                  style={{display: 'none'}}
+                  style={{ display: 'none' }}
                   accept='image/*'
                   onChange={handleMediaChange}
                 />
               </label>
 
-              <label htmlFor='file-video' style={{alignItems: 'center', cursor: 'pointer', display: 'flex'}}>
+              <label htmlFor='file-video' style={{ alignItems: 'center', cursor: 'pointer', display: 'flex' }}>
                 <Tooltip title='Add Video'>
                   <Button
                     color='primary'
                     component='span'
-                    sx={{flexGrow: 1, justifyContent: 'center'}}
-                    startIcon={<Icon icon='ph:video'/>}
+                    sx={{ flexGrow: 1, justifyContent: 'center' }}
+                    startIcon={<Icon icon='ph:video' />}
                   ></Button>
                 </Tooltip>
                 <input
                   type='file'
                   name='file-video'
                   id='file-video'
-                  style={{display: 'none'}}
+                  style={{ display: 'none' }}
                   accept={'video/mp4,video/x-m4v,video/*'}
                   onChange={handleVideoChange}
                 />
               </label>
 
-              <label htmlFor='file-document' style={{alignItems: 'center', cursor: 'pointer', display: 'flex'}}>
+              <label htmlFor='file-document' style={{ alignItems: 'center', cursor: 'pointer', display: 'flex' }}>
                 <Tooltip title='Add Document'>
                   <Button
                     color='primary'
                     component='span'
-                    sx={{flexGrow: 1, justifyContent: 'center'}}
-                    startIcon={<Icon icon='tabler:file'/>}
+                    sx={{ flexGrow: 1, justifyContent: 'center' }}
+                    startIcon={<Icon icon='tabler:file' />}
                   ></Button>
                 </Tooltip>
                 <input
                   type='file'
                   name='file-document'
                   id='file-document'
-                  style={{display: 'none'}}
+                  style={{ display: 'none' }}
                   accept='application/pdf'
                   onChange={handleDocumentChange}
                 />
@@ -556,7 +558,7 @@ const PostDialogue = ({isOpen, setIsOpen, user, defaultValues, setDefaultValue})
 
         <DialogActions>
           <Tooltip title={t('Link.Schedule')}>
-            <Button startIcon={<Icon icon='lets-icons:time-light'/>}></Button>
+            <Button startIcon={<Icon icon='lets-icons:time-light' />}></Button>
           </Tooltip>
           <Tooltip title={t('Add')}>
             <Button variant='contained' type='submit'>

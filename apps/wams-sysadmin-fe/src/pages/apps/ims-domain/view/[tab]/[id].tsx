@@ -1,14 +1,14 @@
 import React from 'react'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import DomainView from '../../../../../views/apps/domain/DomainView'
-import {useQuery} from 'react-query'
-import DomainApis from "ims-shared/@core/api/ims/domain";
-import {useTranslation} from "react-i18next";
+import { useQuery } from 'react-query'
+import DomainApis from 'ims-shared/@core/api/ims/domain'
+import { useTranslation } from 'react-i18next'
 
 const CustomerDetailView = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const router = useRouter()
-  const {id} = router.query
+  const { id } = router.query
   const {
     data: domainDetail,
     isError,
@@ -23,7 +23,7 @@ const CustomerDetailView = () => {
     return <div>Error loading account data</div>
   }
 
-  return <DomainView domainDetail={domainDetail}/>
+  return <DomainView domainDetail={domainDetail} />
 }
 
 export default CustomerDetailView

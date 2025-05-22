@@ -1,5 +1,5 @@
 export const PickersBasicJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -60,7 +60,7 @@ export default PickersBasic
 )
 
 export const PickersIncludeExcludeJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -150,7 +150,7 @@ export default PickersIncludeExclude
 )
 
 export const PickersCallbacksJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -218,7 +218,7 @@ export default PickersCallbacks
 )
 
 export const PickersCustomInputJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { forwardRef } from 'react'
 
@@ -240,7 +240,7 @@ export default PickersComponent
 )
 
 export const PickersCustomizationJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -292,7 +292,7 @@ export default PickersCustomization
 )
 
 export const PickersLocaleJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -352,7 +352,7 @@ export default PickersLocale
 )
 
 export const PickersMonthYearDropdownsJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -417,7 +417,7 @@ export default PickersMonthYearDropdowns
 )
 
 export const PickersOptionsJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -506,7 +506,7 @@ export default PickersOptions
 )
 
 export const PickersMinMaxJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -558,7 +558,7 @@ export default PickersMinMax
 )
 
 export const PickersMonthYearQuarterJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -622,7 +622,7 @@ export default PickersMonthYear
 )
 
 export const PickersRangeJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState, forwardRef } from 'react'
 
@@ -701,7 +701,7 @@ export default PickersRange
 )
 
 export const PickersSpecificRangeJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -758,7 +758,7 @@ export default PickersSpecificRange
 )
 
 export const PickersTimeJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -814,7 +814,7 @@ export default PickersTime
 )
 
 export const PickersBasicTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -878,7 +878,7 @@ export default PickersBasic
 )
 
 export const PickersIncludeExcludeTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -971,7 +971,7 @@ export default PickersIncludeExclude
 )
 
 export const PickersCallbacksTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1042,7 +1042,7 @@ export default PickersCallbacks
 )
 
 export const PickersLocaleTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1109,7 +1109,7 @@ export default PickersLocale
 )
 
 export const PickersMonthYearDropdownsTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1181,7 +1181,7 @@ export default PickersMonthYearDropdowns
 )
 
 export const PickersCustomInputTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { forwardRef } from 'react'
 
@@ -1208,7 +1208,7 @@ export default PickersComponent
 )
 
 export const PickersMonthYearQuarterTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1275,7 +1275,7 @@ export default PickersMonthYear
 )
 
 export const PickersRangeTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState, forwardRef } from 'react'
 
@@ -1372,7 +1372,7 @@ export default PickersRange
 )
 
 export const PickersSpecificRangeTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1432,7 +1432,7 @@ export default PickersSpecificRange
 )
 
 export const PickersOptionsTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1524,7 +1524,7 @@ export default PickersOptions
 )
 
 export const PickersTimeTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1583,7 +1583,7 @@ export default PickersTime
 )
 
 export const PickersCustomizationTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1638,7 +1638,7 @@ export default PickersCustomization
 )
 
 export const PickersMinMaxTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 

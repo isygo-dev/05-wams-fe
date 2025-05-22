@@ -1,5 +1,5 @@
 // ** React Imports
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 // ** Layout Import
 import BlankLayout from 'template-shared/@core/layouts/BlankLayout'
@@ -7,7 +7,7 @@ import BlankLayout from 'template-shared/@core/layouts/BlankLayout'
 import AuthStepRegister from 'template-shared/views/pages/auth/auth-step-regiter'
 
 const Register = () => {
-  return <AuthStepRegister/>
+  return <AuthStepRegister />
 }
 
 Register.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>

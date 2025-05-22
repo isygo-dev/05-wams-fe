@@ -18,28 +18,28 @@ const FormLayouts = () => {
     <DatePickerWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12} md={6}>
-          <FormLayoutsBasic/>
+          <FormLayoutsBasic />
         </Grid>
         <Grid item xs={12} md={6}>
-          <FormLayoutsIcons/>
+          <FormLayoutsIcons />
         </Grid>
         <Grid item xs={12}>
-          <FormLayoutsSeparator/>
+          <FormLayoutsSeparator />
         </Grid>
-        <Grid item xs={12} sx={{pt: theme => `${theme.spacing(8)} !important`}}>
+        <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(8)} !important` }}>
           <Typography variant='h6'>Form with Tabs</Typography>
         </Grid>
-        <Grid item xs={12} sx={{pt: theme => `${theme.spacing(4)} !important`}}>
-          <FormLayoutsTabs/>
+        <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(4)} !important` }}>
+          <FormLayoutsTabs />
         </Grid>
-        <Grid item xs={12} sx={{pt: theme => `${theme.spacing(8)} !important`}}>
+        <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(8)} !important` }}>
           <Typography variant='h6'>Collapsible Sections</Typography>
         </Grid>
-        <Grid item xs={12} sx={{pt: theme => `${theme.spacing(4)} !important`}}>
-          <FormLayoutsCollapsible/>
+        <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(4)} !important` }}>
+          <FormLayoutsCollapsible />
         </Grid>
         <Grid item xs={12}>
-          <FormLayoutsAlignment/>
+          <FormLayoutsAlignment />
         </Grid>
       </Grid>
     </DatePickerWrapper>

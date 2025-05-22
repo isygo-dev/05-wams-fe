@@ -4,20 +4,19 @@ import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
-import {AdminDomainTypeRequest, DomainType} from "ims-shared/@core/types/ims/domainTypes";
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
+import { AdminDomainTypeRequest, DomainType } from 'ims-shared/@core/types/ims/domainTypes'
 import React from 'react'
-import {useTranslation} from 'react-i18next'
-import {useMutation} from 'react-query'
+import { useTranslation } from 'react-i18next'
+import { useMutation } from 'react-query'
 import MuiPhoneNumber from 'material-ui-phone-number'
 import EmailInputMask from 'template-shared/views/forms/form-elements/input-mask/EmailInputMask'
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import DomainApis from "ims-shared/@core/api/ims/domain";
-
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import DomainApis from 'ims-shared/@core/api/ims/domain'
 
 const schema = yup.object().shape({
   firstName: yup.string().required(),
@@ -33,13 +32,12 @@ interface SidebarAddDomainType {
 }
 
 const AddAdminDomainDrawer = (props: SidebarAddDomainType) => {
-  const {open, toggle, dataDomain} = props
+  const { open, toggle, dataDomain } = props
 
-  const {t} = useTranslation()
+  const { t } = useTranslation()
 
   const mutationAddAdminDomain = useMutation({
-    mutationFn: (newMutation: AdminDomainTypeRequest) =>
-      DomainApis(t).addDomainAdmin(newMutation, dataDomain?.domain),
+    mutationFn: (newMutation: AdminDomainTypeRequest) => DomainApis(t).addDomainAdmin(newMutation, dataDomain?.domain),
     onSuccess: () => {
       handleClose()
     },
@@ -57,7 +55,7 @@ const AddAdminDomainDrawer = (props: SidebarAddDomainType) => {
     firstName: '',
     lastName: '',
     email: dataDomain?.email,
-    phone: dataDomain?.phone,
+    phone: dataDomain?.phone
   }
 
   const {
@@ -65,7 +63,7 @@ const AddAdminDomainDrawer = (props: SidebarAddDomainType) => {
     control,
     handleSubmit,
     setValue,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -92,67 +90,67 @@ const AddAdminDomainDrawer = (props: SidebarAddDomainType) => {
         })}
       >
         <DialogContent>
-
-          <FormControl fullWidth sx={{mb: 4}}>
-            <TextField disabled size='small' value={dataDomain?.domain} label={t('Domain.Domain')}/>
-
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <TextField disabled size='small' value={dataDomain?.domain} label={t('Domain.Domain')} />
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='firstName'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
                   id='form-props-read-only-input'
-                  InputProps={{readOnly: false}}
+                  InputProps={{ readOnly: false }}
                   label={t('First_Name')}
                   onChange={onChange}
                   error={Boolean(errors.firstName)}
                 />
               )}
             />
-            {errors.firstName && <FormHelperText sx={{color: 'error.main'}}>{errors.firstName.message}</FormHelperText>}
+            {errors.firstName && (
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.firstName.message}</FormHelperText>
+            )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='lastName'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
                   id='form-props-read-only-input'
-                  InputProps={{readOnly: false}}
+                  InputProps={{ readOnly: false }}
                   label={t('Last_Name')}
                   onChange={onChange}
                   error={Boolean(errors.lastName)}
                 />
               )}
             />
-            {errors.lastName && <FormHelperText sx={{color: 'error.main'}}>{errors.lastName.message}</FormHelperText>}
+            {errors.lastName && <FormHelperText sx={{ color: 'error.main' }}>{errors.lastName.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='email'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
-                <EmailInputMask value={value} onChange={onChange} error={Boolean(errors.email)}/>
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <EmailInputMask value={value} onChange={onChange} error={Boolean(errors.email)} />
               )}
             />
-            {errors.email && <FormHelperText sx={{color: 'error.main'}}>{errors.email.message}</FormHelperText>}
+            {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='phone'
               control={control}
-              rules={{required: true}}
-              render={({field: {value}}) => (
+              rules={{ required: true }}
+              render={({ field: { value } }) => (
                 <MuiPhoneNumber
                   variant='outlined'
                   fullWidth
@@ -169,12 +167,12 @@ const AddAdminDomainDrawer = (props: SidebarAddDomainType) => {
                 />
               )}
             />
-            {errors.phone && <FormHelperText sx={{color: 'error.main'}}>{errors.phone.message}</FormHelperText>}
+            {errors.phone && <FormHelperText sx={{ color: 'error.main' }}>{errors.phone.message}</FormHelperText>}
           </FormControl>
         </DialogContent>
         <DialogActions className='dialog-actions-dense'>
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

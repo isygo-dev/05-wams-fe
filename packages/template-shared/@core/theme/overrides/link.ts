@@ -1,9 +1,9 @@
 export default {
-    MuiLink: {
-        styleOverrides: {
-            root: {
-                textDecoration: 'none'
-            }
-        }
+  MuiLink: {
+    styleOverrides: {
+      root: {
+        textDecoration: 'none'
+      }
     }
+  }
 }

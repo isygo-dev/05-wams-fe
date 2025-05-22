@@ -1,31 +1,31 @@
 // ** React Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import Icon from 'template-shared/@core/components/icon'
-import {WorkflowsBoardType} from 'rpm-shared/@core/types/rpm/workflowBoardTypes'
-import React, {useState} from 'react'
+import { WorkflowsBoardType } from 'rpm-shared/@core/types/rpm/workflowBoardTypes'
+import React, { useState } from 'react'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import Checkbox from '@mui/material/Checkbox'
 import ListItemText from '@mui/material/ListItemText'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import localStorageKeys from 'template-shared/configs/localeStorage'
-import WorkflowBoardItemApis from "rpm-shared/@core/api/rpm/workflow-board/item";
-import WorkflowApis from "rpm-shared/@core/api/rpm/workflow";
-import AccountApis from "ims-shared/@core/api/ims/account";
-import WorkflowBoardApis from "rpm-shared/@core/api/rpm/workflow-board";
+import WorkflowBoardItemApis from 'rpm-shared/@core/api/rpm/workflow-board/item'
+import WorkflowApis from 'rpm-shared/@core/api/rpm/workflow'
+import AccountApis from 'ims-shared/@core/api/ims/account'
+import WorkflowBoardApis from 'rpm-shared/@core/api/rpm/workflow-board'
 
 interface SidebarEditWorkflowBoardType {
   open: boolean
@@ -33,7 +33,7 @@ interface SidebarEditWorkflowBoardType {
   dataWorkflowBoard: WorkflowsBoardType | undefined
 }
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -59,27 +59,27 @@ const MenuProps = {
   }
 }
 const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const {open, toggle} = props
+  const { open, toggle } = props
   console.log(props.dataWorkflowBoard)
-  const {data: itemTypes} = useQuery(`itemTypes`, () => WorkflowBoardItemApis(t).getWorkflowBoardItemTypes())
-  const {data: workflowList} = useQuery(`workflowList`, () => WorkflowApis(t).getWorkflows())
+  const { data: itemTypes } = useQuery(`itemTypes`, () => WorkflowBoardItemApis(t).getWorkflowBoardItemTypes())
+  const { data: workflowList } = useQuery(`workflowList`, () => WorkflowApis(t).getWorkflows())
   console.log('workflowList', workflowList)
   const [selectedWorkflow, setSelectedWorkflow] = useState(props.dataWorkflowBoard?.workflow)
   console.log('selectedWorkflow', selectedWorkflow)
   const [selectedDomain] = useState(props?.dataWorkflowBoard?.domain)
-  const {data: emails} = useQuery(['emails', selectedDomain], () => AccountApis(t).getAccountEmailsByDomain(), {
+  const { data: emails } = useQuery(['emails', selectedDomain], () => AccountApis(t).getAccountEmailsByDomain(), {
     enabled: !!selectedDomain
   })
 
-  const defaultValues: WorkflowsBoardType = {...props.dataWorkflowBoard}
+  const defaultValues: WorkflowsBoardType = { ...props.dataWorkflowBoard }
 
   const {
     reset,
     control,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -108,7 +108,7 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
   })
 
   const onSubmit = (data: WorkflowsBoardType) => {
-    const updatedData = {...data, workflow: selectedWorkflow}
+    const updatedData = { ...data, workflow: selectedWorkflow }
     updateWorkflowBoardMutation.mutate(updatedData)
   }
 
@@ -124,35 +124,35 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
       anchor='right'
       variant='temporary'
       onClose={handleClose}
-      ModalProps={{keepMounted: true}}
-      sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+      ModalProps={{ keepMounted: true }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
         <Typography variant='h6'>{t('Edit Workflow Board')}</Typography>
         <IconButton
           size='small'
           onClick={handleClose}
-          sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+          sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
         >
-          <Icon icon='tabler:x' fontSize='1.125rem'/>
+          <Icon icon='tabler:x' fontSize='1.125rem' />
         </IconButton>
       </Header>
-      <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+      <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='code'
               control={control}
-              rules={{required: true}}
-              render={({field: {value}}) => <TextField size='small' disabled value={value} label='code'/>}
+              rules={{ required: true }}
+              render={({ field: { value } }) => <TextField size='small' disabled value={value} label='code' />}
             />
-            {errors.code && <FormHelperText sx={{color: 'error.main'}}>{errors.code.message}</FormHelperText>}
+            {errors.code && <FormHelperText sx={{ color: 'error.main' }}>{errors.code.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='domain'
               control={control}
-              render={({field}) => (
+              render={({ field }) => (
                 <TextField
                   label={t('Domain.Domain')}
                   fullWidth
@@ -164,23 +164,23 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='name'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
-                <TextField size='small' value={value} label='Name' onChange={onChange} error={Boolean(errors.name)}/>
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <TextField size='small' value={value} label='Name' onChange={onChange} error={Boolean(errors.name)} />
               )}
             />
-            {errors.name && <FormHelperText sx={{color: 'error.main'}}>{errors.name.message}</FormHelperText>}
+            {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='description'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   rows={4}
@@ -194,10 +194,10 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
               )}
             />
             {errors.description && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.description.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.description.message}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel
               id='validation-category-select'
               error={Boolean(errors.item)}
@@ -208,8 +208,8 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
             <Controller
               name='item'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <Select
                   size='small'
                   value={value}
@@ -229,12 +229,12 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
             />
 
             {errors.item && (
-              <FormHelperText sx={{color: 'error.main'}} id='validation-item-select'>
+              <FormHelperText sx={{ color: 'error.main' }} id='validation-item-select'>
                 {t('This field is require')}
               </FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel
               id='validation-workflow-select'
               error={Boolean(errors.workflow)}
@@ -245,8 +245,8 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
             <Controller
               name='workflow'
               control={control}
-              rules={{required: true}}
-              render={({field: {}}) => (
+              rules={{ required: true }}
+              render={({ field: {} }) => (
                 <Select
                   size='small'
                   value={selectedWorkflow.code as ''}
@@ -266,19 +266,19 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
               )}
             />
             {errors.workflow && (
-              <FormHelperText sx={{color: 'error.main'}} id='validation-workflow-select'>
+              <FormHelperText sx={{ color: 'error.main' }} id='validation-workflow-select'>
                 {t('This field is required')}
               </FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel>{t('Watchers')}</InputLabel>
 
             <Controller
               name='watchers'
               control={control}
-              rules={{required: true}}
-              render={({field}) => {
+              rules={{ required: true }}
+              render={({ field }) => {
                 const value: string[] = field.value
 
                 return (
@@ -305,19 +305,19 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
                     {selectedDomain &&
                       emails?.map((email, index) => (
                         <MenuItem key={index} value={email}>
-                          <Checkbox checked={value.some(e => e === email)}/>
-                          <ListItemText primary={email}/>
+                          <Checkbox checked={value.some(e => e === email)} />
+                          <ListItemText primary={email} />
                         </MenuItem>
                       ))}
                   </Select>
                 )
               }}
             />
-            {errors.watchers && <FormHelperText sx={{color: 'error.main'}}>{errors.watchers.message}</FormHelperText>}
+            {errors.watchers && <FormHelperText sx={{ color: 'error.main' }}>{errors.watchers.message}</FormHelperText>}
           </FormControl>
 
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

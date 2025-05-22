@@ -26,7 +26,7 @@ const CustomInputs = () => {
             jsx: source.CustomRadioBasicJSXCode
           }}
         >
-          <CustomRadioBasic/>
+          <CustomRadioBasic />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} lg={6}>
@@ -37,7 +37,7 @@ const CustomInputs = () => {
             jsx: source.CustomCheckboxBasicJSXCode
           }}
         >
-          <CustomCheckboxBasic/>
+          <CustomCheckboxBasic />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} lg={6}>
@@ -48,7 +48,7 @@ const CustomInputs = () => {
             jsx: source.CustomRadioIconsJSXCode
           }}
         >
-          <CustomRadioIcons/>
+          <CustomRadioIcons />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} lg={6}>
@@ -59,7 +59,7 @@ const CustomInputs = () => {
             jsx: source.CustomCheckboxIconsJSXCode
           }}
         >
-          <CustomCheckboxIcons/>
+          <CustomCheckboxIcons />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} lg={6}>
@@ -70,7 +70,7 @@ const CustomInputs = () => {
             jsx: source.CustomRadioImgJSXCode
           }}
         >
-          <CustomRadioImg/>
+          <CustomRadioImg />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} lg={6}>
@@ -81,7 +81,7 @@ const CustomInputs = () => {
             jsx: source.CustomCheckboxImgJSXCode
           }}
         >
-          <CustomCheckboxImg/>
+          <CustomCheckboxImg />
         </CardSnippet>
       </Grid>
     </Grid>

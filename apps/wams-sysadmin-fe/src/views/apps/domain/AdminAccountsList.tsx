@@ -1,26 +1,25 @@
-import React, {useState} from 'react'
-import {Avatar, Box, Card, Grid, Switch, Typography, useMediaQuery} from '@mui/material'
-import {DataGrid, GridApi, GridColDef, GridColumnVisibilityModel} from '@mui/x-data-grid'
-import Styles from "template-shared/style/style.module.css"
+import React, { useState } from 'react'
+import { Avatar, Box, Card, Grid, Switch, Typography, useMediaQuery } from '@mui/material'
+import { DataGrid, GridApi, GridColDef, GridColumnVisibilityModel } from '@mui/x-data-grid'
+import Styles from 'template-shared/style/style.module.css'
 import CustomChip from 'template-shared/@core/components/mui/chip'
-import {useTranslation} from 'react-i18next'
-import imsApiUrls from "ims-shared/configs/ims_apis"
-import {useTheme} from '@mui/material/styles'
-import {useQuery} from 'react-query'
-import {GridApiCommunity} from '@mui/x-data-grid/internals'
-import {checkPermission} from 'template-shared/@core/api/helper/permission'
+import { useTranslation } from 'react-i18next'
+import imsApiUrls from 'ims-shared/configs/ims_apis'
+import { useTheme } from '@mui/material/styles'
+import { useQuery } from 'react-query'
+import { GridApiCommunity } from '@mui/x-data-grid/internals'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
 import Moment from 'react-moment'
 import themeConfig from 'template-shared/configs/themeConfig'
-import AccountApis from "ims-shared/@core/api/ims/account";
-import CardHeader from "@mui/material/CardHeader";
-import UpdateAdminStatusDialog
-  from "template-shared/@core/components/common-update-admin-status/UpdateAdminStatusDialog";
-import {MinAccountDto, systemStatusObj} from "ims-shared/@core/types/ims/accountTypes";
+import AccountApis from 'ims-shared/@core/api/ims/account'
+import CardHeader from '@mui/material/CardHeader'
+import UpdateAdminStatusDialog from 'template-shared/@core/components/common-update-admin-status/UpdateAdminStatusDialog'
+import { MinAccountDto, systemStatusObj } from 'ims-shared/@core/types/ims/accountTypes'
 
 interface CellType {
   row: MinAccountDto
@@ -31,17 +30,17 @@ interface Props {
 }
 
 const AdminAccountsList = (prop: Props) => {
-  const [paginationModel, setPaginationModel] = useState({page: 0, pageSize: 10})
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
   const [viewMode, setViewMode] = useState('auto')
   const theme = useTheme()
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const dataGridApiRef = React.useRef<GridApi>()
   const [updateStatusDialogOpen, setUpdateStatusDialogOpen] = useState<boolean>(false)
   const [selectedRowId, setSelectedRowId] = useState<number>(0)
   const [newStatus, setNewStatus] = useState<boolean>(false)
 
-  const {data: accounts, isLoading} = useQuery(['usersByDomain', prop?.domain], () =>
+  const { data: accounts, isLoading } = useQuery(['usersByDomain', prop?.domain], () =>
     AccountApis(t).getAccountsByDomain(prop?.domain)
   )
 
@@ -78,11 +77,13 @@ const AdminAccountsList = (prop: Props) => {
       headerName: t('Photo') as string,
       flex: 0.15,
       minWidth: 100,
-      renderCell: ({row}: CellType) => (
+      renderCell: ({ row }: CellType) => (
         <Avatar
           className={Styles.avatarTable}
           src={
-            row.imagePath !== 'defaultPhoto.jpg' ? `${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${row.id}` : ''
+            row.imagePath !== 'defaultPhoto.jpg'
+              ? `${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${row.id}`
+              : ''
           }
           alt={row.fullName}
         />
@@ -95,10 +96,10 @@ const AdminAccountsList = (prop: Props) => {
       flex: 0.15,
       minWidth: 170,
       headerName: t('Domain.Domain') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.domain}
             </Typography>
           </Box>
@@ -112,10 +113,10 @@ const AdminAccountsList = (prop: Props) => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('Username') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.code}
             </Typography>
           </Box>
@@ -129,10 +130,10 @@ const AdminAccountsList = (prop: Props) => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('Full_Name') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.fullName}
             </Typography>
           </Box>
@@ -146,9 +147,9 @@ const AdminAccountsList = (prop: Props) => {
       flex: 0.25,
       minWidth: 200,
       headerName: t('Email') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Typography noWrap sx={{ color: 'text.secondary' }}>
             {row.email}
           </Typography>
         )
@@ -161,9 +162,9 @@ const AdminAccountsList = (prop: Props) => {
       flex: 0.25,
       minWidth: 200,
       headerName: t('Role.Functional_Role') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Typography noWrap sx={{ color: 'text.secondary' }}>
             {row.functionRole}
           </Typography>
         )
@@ -176,12 +177,10 @@ const AdminAccountsList = (prop: Props) => {
       minWidth: 140,
       flex: 0.15,
       headerName: t('IsAdmin') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
           <>
-
-            <Switch size={'small'} checked={row.isAdmin} readOnly={true}/>
-
+            <Switch size={'small'} checked={row.isAdmin} readOnly={true} />
           </>
         )
       }
@@ -194,10 +193,10 @@ const AdminAccountsList = (prop: Props) => {
       minWidth: 155,
       sortable: false,
       headerName: t('lastLoginDate') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary', fontSize: '14px'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary', fontSize: '14px' }}>
               {row.connectionTracking && row.connectionTracking?.length > 0 ? (
                 <Moment format='DD-MM-YYYY HH:mm:ss'>
                   {row.connectionTracking?.length > 0 ? row.connectionTracking[0]?.loginDate : '-'}
@@ -215,16 +214,19 @@ const AdminAccountsList = (prop: Props) => {
       flex: 0.15,
       minWidth: 150,
       headerName: t('Admin_Status') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         const status = row.adminStatus === 'ENABLED'
 
         return (
           <>
             {checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.WRITE) ? (
-              <Switch size={'small'} checked={status}
-                      onChange={() => handleOpenUpdateStatusDialog(row.id ?? 0, status)}/>
+              <Switch
+                size={'small'}
+                checked={status}
+                onChange={() => handleOpenUpdateStatusDialog(row.id ?? 0, status)}
+              />
             ) : (
-              <Switch size={'small'} checked={status}/>
+              <Switch size={'small'} checked={status} />
             )}
           </>
         )
@@ -237,7 +239,7 @@ const AdminAccountsList = (prop: Props) => {
       flex: 0.15,
       minWidth: 170,
       headerName: t('System_status') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
           <CustomChip
             rounded
@@ -245,7 +247,6 @@ const AdminAccountsList = (prop: Props) => {
             className={Styles.sizeCustomChip}
             label={row.systemStatus}
             color={systemStatusObj[row.systemStatus as string]}
-
           />
         )
       }
@@ -274,10 +275,10 @@ const AdminAccountsList = (prop: Props) => {
       minWidth: 140,
       flex: 0.15,
       headerName: t('AuditInfo.createDate') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               <Moment format='DD-MM-YYYY'>{row.createDate}</Moment>
             </Typography>
           </Box>
@@ -291,10 +292,10 @@ const AdminAccountsList = (prop: Props) => {
       minWidth: 140,
       flex: 0.15,
       headerName: t('AuditInfo.createdBy') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.createdBy}
             </Typography>
           </Box>
@@ -308,10 +309,10 @@ const AdminAccountsList = (prop: Props) => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('AuditInfo.updateDate') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               <Moment format='DD-MM-YYYY'>{row.updateDate}</Moment>
             </Typography>
           </Box>
@@ -325,10 +326,10 @@ const AdminAccountsList = (prop: Props) => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('AuditInfo.updatedBy') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.updatedBy}
             </Typography>
           </Box>
@@ -337,11 +338,7 @@ const AdminAccountsList = (prop: Props) => {
     }
   ]
 
-
-  const columns: GridColDef[] = [
-    ...defaultColumns,
-
-  ]
+  const columns: GridColDef[] = [...defaultColumns]
   const gridView = (
     <Box className={Styles.boxTable}>
       <DataGrid
@@ -354,18 +351,17 @@ const AdminAccountsList = (prop: Props) => {
         onColumnVisibilityModelChange={newModel => setColumnVisibilityModel(newModel)}
         columns={columns}
         disableRowSelectionOnClick
-
         pageSizeOptions={themeConfig.pageSizeOptions}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
         slotProps={{
           pagination: {
             labelRowsPerPage: t('Rows_per_page'),
-            labelDisplayedRows: ({from, to, count}) => t('pagination footer', {from, to, count})
+            labelDisplayedRows: ({ from, to, count }) => t('pagination footer', { from, to, count })
           },
           toolbar: {
             showQuickFilter: true,
-            quickFilterProps: {debounceMs: 500}
+            quickFilterProps: { debounceMs: 500 }
           }
         }}
         apiRef={dataGridApiRef as React.MutableRefObject<GridApiCommunity>}
@@ -374,15 +370,11 @@ const AdminAccountsList = (prop: Props) => {
   )
 
   const cardView = (
-    <Grid container spacing={3} sx={{mb: 2, padding: '15px'}}>
+    <Grid container spacing={3} sx={{ mb: 2, padding: '15px' }}>
       {accounts &&
         Array.isArray(accounts) &&
         accounts.map((item, index) => {
-          return (
-            <Grid key={index} item xs={6} sm={6} md={4} lg={12 / 5}>
-
-            </Grid>
-          )
+          return <Grid key={index} item xs={6} sm={6} md={4} lg={12 / 5}></Grid>
         })}{' '}
     </Grid>
   )
@@ -392,10 +384,10 @@ const AdminAccountsList = (prop: Props) => {
       <Grid container spacing={6.5}>
         <Grid item xs={12}>
           <Card>
-            <CardHeader title={'List users'}/>
-            {checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.READ) ? (
-              renderViewBasedOnMode()
-            ) : null}
+            <CardHeader title={'List users'} />
+            {checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.READ)
+              ? renderViewBasedOnMode()
+              : null}
           </Card>
         </Grid>
         {updateStatusDialogOpen &&

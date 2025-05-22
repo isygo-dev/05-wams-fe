@@ -7,11 +7,11 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Icon from 'template-shared/@core/components/icon'
 import IconButton from '@mui/material/IconButton'
-import {ItemType, MiniBoardEvent} from 'rpm-shared/@core/types/rpm/itemTypes'
+import { ItemType, MiniBoardEvent } from 'rpm-shared/@core/types/rpm/itemTypes'
 import Avatar from '@mui/material/Avatar'
-import {format} from 'date-fns'
-import rpmApiUrls from "rpm-shared/configs/rpm_apis";
-import {t} from 'i18next'
+import { format } from 'date-fns'
+import rpmApiUrls from 'rpm-shared/configs/rpm_apis'
+import { t } from 'i18next'
 
 interface CardItem {
   data: ItemType
@@ -20,11 +20,11 @@ interface CardItem {
 }
 
 const DummyCard = (props: CardItem) => {
-  const {data, openAddEvent, color} = props
+  const { data, openAddEvent, color } = props
   const eventIcons = data.events.map(event => (
     <Tooltip key={event.id} title={event.title} placement='top'>
       <IconButton color='primary' onClick={() => openAddEvent(event, data)}>
-        <Icon icon='ic:baseline-event'/>
+        <Icon icon='ic:baseline-event' />
       </IconButton>
     </Tooltip>
   ))
@@ -35,17 +35,17 @@ const DummyCard = (props: CardItem) => {
         margin: 'inherit',
         padding: '10px',
         borderLeft: '7px solid',
-        borderLeftColor: {color}
+        borderLeftColor: { color }
       }}
     >
       <CardHeader
-        sx={{paddingTop: '0px'}}
+        sx={{ paddingTop: '0px' }}
         action={
           <>
             {eventIcons}
             <Tooltip title={t('Action.Add')} placement='top'>
               <IconButton aria-label='Add event' color='info' onClick={() => openAddEvent(undefined, data)}>
-                <Icon icon='mdi:event-add'/>
+                <Icon icon='mdi:event-add' />
               </IconButton>
             </Tooltip>
           </>
@@ -82,12 +82,12 @@ const DummyCard = (props: CardItem) => {
         </Box>
         <Box
           className='center-align'
-          sx={{gap: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center'}}
+          sx={{ gap: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}
         >
-          <Typography variant='subtitle2' sx={{whiteSpace: 'nowrap', color: 'text.primary'}}>
+          <Typography variant='subtitle2' sx={{ whiteSpace: 'nowrap', color: 'text.primary' }}>
             Created on :{format(new Date(data.createDate), 'dd/MM/yyyy')}
           </Typography>
-          <Typography variant='subtitle2' sx={{whiteSpace: 'nowrap', color: 'text.primary'}}>
+          <Typography variant='subtitle2' sx={{ whiteSpace: 'nowrap', color: 'text.primary' }}>
             Updated on :{format(new Date(data.updateDate), 'dd/MM/yyyy')}
           </Typography>
         </Box>

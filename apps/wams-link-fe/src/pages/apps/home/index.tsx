@@ -1,25 +1,25 @@
-import {PostType} from 'link-shared/@core/types/link/PostTypes'
-import {useQuery} from 'react-query'
-import React, {useState} from 'react'
+import { PostType } from 'link-shared/@core/types/link/PostTypes'
+import { useQuery } from 'react-query'
+import React, { useState } from 'react'
 import PostList from '../components/postList/postList'
 import AccountApis from 'ims-shared/@core/api/ims/account'
 import Avatar from '@mui/material/Avatar'
-import imsApiUrls from "ims-shared/configs/ims_apis"
-import {Card, CardContent, Grid, TextField} from '@mui/material'
-import {useTranslation} from 'react-i18next'
+import imsApiUrls from 'ims-shared/configs/ims_apis'
+import { Card, CardContent, Grid, TextField } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import PostDialogue from '../components/dialogue'
 import LeftColumn from '../components/leftRightColumn/leftColumn'
 import RightColumn from '../components/leftRightColumn/rightColumn'
-import PostApis from "link-shared/@core/api/link/post";
-import {MiniAccountChatType} from "ims-shared/@core/types/ims/accountTypes";
+import PostApis from 'link-shared/@core/api/link/post'
+import { MiniAccountChatType } from 'ims-shared/@core/types/ims/accountTypes'
 
 const HomePage = () => {
-  const {t} = useTranslation()
-  const {data: user, isLoading: isLoadingUser} = useQuery(`user`, () => AccountApis(t).getAccountProfile())
-  const {data: contactsAccount, isLoading: isLoadingAccount} = useQuery(['contactsAccount', user?.domain], () =>
+  const { t } = useTranslation()
+  const { data: user, isLoading: isLoadingUser } = useQuery(`user`, () => AccountApis(t).getAccountProfile())
+  const { data: contactsAccount, isLoading: isLoadingAccount } = useQuery(['contactsAccount', user?.domain], () =>
     AccountApis(t).getAccountsByDomain(user?.domain)
   )
-  const {data: posts, isLoading: isLoadingDataPosts} = useQuery(`posts`, () => PostApis(t).getPosts(0, 5))
+  const { data: posts, isLoading: isLoadingDataPosts } = useQuery(`posts`, () => PostApis(t).getPosts(0, 5))
   const [isOpen, setIsOpen] = useState(false)
   const handleOpenPop = () => {
     setIsOpen(true)
@@ -55,7 +55,7 @@ const HomePage = () => {
         }}
       >
         <Grid item md={3} xs={12} sm={12}>
-          <LeftColumn user={user} handelCheckImagePath={handelCheckImagePath} hideAvatar={false}/>
+          <LeftColumn user={user} handelCheckImagePath={handelCheckImagePath} hideAvatar={false} />
         </Grid>
 
         <Grid item md={6} xs={12} sm={12}>
@@ -90,12 +90,12 @@ const HomePage = () => {
           </Card>
 
           {!isLoadingAccount && !isLoadingDataPosts ? (
-            <PostList contactsAccount={contactsAccount} user={user} posts={posts}/>
+            <PostList contactsAccount={contactsAccount} user={user} posts={posts} />
           ) : null}
         </Grid>
 
         <Grid item md={3} xs={12} sm={12} className={'hide-column'}>
-          <RightColumn/>
+          <RightColumn />
         </Grid>
 
         {isOpen && (

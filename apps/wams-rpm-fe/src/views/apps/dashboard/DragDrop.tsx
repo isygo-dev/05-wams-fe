@@ -1,29 +1,29 @@
-import React, {MouseEvent, useState} from 'react'
+import React, { MouseEvent, useState } from 'react'
 import AddEventDrawer from './AddEventDrawer'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
-import {useTranslation} from 'react-i18next'
-import {Icon} from '@iconify/react'
-import {BpmEventRequest, BpmEventResponse, ItemType, MiniBoardEvent} from 'rpm-shared/@core/types/rpm/itemTypes'
+import { useTranslation } from 'react-i18next'
+import { Icon } from '@iconify/react'
+import { BpmEventRequest, BpmEventResponse, ItemType, MiniBoardEvent } from 'rpm-shared/@core/types/rpm/itemTypes'
 import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
-import {ToggleButton, ToggleButtonGroup} from '@mui/material'
+import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import {useTheme} from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import {useMutation, useQuery} from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import CardView from './CardView'
 import GridView from './GridView'
 import CardContent from '@mui/material/CardContent'
-import WorkflowBoardApis from "rpm-shared/@core/api/rpm/workflow-board";
-import WorkflowBoardItemApis from "rpm-shared/@core/api/rpm/workflow-board/item";
+import WorkflowBoardApis from 'rpm-shared/@core/api/rpm/workflow-board'
+import WorkflowBoardItemApis from 'rpm-shared/@core/api/rpm/workflow-board/item'
 
 function DragDrop() {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const theme = useTheme()
   const styles = {
     cardHover: {
@@ -35,13 +35,13 @@ function DragDrop() {
     }
   }
 
-  const {data: wbStore} = useQuery(`wbStore`, () => WorkflowBoardApis(t).getWorkflowBoards())
+  const { data: wbStore } = useQuery(`wbStore`, () => WorkflowBoardApis(t).getWorkflowBoards())
   const [codeItem, setCodeItem] = useState('')
   const [selectedWbCode, setSelectedWbCode] = useState<string>('')
   const [selectedWbName, setSelectedWbName] = useState<string>('')
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
-  const {data: itemsStore, refetch: refetchItems} = useQuery(
+  const { data: itemsStore, refetch: refetchItems } = useQuery(
     [`itemsStore`, selectedWbCode],
     () => WorkflowBoardItemApis(t).getWorkflowBoardItems(selectedWbCode),
     {
@@ -49,9 +49,13 @@ function DragDrop() {
     }
   )
 
-  const {data: statesStore} = useQuery([`statesStore`, selectedWbCode], () => WorkflowBoardApis(t).getWorkflowBoardStates(selectedWbCode), {
-    enabled: !!selectedWbCode
-  })
+  const { data: statesStore } = useQuery(
+    [`statesStore`, selectedWbCode],
+    () => WorkflowBoardApis(t).getWorkflowBoardStates(selectedWbCode),
+    {
+      enabled: !!selectedWbCode
+    }
+  )
 
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -72,7 +76,7 @@ function DragDrop() {
   })
 
   const onDragEnd = (result: any) => {
-    const {source, destination} = result
+    const { source, destination } = result
     if (!destination) return
 
     if (source.droppableId != destination.droppableId) {
@@ -213,7 +217,7 @@ function DragDrop() {
 
   return (
     <Grid>
-      <Card sx={{width: '100%', padding: '20px 10px'}}>
+      <Card sx={{ width: '100%', padding: '20px 10px' }}>
         <Grid container spacing={3} justifyContent={'center'}>
           {wbStore?.map((wb, index) => (
             <Grid item xs={12} md={2.4} sm={6} key={index}>
@@ -250,21 +254,21 @@ function DragDrop() {
         </Grid>
       </Card>
       <Grid container mt={2}>
-        <Card sx={{width: '100%', padding: '10px'}}>
+        <Card sx={{ width: '100%', padding: '10px' }}>
           <Grid item md={12} sm={12} xs={12}>
             <Grid container spacing={1}>
               <Grid item xs={6} md={6} sm={6} className={'changeAlign'}>
                 <ToggleButtonGroup exclusive value={viewMode} onChange={toggleViewMode} aria-label='text alignment'>
                   <ToggleButton value='grid' aria-label='left aligned'>
-                    <Icon icon='ic:baseline-view-list' fontSize='1.375rem'/>
+                    <Icon icon='ic:baseline-view-list' fontSize='1.375rem' />
                   </ToggleButton>
                   <ToggleButton value='card' aria-label='center aligned'>
-                    <Icon icon='ic:baseline-view-module' fontSize='1.375rem'/>
+                    <Icon icon='ic:baseline-view-module' fontSize='1.375rem' />
                   </ToggleButton>
                 </ToggleButtonGroup>
               </Grid>
               <Grid item md={6} sm={6} xs={6} className={'changeAlignText'}>
-                <TextField size='small' placeholder='Search' onChange={e => handleFilter(e.target.value)}/>
+                <TextField size='small' placeholder='Search' onChange={e => handleFilter(e.target.value)} />
               </Grid>
             </Grid>
           </Grid>
@@ -291,12 +295,12 @@ function DragDrop() {
                 py: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
               }}
             >
-              <Box sx={{mb: 4, textAlign: 'center'}}>
-                <Typography variant='h5' sx={{mb: 3}}>
+              <Box sx={{ mb: 4, textAlign: 'center' }}>
+                <Typography variant='h5' sx={{ mb: 3 }}>
                   {t('Change state')}
                 </Typography>
               </Box>
-              <Box sx={{textAlign: 'center'}}>
+              <Box sx={{ textAlign: 'center' }}>
                 <ToggleButtonGroup
                   className='toggle-selected'
                   orientation='vertical'
@@ -308,10 +312,10 @@ function DragDrop() {
                     <ToggleButton
                       key={column.id}
                       value={column.code}
-                      style={{padding: '0px'}}
+                      style={{ padding: '0px' }}
                       className={`${selectedItem.state === column.code ? 'bg-selected-state' : 'bg-state'}`}
                     >
-                      <Button style={{color: 'inherit'}}>{column.name}</Button>
+                      <Button style={{ color: 'inherit' }}>{column.name}</Button>
                     </ToggleButton>
                   ))}
                 </ToggleButtonGroup>

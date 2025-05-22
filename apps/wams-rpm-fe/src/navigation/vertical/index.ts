@@ -1,9 +1,8 @@
 // ** Type import
-import {VerticalNavItemsType} from 'template-shared/@core/layouts/types'
-import {PermissionApplication, PermissionPage} from "template-shared/@core/types/helper/apiPermissionTypes";
+import { VerticalNavItemsType } from 'template-shared/@core/layouts/types'
+import { PermissionApplication, PermissionPage } from 'template-shared/@core/types/helper/apiPermissionTypes'
 
 const navigation = (): VerticalNavItemsType => {
-
   return [
     {
       sectionTitle: 'Apps & Pages'
@@ -27,7 +26,6 @@ const navigation = (): VerticalNavItemsType => {
       icon: 'tabler:layout-dashboard',
       permissionSection: 'NavSectionTitle',
       children: [
-
         {
           title: 'Menu.Workflows',
           icon: 'carbon:workflow-automation',

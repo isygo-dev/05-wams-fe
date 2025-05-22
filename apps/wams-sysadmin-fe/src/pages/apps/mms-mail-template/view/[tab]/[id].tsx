@@ -1,14 +1,14 @@
 import MailTemplateView from '../../../../../views/apps/mms-mail-template/MailTemplateView'
-import {useQuery} from 'react-query'
-import {useRouter} from 'next/router'
+import { useQuery } from 'react-query'
+import { useRouter } from 'next/router'
 import React from 'react'
-import MailTemplateApis from "mms-shared/@core/api/mms/mail-template";
-import {useTranslation} from "react-i18next";
+import MailTemplateApis from 'mms-shared/@core/api/mms/mail-template'
+import { useTranslation } from 'react-i18next'
 
 const TemplateViewdetail = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const router = useRouter()
-  const {id} = router.query
+  const { id } = router.query
   const {
     data: templateDetailsData,
     isError,
@@ -23,7 +23,7 @@ const TemplateViewdetail = () => {
     return <div>Error loading template data</div>
   }
 
-  return <MailTemplateView templateDetailsData={templateDetailsData} file={null} id={null}/>
+  return <MailTemplateView templateDetailsData={templateDetailsData} file={null} id={null} />
 }
 
 export default TemplateViewdetail

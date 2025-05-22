@@ -1,14 +1,14 @@
 import React from 'react'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import CustomerView from '../../../../../views/apps/customer/CustomerView'
-import {useQuery} from "react-query";
-import CustomerApis from "ims-shared/@core/api/ims/customer";
-import {useTranslation} from "react-i18next";
+import { useQuery } from 'react-query'
+import CustomerApis from 'ims-shared/@core/api/ims/customer'
+import { useTranslation } from 'react-i18next'
 
 const CustomerDetailView = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const router = useRouter()
-  const {id} = router.query
+  const { id } = router.query
   const {
     data: customerData,
     isLoading,
@@ -23,7 +23,7 @@ const CustomerDetailView = () => {
     return <div>Error loading account data</div>
   }
 
-  return <CustomerView customerData={customerData}/>
+  return <CustomerView customerData={customerData} />
 }
 
 export default CustomerDetailView

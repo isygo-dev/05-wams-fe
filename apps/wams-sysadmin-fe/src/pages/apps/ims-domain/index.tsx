@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react'
-import {DataGrid, GridApi, GridColDef, GridColumnVisibilityModel} from '@mui/x-data-grid'
+import React, { useCallback, useState } from 'react'
+import { DataGrid, GridApi, GridColDef, GridColumnVisibilityModel } from '@mui/x-data-grid'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Tooltip from '@mui/material/Tooltip'
@@ -8,41 +8,40 @@ import Icon from 'template-shared/@core/components/icon'
 import Typography from '@mui/material/Typography'
 import AddDomainDrawer from '../../../views/apps/domain/AddDomainDrawer'
 import TableHeader from 'template-shared/views/table/TableHeader'
-import {Avatar, ToggleButtonGroup} from '@mui/material'
+import { Avatar, ToggleButtonGroup } from '@mui/material'
 import Switch from '@mui/material/Switch'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import DeleteCommonDialog from 'template-shared/@core/components/DeleteCommonDialog'
-import imsApiUrls from "ims-shared/configs/ims_apis"
-import UpdateAdminStatusDialog
-  from 'template-shared/@core/components/common-update-admin-status/UpdateAdminStatusDialog'
+import imsApiUrls from 'ims-shared/configs/ims_apis'
+import UpdateAdminStatusDialog from 'template-shared/@core/components/common-update-admin-status/UpdateAdminStatusDialog'
 import Card from '@mui/material/Card'
 import ToggleButton from '@mui/material/ToggleButton'
-import {useTheme} from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
-import {GridApiCommunity} from '@mui/x-data-grid/internals'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { GridApiCommunity } from '@mui/x-data-grid/internals'
 import DomainCard from '../../../views/apps/domain/DomainCard'
-import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
-import {useRouter} from 'next/router'
-import {checkPermission} from 'template-shared/@core/api/helper/permission'
+import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { useRouter } from 'next/router'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
 import Moment from 'react-moment'
-import themeConfig from "template-shared/configs/themeConfig";
-import Styles from "template-shared/style/style.module.css"
-import AddAdminDomainDrawer from "../../../views/apps/domain/AddAdminDomainDrawer";
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import {GridPaginationModel} from "@mui/x-data-grid/models/gridPaginationProps";
-import localStorageKeys from "template-shared/configs/localeStorage";
-import PaginationCard from "template-shared/@core/components/card-pagination";
-import DomainApis from "ims-shared/@core/api/ims/domain";
-import AccountApis from "ims-shared/@core/api/ims/account";
+import themeConfig from 'template-shared/configs/themeConfig'
+import Styles from 'template-shared/style/style.module.css'
+import AddAdminDomainDrawer from '../../../views/apps/domain/AddAdminDomainDrawer'
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
+import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps'
+import localStorageKeys from 'template-shared/configs/localeStorage'
+import PaginationCard from 'template-shared/@core/components/card-pagination'
+import DomainApis from 'ims-shared/@core/api/ims/domain'
+import AccountApis from 'ims-shared/@core/api/ims/account'
 
 const DomainList = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
   interface CellType {
@@ -58,28 +57,26 @@ const DomainList = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const [paginationPage, setPaginationPage] = useState<number>(0)
-  const {
-    data: countDomain,
-    isLoading: isLoadingCountDomain
-  } = useQuery(`countDomain`, () => DomainApis(t).getDomainsCount())
-  const [paginationModel, setPaginationModel] =
-    useState<GridPaginationModel>({
-        page: paginationPage,
-        pageSize: localStorage.getItem(localStorageKeys.paginationSize) &&
-        Number(localStorage.getItem(localStorageKeys.paginationSize)) > 9 ?
-          Number(localStorage.getItem(localStorageKeys.paginationSize)) : 20
-      }
-    )
+  const { data: countDomain, isLoading: isLoadingCountDomain } = useQuery(`countDomain`, () =>
+    DomainApis(t).getDomainsCount()
+  )
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: paginationPage,
+    pageSize:
+      localStorage.getItem(localStorageKeys.paginationSize) &&
+      Number(localStorage.getItem(localStorageKeys.paginationSize)) > 9
+        ? Number(localStorage.getItem(localStorageKeys.paginationSize))
+        : 20
+  })
   const toggleAddDomainDrawer = () => setAddDomainOpen(!addDomainOpen)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false)
   const [selectedRowId, setSelectedRowId] = useState<number>(0)
   const [newStatus, setNewStatus] = useState<boolean>(false)
   const [updateStatusDialogOpen, setUpdateStatusDialogOpen] = useState<boolean>(false)
   const [viewMode, setViewMode] = useState('auto')
-  const {
-    data: domains,
-    isLoading
-  } = useQuery(`domains`, () => DomainApis(t).getDomainsByPage(paginationModel.page, paginationModel.pageSize))
+  const { data: domains, isLoading } = useQuery(`domains`, () =>
+    DomainApis(t).getDomainsByPage(paginationModel.page, paginationModel.pageSize)
+  )
   const [disabledNextBtn, setDisabledNextBtn] = useState<boolean>(false)
   const onChangePagination = async (item: any) => {
     if (item.pageSize !== paginationModel.pageSize) {
@@ -90,12 +87,12 @@ const DomainList = () => {
       queryClient.removeQueries('domains')
       queryClient.setQueryData('domains', apiList)
       setPaginationPage(0)
-      setPaginationModel({page: 0, pageSize: item.pageSize})
+      setPaginationModel({ page: 0, pageSize: item.pageSize })
       setDisabledNextBtn(false)
     }
   }
 
-  const onChangePage = async (item) => {
+  const onChangePage = async item => {
     let newPagination: GridPaginationModel
     if (item === 'backIconButtonProps') {
       newPagination = {
@@ -125,7 +122,6 @@ const DomainList = () => {
         setDisabledNextBtn(true)
       }
     }
-
   }
 
   const toggleViewMode = () => {
@@ -185,7 +181,7 @@ const DomainList = () => {
     router.push(`/apps/ims-domain/view/DomainView/${id}`)
   }
 
-  const {data: profileUser, isLoading: isLoadingProfileUser} = useQuery(
+  const { data: profileUser, isLoading: isLoadingProfileUser } = useQuery(
     'profileUser',
     AccountApis(t).getAccountProfile
   )
@@ -212,10 +208,11 @@ const DomainList = () => {
       headerName: t('Photo') as string,
       type: 'string',
       flex: 1,
-      renderCell: ({row}: CellType) => (
-        <Avatar className={Styles.avatarTable}
-                src={row.imagePath ? `${imsApiUrls.apiUrl_IMS_Domain_ImageDownload_EndPoint}/${row.id}?${Date.now()}` : ''}
-                alt={row.name}
+      renderCell: ({ row }: CellType) => (
+        <Avatar
+          className={Styles.avatarTable}
+          src={row.imagePath ? `${imsApiUrls.apiUrl_IMS_Domain_ImageDownload_EndPoint}/${row.id}?${Date.now()}` : ''}
+          alt={row.name}
         />
       )
     },
@@ -225,7 +222,7 @@ const DomainList = () => {
       field: 'domain',
       headerName: t('Domain.Domain') as string,
       flex: 1,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.domain}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
     },
 
     /*Name column*/
@@ -234,7 +231,7 @@ const DomainList = () => {
       headerName: t('Name') as string,
       type: 'string',
       flex: 1,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.name}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.name}</Typography>
     },
 
     /*Email column*/
@@ -243,7 +240,7 @@ const DomainList = () => {
       headerName: t('Email') as string,
       type: 'string',
       flex: 1,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.email}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.email}</Typography>
     },
 
     /*Phone column*/
@@ -252,7 +249,7 @@ const DomainList = () => {
       headerName: t('Phone') as string,
       type: 'string',
       flex: 1,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.phone}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.phone}</Typography>
     },
 
     /*Url column*/
@@ -260,7 +257,7 @@ const DomainList = () => {
       field: 'url',
       headerName: t('Url') as string,
       flex: 1,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.url}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.url}</Typography>
     },
 
     /*Status column*/
@@ -268,15 +265,15 @@ const DomainList = () => {
       field: 'status',
       headerName: t('Status') as string,
       flex: 1,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         const status = row.adminStatus === 'ENABLED'
 
         return (
           <>
             {checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? (
-              <Switch size={'small'} checked={status} onChange={() => handleOpenUpdateStatusDialog(row.id, !status)}/>
+              <Switch size={'small'} checked={status} onChange={() => handleOpenUpdateStatusDialog(row.id, !status)} />
             ) : (
-              <Switch size={'small'} checked={status} readOnly={true}/>
+              <Switch size={'small'} checked={status} readOnly={true} />
             )}
           </>
         )
@@ -289,10 +286,10 @@ const DomainList = () => {
       minWidth: 140,
       flex: 0.15,
       headerName: t('AuditInfo.createDate') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               <Moment format='DD-MM-YYYY'>{row.createDate}</Moment>
             </Typography>
           </Box>
@@ -306,10 +303,10 @@ const DomainList = () => {
       minWidth: 140,
       flex: 0.15,
       headerName: t('AuditInfo.createdBy') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.createdBy}
             </Typography>
           </Box>
@@ -323,10 +320,10 @@ const DomainList = () => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('AuditInfo.updateDate') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               <Moment format='DD-MM-YYYY'>{row.updateDate}</Moment>
             </Typography>
           </Box>
@@ -340,10 +337,10 @@ const DomainList = () => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('AuditInfo.updatedBy') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.updatedBy}
             </Typography>
           </Box>
@@ -359,14 +356,16 @@ const DomainList = () => {
       headerName: '' as string,
       align: 'right',
       flex: 1,
-      renderCell: ({row}: CellType) => (
-        <Box sx={{display: 'flex', alignItems: 'center'}}>
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.DELETE) && (
             <Tooltip title={t('Action.Delete')}>
               <IconButton
-                className={Styles.sizeIcon} sx={{color: 'text.secondary'}}
-                onClick={() => handleOpenDeleteDialog(row.id)}>
-                <Icon icon='tabler:trash'/>
+                className={Styles.sizeIcon}
+                sx={{ color: 'text.secondary' }}
+                onClick={() => handleOpenDeleteDialog(row.id)}
+              >
+                <Icon icon='tabler:trash' />
               </IconButton>
             </Tooltip>
           )}
@@ -374,16 +373,22 @@ const DomainList = () => {
           {checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.READ) && (
             <Tooltip title={t('Action.Edit')}>
               <IconButton
-                className={Styles.sizeIcon} sx={{color: 'text.secondary'}} onClick={() => handleClickView(row.id)}>
-                <Icon icon='fluent:slide-text-edit-24-regular'/>
+                className={Styles.sizeIcon}
+                sx={{ color: 'text.secondary' }}
+                onClick={() => handleClickView(row.id)}
+              >
+                <Icon icon='fluent:slide-text-edit-24-regular' />
               </IconButton>
             </Tooltip>
           )}
           {checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) && (
             <Tooltip title={t('Action.Add')}>
-              <IconButton className={Styles.sizeIcon} sx={{color: 'text.secondary'}}
-                          onClick={() => handelOpenAddAdmin(row)}>
-                <PersonAddAlt1Icon/>
+              <IconButton
+                className={Styles.sizeIcon}
+                sx={{ color: 'text.secondary' }}
+                onClick={() => handelOpenAddAdmin(row)}
+              >
+                <PersonAddAlt1Icon />
               </IconButton>
             </Tooltip>
           )}
@@ -396,7 +401,6 @@ const DomainList = () => {
       <DataGrid
         autoHeight
         pagination
-
         className={Styles.tableStyleNov}
         columnHeaderHeight={themeConfig.columnHeaderHeight}
         rowHeight={themeConfig.rowHeight}
@@ -408,31 +412,26 @@ const DomainList = () => {
         pageSizeOptions={themeConfig.pageSizeOptions}
         paginationModel={paginationModel}
         onPaginationModelChange={onChangePagination}
-
         slotProps={{
-
           pagination: {
-
             count: countDomain,
             page: paginationPage,
-            labelDisplayedRows: ({page, count}) =>
-              `${t('pagination footer')} ${page + 1} - ${paginationModel.pageSize} of ${count}`
+            labelDisplayedRows: ({ page, count }) =>
+              `${t('pagination footer')} ${page + 1} - ${paginationModel.pageSize} of ${count}`,
 
-            ,
             labelRowsPerPage: t('Rows_per_page'),
             nextIconButtonProps: {
-              'onClick': () => onChangePage('nextIconButtonProps'),
-              disabled: disabledNextBtn || domains?.length < paginationModel.pageSize,
-
+              onClick: () => onChangePage('nextIconButtonProps'),
+              disabled: disabledNextBtn || domains?.length < paginationModel.pageSize
             },
             backIconButtonProps: {
-              'onClick': () => onChangePage('backIconButtonProps'),
-              disabled: paginationModel.page === 0,
+              onClick: () => onChangePage('backIconButtonProps'),
+              disabled: paginationModel.page === 0
             }
           },
           toolbar: {
             showQuickFilter: true,
-            quickFilterProps: {debounceMs: 500}
+            quickFilterProps: { debounceMs: 500 }
           }
         }}
         apiRef={dataGridApiRef as React.MutableRefObject<GridApiCommunity>}
@@ -441,7 +440,7 @@ const DomainList = () => {
   )
 
   const cardView = (
-    <Grid container spacing={3} sx={{mb: 2, padding: '15px'}}>
+    <Grid container spacing={3} sx={{ mb: 2, padding: '15px' }}>
       {domains &&
         Array.isArray(domains) &&
         domains?.map((item, index) => {
@@ -457,14 +456,14 @@ const DomainList = () => {
             </Grid>
           )
         })}{' '}
-
-      <PaginationCard paginationModel={paginationModel}
-                      onChangePagination={onChangePagination}
-                      paginationPage={paginationPage}
-                      countList={countDomain}
-                      disabledNextBtn={disabledNextBtn}
-                      ListLength={domains?.length}
-                      onChangePage={onChangePage}
+      <PaginationCard
+        paginationModel={paginationModel}
+        onChangePagination={onChangePagination}
+        paginationPage={paginationPage}
+        countList={countDomain}
+        disabledNextBtn={disabledNextBtn}
+        ListLength={domains?.length}
+        onChangePage={onChangePage}
       />
     </Grid>
   )
@@ -473,13 +472,13 @@ const DomainList = () => {
     <Grid container spacing={6.5}>
       <Grid item xs={12}>
         <Card>
-          <Box sx={{display: 'flex', justifyContent: 'center', gap: 2, margin: 2}}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, margin: 2 }}>
             <ToggleButtonGroup exclusive value={viewMode} onChange={toggleViewMode} aria-label='text alignment'>
               <ToggleButton value='grid' aria-label='left aligned'>
-                <Icon icon='ic:baseline-view-list'/>
+                <Icon icon='ic:baseline-view-list' />
               </ToggleButton>
               <ToggleButton value='card' aria-label='center aligned'>
-                <Icon icon='ic:baseline-view-module'/>
+                <Icon icon='ic:baseline-view-module' />
               </ToggleButton>
             </ToggleButtonGroup>
           </Box>
@@ -493,14 +492,14 @@ const DomainList = () => {
             permissionAction={PermissionAction.WRITE}
           />
           {checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.READ) &&
-            renderViewBasedOnMode()
-          }
+            renderViewBasedOnMode()}
         </Card>
       </Grid>
 
-      {!isLoadingProfileUser && addDomainOpen &&
+      {!isLoadingProfileUser &&
+        addDomainOpen &&
         checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) && (
-          <AddDomainDrawer open={addDomainOpen} domain={profileUser?.domain} toggle={toggleAddDomainDrawer}/>
+          <AddDomainDrawer open={addDomainOpen} domain={profileUser?.domain} toggle={toggleAddDomainDrawer} />
         )}
 
       {deleteDialogOpen && (
@@ -523,13 +522,14 @@ const DomainList = () => {
             newStatus={newStatus}
           />
         )}
-      {addAdminDomainOpen && checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) && (
-        <AddAdminDomainDrawer
-          open={addAdminDomainOpen}
-          toggle={toggleAddAdminDomainDrawer}
-          dataDomain={dataDomainDetails}
-        />
-      )}
+      {addAdminDomainOpen &&
+        checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) && (
+          <AddAdminDomainDrawer
+            open={addAdminDomainOpen}
+            toggle={toggleAddAdminDomainDrawer}
+            dataDomain={dataDomainDetails}
+          />
+        )}
     </Grid>
   ) : null
 }

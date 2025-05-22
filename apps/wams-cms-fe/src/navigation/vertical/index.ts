@@ -1,9 +1,8 @@
-import {VerticalNavItemsType} from 'template-shared/@core/layouts/types'
-import {PermissionApplication, PermissionPage} from "template-shared/@core/types/helper/apiPermissionTypes";
+import { VerticalNavItemsType } from 'template-shared/@core/layouts/types'
+import { PermissionApplication, PermissionPage } from 'template-shared/@core/types/helper/apiPermissionTypes'
 
 const navigation = (): VerticalNavItemsType => {
   return [
-
     {
       title: 'Calendars',
       icon: 'tabler:calendar',

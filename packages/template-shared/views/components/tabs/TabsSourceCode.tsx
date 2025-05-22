@@ -1,5 +1,5 @@
 export const TabsCenteredJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -53,7 +53,7 @@ export default TabsCentered
 )
 
 export const TabsCustomizedJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -124,7 +124,7 @@ export default TabsCustomized
 )
 
 export const TabsCustomizedVerticalJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -199,7 +199,7 @@ export default TabsCustomizedVertical
 )
 
 export const TabsForcedScrollJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -270,7 +270,7 @@ export default TabsForcedScroll
 )
 
 export const TabsIconJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -327,7 +327,7 @@ export default TabsIcon
 )
 
 export const TabsFullWidthJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -381,7 +381,7 @@ export default TabsFullWidth
 )
 
 export const TabsColorJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -440,7 +440,7 @@ export default TabsColor
 )
 
 export const TabsNavJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -494,7 +494,7 @@ export default TabsNav
 )
 
 export const TabsVerticalJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -551,7 +551,7 @@ export default TabsVertical
 )
 
 export const TabsSimpleJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -605,7 +605,7 @@ export default TabsSimple
 )
 
 export const TabsCenteredTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { SyntheticEvent, useState } from 'react'
 
@@ -659,7 +659,7 @@ export default TabsCentered
 )
 
 export const TabsColorTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { SyntheticEvent, useState } from 'react'
 
@@ -718,7 +718,7 @@ export default TabsColor
 )
 
 export const TabsCustomizedTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { SyntheticEvent, useState } from 'react'
 
@@ -789,7 +789,7 @@ export default TabsCustomized
 )
 
 export const TabsCustomizedVerticalTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { SyntheticEvent, useState } from 'react'
 
@@ -864,7 +864,7 @@ export default TabsCustomizedVertical
 )
 
 export const TabsIconTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { SyntheticEvent, useState } from 'react'
 
@@ -921,7 +921,7 @@ export default TabsIcon
 )
 
 export const TabsNavTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { MouseEvent, SyntheticEvent, useState } from 'react'
 
@@ -993,7 +993,7 @@ export default TabsNav
 )
 
 export const TabsVerticalTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { SyntheticEvent, useState } from 'react'
 
@@ -1050,7 +1050,7 @@ export default TabsVertical
 )
 
 export const TabsFullWidthTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { SyntheticEvent, useState } from 'react'
 
@@ -1104,7 +1104,7 @@ export default TabsFullWidth
 )
 
 export const TabsSimpleTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { SyntheticEvent, useState } from 'react'
 
@@ -1158,7 +1158,7 @@ export default TabsSimple
 )
 
 export const TabsForcedScrollTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { SyntheticEvent, useState } from 'react'
 

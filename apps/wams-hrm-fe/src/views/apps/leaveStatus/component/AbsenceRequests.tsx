@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import DatePickerWrapper from 'template-shared/@core/styles/libs/react-datepicker'
 import DatePicker from 'react-datepicker'
 import Card from '@mui/material/Card'
@@ -13,14 +13,14 @@ import {
   MenuItem,
   Select
 } from '@mui/material'
-import {Controller, useFormContext} from 'react-hook-form'
-import {IEnumAbsenceType, IEnumStatusType} from 'hrm-shared/@core/types/hrm/leaveStatusType'
-import {LeaveStatusContext} from '../../../../pages/apps/leaveStatus/view/[id]'
-import {useTranslation} from 'react-i18next'
+import { Controller, useFormContext } from 'react-hook-form'
+import { IEnumAbsenceType, IEnumStatusType } from 'hrm-shared/@core/types/hrm/leaveStatusType'
+import { LeaveStatusContext } from '../../../../pages/apps/leaveStatus/view/[id]'
+import { useTranslation } from 'react-i18next'
 import TextField from '@mui/material/TextField'
 
-const MyCalendar = ({SubmitError}) => {
-  const {t} = useTranslation()
+const MyCalendar = ({ SubmitError }) => {
+  const { t } = useTranslation()
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [beginHalfDay, setBeginHalfDay] = useState(false)
@@ -33,7 +33,7 @@ const MyCalendar = ({SubmitError}) => {
   const {
     control,
     setValue,
-    formState: {errors}
+    formState: { errors }
   } = useFormContext()
   const [highlightedRange, setHighlightedRange] = useState([])
   const [rangeLength, setRangeLength] = useState(0)
@@ -142,7 +142,7 @@ const MyCalendar = ({SubmitError}) => {
 
     setValue('vacation.status', IEnumStatusType.CREATED)
 
-    return {dates, range}
+    return { dates, range }
   }
 
   const handleChangeAbsenceType = event => {
@@ -193,7 +193,7 @@ const MyCalendar = ({SubmitError}) => {
 
   return (
     <Card>
-      <CardHeader title='Select Dates and Absence Type'/>
+      <CardHeader title='Select Dates and Absence Type' />
       <CardContent>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={4}>
@@ -218,8 +218,9 @@ const MyCalendar = ({SubmitError}) => {
                 required={true}
               />
             </DatePickerWrapper>
-            {errors['vacation.startDate'] &&
-              <p style={{color: 'red'}}>{errors['vacation.startDate'].message as string}</p>}
+            {errors['vacation.startDate'] && (
+              <p style={{ color: 'red' }}>{errors['vacation.startDate'].message as string}</p>
+            )}
           </Grid>
           <Grid item xs={12} sm={4}>
             <DatePickerWrapper
@@ -246,27 +247,29 @@ const MyCalendar = ({SubmitError}) => {
                 highlightDates={highlightedRange}
               />
             </DatePickerWrapper>
-            {errors['vacation.endDate'] && <p style={{color: 'red'}}>{errors['vacation.endDate'].message as string}</p>}
+            {errors['vacation.endDate'] && (
+              <p style={{ color: 'red' }}>{errors['vacation.endDate'].message as string}</p>
+            )}
           </Grid>
           <Grid item xs={12} sm={4}>
             <FormControlLabel
-              control={<Checkbox checked={beginHalfDay} onChange={handleBeginHalfDayChange}/>}
+              control={<Checkbox checked={beginHalfDay} onChange={handleBeginHalfDayChange} />}
               label='Begin with half a day'
             />
             <FormControlLabel
-              control={<Checkbox checked={endHalfDay} onChange={handleEndHalfDayChange}/>}
+              control={<Checkbox checked={endHalfDay} onChange={handleEndHalfDayChange} />}
               label='End with half a day'
             />
             <p>
               {t('LeaveStatus.Number_of_days')} : {rangeLength}
             </p>
-            <FormControl size='small' style={{width: '100%', marginRight: '10px'}}>
+            <FormControl size='small' style={{ width: '100%', marginRight: '10px' }}>
               <InputLabel>{t('Absence Type')}</InputLabel>
               <Controller
                 name={`vacation.absence`}
                 control={control}
-                rules={{required: true}}
-                render={({field}) => (
+                rules={{ required: true }}
+                render={({ field }) => (
                   <Select
                     {...field}
                     variant='outlined'
@@ -285,15 +288,15 @@ const MyCalendar = ({SubmitError}) => {
                   </Select>
                 )}
               />
-              {error && <p style={{color: 'red'}}>{error}</p>}
+              {error && <p style={{ color: 'red' }}>{error}</p>}
             </FormControl>
-            <div style={{marginBottom: 16}}></div>
+            <div style={{ marginBottom: 16 }}></div>
 
             <FormControl fullWidth>
               <Controller
                 name='vacation.comment'
                 control={control}
-                render={({field: {value, onChange}}) => (
+                render={({ field: { value, onChange } }) => (
                   <TextField
                     size='small'
                     rows={4}

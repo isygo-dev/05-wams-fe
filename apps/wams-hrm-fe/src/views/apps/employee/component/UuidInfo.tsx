@@ -1,25 +1,25 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import Icon from 'template-shared/@core/components/icon'
-import {UpdateCin} from './UpdateCin'
-import {UpdatePassport} from './UpdatePassport'
-import {useMutation} from 'react-query'
-import {UpdateSecurity} from './UpdateSecurity'
+import { UpdateCin } from './UpdateCin'
+import { UpdatePassport } from './UpdatePassport'
+import { useMutation } from 'react-query'
+import { UpdateSecurity } from './UpdateSecurity'
 import Divider from '@mui/material/Divider'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import {checkPermission} from "template-shared/@core/api/helper/permission";
-import EmployeeApis from "hrm-shared/@core/api/hrm/employee";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
+import EmployeeApis from 'hrm-shared/@core/api/hrm/employee'
 
-export function UuidInfo({employeeData, refetch}) {
-  const {t} = useTranslation()
+export function UuidInfo({ employeeData, refetch }) {
+  const { t } = useTranslation()
   const [editOpen, setEditOpen] = useState<boolean>(false)
   const [editOpenPassport, setEditOpenPassport] = useState<boolean>(false)
   const [editOpenSecurity, setEditOpenSecurity] = useState<boolean>(false)
@@ -56,28 +56,24 @@ export function UuidInfo({employeeData, refetch}) {
 
   const downloadPassportMutation = useMutation({
     mutationFn: (data: number) => EmployeeApis(t).downloadTravelDocImage(data),
-    onSuccess: () => {
-    }
+    onSuccess: () => {}
   })
 
   const downloadCinMutation = useMutation({
     mutationFn: (data: number) => EmployeeApis(t).downloadIdentityDocImage(data),
-    onSuccess: () => {
-    }
+    onSuccess: () => {}
   })
 
   const downloadSecurityMutation = useMutation({
     mutationFn: (data: number) => EmployeeApis(t).downloadSecurityDocImage(data),
-    onSuccess: () => {
-    }
+    onSuccess: () => {}
   })
 
   return (
     <>
       <Grid container spacing={3}>
-        {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_CIN, PermissionAction.READ) &&
-
-          <Grid sx={{height: 'auto'}} item xs={12} sm={4} md={4}>
+        {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_CIN, PermissionAction.READ) && (
+          <Grid sx={{ height: 'auto' }} item xs={12} sm={4} md={4}>
             <Box
               sx={{
                 p: 4,
@@ -90,25 +86,24 @@ export function UuidInfo({employeeData, refetch}) {
                 height: '100%'
               }}
             >
-              <Grid sx={{width: '100%', height: '100%'}}>
-                <Box sx={{display: 'flex'}}>
-                  <Typography sx={{color: 'text.primary', fontWeight: 'bold', flexGrow: 1}}>
+              <Grid sx={{ width: '100%', height: '100%' }}>
+                <Box sx={{ display: 'flex' }}>
+                  <Typography sx={{ color: 'text.primary', fontWeight: 'bold', flexGrow: 1 }}>
                     {t('Employee.Identity_Document')}
                   </Typography>
-                  {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_CIN, PermissionAction.WRITE) &&
-                    <Box sx={{alignItems: 'center', marginRight: '10px'}}>
-
-
-                      <IconButton size='small' sx={{color: 'text.secondary'}} onClick={handleOpenEdit}>
-                        <Icon icon='tabler:edit'/>
+                  {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_CIN, PermissionAction.WRITE) && (
+                    <Box sx={{ alignItems: 'center', marginRight: '10px' }}>
+                      <IconButton size='small' sx={{ color: 'text.secondary' }} onClick={handleOpenEdit}>
+                        <Icon icon='tabler:edit' />
                       </IconButton>
-                      <IconButton size='small' sx={{color: 'text.secondary'}} onClick={downloadCinFunction}>
-                        <Icon icon='tabler:download'/>
+                      <IconButton size='small' sx={{ color: 'text.secondary' }} onClick={downloadCinFunction}>
+                        <Icon icon='tabler:download' />
                       </IconButton>
-                    </Box>}
+                    </Box>
+                  )}
                 </Box>
 
-                <Divider sx={{m: '0 !important'}}/>
+                <Divider sx={{ m: '0 !important' }} />
 
                 {employeeData?.details?.cin?.length > 0 ? (
                   <>
@@ -126,9 +121,9 @@ export function UuidInfo({employeeData, refetch}) {
               </Grid>
             </Box>
           </Grid>
-        }
-        {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_PASSPORT, PermissionAction.READ) &&
-          <Grid sx={{height: 'auto'}} item xs={12} sm={4} md={4}>
+        )}
+        {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_PASSPORT, PermissionAction.READ) && (
+          <Grid sx={{ height: 'auto' }} item xs={12} sm={4} md={4}>
             <Box
               sx={{
                 p: 4,
@@ -141,25 +136,36 @@ export function UuidInfo({employeeData, refetch}) {
                 height: '100%'
               }}
             >
-              <Grid sx={{width: '100%', height: '100%'}}>
-                <Box sx={{display: 'flex'}}>
-                  <Typography sx={{color: 'text.primary', fontWeight: 'bold', flexGrow: 1}}>
+              <Grid sx={{ width: '100%', height: '100%' }}>
+                <Box sx={{ display: 'flex' }}>
+                  <Typography sx={{ color: 'text.primary', fontWeight: 'bold', flexGrow: 1 }}>
                     {t('Employee.Travel_Document')}
                   </Typography>
-                  {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_PASSPORT, PermissionAction.WRITE) &&
-                    <Box sx={{alignItems: 'center', marginRight: '10px'}}>
-                      <IconButton size='small' sx={{color: 'text.secondary'}} onClick={() => handleOpenEditPassport()}>
-                        <Icon icon='tabler:edit'/>
+                  {checkPermission(
+                    PermissionApplication.HRM,
+                    PermissionPage.EMPLOYEE_PASSPORT,
+                    PermissionAction.WRITE
+                  ) && (
+                    <Box sx={{ alignItems: 'center', marginRight: '10px' }}>
+                      <IconButton
+                        size='small'
+                        sx={{ color: 'text.secondary' }}
+                        onClick={() => handleOpenEditPassport()}
+                      >
+                        <Icon icon='tabler:edit' />
                       </IconButton>
-                      <IconButton size='small' sx={{color: 'text.secondary'}}
-                                  onClick={() => downloadPassportFunction()}>
-                        <Icon icon='tabler:download'/>
+                      <IconButton
+                        size='small'
+                        sx={{ color: 'text.secondary' }}
+                        onClick={() => downloadPassportFunction()}
+                      >
+                        <Icon icon='tabler:download' />
                       </IconButton>
                     </Box>
-                  }
+                  )}
                 </Box>
 
-                <Divider sx={{m: '0 !important'}}/>
+                <Divider sx={{ m: '0 !important' }} />
 
                 {employeeData?.details?.passport.length > 0 ? (
                   <>
@@ -187,9 +193,9 @@ export function UuidInfo({employeeData, refetch}) {
               </Grid>
             </Box>
           </Grid>
-        }
-        {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_INSURANCE, PermissionAction.READ) &&
-          <Grid sx={{height: 'auto'}} item xs={12} sm={4} md={4}>
+        )}
+        {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_INSURANCE, PermissionAction.READ) && (
+          <Grid sx={{ height: 'auto' }} item xs={12} sm={4} md={4}>
             <Box
               sx={{
                 p: 4,
@@ -202,24 +208,36 @@ export function UuidInfo({employeeData, refetch}) {
                 height: '100%'
               }}
             >
-              <Grid sx={{width: '100%', height: '100%'}}>
-                <Box sx={{display: 'flex'}}>
-                  <Typography sx={{color: 'text.primary', fontWeight: 'bold', flexGrow: 1}}>
+              <Grid sx={{ width: '100%', height: '100%' }}>
+                <Box sx={{ display: 'flex' }}>
+                  <Typography sx={{ color: 'text.primary', fontWeight: 'bold', flexGrow: 1 }}>
                     {t('Employee.Insurance_Document')}
                   </Typography>
-                  {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_INSURANCE, PermissionAction.WRITE) &&
-                    <Box sx={{alignItems: 'center', marginRight: '10px'}}>
-                      <IconButton size='small' sx={{color: 'text.secondary'}} onClick={() => handleOpenEditSecurity()}>
-                        <Icon icon='tabler:edit'/>
+                  {checkPermission(
+                    PermissionApplication.HRM,
+                    PermissionPage.EMPLOYEE_INSURANCE,
+                    PermissionAction.WRITE
+                  ) && (
+                    <Box sx={{ alignItems: 'center', marginRight: '10px' }}>
+                      <IconButton
+                        size='small'
+                        sx={{ color: 'text.secondary' }}
+                        onClick={() => handleOpenEditSecurity()}
+                      >
+                        <Icon icon='tabler:edit' />
                       </IconButton>
-                      <IconButton size='small' sx={{color: 'text.secondary'}}
-                                  onClick={() => downloadSecurityFunction()}>
-                        <Icon icon='tabler:download'/>
+                      <IconButton
+                        size='small'
+                        sx={{ color: 'text.secondary' }}
+                        onClick={() => downloadSecurityFunction()}
+                      >
+                        <Icon icon='tabler:download' />
                       </IconButton>
-                    </Box>}
+                    </Box>
+                  )}
                 </Box>
 
-                <Divider sx={{m: '0 !important'}}/>
+                <Divider sx={{ m: '0 !important' }} />
                 {employeeData?.details?.securities.length > 0 ? (
                   <>
                     <p>
@@ -246,27 +264,29 @@ export function UuidInfo({employeeData, refetch}) {
               </Grid>
             </Box>
           </Grid>
-        }
+        )}
       </Grid>
       {editOpen && checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_CIN, PermissionAction.WRITE) && (
-        <UpdateCin refetch={refetch} open={editOpen} toggle={toggleEditDrawer} dataParameter={employeeData}/>
+        <UpdateCin refetch={refetch} open={editOpen} toggle={toggleEditDrawer} dataParameter={employeeData} />
       )}
-      {editOpenPassport && checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_PASSPORT, PermissionAction.WRITE) && (
-        <UpdatePassport
-          refetch={refetch}
-          open={editOpenPassport}
-          toggle={toggleEditPassportDrawer}
-          dataParameter={employeeData}
-        />
-      )}
-      {editOpenSecurity && checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_INSURANCE, PermissionAction.WRITE) && (
-        <UpdateSecurity
-          refetch={refetch}
-          open={editOpenSecurity}
-          toggle={toggleEditSecurityDrawer}
-          dataParameter={employeeData}
-        />
-      )}
+      {editOpenPassport &&
+        checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_PASSPORT, PermissionAction.WRITE) && (
+          <UpdatePassport
+            refetch={refetch}
+            open={editOpenPassport}
+            toggle={toggleEditPassportDrawer}
+            dataParameter={employeeData}
+          />
+        )}
+      {editOpenSecurity &&
+        checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE_INSURANCE, PermissionAction.WRITE) && (
+          <UpdateSecurity
+            refetch={refetch}
+            open={editOpenSecurity}
+            toggle={toggleEditSecurityDrawer}
+            dataParameter={employeeData}
+          />
+        )}
     </>
   )
 }

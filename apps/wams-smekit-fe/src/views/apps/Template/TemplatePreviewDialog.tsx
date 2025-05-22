@@ -2,19 +2,18 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import Typography from '@mui/material/Typography'
 import Icon from 'template-shared/@core/components/icon'
-import {DialogContent} from '@mui/material'
-import IconButton, {IconButtonProps} from '@mui/material/IconButton'
+import { DialogContent } from '@mui/material'
+import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import React from 'react'
-import {useTranslation} from 'react-i18next'
-import {styled} from '@mui/material/styles'
-import Box from "@mui/material/Box";
-import DocViewer, {DocViewerRenderers} from 'react-doc-viewer'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Box from '@mui/material/Box'
+import DocViewer, { DocViewerRenderers } from 'react-doc-viewer'
 
-import {CategoryTemplateType} from "../../../types/categoryTemplateType";
-import apiUrls from "../../../config/apiUrl";
+import { CategoryTemplateType } from '../../../types/categoryTemplateType'
+import apiUrls from '../../../config/apiUrl'
 
-
-const CustomCloseButton = styled(IconButton)<IconButtonProps>(({theme}) => ({
+const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
   top: 20,
   right: 20,
   color: 'grey.500',
@@ -37,8 +36,8 @@ interface DialogProps {
 }
 
 const TemplatePreviewDialog = (props: DialogProps) => {
-  const {open, onCloseClick, templatePreview} = props
-  const {t} = useTranslation()
+  const { open, onCloseClick, templatePreview } = props
+  const { t } = useTranslation()
 
   return (
     <Dialog fullScreen open={open}>
@@ -52,13 +51,11 @@ const TemplatePreviewDialog = (props: DialogProps) => {
             onCloseClick()
           }}
         >
-          <Icon icon='tabler:x'/>
+          <Icon icon='tabler:x' />
         </CustomCloseButton>
       </DialogTitle>
       <DialogContent>
-
         <Box textAlign='center'>
-
           <DocViewer
             key={Date.now()}
             pluginRenderers={DocViewerRenderers}
@@ -77,7 +74,6 @@ const TemplatePreviewDialog = (props: DialogProps) => {
             }}
           />
         </Box>
-
       </DialogContent>
     </Dialog>
   )

@@ -1,9 +1,5 @@
 export type PropertyTypes = {
-    guiName: string
-    name: string
-    value: string
-
+  guiName: string
+  name: string
+  value: string
 }
-
-
-

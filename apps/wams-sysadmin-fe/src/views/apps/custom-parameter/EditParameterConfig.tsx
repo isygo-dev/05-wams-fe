@@ -1,22 +1,22 @@
 // ** React Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import Icon from 'template-shared/@core/components/icon'
-import {useTranslation} from "react-i18next";
-import {AppParameter, AppParameterType} from "ims-shared/@core/types/ims/appParameterTypes";
-import React from "react";
-import {useMutation, useQueryClient} from "react-query";
-import CustomParameterApis from "ims-shared/@core/api/ims/custom-parametre";
+import { useTranslation } from 'react-i18next'
+import { AppParameter, AppParameterType } from 'ims-shared/@core/types/ims/appParameterTypes'
+import React from 'react'
+import { useMutation, useQueryClient } from 'react-query'
+import CustomParameterApis from 'ims-shared/@core/api/ims/custom-parametre'
 
 interface EditParameterType {
   open: boolean
@@ -24,7 +24,7 @@ interface EditParameterType {
   dataParameter: AppParameter | undefined
 }
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -34,25 +34,24 @@ const Header = styled(Box)<BoxProps>(({theme}) => ({
 const schema = yup.object().shape({
   name: yup.string().required(),
   value: yup.string().required(),
-  domain: yup.string().required(),
-
+  domain: yup.string().required()
 })
 
 const SidebarEditParameter = (props: EditParameterType) => {
-  const {t} = useTranslation()
-  const queryClient = useQueryClient();
-  const {open, toggle, dataParameter} = props
-  const defaultValues = {...dataParameter}
+  const { t } = useTranslation()
+  const queryClient = useQueryClient()
+  const { open, toggle, dataParameter } = props
+  const defaultValues = { ...dataParameter }
   const {
     reset,
     control,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
-  });
+  })
   const onSubmit = (data: AppParameterType) => {
     updateParametreMutation.mutate(data)
     toggle()
@@ -69,12 +68,12 @@ const SidebarEditParameter = (props: EditParameterType) => {
     mutationFn: (data: AppParameterType) => CustomParameterApis(t).updateCustomParameter(data),
     onSuccess: (res: AppParameter) => {
       handleClose()
-      const cachedAppPrametres: AppParameter[] = queryClient.getQueryData('parametres') || [];
-      const index = cachedAppPrametres.findIndex((obj) => obj.id === res.id);
+      const cachedAppPrametres: AppParameter[] = queryClient.getQueryData('parametres') || []
+      const index = cachedAppPrametres.findIndex(obj => obj.id === res.id)
       if (index !== -1) {
-        const updatedParametres = [...cachedAppPrametres];
-        updatedParametres[index] = res;
-        queryClient.setQueryData('parametres', updatedParametres);
+        const updatedParametres = [...cachedAppPrametres]
+        updatedParametres[index] = res
+        queryClient.setQueryData('parametres', updatedParametres)
       }
     },
     onError: err => {
@@ -83,34 +82,32 @@ const SidebarEditParameter = (props: EditParameterType) => {
   })
 
   return (
-
     <Drawer
       open={open}
       anchor='right'
       variant='temporary'
       onClose={handleClose}
-      ModalProps={{keepMounted: true}}
-      sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+      ModalProps={{ keepMounted: true }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
-
       <Header>
         <Typography variant='h6'> {t('Parameter.Update_Parameter')}</Typography>
         <IconButton
           size='small'
           onClick={handleClose}
-          sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+          sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
         >
-          <Icon icon='tabler:x' fontSize='1.125rem'/>
+          <Icon icon='tabler:x' fontSize='1.125rem' />
         </IconButton>
       </Header>
-      <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+      <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='domain'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -122,14 +119,14 @@ const SidebarEditParameter = (props: EditParameterType) => {
                 />
               )}
             />
-            {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
+            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='name'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -139,14 +136,14 @@ const SidebarEditParameter = (props: EditParameterType) => {
                 />
               )}
             />
-            {errors.name && <FormHelperText sx={{color: 'error.main'}}>{errors.name.message}</FormHelperText>}
+            {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='value'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -156,31 +153,33 @@ const SidebarEditParameter = (props: EditParameterType) => {
                 />
               )}
             />
-            {errors.value && <FormHelperText sx={{color: 'error.main'}}>{errors.value.message}</FormHelperText>}
+            {errors.value && <FormHelperText sx={{ color: 'error.main' }}>{errors.value.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='description'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
-                <TextField size='small'
-                           value={value}
-                           id='form-props-read-only-input'
-                           multiline
-                           rows={3}
-                           InputProps={{readOnly: false}}
-                           label={t('Description')}
-                           onChange={onChange}
-                           error={Boolean(errors.description)}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <TextField
+                  size='small'
+                  value={value}
+                  id='form-props-read-only-input'
+                  multiline
+                  rows={3}
+                  InputProps={{ readOnly: false }}
+                  label={t('Description')}
+                  onChange={onChange}
+                  error={Boolean(errors.description)}
                 />
               )}
             />
-            {errors.description &&
-              <FormHelperText sx={{color: 'error.main'}}>{errors.description.message}</FormHelperText>}
+            {errors.description && (
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.description.message}</FormHelperText>
+            )}
           </FormControl>
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>
@@ -192,6 +191,5 @@ const SidebarEditParameter = (props: EditParameterType) => {
     </Drawer>
   )
 }
-
 
 export default SidebarEditParameter

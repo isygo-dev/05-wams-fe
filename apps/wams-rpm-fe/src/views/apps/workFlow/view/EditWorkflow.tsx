@@ -1,5 +1,5 @@
 // ** React Imports
-import React, {Fragment, useEffect, useState} from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
@@ -8,40 +8,40 @@ import Typography from '@mui/material/Typography'
 import InputLabel from '@mui/material/InputLabel'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import {styled, useTheme} from '@mui/material/styles'
+import { styled, useTheme } from '@mui/material/styles'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import CardContent, {CardContentProps} from '@mui/material/CardContent'
+import CardContent, { CardContentProps } from '@mui/material/CardContent'
 import Icon from 'template-shared/@core/components/icon'
 import FormControl from '@mui/material/FormControl'
 import * as yup from 'yup'
-import {WorkflowsType} from 'rpm-shared/@core/types/rpm/workflowTypes'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import { WorkflowsType } from 'rpm-shared/@core/types/rpm/workflowTypes'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import FormHelperText from '@mui/material/FormHelperText'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import StepperWrapper from 'template-shared/@core/styles/mui/stepper'
 import Stepper from '@mui/material/Stepper'
 import CustomAvatar from 'template-shared/@core/components/mui/avatar'
 import Avatar from '@mui/material/Avatar'
 import StepLabel from '@mui/material/StepLabel'
 import StepperCustomDot from 'template-shared/views/forms/form-wizard/StepperCustomDot'
-import {hexToRGBA} from 'template-shared/@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'template-shared/@core/utils/hex-to-rgba'
 import Step from '@mui/material/Step'
 import ButtonGroup from '@mui/material/ButtonGroup'
-import {WorkflowStateSwitch} from 'rpm-shared/@core/types/rpm/stateTypes'
+import { WorkflowStateSwitch } from 'rpm-shared/@core/types/rpm/stateTypes'
 import StateWorkflow from './stateWorkflow'
 import TransitionWorkflow from './transitionWorkflow'
-import {useMutation, useQuery} from 'react-query'
-import AccountApis from "ims-shared/@core/api/ims/account";
-import WorkflowBoardApis from "rpm-shared/@core/api/rpm/workflow-board";
-import WorkflowApis from "rpm-shared/@core/api/rpm/workflow";
+import { useMutation, useQuery } from 'react-query'
+import AccountApis from 'ims-shared/@core/api/ims/account'
+import WorkflowBoardApis from 'rpm-shared/@core/api/rpm/workflow-board'
+import WorkflowApis from 'rpm-shared/@core/api/rpm/workflow'
 
 interface WorkflowProps {
   workFlowDetailsData: WorkflowsType
 }
 
-const StepperHeaderContainer = styled(CardContent)<CardContentProps>(({theme}) => ({
+const StepperHeaderContainer = styled(CardContent)<CardContentProps>(({ theme }) => ({
   borderRight: `1px solid ${theme.palette.divider}`,
   [theme.breakpoints.down('md')]: {
     borderRight: 0,
@@ -49,7 +49,7 @@ const StepperHeaderContainer = styled(CardContent)<CardContentProps>(({theme}) =
   }
 }))
 
-const RepeaterWrapper = styled(CardContent)<CardContentProps>(({theme}) => ({
+const RepeaterWrapper = styled(CardContent)<CardContentProps>(({ theme }) => ({
   padding: theme.spacing(6, 8, 6),
   '& .repeater-wrapper + .repeater-wrapper': {
     marginTop: theme.spacing(5)
@@ -61,7 +61,7 @@ const RepeaterWrapper = styled(CardContent)<CardContentProps>(({theme}) => ({
     padding: theme.spacing(6)
   }
 }))
-const RepeaterTransition = styled(CardContent)<CardContentProps>(({theme}) => ({
+const RepeaterTransition = styled(CardContent)<CardContentProps>(({ theme }) => ({
   padding: theme.spacing(6, 8, 6),
   '& .repeater-transition + .repeater-transition': {
     marginTop: theme.spacing(5)
@@ -98,8 +98,8 @@ const schema = yup.object().shape({
 })
 
 const EditWorkflow = (props: WorkflowProps) => {
-  const {t} = useTranslation()
-  const {workFlowDetailsData} = props
+  const { t } = useTranslation()
+  const { workFlowDetailsData } = props
   const updatedWorkflowDetails = workFlowDetailsData
   const workFlowDetails: WorkflowsType = updatedWorkflowDetails
   const [defaultValues, setDefaultValues] = useState<WorkflowsType>({
@@ -138,10 +138,10 @@ const EditWorkflow = (props: WorkflowProps) => {
     defaultValues.workflowTransitions.length === 0 ? 1 : defaultValues.workflowTransitions.length
   )
 
-  const {data: emails} = useQuery([`emails`, defaultValues.domain], () => AccountApis(t).getAccountEmailsByDomain())
+  const { data: emails } = useQuery([`emails`, defaultValues.domain], () => AccountApis(t).getAccountEmailsByDomain())
 
-  const {data: workFlowEmails} = useQuery([`workFlowEmails`, defaultValues.domain, defaultValues.code], () =>
-    WorkflowBoardApis(t).getWorkflowBoardWatcherEmails({domain: defaultValues.domain, wfCode: defaultValues.code})
+  const { data: workFlowEmails } = useQuery([`workFlowEmails`, defaultValues.domain, defaultValues.code], () =>
+    WorkflowBoardApis(t).getWorkflowBoardWatcherEmails({ domain: defaultValues.domain, wfCode: defaultValues.code })
   )
 
   const {
@@ -150,7 +150,7 @@ const EditWorkflow = (props: WorkflowProps) => {
     getValues,
     setValue,
     watch,
-    formState: {errors}
+    formState: { errors }
   } = useForm<WorkflowsType>({
     defaultValues,
     mode: 'onChange',
@@ -265,10 +265,10 @@ const EditWorkflow = (props: WorkflowProps) => {
       case 0:
         return (
           <Fragment key={step}>
-            <CardContent sx={{p: [`${theme.spacing(6)} !important`, `${theme.spacing(10)} !important`]}}>
+            <CardContent sx={{ p: [`${theme.spacing(6)} !important`, `${theme.spacing(10)} !important`] }}>
               <Grid container>
-                <Grid item xs={12} sm={6} sx={{mb: {xl: 0, xs: 4}}}>
-                  <Box sx={{mb: 3, display: 'flex', alignItems: 'center'}}>
+                <Grid item xs={12} sm={6} sx={{ mb: { xl: 0, xs: 4 } }}>
+                  <Box sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
                     <Typography
                       variant='h6'
                       sx={{
@@ -290,9 +290,9 @@ const EditWorkflow = (props: WorkflowProps) => {
                         <Controller
                           name='code'
                           control={control}
-                          rules={{required: true}}
-                          render={({field: {value}}) => (
-                            <TextField size='small' disabled value={value} label={t('Code')}/>
+                          rules={{ required: true }}
+                          render={({ field: { value } }) => (
+                            <TextField size='small' disabled value={value} label={t('Code')} />
                           )}
                         />
                       </FormControl>
@@ -302,8 +302,8 @@ const EditWorkflow = (props: WorkflowProps) => {
                         <Controller
                           name='name'
                           control={control}
-                          rules={{required: true}}
-                          render={({field: {value, onChange}}) => (
+                          rules={{ required: true }}
+                          render={({ field: { value, onChange } }) => (
                             <TextField
                               size='small'
                               value={value}
@@ -314,13 +314,13 @@ const EditWorkflow = (props: WorkflowProps) => {
                           )}
                         />
                         {errors.name && (
-                          <FormHelperText sx={{color: 'error.main'}}>{errors.name.message}</FormHelperText>
+                          <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>
                         )}
                       </FormControl>
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{mt: 3}}>
+                      <FormControl fullWidth sx={{ mt: 3 }}>
                         <InputLabel
                           id='validation-category-select'
                           error={Boolean(errors.category)}
@@ -331,8 +331,8 @@ const EditWorkflow = (props: WorkflowProps) => {
                         <Controller
                           name='category'
                           control={control}
-                          rules={{required: true}}
-                          render={({field: {value, onChange}}) => (
+                          rules={{ required: true }}
+                          render={({ field: { value, onChange } }) => (
                             <Select
                               size='small'
                               value={value}
@@ -352,7 +352,7 @@ const EditWorkflow = (props: WorkflowProps) => {
                           )}
                         />
                         {errors.category && (
-                          <FormHelperText sx={{color: 'error.main'}} id='validation-category-select'>
+                          <FormHelperText sx={{ color: 'error.main' }} id='validation-category-select'>
                             {t('This type is required')}
                           </FormHelperText>
                         )}
@@ -360,7 +360,7 @@ const EditWorkflow = (props: WorkflowProps) => {
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                      <FormControl fullWidth sx={{mt: 3}}>
+                      <FormControl fullWidth sx={{ mt: 3 }}>
                         <InputLabel
                           id='validation-type-select'
                           error={Boolean(errors.type)}
@@ -371,8 +371,8 @@ const EditWorkflow = (props: WorkflowProps) => {
                         <Controller
                           name='type'
                           control={control}
-                          rules={{required: true}}
-                          render={({field: {value, onChange}}) => (
+                          rules={{ required: true }}
+                          render={({ field: { value, onChange } }) => (
                             <Select
                               size='small'
                               value={value}
@@ -391,19 +391,19 @@ const EditWorkflow = (props: WorkflowProps) => {
                           )}
                         />
                         {errors.type && (
-                          <FormHelperText sx={{color: 'error.main'}} id='validation-type-select'>
+                          <FormHelperText sx={{ color: 'error.main' }} id='validation-type-select'>
                             {t('This type is required')}
                           </FormHelperText>
                         )}
                       </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                      <FormControl fullWidth sx={{mt: 3}}>
+                      <FormControl fullWidth sx={{ mt: 3 }}>
                         <Controller
                           name='description'
                           control={control}
-                          rules={{required: true}}
-                          render={({field: {value, onChange}}) => (
+                          rules={{ required: true }}
+                          render={({ field: { value, onChange } }) => (
                             <TextField
                               size='small'
                               rows={4}
@@ -418,7 +418,7 @@ const EditWorkflow = (props: WorkflowProps) => {
                           )}
                         />
                         {errors.description && (
-                          <FormHelperText sx={{color: 'error.main'}}>{errors.description.message}</FormHelperText>
+                          <FormHelperText sx={{ color: 'error.main' }}>{errors.description.message}</FormHelperText>
                         )}
                       </FormControl>
                     </Grid>
@@ -432,8 +432,8 @@ const EditWorkflow = (props: WorkflowProps) => {
         return (
           <Fragment key={step}>
             <RepeaterWrapper>
-              <Grid item xs={12} sm={6} sx={{mb: {xl: 0, xs: 4, sm: 3}}}>
-                <Box sx={{mb: 6, display: 'flex', alignItems: 'center'}}>
+              <Grid item xs={12} sm={6} sx={{ mb: { xl: 0, xs: 4, sm: 3 } }}>
+                <Box sx={{ mb: 6, display: 'flex', alignItems: 'center' }}>
                   <Typography
                     variant='h6'
                     sx={{
@@ -463,8 +463,8 @@ const EditWorkflow = (props: WorkflowProps) => {
           <Fragment key={step}>
             {defaultValues.workflowStates.length > 1 ? (
               <RepeaterTransition>
-                <Grid item xs={12} sm={6} sx={{mb: {xl: 0, xs: 4, sm: 3}}}>
-                  <Box sx={{mb: 6, display: 'flex', alignItems: 'center'}}>
+                <Grid item xs={12} sm={6} sx={{ mb: { xl: 0, xs: 4, sm: 3 } }}>
+                  <Box sx={{ mb: 6, display: 'flex', alignItems: 'center' }}>
                     <Typography
                       variant='h6'
                       sx={{
@@ -541,11 +541,11 @@ const EditWorkflow = (props: WorkflowProps) => {
               }}
             >
               <Grid item xs={12}>
-                <Typography variant='body2' sx={{fontWeight: 600, color: 'text.primary'}}>
+                <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.primary' }}>
                   {steps[activeStep].title}
                 </Typography>
               </Grid>
-              <Grid item xs={12} sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+              <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Button
                   size='small'
                   className={'button-padding-style'}
@@ -561,8 +561,12 @@ const EditWorkflow = (props: WorkflowProps) => {
                     {t('Save')}
                   </Button>
                   {activeStep < steps.length - 1 && (
-                    <Button size='small' variant='contained'
-                            onClick={handleSubmit(handleNext)} className={'button-padding-style'}>
+                    <Button
+                      size='small'
+                      variant='contained'
+                      onClick={handleSubmit(handleNext)}
+                      className={'button-padding-style'}
+                    >
                       {t('Next')}
                     </Button>
                   )}
@@ -579,14 +583,14 @@ const EditWorkflow = (props: WorkflowProps) => {
   return (
     <Grid container>
       <Grid item md={12}>
-        <Card sx={{display: 'flex', flexDirection: {xs: 'column', md: 'row'}, overflow: 'initial'}}>
+        <Card sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, overflow: 'initial' }}>
           <StepperHeaderContainer>
-            <StepperWrapper sx={{height: '100%'}}>
+            <StepperWrapper sx={{ height: '100%' }}>
               <Stepper
                 activeStep={activeStep}
                 orientation='vertical'
                 connector={<></>}
-                sx={{height: '100%', minWidth: '15rem'}}
+                sx={{ height: '100%', minWidth: '15rem' }}
               >
                 {steps.map((step, index) => {
                   const RenderAvatar = activeStep >= index ? CustomAvatar : Avatar
@@ -597,15 +601,15 @@ const EditWorkflow = (props: WorkflowProps) => {
                         <div className='step-label'>
                           <RenderAvatar
                             variant='rounded'
-                            {...(activeStep >= index && {skin: 'light'})}
-                            {...(activeStep === index && {skin: 'filled'})}
-                            {...(activeStep >= index && {color: 'primary'})}
+                            {...(activeStep >= index && { skin: 'light' })}
+                            {...(activeStep === index && { skin: 'filled' })}
+                            {...(activeStep >= index && { color: 'primary' })}
                             sx={{
-                              ...(activeStep === index && {boxShadow: theme => theme.shadows[3]}),
-                              ...(activeStep > index && {color: theme => hexToRGBA(theme.palette.primary.main, 0.4)})
+                              ...(activeStep === index && { boxShadow: theme => theme.shadows[3] }),
+                              ...(activeStep > index && { color: theme => hexToRGBA(theme.palette.primary.main, 0.4) })
                             }}
                           >
-                            <Icon icon={step.icon}/>
+                            <Icon icon={step.icon} />
                           </RenderAvatar>
                           <div>
                             <Typography className='step-title'>{step.title}</Typography>
@@ -618,9 +622,9 @@ const EditWorkflow = (props: WorkflowProps) => {
               </Stepper>
             </StepperWrapper>
           </StepperHeaderContainer>
-          <Divider sx={{m: '0 !important'}}/>
+          <Divider sx={{ m: '0 !important' }} />
 
-          <CardContent sx={{width: '100%'}}>{renderContent()}</CardContent>
+          <CardContent sx={{ width: '100%' }}>{renderContent()}</CardContent>
         </Card>
       </Grid>
     </Grid>

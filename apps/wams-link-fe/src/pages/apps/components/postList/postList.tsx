@@ -1,33 +1,33 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
-import {Dialog, DialogContent, DialogTitle, Divider} from '@mui/material'
+import { Dialog, DialogContent, DialogTitle, Divider } from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
 import CardContent from '@mui/material/CardContent'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import {useMutation, useQueryClient} from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import Button from '@mui/material/Button'
 import DeleteCommonDialog from 'template-shared/@core/components/DeleteCommonDialog'
 import Icon from 'template-shared/@core/components/icon'
-import {CommentType, PostType} from 'link-shared/@core/types/link/PostTypes'
-import linkApiUrls from "link-shared/configs/link_apis"
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import { CommentType, PostType } from 'link-shared/@core/types/link/PostTypes'
+import linkApiUrls from 'link-shared/configs/link_apis'
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 import Avatar from '@mui/material/Avatar'
 import Moment from 'react-moment'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import IconButton from '@mui/material/IconButton'
-import {CloseIcon} from 'next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon'
+import { CloseIcon } from 'next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon'
 import Comments from '../comments'
 import PostDialogue from '../dialogue'
-import DocViewer, {DocViewerRenderers} from 'react-doc-viewer'
-import {useInView} from 'react-intersection-observer'
-import {isTimeAfterHours} from 'template-shared/@core/api/helper'
-import PostApis from "link-shared/@core/api/link/post";
-import {MiniAccountChatType} from "ims-shared/@core/types/ims/accountTypes"
+import DocViewer, { DocViewerRenderers } from 'react-doc-viewer'
+import { useInView } from 'react-intersection-observer'
+import { isTimeAfterHours } from 'template-shared/@core/api/helper'
+import PostApis from 'link-shared/@core/api/link/post'
+import { MiniAccountChatType } from 'ims-shared/@core/types/ims/accountTypes'
 
-function PostList({user, contactsAccount, posts}) {
-  const {t} = useTranslation()
+function PostList({ user, contactsAccount, posts }) {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [editButton, setEditButton] = useState<boolean>(false)
   const [editDataPost, setEditDataPost] = useState<PostType>(null)
@@ -237,20 +237,22 @@ function PostList({user, contactsAccount, posts}) {
   }
 
   return (
-    <Grid container mt={2} sx={{maxWidth: '100%'}}>
+    <Grid container mt={2} sx={{ maxWidth: '100%' }}>
       {posts && posts?.length > 0 ? (
         <Grid item md={12}>
           {posts?.map(post => (
-            <Card key={post.id} sx={{mt: 3}}>
-              <CardContent sx={{pt: '10px'}}>
+            <Card key={post.id} sx={{ mt: 3 }}>
+              <CardContent sx={{ pt: '10px' }}>
                 <Box>
-                  <Grid container spacing={3} sx={{margin: '0'}}>
+                  <Grid container spacing={3} sx={{ margin: '0' }}>
                     <Grid item md={9} sm={9} xs={9}>
                       <Box display={'flex'}>
                         <Box>
                           <Avatar
-                            src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(post.accountCode)}`}
-                            sx={{mr: 'auto', height: 58, width: 58}}
+                            src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(
+                              post.accountCode
+                            )}`}
+                            sx={{ mr: 'auto', height: 58, width: 58 }}
                           />
                         </Box>
                         <Box width={'-webkit-fill-available'} ml={2} mt={'4px'}>
@@ -262,7 +264,7 @@ function PostList({user, contactsAccount, posts}) {
                           </Typography>
                           <Box display={'flex'} width={'100%'}>
                             <Typography
-                              sx={{display: 'flex', color: 'rgb(153, 156, 166)', fontSize: '11px', mr: 2}}
+                              sx={{ display: 'flex', color: 'rgb(153, 156, 166)', fontSize: '11px', mr: 2 }}
                               lineHeight={1}
                             >
                               {t('AuditInfo.createDate')}: {<Moment format='DD-MM-YY HH:mm'>{post.createDate}</Moment>}
@@ -270,14 +272,14 @@ function PostList({user, contactsAccount, posts}) {
                             {post.updateDate && (
                               <Tooltip
                                 title={
-                                  <Typography sx={{display: 'flex', color: 'rgb(153, 156, 166)', fontSize: '11px'}}>
+                                  <Typography sx={{ display: 'flex', color: 'rgb(153, 156, 166)', fontSize: '11px' }}>
                                     {t('AuditInfo.updateDate')}:
                                     {<Moment format='DD-MM-YY HH:mm'>{post.updateDate}</Moment>}
                                   </Typography>
                                 }
                               >
-                                <IconButton size='small' sx={{pt: 0, marginTop: '-15px'}}>
-                                  <Icon icon='tabler:info-circle'/>
+                                <IconButton size='small' sx={{ pt: 0, marginTop: '-15px' }}>
+                                  <Icon icon='tabler:info-circle' />
                                 </IconButton>
                               </Tooltip>
                             )}
@@ -286,11 +288,11 @@ function PostList({user, contactsAccount, posts}) {
                       </Box>
                     </Grid>
 
-                    <Grid item md={3} sm={3} xs={3} sx={{display: 'flex', justifyContent: 'right'}}>
+                    <Grid item md={3} sm={3} xs={3} sx={{ display: 'flex', justifyContent: 'right' }}>
                       {post?.isBlog && (
                         <Tooltip title={t('is_Blog')}>
                           <IconButton className={'isBlogClass'}>
-                            <Icon icon='tabler:circle-letter-b-filled'/>
+                            <Icon icon='tabler:circle-letter-b-filled' />
                           </IconButton>
                         </Tooltip>
                       )}
@@ -299,17 +301,17 @@ function PostList({user, contactsAccount, posts}) {
                         <>
                           <Tooltip title={t('Edit')}>
                             <Button
-                              sx={{height: ' fit-content'}}
+                              sx={{ height: ' fit-content' }}
                               className={'btnActionLink'}
-                              startIcon={<Icon icon='tabler:edit'/>}
+                              startIcon={<Icon icon='tabler:edit' />}
                               onClick={() => handleEdit(post)}
                             ></Button>
                           </Tooltip>
                           <Tooltip title={t('Delete')}>
                             <Button
-                              sx={{height: ' fit-content'}}
+                              sx={{ height: ' fit-content' }}
                               className={'btnActionLink'}
-                              startIcon={<Icon icon='material-symbols-light:delete-outline'/>}
+                              startIcon={<Icon icon='material-symbols-light:delete-outline' />}
                               onClick={() => handleDelete(post)}
                             ></Button>
                           </Tooltip>
@@ -317,7 +319,7 @@ function PostList({user, contactsAccount, posts}) {
                       )}
                     </Grid>
                   </Grid>
-                  <Divider sx={{mt: 2, mb: 2}}/>
+                  <Divider sx={{ mt: 2, mb: 2 }} />
 
                   <Grid>
                     <Typography
@@ -360,7 +362,7 @@ function PostList({user, contactsAccount, posts}) {
                                 retainURLParams: false
                               }
                             }}
-                            style={{height: 500}}
+                            style={{ height: 500 }}
                           />
                         </Box>
                       )}
@@ -370,7 +372,7 @@ function PostList({user, contactsAccount, posts}) {
                             src={`${linkApiUrls.apiUrl_LINK_Post_ImageDownload_EndPoint}/${post.id}?${Date.now()}`}
                             id={post.imagePath}
                             alt={post.title}
-                            style={{maxWidth: '100%', maxHeight: '64vh', height: '100%', cursor: 'pointer'}}
+                            style={{ maxWidth: '100%', maxHeight: '64vh', height: '100%', cursor: 'pointer' }}
                             onClick={() =>
                               handleImageClick(`${linkApiUrls.apiUrl_LINK_Post_ImageDownload_EndPoint}/${post.id}`)
                             }
@@ -398,7 +400,7 @@ function PostList({user, contactsAccount, posts}) {
                     </Box>
                   </Grid>
 
-                  <Divider sx={{mt: 2, mb: 2}}/>
+                  <Divider sx={{ mt: 2, mb: 2 }} />
                 </Box>
 
                 <Grid container>
@@ -412,7 +414,7 @@ function PostList({user, contactsAccount, posts}) {
                             aria-haspopup='true'
                             onClick={() => handleLikePost(false, post)}
                           >
-                            <Icon icon='solar:like-bold-duotone' style={{fontSize: '1.2rem'}}/>
+                            <Icon icon='solar:like-bold-duotone' style={{ fontSize: '1.2rem' }} />
                           </Button>
                         ) : (
                           <Tooltip title={t('Link.Like')}>
@@ -422,7 +424,7 @@ function PostList({user, contactsAccount, posts}) {
                               aria-haspopup='true'
                               onClick={() => handleLikePost(true, post)}
                             >
-                              <Icon icon='solar:like-line-duotone' style={{fontSize: '1.2rem'}}/>
+                              <Icon icon='solar:like-line-duotone' style={{ fontSize: '1.2rem' }} />
                             </Button>
                           </Tooltip>
                         )}
@@ -454,7 +456,7 @@ function PostList({user, contactsAccount, posts}) {
                               aria-haspopup='true'
                               onClick={() => handleDislikePost(false, post)}
                             >
-                              <Icon icon='solar:dislike-bold' style={{fontSize: '1.2rem'}}/>
+                              <Icon icon='solar:dislike-bold' style={{ fontSize: '1.2rem' }} />
                             </Button>
                           </Tooltip>
                         ) : (
@@ -465,7 +467,7 @@ function PostList({user, contactsAccount, posts}) {
                               aria-haspopup='true'
                               onClick={() => handleDislikePost(true, post)}
                             >
-                              <Icon icon='solar:dislike-linear' style={{fontSize: '1.2rem'}}/>
+                              <Icon icon='solar:dislike-linear' style={{ fontSize: '1.2rem' }} />
                             </Button>
                           </Tooltip>
                         )}
@@ -499,7 +501,7 @@ function PostList({user, contactsAccount, posts}) {
                           aria-haspopup='true'
                           onClick={() => handleTypographyCommentClick(post)}
                         >
-                          <Icon icon='basil:comment-outline' style={{fontSize: '1.2rem'}}/>
+                          <Icon icon='basil:comment-outline' style={{ fontSize: '1.2rem' }} />
                         </Button>
                       </Tooltip>
 
@@ -524,7 +526,7 @@ function PostList({user, contactsAccount, posts}) {
                         className={'btnActionLink'}
                         aria-controls='zoom-menu'
                         aria-haspopup='true'
-                        startIcon={<Icon icon='fluent:share-48-regular'/>}
+                        startIcon={<Icon icon='fluent:share-48-regular' />}
                       ></Button>
                     </Tooltip>
                   </Grid>
@@ -546,7 +548,7 @@ function PostList({user, contactsAccount, posts}) {
             </Card>
           ))}
 
-          <Button sx={{visibility: 'hidden'}} ref={scrollTrigger} onClick={getPostList}>
+          <Button sx={{ visibility: 'hidden' }} ref={scrollTrigger} onClick={getPostList}>
             <Typography variant={'subtitle1'}> {loading ? 'Loading...' : 'See more'}</Typography>
           </Button>
           {deleteDialogOpen && (
@@ -559,16 +561,16 @@ function PostList({user, contactsAccount, posts}) {
             />
           )}
 
-          <Dialog open={openImage} maxWidth={'xl'} sx={{minWidth: '25vw'}} onClose={handleCloseImage}>
+          <Dialog open={openImage} maxWidth={'xl'} sx={{ minWidth: '25vw' }} onClose={handleCloseImage}>
             <DialogTitle textAlign={'right'}>
               <Tooltip title={t('Close')}>
                 <IconButton onClick={handleCloseImage}>
-                  <Icon icon={'tabler:x'}/>
+                  <Icon icon={'tabler:x'} />
                 </IconButton>
               </Tooltip>
             </DialogTitle>
-            <DialogContent sx={{marginBottom: '10px !important'}}>
-              <img src={selectedImage} alt={'imageview'} style={{width: '100%', maxHeight: '81vh', height: '100%'}}/>
+            <DialogContent sx={{ marginBottom: '10px !important' }}>
+              <img src={selectedImage} alt={'imageview'} style={{ width: '100%', maxHeight: '81vh', height: '100%' }} />
             </DialogContent>
           </Dialog>
 
@@ -590,16 +592,16 @@ function PostList({user, contactsAccount, posts}) {
                 <Grid item>
                   <Tooltip title={t('Close')}>
                     <IconButton onClick={handleClosePop}>
-                      <CloseIcon/>
+                      <CloseIcon />
                     </IconButton>
                   </Tooltip>
                 </Grid>
               </Grid>
             </DialogTitle>
-            <Divider sx={{mt: 2, mb: 2}}/>
+            <Divider sx={{ mt: 2, mb: 2 }} />
             <DialogContent>
               {showListLikedPost?.map(user => (
-                <Box key={user} style={{display: 'flex', alignItems: 'center', padding: '8px'}}>
+                <Box key={user} style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
                   <Avatar
                     sx={{
                       width: 63,

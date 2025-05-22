@@ -1,5 +1,5 @@
 // ** React Imports
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
-import {DataGrid, GridApi, GridColDef, GridColumnVisibilityModel} from '@mui/x-data-grid'
+import { DataGrid, GridApi, GridColDef, GridColumnVisibilityModel } from '@mui/x-data-grid'
 
 // ** Icon Imports
 import Icon from 'template-shared/@core/components/icon'
@@ -16,39 +16,39 @@ import Icon from 'template-shared/@core/components/icon'
 // ** Styled Components
 import Typography from '@mui/material/Typography'
 
-import {useTranslation} from 'react-i18next'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
+import { useTranslation } from 'react-i18next'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import DeleteCommonDialog from 'template-shared/@core/components/DeleteCommonDialog'
 import TableHeader from 'template-shared/views/table/TableHeader'
-import {WorkflowsBoardType} from 'rpm-shared/@core/types/rpm/workflowBoardTypes'
+import { WorkflowsBoardType } from 'rpm-shared/@core/types/rpm/workflowBoardTypes'
 import AddWorkflowBoardDrawer from '../../../views/apps/workflow-board/AddWorkflowBoardDrawer'
 import EditWorkflowBoardDrawer from '../../../views/apps/workflow-board/EditWorkflowBoardDrawer'
 import Moment from 'react-moment'
 
-import Styles from "template-shared/style/style.module.css"
-import themeConfig from "template-shared/configs/themeConfig";
+import Styles from 'template-shared/style/style.module.css'
+import themeConfig from 'template-shared/configs/themeConfig'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import {checkPermission} from "template-shared/@core/api/helper/permission";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import localStorageKeys from 'template-shared/configs/localeStorage'
-import WorkflowBoardApis from "rpm-shared/@core/api/rpm/workflow-board";
+import WorkflowBoardApis from 'rpm-shared/@core/api/rpm/workflow-board'
 
 interface CellType {
   row: WorkflowsBoardType
 }
 
 const WorkflowBoardList = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [value, setValue] = useState<string>('')
-  const [paginationModel, setPaginationModel] = useState({page: 0, pageSize: 10})
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
   const [addWorkflowBoardOpen, setAddWorkflowBoardOpen] = useState<boolean>(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false)
   const [selectedRowId, setSelectedRowId] = useState<number>(null)
-  const {data: workflowBoards, isLoading} = useQuery(`workflowBoards`, () => WorkflowBoardApis(t).getWorkflowBoards())
+  const { data: workflowBoards, isLoading } = useQuery(`workflowBoards`, () => WorkflowBoardApis(t).getWorkflowBoards())
   const [filteredData, setFilteredData] = useState('')
   const [editDataWorkflowBoard, setEditDataWorkflowBoard] = useState<WorkflowsBoardType>()
   const [editWorkflowBoardOpen, setEditWorkflowBoardOpen] = useState<boolean>(false)
@@ -117,7 +117,7 @@ const WorkflowBoardList = () => {
       field: 'domain',
       minWidth: 100,
       headerName: t('Domain.Domain') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.domain}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
     },
 
     /*Code column*/
@@ -126,7 +126,7 @@ const WorkflowBoardList = () => {
       field: 'code',
       minWidth: 100,
       headerName: t('Code') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.code}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.code}</Typography>
     },
 
     /*Name column*/
@@ -135,7 +135,7 @@ const WorkflowBoardList = () => {
       field: 'name',
       minWidth: 100,
       headerName: t('Name') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.name}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.name}</Typography>
     },
 
     /*Item column*/
@@ -144,7 +144,7 @@ const WorkflowBoardList = () => {
       field: 'item',
       minWidth: 100,
       headerName: t('Item') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}> {row.item}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}> {row.item}</Typography>
     },
 
     /*Workflow name column*/
@@ -153,7 +153,7 @@ const WorkflowBoardList = () => {
       field: 'workflow.name',
       minWidth: 100,
       headerName: t('Workflow.Workflow') as string,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}> {row.workflow.name}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}> {row.workflow.name}</Typography>
     },
 
     /*create Date column*/
@@ -162,10 +162,10 @@ const WorkflowBoardList = () => {
       minWidth: 140,
       flex: 0.15,
       headerName: t('AuditInfo.createDate') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               <Moment format='DD-MM-YYYY'>{row.createDate}</Moment>
             </Typography>
           </Box>
@@ -179,10 +179,10 @@ const WorkflowBoardList = () => {
       minWidth: 140,
       flex: 0.15,
       headerName: t('AuditInfo.createdBy') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.createdBy}
             </Typography>
           </Box>
@@ -196,10 +196,10 @@ const WorkflowBoardList = () => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('AuditInfo.updateDate') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               <Moment format='DD-MM-YYYY'>{row.updateDate}</Moment>
             </Typography>
           </Box>
@@ -213,10 +213,10 @@ const WorkflowBoardList = () => {
       flex: 0.15,
       minWidth: 140,
       headerName: t('AuditInfo.updatedBy') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.updatedBy}
             </Typography>
           </Box>
@@ -233,21 +233,28 @@ const WorkflowBoardList = () => {
       sortable: false,
       field: 'actions',
       headerName: t('Action') as string,
-      renderCell: ({row}: CellType) => (
-        <Box sx={{display: 'flex', alignItems: 'center'}}>
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Tooltip title={t('Action.Edit')}>
-            <IconButton className={Styles.sizeIcon} sx={{color: 'text.secondary'}} onClick={() => handelOpenEdit(row)}>
-              <Icon icon='tabler:edit'/>
+            <IconButton
+              className={Styles.sizeIcon}
+              sx={{ color: 'text.secondary' }}
+              onClick={() => handelOpenEdit(row)}
+            >
+              <Icon icon='tabler:edit' />
             </IconButton>
           </Tooltip>
-          {checkPermission(PermissionApplication.RPM, PermissionPage.WORKFLOW_BOARD, PermissionAction.WRITE) &&
+          {checkPermission(PermissionApplication.RPM, PermissionPage.WORKFLOW_BOARD, PermissionAction.WRITE) && (
             <Tooltip title={t('Action.Delete')}>
-              <IconButton className={Styles.sizeIcon} onClick={() => handleOpenDeleteDialog(row.id)}
-                          sx={{color: 'text.secondary'}}>
-                <Icon icon='tabler:trash'/>
+              <IconButton
+                className={Styles.sizeIcon}
+                onClick={() => handleOpenDeleteDialog(row.id)}
+                sx={{ color: 'text.secondary' }}
+              >
+                <Icon icon='tabler:trash' />
               </IconButton>
             </Tooltip>
-          }
+          )}
         </Box>
       )
     }
@@ -262,12 +269,11 @@ const WorkflowBoardList = () => {
             handleFilter={handleFilter}
             toggle={toggleAddWorkflowBoardDrawer}
             dataGridApi={dataGridApiRef}
-
             permissionApplication={PermissionApplication.RPM}
             permissionPage={PermissionPage.WORKFLOW_BOARD}
             permissionAction={PermissionAction.WRITE}
           />
-          {checkPermission(PermissionApplication.RPM, PermissionPage.WORKFLOW_BOARD, PermissionAction.READ) &&
+          {checkPermission(PermissionApplication.RPM, PermissionPage.WORKFLOW_BOARD, PermissionAction.READ) && (
             <Box className={Styles.boxTable}>
               <DataGrid
                 autoHeight
@@ -286,19 +292,20 @@ const WorkflowBoardList = () => {
                 slotProps={{
                   pagination: {
                     labelRowsPerPage: t('Rows_per_page'),
-                    labelDisplayedRows: ({from, to, count}) => t('pagination footer', {from, to, count})
+                    labelDisplayedRows: ({ from, to, count }) => t('pagination footer', { from, to, count })
                   }
                 }}
                 apiRef={dataGridApiRef}
               />
             </Box>
-          }
+          )}
         </Card>
       </Grid>
-      {checkPermission(PermissionApplication.RPM, PermissionPage.WORKFLOW_BOARD, PermissionAction.WRITE) &&
-        <AddWorkflowBoardDrawer open={addWorkflowBoardOpen} toggle={toggleAddWorkflowBoardDrawer}/>}
+      {checkPermission(PermissionApplication.RPM, PermissionPage.WORKFLOW_BOARD, PermissionAction.WRITE) && (
+        <AddWorkflowBoardDrawer open={addWorkflowBoardOpen} toggle={toggleAddWorkflowBoardDrawer} />
+      )}
 
-      {checkPermission(PermissionApplication.RPM, PermissionPage.WORKFLOW_BOARD, PermissionAction.DELETE) &&
+      {checkPermission(PermissionApplication.RPM, PermissionPage.WORKFLOW_BOARD, PermissionAction.DELETE) && (
         <DeleteCommonDialog
           open={deleteDialogOpen}
           setOpen={setDeleteDialogOpen}
@@ -306,7 +313,8 @@ const WorkflowBoardList = () => {
           item='WorkflowBoard'
           onDelete={onDelete}
           buttonId={'btn-change-workflow-board'}
-        />}
+        />
+      )}
 
       {editWorkflowBoardOpen && (
         <EditWorkflowBoardDrawer
@@ -316,7 +324,6 @@ const WorkflowBoardList = () => {
         />
       )}
     </Grid>
-
   ) : null
 }
 

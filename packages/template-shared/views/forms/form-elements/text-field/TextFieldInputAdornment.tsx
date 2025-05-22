@@ -1,5 +1,5 @@
 // ** React Imports
-import {ChangeEvent, useState} from 'react'
+import { ChangeEvent, useState } from 'react'
 
 // ** MUI Imports
 import TextField from '@mui/material/TextField'
@@ -14,78 +14,78 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Icon from 'template-shared/@core/components/icon'
 
 interface State {
-    weight: string
-    password: string
-    showPassword: boolean
+  weight: string
+  password: string
+  showPassword: boolean
 }
 
 const TextFieldInputAdornment = () => {
-    // ** State
-    const [values, setValues] = useState<State>({
-        weight: '',
-        password: '',
-        showPassword: false
-    })
+  // ** State
+  const [values, setValues] = useState<State>({
+    weight: '',
+    password: '',
+    showPassword: false
+  })
 
-    const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-        setValues({...values, [prop]: event.target.value})
-    }
+  const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
 
-    const handleClickShowPassword = () => {
-        setValues({...values, showPassword: !values.showPassword})
-    }
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword })
+  }
 
-    return (
-        <form className='demo-space-x' noValidate autoComplete='off'>
-            <TextField
-                id='icons-start-adornment'
-                label='With normal TextField'
-                InputProps={{
-                    startAdornment: <InputAdornment position='start'>Kg</InputAdornment>
-                }}
-            />
-            <FormControl>
-                <OutlinedInput
-                    value={values.weight}
-                    id='icons-adornment-weight'
-                    onChange={handleChange('weight')}
-                    aria-describedby='icons-weight-helper-text'
-                    endAdornment={<InputAdornment position='end'>Kg</InputAdornment>}
-                    inputProps={{
-                        'aria-label': 'weight'
-                    }}
+  return (
+    <form className='demo-space-x' noValidate autoComplete='off'>
+      <TextField
+        id='icons-start-adornment'
+        label='With normal TextField'
+        InputProps={{
+          startAdornment: <InputAdornment position='start'>Kg</InputAdornment>
+        }}
+      />
+      <FormControl>
+        <OutlinedInput
+          value={values.weight}
+          id='icons-adornment-weight'
+          onChange={handleChange('weight')}
+          aria-describedby='icons-weight-helper-text'
+          endAdornment={<InputAdornment position='end'>Kg</InputAdornment>}
+          inputProps={{
+            'aria-label': 'weight'
+          }}
+        />
+        <FormHelperText id='icons-weight-helper-text'>Weight</FormHelperText>
+      </FormControl>
+      <FormControl>
+        <InputLabel htmlFor='icons-adornment-password'>Password</InputLabel>
+        <OutlinedInput
+          label='Password'
+          value={values.password}
+          id='icons-adornment-password'
+          onChange={handleChange('password')}
+          type={values.showPassword ? 'text' : 'password'}
+          endAdornment={
+            <InputAdornment position='end'>
+              <IconButton
+                edge='end'
+                onClick={handleClickShowPassword}
+                onMouseDown={e => e.preventDefault()}
+                aria-label='toggle password visibility'
+              >
+                <Icon
+                  fontSize={20}
+                  icon={
+                    values.showPassword ? 'fluent:slide-text-edit-24-regular' : 'fluent:slide-text-edit-24-regular-off'
+                  }
                 />
-                <FormHelperText id='icons-weight-helper-text'>Weight</FormHelperText>
-            </FormControl>
-            <FormControl>
-                <InputLabel htmlFor='icons-adornment-password'>Password</InputLabel>
-                <OutlinedInput
-                    label='Password'
-                    value={values.password}
-                    id='icons-adornment-password'
-                    onChange={handleChange('password')}
-                    type={values.showPassword ? 'text' : 'password'}
-                    endAdornment={
-                        <InputAdornment position='end'>
-                            <IconButton
-                                edge='end'
-                                onClick={handleClickShowPassword}
-                                onMouseDown={e => e.preventDefault()}
-                                aria-label='toggle password visibility'
-                            >
-                                <Icon
-                                    fontSize={20}
-                                    icon={
-                                        values.showPassword ? 'fluent:slide-text-edit-24-regular' : 'fluent:slide-text-edit-24-regular-off'
-                                    }
-                                />
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                />
-            </FormControl>
-        </form>
-    )
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+    </form>
+  )
 }
 
 export default TextFieldInputAdornment

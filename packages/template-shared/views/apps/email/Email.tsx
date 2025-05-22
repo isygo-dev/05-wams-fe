@@ -6,7 +6,7 @@
 // ** Hooks
 
 // ** Types
-import {MailLabelColors, MailLayoutType} from 'template-shared/@core/types/helper/emailTypes'
+import { MailLabelColors, MailLayoutType } from 'template-shared/@core/types/helper/emailTypes'
 
 // ** Email App Component Imports
 
@@ -14,15 +14,14 @@ import {MailLabelColors, MailLayoutType} from 'template-shared/@core/types/helpe
 
 // ** Variables
 const labelColors: MailLabelColors = {
-    private: 'error',
-    personal: 'success',
-    company: 'primary',
-    important: 'warning'
+  private: 'error',
+  personal: 'success',
+  company: 'primary',
+  important: 'warning'
 }
 
-const EmailAppLayout = ({folder, label}: MailLayoutType) => {
-
-    /*
+const EmailAppLayout = ({ folder, label }: MailLayoutType) => {
+  /*
      // ** States
      const [query, setQuery] = useState<string>('')
      const [composeOpen, setComposeOpen] = useState<boolean>(false)

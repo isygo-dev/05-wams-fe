@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
-import {Option, QuizDetailType} from "quiz-shared/@core/types/quiz/quizTypes"
-import {useTranslation} from 'react-i18next'
-import {Control, Controller, UseFormGetValues, UseFormSetValue} from 'react-hook-form'
+import { Option, QuizDetailType } from 'quiz-shared/@core/types/quiz/quizTypes'
+import { useTranslation } from 'react-i18next'
+import { Control, Controller, UseFormGetValues, UseFormSetValue } from 'react-hook-form'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Icon from 'template-shared/@core/components/icon'
@@ -24,10 +24,10 @@ interface QuestionQuizProps {
 }
 
 const MCQMA = (props: QuestionQuizProps) => {
-  const {control, countOptions, setValue, getValues, indexSection, indexQuestion} = props
+  const { control, countOptions, setValue, getValues, indexSection, indexQuestion } = props
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false)
   const [index, setIndex] = useState<number>(null)
-  const {t} = useTranslation()
+  const { t } = useTranslation()
 
   const [count, setCount] = useState<number>(countOptions)
 
@@ -71,29 +71,29 @@ const MCQMA = (props: QuestionQuizProps) => {
   return (
     <>
       <Grid container>
-        <Grid container item md={12} sx={{mt: 2}}>
+        <Grid container item md={12} sx={{ mt: 2 }}>
           <Repeater count={count} key={`sections.${indexSection}.questions.${indexQuestion}.id`}>
             {(x: number) => {
               return (
                 <div key={`sections.${indexSection}.questions.${indexQuestion}.options.${x}.id`}>
-                  <Grid container spacing={3} sx={{mt: 1, mb: 6}}>
+                  <Grid container spacing={3} sx={{ mt: 1, mb: 6 }}>
                     <Grid item md={10}>
                       <FormControl fullWidth>
                         <Controller
                           name={`sections.${indexSection}.questions.${indexQuestion}.options.${x}.option`}
                           control={control}
-                          rules={{required: true}}
-                          render={({field: {value, onChange}}) => (
-                            <TextField size='small' value={value} label={t('Quiz.Option_Name')} onChange={onChange}/>
+                          rules={{ required: true }}
+                          render={({ field: { value, onChange } }) => (
+                            <TextField size='small' value={value} label={t('Quiz.Option_Name')} onChange={onChange} />
                           )}
                         />
                       </FormControl>
-                      <FormControl sx={{mt: 3}} fullWidth>
+                      <FormControl sx={{ mt: 3 }} fullWidth>
                         <Controller
                           name={`sections.${indexSection}.questions.${indexQuestion}.textAnswer`}
                           control={control}
-                          rules={{required: true}}
-                          render={({field: {value, onChange}}) => (
+                          rules={{ required: true }}
+                          render={({ field: { value, onChange } }) => (
                             <TextField
                               size='small'
                               multiline
@@ -107,8 +107,8 @@ const MCQMA = (props: QuestionQuizProps) => {
                       </FormControl>
                     </Grid>
                     <Grid item md={2}>
-                      <Box sx={{display: 'flex', justifyContent: 'end'}}>
-                        <FormControl sx={{width: 'fit-content !important'}}>
+                      <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                        <FormControl sx={{ width: 'fit-content !important' }}>
                           <Checkbox
                             checked={
                               control._defaultValues.sections?.[indexSection].questions?.[indexQuestion].options?.[x]
@@ -121,7 +121,7 @@ const MCQMA = (props: QuestionQuizProps) => {
                         </FormControl>
                         <Tooltip title={t('Action.Delete') as string}>
                           <IconButton size='large' onClick={() => handleOpenDeleteDialog(x)}>
-                            <Icon icon='tabler:trash'/>
+                            <Icon icon='tabler:trash' />
                           </IconButton>
                         </Tooltip>
                       </Box>
@@ -135,11 +135,11 @@ const MCQMA = (props: QuestionQuizProps) => {
           <Button
             variant='outlined'
             color='primary'
-            sx={{mb: 3, mt: 2}}
+            sx={{ mb: 3, mt: 2 }}
             className={'button-padding-style'}
             onClick={() => handleAddOptions()}
           >
-            {t('Quiz.Add_Options')} <Icon icon='tabler:plus' style={{marginLeft: '10px'}}/>
+            {t('Quiz.Add_Options')} <Icon icon='tabler:plus' style={{ marginLeft: '10px' }} />
           </Button>
         </Grid>
 

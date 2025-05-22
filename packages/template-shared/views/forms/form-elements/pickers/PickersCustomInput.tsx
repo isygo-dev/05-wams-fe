@@ -1,21 +1,21 @@
 // ** React Imports
-import {forwardRef} from 'react'
+import { forwardRef } from 'react'
 
 // ** MUI Imports
 import TextField from '@mui/material/TextField'
 
 interface PickerProps {
-    label?: string
-    readOnly?: boolean
+  label?: string
+  readOnly?: boolean
 }
 
-const PickersComponent = forwardRef(({...props}: PickerProps, ref) => {
-    // ** Props
-    const {label, readOnly} = props
+const PickersComponent = forwardRef(({ ...props }: PickerProps, ref) => {
+  // ** Props
+  const { label, readOnly } = props
 
-    return (
-        <TextField inputRef={ref} {...props} label={label || ''} {...(readOnly && {inputProps: {readOnly: true}})} />
-    )
+  return (
+    <TextField inputRef={ref} {...props} label={label || ''} {...(readOnly && { inputProps: { readOnly: true } })} />
+  )
 })
 
 export default PickersComponent

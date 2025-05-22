@@ -5,5 +5,4 @@ const getHomeRoute = () => {
   return '/apps/applications'
 }
 
-
 export default getHomeRoute

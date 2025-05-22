@@ -1,36 +1,36 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
-import {useTranslation} from 'react-i18next'
-import {Controller, useFormContext} from 'react-hook-form' // Import useFormContext and Controller
+import { useTranslation } from 'react-i18next'
+import { Controller, useFormContext } from 'react-hook-form' // Import useFormContext and Controller
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import DatePickerWrapper from 'template-shared/@core/styles/libs/react-datepicker'
 import DatePicker from 'react-datepicker'
-import {Accordion, AccordionDetails, AccordionSummary, FormControlLabel, Switch} from '@mui/material'
-import {ContractContext} from '../../../../pages/apps/contract/view/[id]'
-import {IEnumContractType, IEnumLocationType, IEnumTimeType} from 'hrm-shared/@core/types/hrm/contractType'
-import {GridExpandMoreIcon} from '@mui/x-data-grid'
+import { Accordion, AccordionDetails, AccordionSummary, FormControlLabel, Switch } from '@mui/material'
+import { ContractContext } from '../../../../pages/apps/contract/view/[id]'
+import { IEnumContractType, IEnumLocationType, IEnumTimeType } from 'hrm-shared/@core/types/hrm/contractType'
+import { GridExpandMoreIcon } from '@mui/x-data-grid'
 import Typography from '@mui/material/Typography'
 
-export function GenericInformation({checkPermissionUpdate}) {
-  const {t} = useTranslation()
+export function GenericInformation({ checkPermissionUpdate }) {
+  const { t } = useTranslation()
   const contractData = useContext(ContractContext)
   const contract = contractData.contractData || {}
 
-  const {register, control} = useFormContext()
+  const { register, control } = useFormContext()
   console.log(contract.workingMode)
 
   return (
-    <Accordion sx={{height: '100%'}}>
-      <AccordionSummary expandIcon={<GridExpandMoreIcon/>}>
+    <Accordion sx={{ height: '100%' }}>
+      <AccordionSummary expandIcon={<GridExpandMoreIcon />}>
         <Typography className={'title-card'}>{t('Contract.Contract_Information')}</Typography>
       </AccordionSummary>
 
       <AccordionDetails>
-        <Grid container spacing={3} sx={{mt: 0}}>
+        <Grid container spacing={3} sx={{ mt: 0 }}>
           <Grid item sm={12} md={4}>
             <TextField
               size='small'
@@ -47,12 +47,20 @@ export function GenericInformation({checkPermissionUpdate}) {
               name='workingMode'
               control={control}
               defaultValue={contract.workingMode || null}
-              render={({field: {value, onChange}}) => (
-                <FormControl disabled={contract.isLocked || !checkPermissionUpdate} size='small'
-                             style={{width: '100%', marginRight: '10px'}}>
+              render={({ field: { value, onChange } }) => (
+                <FormControl
+                  disabled={contract.isLocked || !checkPermissionUpdate}
+                  size='small'
+                  style={{ width: '100%', marginRight: '10px' }}
+                >
                   <InputLabel>{t('Contract.workingMode')}</InputLabel>
-                  <Select value={value} fullWidth onChange={checkPermissionUpdate && onChange} variant='outlined'
-                          label='Working Mode'>
+                  <Select
+                    value={value}
+                    fullWidth
+                    onChange={checkPermissionUpdate && onChange}
+                    variant='outlined'
+                    label='Working Mode'
+                  >
                     <MenuItem value={IEnumLocationType.PRESENTIAL}>{t('Contract.Presential')}</MenuItem>
                     <MenuItem value={IEnumLocationType.HYBRID}>{t('Contract.Hybrid')}</MenuItem>
                     <MenuItem value={IEnumLocationType.REMOTE}>{t('Contract.Remote')}</MenuItem>
@@ -66,12 +74,20 @@ export function GenericInformation({checkPermissionUpdate}) {
               name='contract'
               control={control}
               defaultValue={contract.contract || null}
-              render={({field: {value, onChange}}) => (
-                <FormControl disabled={contract.isLocked || !checkPermissionUpdate} size='small'
-                             style={{width: '100%', marginRight: '10px'}}>
+              render={({ field: { value, onChange } }) => (
+                <FormControl
+                  disabled={contract.isLocked || !checkPermissionUpdate}
+                  size='small'
+                  style={{ width: '100%', marginRight: '10px' }}
+                >
                   <InputLabel>{t('Contract.Contract_Type')}</InputLabel>
-                  <Select value={value} fullWidth onChange={checkPermissionUpdate && onChange} variant='outlined'
-                          label='contractType'>
+                  <Select
+                    value={value}
+                    fullWidth
+                    onChange={checkPermissionUpdate && onChange}
+                    variant='outlined'
+                    label='contractType'
+                  >
                     <MenuItem value={IEnumContractType.CDD}>{t('Contract.CDD')}</MenuItem>
                     <MenuItem value={IEnumContractType.CDI}>{t('Contract.CDI')}</MenuItem>
                     <MenuItem value={IEnumContractType.INTERIM}>{t('Contract.Interim')}</MenuItem>
@@ -87,7 +103,7 @@ export function GenericInformation({checkPermissionUpdate}) {
                 name='isContractrenewable'
                 control={control}
                 defaultValue={contract.isContractrenewable}
-                render={({field}) => (
+                render={({ field }) => (
                   <FormControlLabel
                     disabled={contract.isLocked || !checkPermissionUpdate}
                     control={
@@ -106,20 +122,20 @@ export function GenericInformation({checkPermissionUpdate}) {
             </Grid>
           ) : null}
         </Grid>
-        <Grid container spacing={3} sx={{mt: 0}}>
+        <Grid container spacing={3} sx={{ mt: 0 }}>
           <Grid item sm={12} md={4}>
             <DatePickerWrapper className='small-input-data'>
               <Controller
                 name='startDate'
                 control={control}
                 defaultValue={contract.startDate || null}
-                render={({field: {value, onChange}}) => (
+                render={({ field: { value, onChange } }) => (
                   <DatePicker
                     selected={value ? new Date(value) : null}
                     dateFormat='dd/MM/yyyy'
                     onChange={date => checkPermissionUpdate && onChange(date)}
                     disabled={contract.isLocked || !checkPermissionUpdate}
-                    customInput={<TextField size='small' fullWidth label={t('Contract.start_Date')}/>}
+                    customInput={<TextField size='small' fullWidth label={t('Contract.start_Date')} />}
                   />
                 )}
               />
@@ -132,13 +148,13 @@ export function GenericInformation({checkPermissionUpdate}) {
                   name='endDate'
                   control={control}
                   defaultValue={contract.endDate || null}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <DatePicker
                       selected={value ? new Date(value) : null}
                       dateFormat='dd/MM/yyyy'
                       onChange={date => checkPermissionUpdate && onChange(date)}
                       disabled={contract.isLocked || !checkPermissionUpdate}
-                      customInput={<TextField size='small' fullWidth label={t('Contract.End_Date')}/>}
+                      customInput={<TextField size='small' fullWidth label={t('Contract.End_Date')} />}
                     />
                   )}
                 />
@@ -151,13 +167,12 @@ export function GenericInformation({checkPermissionUpdate}) {
                   name={`probationaryPeriod`}
                   control={control}
                   defaultValue={contract.probationaryPeriod || ''}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       disabled={contract.isLocked || !checkPermissionUpdate}
                       fullWidth
                       label={t('Contract.probationaryPeriod')}
-
                       value={value}
                       onChange={checkPermissionUpdate && onChange}
                     />
@@ -169,7 +184,7 @@ export function GenericInformation({checkPermissionUpdate}) {
                   name='isRenewable'
                   control={control}
                   defaultValue={contract.isRenewable}
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormControlLabel
                       disabled={contract.isLocked || !checkPermissionUpdate}
                       control={
@@ -196,13 +211,12 @@ export function GenericInformation({checkPermissionUpdate}) {
                   name={`probationaryPeriod`}
                   control={control}
                   defaultValue={contract.probationaryPeriod || ''}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       disabled={contract.isLocked || !checkPermissionUpdate}
                       fullWidth
                       label={t('Contract.probationaryPeriod')}
-
                       value={value}
                       onChange={checkPermissionUpdate && onChange}
                     />
@@ -215,7 +229,7 @@ export function GenericInformation({checkPermissionUpdate}) {
                     name='isRenewable'
                     control={control}
                     defaultValue={contract.isRenewable}
-                    render={({field}) => (
+                    render={({ field }) => (
                       <FormControlLabel
                         disabled={contract.isLocked || !checkPermissionUpdate}
                         control={
@@ -236,7 +250,7 @@ export function GenericInformation({checkPermissionUpdate}) {
             </>
           )}
         </Grid>
-        <Grid container spacing={3} sx={{mt: 0}}>
+        <Grid container spacing={3} sx={{ mt: 0 }}>
           <Grid item sm={12} md={4}>
             <TextField
               disabled={contract.isLocked || !checkPermissionUpdate}
@@ -245,7 +259,7 @@ export function GenericInformation({checkPermissionUpdate}) {
               defaultValue={contract.location || ''}
               fullWidth
               variant='outlined'
-              {...checkPermissionUpdate && register('location')}
+              {...(checkPermissionUpdate && register('location'))}
             />
           </Grid>
           <Grid item sm={12} md={4}>
@@ -253,12 +267,20 @@ export function GenericInformation({checkPermissionUpdate}) {
               name='availability'
               control={control}
               defaultValue={contract.availability || null}
-              render={({field: {value, onChange}}) => (
-                <FormControl size='small' disabled={contract.isLocked || !checkPermissionUpdate}
-                             style={{width: '100%', marginRight: '10px'}}>
+              render={({ field: { value, onChange } }) => (
+                <FormControl
+                  size='small'
+                  disabled={contract.isLocked || !checkPermissionUpdate}
+                  style={{ width: '100%', marginRight: '10px' }}
+                >
                   <InputLabel>{t('Contract.availability')}</InputLabel>
-                  <Select value={value} fullWidth onChange={checkPermissionUpdate && onChange} variant='outlined'
-                          label='availiblity'>
+                  <Select
+                    value={value}
+                    fullWidth
+                    onChange={checkPermissionUpdate && onChange}
+                    variant='outlined'
+                    label='availiblity'
+                  >
                     <MenuItem value={IEnumTimeType.PARTTIME}>{t('Contract.PART-TIME')}</MenuItem>
                     <MenuItem value={IEnumTimeType.FULLTIME}>{t('Contract.FULL-TIME')}</MenuItem>
                   </Select>

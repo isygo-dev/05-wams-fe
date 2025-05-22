@@ -1,25 +1,25 @@
-import React, {useContext} from 'react'
-import {EmployeeContext} from '../../../../pages/apps/employee/view/[id]'
-import {Controller, useFormContext} from 'react-hook-form'
+import React, { useContext } from 'react'
+import { EmployeeContext } from '../../../../pages/apps/employee/view/[id]'
+import { Controller, useFormContext } from 'react-hook-form'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
-import {IEnumCivility, IEnumGender} from 'hrm-shared/@core/types/hrm/employeeTypes'
+import { IEnumCivility, IEnumGender } from 'hrm-shared/@core/types/hrm/employeeTypes'
 import Typography from '@mui/material/Typography'
 import DatePickerWrapper from 'template-shared/@core/styles/libs/react-datepicker'
 import DatePicker from 'react-datepicker'
 import FormControl from '@mui/material/FormControl'
-import {Accordion, AccordionDetails, AccordionSummary, InputLabel, MenuItem, Select} from '@mui/material'
-import {useTranslation} from 'react-i18next'
+import { Accordion, AccordionDetails, AccordionSummary, InputLabel, MenuItem, Select } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
-export function FamilyInformation({checkPermissionUpdate}) {
-  const {t} = useTranslation()
+export function FamilyInformation({ checkPermissionUpdate }) {
+  const { t } = useTranslation()
   const employee = useContext(EmployeeContext)
   const employeeData = employee.employeeData || {}
 
-  const {register, control} = useFormContext()
+  const { register, control } = useFormContext()
   const familyInformation = employeeData.details.familyInformation
-  const emptyChildrenInfo = Array.from({length: familyInformation?.numberOfChildren || 0}, () => ({
+  const emptyChildrenInfo = Array.from({ length: familyInformation?.numberOfChildren || 0 }, () => ({
     fullName: '',
     gender: null,
     birthDate: '',
@@ -29,8 +29,8 @@ export function FamilyInformation({checkPermissionUpdate}) {
   console.log(familyInformation)
 
   return (
-    <Accordion defaultExpanded={false} style={{marginTop: 16}}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon/>} aria-controls='panel1a-content' id='panel1a-header'>
+    <Accordion defaultExpanded={false} style={{ marginTop: 16 }}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1a-content' id='panel1a-header'>
         <Typography>{t('Employee.Family_Information')}</Typography>
       </AccordionSummary>
       <AccordionDetails>
@@ -44,11 +44,11 @@ export function FamilyInformation({checkPermissionUpdate}) {
                 defaultValue={familyInformation?.spouseName || ''}
                 fullWidth
                 variant='outlined'
-                {...checkPermissionUpdate && register('details.familyInformation.spouseName')}
+                {...(checkPermissionUpdate && register('details.familyInformation.spouseName'))}
               />
             </Grid>
           )}
-          <div style={{marginBottom: 16}}></div>
+          <div style={{ marginBottom: 16 }}></div>
           {emptyChildrenInfo.map((child, index) => (
             <Grid item xs={12} sm={12} key={index}>
               <div
@@ -72,7 +72,8 @@ export function FamilyInformation({checkPermissionUpdate}) {
                       fullWidth
                       disabled={!checkPermissionUpdate}
                       variant='outlined'
-                      {...checkPermissionUpdate && register(`details.familyInformation.childrenInformations[${index}].fullName`)}
+                      {...(checkPermissionUpdate &&
+                        register(`details.familyInformation.childrenInformations[${index}].fullName`))}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -81,32 +82,37 @@ export function FamilyInformation({checkPermissionUpdate}) {
                         name={`details.familyInformation.childrenInformations[${index}].birthDate`}
                         control={control}
                         defaultValue={familyInformation.childrenInformations?.[index]?.birthDate || ''}
-                        render={({field: {value, onChange}}) => (
+                        render={({ field: { value, onChange } }) => (
                           <DatePicker
                             disabled={!checkPermissionUpdate}
                             selected={value ? new Date(value) : null}
                             dateFormat='dd/MM/yyyy'
                             onChange={date => checkPermissionUpdate && onChange(date)}
-                            customInput={<TextField size='small' fullWidth label='Birth Date' variant='outlined'/>}
+                            customInput={<TextField size='small' fullWidth label='Birth Date' variant='outlined' />}
                           />
                         )}
                       />
                     </DatePickerWrapper>
                   </Grid>
                 </Grid>
-                <div style={{marginBottom: 16}}></div>
+                <div style={{ marginBottom: 16 }}></div>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
-                    <FormControl size='small' style={{width: '100%', marginRight: '10px'}}>
+                    <FormControl size='small' style={{ width: '100%', marginRight: '10px' }}>
                       <InputLabel>{t('Employee.Gender')}</InputLabel>
                       <Controller
                         name={`details.familyInformation.childrenInformations[${index}].gender`}
                         control={control}
                         defaultValue={familyInformation.childrenInformations?.[index]?.gender}
-                        render={({field: {value, onChange}}) => (
-                          <Select value={value} fullWidth onChange={checkPermissionUpdate && onChange}
-                                  variant='outlined' label='Gender'
-                                  disabled={!checkPermissionUpdate}>
+                        render={({ field: { value, onChange } }) => (
+                          <Select
+                            value={value}
+                            fullWidth
+                            onChange={checkPermissionUpdate && onChange}
+                            variant='outlined'
+                            label='Gender'
+                            disabled={!checkPermissionUpdate}
+                          >
                             <MenuItem value={IEnumGender.MALE}>{t('Employee.Male')}</MenuItem>
                             <MenuItem value={IEnumGender.FEMALE}>{t('Employee.Female')}</MenuItem>
                             <MenuItem value={IEnumGender.OTHER}>{t('Employee.Other')}</MenuItem>
@@ -116,13 +122,13 @@ export function FamilyInformation({checkPermissionUpdate}) {
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <FormControl size='small' style={{width: '100%', marginRight: '10px'}}>
+                    <FormControl size='small' style={{ width: '100%', marginRight: '10px' }}>
                       <InputLabel>{t('Employee.Educational_Level')}</InputLabel>
                       <Controller
                         name={`details.familyInformation.childrenInformations[${index}].educationalLevel`}
                         control={control}
                         defaultValue={familyInformation.childrenInformations?.[index]?.educationalLevel || null}
-                        render={({field: {value, onChange}}) => (
+                        render={({ field: { value, onChange } }) => (
                           <Select
                             value={value}
                             fullWidth

@@ -1,5 +1,5 @@
 export const TimelineCenterJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
@@ -308,7 +308,7 @@ export default TimelineCenter
 )
 
 export const TimelineFilledJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
@@ -502,7 +502,7 @@ export default TimelineLeft
 )
 
 export const TimelineOutlinedJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
@@ -688,7 +688,7 @@ export default TimelineRight
 )
 
 export const TimelineCenterTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
@@ -997,7 +997,7 @@ export default TimelineCenter
 )
 
 export const TimelineFilledTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
@@ -1191,7 +1191,7 @@ export default TimelineLeft
 )
 
 export const TimelineOutlinedTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'

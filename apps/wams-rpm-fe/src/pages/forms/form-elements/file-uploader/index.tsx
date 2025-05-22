@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 
 // ** Custom Components Imports
@@ -21,7 +21,7 @@ import FileUploaderRestrictions from 'template-shared/views/forms/form-elements/
 // ** Source code imports
 import * as source from 'template-shared/views/forms/form-elements/file-uploader/FileUploaderSourceCode'
 
-const LinkStyled = styled(Link)(({theme}) => ({
+const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   color: theme.palette.primary.main
 }))
@@ -48,7 +48,7 @@ const FileUploader = () => {
               jsx: source.FileUploaderMultipleJSXCode
             }}
           >
-            <FileUploaderMultiple/>
+            <FileUploaderMultiple />
           </CardSnippet>
         </Grid>
         <Grid item xs={12}>
@@ -59,7 +59,7 @@ const FileUploader = () => {
               jsx: source.FileUploaderSingleJSXCode
             }}
           >
-            <FileUploaderSingle/>
+            <FileUploaderSingle />
           </CardSnippet>
         </Grid>
         <Grid item xs={12}>
@@ -70,7 +70,7 @@ const FileUploader = () => {
               jsx: source.FileUploaderRestrictionsJSXCode
             }}
           >
-            <FileUploaderRestrictions/>
+            <FileUploaderRestrictions />
           </CardSnippet>
         </Grid>
       </Grid>

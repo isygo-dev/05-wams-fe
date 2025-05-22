@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 
 // ** Custom Components Imports
@@ -11,7 +11,7 @@ import PageHeader from 'template-shared/@core/components/page-header'
 import CardSnippet from 'template-shared/@core/components/card-snippet'
 
 // ** Styled Component Import
-import {EditorWrapper} from 'template-shared/@core/styles/libs/react-draft-wysiwyg'
+import { EditorWrapper } from 'template-shared/@core/styles/libs/react-draft-wysiwyg'
 
 // ** Demo Components Imports
 import EditorControlled from 'template-shared/views/forms/form-elements/editor/EditorControlled'
@@ -23,7 +23,7 @@ import * as source from 'template-shared/views/forms/form-elements/editor/Editor
 // ** Styles
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
-const LinkStyled = styled(Link)(({theme}) => ({
+const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   color: theme.palette.primary.main
 }))
@@ -44,26 +44,26 @@ const Editors = () => {
         />
         <Grid item xs={12}>
           <CardSnippet
-            sx={{overflow: 'visible'}}
+            sx={{ overflow: 'visible' }}
             title='Controlled Wysiwyg Editor'
             code={{
               tsx: source.EditorControlledTSXCode,
               jsx: source.EditorControlledJSXCode
             }}
           >
-            <EditorControlled/>
+            <EditorControlled />
           </CardSnippet>
         </Grid>
         <Grid item xs={12}>
           <CardSnippet
-            sx={{overflow: 'visible'}}
+            sx={{ overflow: 'visible' }}
             title='Uncontrolled Wysiwyg Editor'
             code={{
               tsx: source.EditorUncontrolledTSXCode,
               jsx: source.EditorUncontrolledJSXCode
             }}
           >
-            <EditorUncontrolled/>
+            <EditorUncontrolled />
           </CardSnippet>
         </Grid>
       </Grid>

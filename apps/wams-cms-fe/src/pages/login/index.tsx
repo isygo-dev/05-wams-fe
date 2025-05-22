@@ -1,5 +1,5 @@
 // ** React Imports
-import {ReactNode} from 'react'
+import { ReactNode } from 'react'
 
 // ** Icon Imports
 // ** Layout Import

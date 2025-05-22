@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 type TextViewerProps = {
-  data: string;
-};
+  data: string
+}
 
-const TextViewer: React.FC<TextViewerProps> = ({data}) => {
-  return <pre>{data}</pre>;
-};
+const TextViewer: React.FC<TextViewerProps> = ({ data }) => {
+  return <pre>{data}</pre>
+}
 
-export default TextViewer;
+export default TextViewer

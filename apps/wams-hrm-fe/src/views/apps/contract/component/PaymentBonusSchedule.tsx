@@ -1,8 +1,8 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
+import * as React from 'react'
+import Box from '@mui/material/Box'
+import EditIcon from '@mui/icons-material/Edit'
+import SaveIcon from '@mui/icons-material/Save'
+import CancelIcon from '@mui/icons-material/Close'
 import {
   DataGrid,
   GridActionsCellItem,
@@ -12,61 +12,61 @@ import {
   GridRowId,
   GridRowModes,
   GridRowModesModel
-} from '@mui/x-data-grid';
-import {useMutation, useQuery} from 'react-query';
-import {PaymentBonusSchedule} from 'hrm-shared/@core/types/hrm/contractType';
-import PaymentScheduleApis from "hrm-shared/@core/api/hrm/contract/paymentSchedule";
-import {useTranslation} from "react-i18next";
+} from '@mui/x-data-grid'
+import { useMutation, useQuery } from 'react-query'
+import { PaymentBonusSchedule } from 'hrm-shared/@core/types/hrm/contractType'
+import PaymentScheduleApis from 'hrm-shared/@core/api/hrm/contract/paymentSchedule'
+import { useTranslation } from 'react-i18next'
 
-export default function TableEditablePaymentBonus({contractId}) {
-  const {t} = useTranslation()
-  const {data: payments, isLoading} = useQuery<PaymentBonusSchedule[]>(['PaymentBonusData', contractId], () =>
+export default function TableEditablePaymentBonus({ contractId }) {
+  const { t } = useTranslation()
+  const { data: payments, isLoading } = useQuery<PaymentBonusSchedule[]>(['PaymentBonusData', contractId], () =>
     PaymentScheduleApis(t).getBonusPaymentScheduleById(contractId)
-  );
-  const [rows, setRows] = React.useState<PaymentBonusSchedule[]>([]);
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
-  const mutation = useMutation(PaymentScheduleApis(t).updatePaymentBonusSchedule);
+  )
+  const [rows, setRows] = React.useState<PaymentBonusSchedule[]>([])
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({})
+  const mutation = useMutation(PaymentScheduleApis(t).updatePaymentBonusSchedule)
 
   React.useEffect(() => {
     if (payments) {
-      setRows(payments);
+      setRows(payments)
     }
-  }, [payments]);
+  }, [payments])
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
+      event.defaultMuiPrevented = true
     }
-  };
+  }
 
   const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({...rowModesModel, [id]: {mode: GridRowModes.Edit}});
-  };
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } })
+  }
 
   const handleSaveClick = (id: GridRowId) => () => {
-    setRowModesModel({...rowModesModel, [id]: {mode: GridRowModes.View}});
-  };
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
+  }
 
   const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
-      [id]: {mode: GridRowModes.View, ignoreModifications: true}
-    });
+      [id]: { mode: GridRowModes.View, ignoreModifications: true }
+    })
 
-    const editedRow = rows?.find((row) => row.id === id);
-    console.log(editedRow);
-    setRows(rows?.filter((row) => row.id !== id));
-  };
+    const editedRow = rows?.find(row => row.id === id)
+    console.log(editedRow)
+    setRows(rows?.filter(row => row.id !== id))
+  }
 
   const processRowUpdate = async (newRow: PaymentBonusSchedule) => {
-    const data = {...newRow};
-    console.log(data);
-    await mutation.mutateAsync(data);
-  };
+    const data = { ...newRow }
+    console.log(data)
+    await mutation.mutateAsync(data)
+  }
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-    setRowModesModel(newRowModesModel);
-  };
+    setRowModesModel(newRowModesModel)
+  }
 
   const columns: GridColDef[] = [
     {
@@ -96,7 +96,7 @@ export default function TableEditablePaymentBonus({contractId}) {
       editable: true,
       headerName: 'submit Date',
       field: 'submitDate',
-      valueGetter: (params) => new Date(params.value)
+      valueGetter: params => new Date(params.value)
     },
     {
       field: 'actions',
@@ -104,14 +104,14 @@ export default function TableEditablePaymentBonus({contractId}) {
       headerName: '',
       width: 100,
       cellClassName: 'actions',
-      getActions: ({id}) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit
 
         if (isInEditMode) {
           return [
             <GridActionsCellItem
               key={id}
-              icon={<SaveIcon/>}
+              icon={<SaveIcon />}
               label='Save'
               sx={{
                 color: 'primary.main'
@@ -120,28 +120,28 @@ export default function TableEditablePaymentBonus({contractId}) {
             />,
             <GridActionsCellItem
               key={id}
-              icon={<CancelIcon/>}
+              icon={<CancelIcon />}
               label='Cancel'
               className='textPrimary'
               onClick={handleCancelClick(id)}
               color='inherit'
             />
-          ];
+          ]
         }
 
         return [
           <GridActionsCellItem
-            icon={<EditIcon/>}
+            icon={<EditIcon />}
             key={id}
             label='Edit'
             className='textPrimary'
             onClick={handleEditClick(id)}
             color='inherit'
           />
-        ];
+        ]
       }
     }
-  ];
+  ]
 
   return (
     <>
@@ -168,11 +168,11 @@ export default function TableEditablePaymentBonus({contractId}) {
             onRowEditStop={handleRowEditStop}
             processRowUpdate={processRowUpdate}
             slotProps={{
-              toolbar: {setRows, setRowModesModel}
+              toolbar: { setRows, setRowModesModel }
             }}
           />
         </Box>
       )}
     </>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import {Avatar, ListItem} from '@mui/material'
+import { Avatar, ListItem } from '@mui/material'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import Checkbox from '@mui/material/Checkbox'
 import Dialog from '@mui/material/Dialog'
@@ -16,37 +16,37 @@ import ListItemText from '@mui/material/ListItemText'
 import MenuItem from '@mui/material/MenuItem'
 import Rating from '@mui/material/Rating'
 import Select from '@mui/material/Select'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import {Controller, useForm} from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import DatePicker from 'react-datepicker'
 import MuiAccordion from '@mui/material/Accordion'
 import MuiAccordionSummary from '@mui/material/AccordionSummary'
 import MuiAccordionDetails from '@mui/material/AccordionDetails'
 import DatePickerWrapper from 'template-shared/@core/styles/libs/react-datepicker'
 import Icon from 'template-shared/@core/components/icon'
-import React, {useEffect, useState} from 'react'
-import rpmApiUrls from "rpm-shared/configs/rpm_apis";
-import imsApiUrls from "ims-shared/configs/ims_apis"
-import {useTranslation} from 'react-i18next'
-import {ItemType, MiniBoardEvent} from 'rpm-shared/@core/types/rpm/itemTypes'
-import {useMutation, useQuery} from 'react-query'
+import React, { useEffect, useState } from 'react'
+import rpmApiUrls from 'rpm-shared/configs/rpm_apis'
+import imsApiUrls from 'ims-shared/configs/ims_apis'
+import { useTranslation } from 'react-i18next'
+import { ItemType, MiniBoardEvent } from 'rpm-shared/@core/types/rpm/itemTypes'
+import { useMutation, useQuery } from 'react-query'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import AnswerList from './AnswerList'
-import IconButton from "@mui/material/IconButton";
-import EventIcon from "@mui/icons-material/Event";
-import AccountApis from "ims-shared/@core/api/ims/account";
-import QuizApis from "quiz-shared/@core/api/quiz/quiz";
-import QuizCandidateApis from "quiz-shared/@core/api/quiz/candidate";
-import {MinAccountDto} from "ims-shared/@core/types/ims/accountTypes";
-import {InterviewEventType} from "rpm-shared/@core/types/rpm/jobApplicationType";
-import {AnswerType, QuestionDetailsType} from "quiz-shared/@core/types/quiz/quizCandidateType";
-import WorkflowBoardItemApis from "rpm-shared/@core/api/rpm/workflow-board/item";
+import IconButton from '@mui/material/IconButton'
+import EventIcon from '@mui/icons-material/Event'
+import AccountApis from 'ims-shared/@core/api/ims/account'
+import QuizApis from 'quiz-shared/@core/api/quiz/quiz'
+import QuizCandidateApis from 'quiz-shared/@core/api/quiz/candidate'
+import { MinAccountDto } from 'ims-shared/@core/types/ims/accountTypes'
+import { InterviewEventType } from 'rpm-shared/@core/types/rpm/jobApplicationType'
+import { AnswerType, QuestionDetailsType } from 'quiz-shared/@core/types/quiz/quizCandidateType'
+import WorkflowBoardItemApis from 'rpm-shared/@core/api/rpm/workflow-board/item'
 
-const Accordion = styled(MuiAccordion)(({theme}) => ({
+const Accordion = styled(MuiAccordion)(({ theme }) => ({
   margin: 0,
   borderRadius: 0,
   boxShadow: 'none !important',
@@ -77,7 +77,7 @@ const Accordion = styled(MuiAccordion)(({theme}) => ({
 }))
 
 // Styled component for AccordionSummary component
-const AccordionSummary = styled(MuiAccordionSummary)(({theme}) => ({
+const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
   marginBottom: -1,
   padding: theme.spacing(0, 4),
   minHeight: theme.spacing(12),
@@ -103,11 +103,11 @@ const AccordionSummary = styled(MuiAccordionSummary)(({theme}) => ({
 }))
 
 // Styled component for AccordionDetails component
-const AccordionDetails = styled(MuiAccordionDetails)(({theme}) => ({
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: `${theme.spacing(4)} !important`
 }))
 
-const Item = styled(Grid)(({theme}) => ({
+const Item = styled(Grid)(({ theme }) => ({
   padding: theme.spacing(2),
   textAlign: 'center',
   color: theme.palette.text.secondary
@@ -124,8 +124,8 @@ interface Props {
 }
 
 const AddEventDrawer = (props: Props) => {
-  const {t} = useTranslation()
-  const {open, setClose, event, item} = props
+  const { t } = useTranslation()
+  const { open, setClose, event, item } = props
   const [defaultValues, setDefaultValues] = useState<InterviewEventType>({
     title: '',
     type: 'INTERVIEW',
@@ -144,15 +144,11 @@ const AddEventDrawer = (props: Props) => {
     }
   })
 
-  const {data: accounts, isLoading: isLoadingAccount} = useQuery([`accounts`], () => AccountApis(t).getAccountDetails())
+  const { data: accounts, isLoading: isLoadingAccount } = useQuery([`accounts`], () =>
+    AccountApis(t).getAccountDetails()
+  )
 
-  const {
-    reset,
-    control,
-    handleSubmit,
-    setValue,
-    getValues
-  } = useForm({
+  const { reset, control, handleSubmit, setValue, getValues } = useForm({
     defaultValues,
     mode: 'onChange'
   })
@@ -160,9 +156,9 @@ const AddEventDrawer = (props: Props) => {
   const [checked, setChecked] = useState<MinAccountDto[]>([])
 
   const [allQuestions, setAllQuestions] = useState<QuestionDetailsType[]>([])
-  const {data: quizByCategory} = useQuery('quizByCateory', () => QuizApis(t).getQuizByCategory('interview'))
+  const { data: quizByCategory } = useQuery('quizByCateory', () => QuizApis(t).getQuizByCategory('interview'))
 
-  const {data: quizDataDetails} = useQuery(
+  const { data: quizDataDetails } = useQuery(
     ['quizDataDetails', defaultValues?.quizCode, defaultValues?.candidate.code],
     () => {
       if (defaultValues?.quizCode) {
@@ -171,26 +167,33 @@ const AddEventDrawer = (props: Props) => {
     }
   )
 
-  const {data: quizDataDetailsComplete} = useQuery(
+  const { data: quizDataDetailsComplete } = useQuery(
     ['quizDataDetailsComplete', defaultValues?.quizCode, defaultValues?.candidate.code],
     () => {
       if (defaultValues?.quizCode && defaultValues?.candidate.code) {
-        return QuizCandidateApis(t).getQuizCandidateAnswersCompleteAndClean(defaultValues?.quizCode, defaultValues?.candidate.code)
+        return QuizCandidateApis(t).getQuizCandidateAnswersCompleteAndClean(
+          defaultValues?.quizCode,
+          defaultValues?.candidate.code
+        )
       }
     }
   )
 
   useEffect(() => {
     if (event != null) {
-      WorkflowBoardItemApis(t).getWorkflowBoardItemEvent(item.code, event.id).then(res => {
-        reset(res)
-        setDefaultValues({...res})
-      })
+      WorkflowBoardItemApis(t)
+        .getWorkflowBoardItemEvent(item.code, event.id)
+        .then(res => {
+          reset(res)
+          setDefaultValues({ ...res })
+        })
     } else {
-      WorkflowBoardItemApis(t).getWorkflowBoardItemEvents(item.code).then(res => {
-        reset({...defaultValues, candidate: res})
-        setDefaultValues({...defaultValues, candidate: res})
-      })
+      WorkflowBoardItemApis(t)
+        .getWorkflowBoardItemEvents(item.code)
+        .then(res => {
+          reset({ ...defaultValues, candidate: res })
+          setDefaultValues({ ...defaultValues, candidate: res })
+        })
     }
   }, [])
   const [answers, setAnswers] = useState([])
@@ -215,7 +218,8 @@ const AddEventDrawer = (props: Props) => {
   }
 
   const jobMutationAdd = useMutation({
-    mutationFn: (newMutation: InterviewEventType) => WorkflowBoardItemApis(t).addWorkflowBoardItemEvent(newMutation, item.code),
+    mutationFn: (newMutation: InterviewEventType) =>
+      WorkflowBoardItemApis(t).addWorkflowBoardItemEvent(newMutation, item.code),
     onSuccess: (res: InterviewEventType) => {
       console.log('hello item ', res)
       handleClose()
@@ -227,7 +231,8 @@ const AddEventDrawer = (props: Props) => {
   })
 
   const jobMutationEdit = useMutation({
-    mutationFn: (newMutation: InterviewEventType) => WorkflowBoardItemApis(t).updateWorkflowBoardItemEvent(newMutation, item.code),
+    mutationFn: (newMutation: InterviewEventType) =>
+      WorkflowBoardItemApis(t).updateWorkflowBoardItemEvent(newMutation, item.code),
     onSuccess: () => {
       handleClose()
     },
@@ -265,18 +270,20 @@ const AddEventDrawer = (props: Props) => {
 
   useEffect(() => {
     if (!isLoadingAccount && event != null) {
-      WorkflowBoardItemApis(t).getWorkflowBoardItemEvent(item.code, event.id).then(res => {
-        reset(res)
-        setDefaultValues({...res})
-        const allAccounts = [accounts, res.candidate]
-        const accountCheck: MinAccountDto[] = []
-        accountCheck.push(res.candidate)
-        const filterAccount = accounts.filter(acc => res.participants.includes(acc.email))
-        if (allAccounts != null) {
-          accountCheck.push(...filterAccount)
-          setChecked(accountCheck)
-        }
-      })
+      WorkflowBoardItemApis(t)
+        .getWorkflowBoardItemEvent(item.code, event.id)
+        .then(res => {
+          reset(res)
+          setDefaultValues({ ...res })
+          const allAccounts = [accounts, res.candidate]
+          const accountCheck: MinAccountDto[] = []
+          accountCheck.push(res.candidate)
+          const filterAccount = accounts.filter(acc => res.participants.includes(acc.email))
+          if (allAccounts != null) {
+            accountCheck.push(...filterAccount)
+            setChecked(accountCheck)
+          }
+        })
     }
   }, [isLoadingAccount])
 
@@ -312,19 +319,19 @@ const AddEventDrawer = (props: Props) => {
           <Accordion>
             <AccordionSummary
               id='customized-panel-header-2'
-              expandIcon={<Icon fontSize='1.25rem' icon='tabler:chevron-down'/>}
+              expandIcon={<Icon fontSize='1.25rem' icon='tabler:chevron-down' />}
               aria-controls='customized-panel-content-2'
             >
-              <Typography sx={{ml: 2}}>Event</Typography>
+              <Typography sx={{ ml: 2 }}>Event</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <DatePickerWrapper>
-                <Grid container rowSpacing={1} columnSpacing={{xs: 4, sm: 8, md: 12}}>
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 4, sm: 8, md: 12 }}>
                   <Item item xs={12} sm={6}>
                     <Controller
                       name='title'
                       control={control}
-                      render={({field: {value, onChange}}) => (
+                      render={({ field: { value, onChange } }) => (
                         <TextField
                           size='small'
                           id='outlined-basic'
@@ -340,10 +347,10 @@ const AddEventDrawer = (props: Props) => {
                     <Controller
                       name='type'
                       control={control}
-                      render={({field: {value, onChange}}) => (
+                      render={({ field: { value, onChange } }) => (
                         <>
                           {event != null ? (
-                            <TextField size='small' value={value || ''} fullWidth label='Type' disabled/>
+                            <TextField size='small' value={value || ''} fullWidth label='Type' disabled />
                           ) : (
                             <Select size='small' label='Type' value={value || ''} onChange={onChange} fullWidth>
                               <MenuItem value='INTERVIEW'>INTERVIEW</MenuItem>
@@ -360,7 +367,7 @@ const AddEventDrawer = (props: Props) => {
                       <Controller
                         name='startDateTime'
                         control={control}
-                        render={({field: {value}}) => (
+                        render={({ field: { value } }) => (
                           <DatePicker
                             showTimeSelect
                             timeFormat='HH:mm'
@@ -370,18 +377,20 @@ const AddEventDrawer = (props: Props) => {
                             onChange={e => {
                               handleStartDateChange(e)
                             }}
-                            customInput={<TextField
-                              size='small'
-                              fullWidth
-                              label='Start Date & Time'
-                              InputProps={{
-                                endAdornment: (
-                                  <IconButton>
-                                    <EventIcon/>
-                                  </IconButton>
-                                ),
-                              }}
-                            />}
+                            customInput={
+                              <TextField
+                                size='small'
+                                fullWidth
+                                label='Start Date & Time'
+                                InputProps={{
+                                  endAdornment: (
+                                    <IconButton>
+                                      <EventIcon />
+                                    </IconButton>
+                                  )
+                                }}
+                              />
+                            }
                           />
                         )}
                       />
@@ -392,7 +401,7 @@ const AddEventDrawer = (props: Props) => {
                       <Controller
                         name='endDateTime'
                         control={control}
-                        render={({field: {value, onChange}}) => (
+                        render={({ field: { value, onChange } }) => (
                           <DatePicker
                             showTimeSelect
                             timeFormat='HH:mm'
@@ -401,18 +410,20 @@ const AddEventDrawer = (props: Props) => {
                             dateFormat='dd/MM/yyyy h:mm aa'
                             onChange={onChange}
                             minDate={getValues('startDateTime')}
-                            customInput={<TextField
-                              size='small'
-                              fullWidth
-                              label='End Date & Time'
-                              InputProps={{
-                                endAdornment: (
-                                  <IconButton>
-                                    <EventIcon/>
-                                  </IconButton>
-                                ),
-                              }}
-                            />}
+                            customInput={
+                              <TextField
+                                size='small'
+                                fullWidth
+                                label='End Date & Time'
+                                InputProps={{
+                                  endAdornment: (
+                                    <IconButton>
+                                      <EventIcon />
+                                    </IconButton>
+                                  )
+                                }}
+                              />
+                            }
                           />
                         )}
                       />
@@ -422,8 +433,8 @@ const AddEventDrawer = (props: Props) => {
                     <Controller
                       name={`location`}
                       control={control}
-                      render={({field: {value, onChange}}) => (
-                        <TextField size='small' value={value || ''} onChange={onChange} fullWidth label='Location'/>
+                      render={({ field: { value, onChange } }) => (
+                        <TextField size='small' value={value || ''} onChange={onChange} fullWidth label='Location' />
                       )}
                     />
                   </Item>
@@ -433,14 +444,14 @@ const AddEventDrawer = (props: Props) => {
                       <Controller
                         name='quizCode'
                         control={control}
-                        rules={{required: true}}
-                        render={({field: {value, onChange}}) => (
+                        rules={{ required: true }}
+                        render={({ field: { value, onChange } }) => (
                           <Select
                             label='Interview question'
                             value={value}
                             onChange={onChange}
                             size='small'
-                            sx={{textAlign: 'left'}}
+                            sx={{ textAlign: 'left' }}
                           >
                             {quizByCategory &&
                               quizByCategory?.map(res => (
@@ -460,30 +471,30 @@ const AddEventDrawer = (props: Props) => {
           <Accordion>
             <AccordionSummary
               id='customized-panel-header-1'
-              expandIcon={<Icon fontSize='1.25rem' icon='tabler:chevron-down'/>}
+              expandIcon={<Icon fontSize='1.25rem' icon='tabler:chevron-down' />}
               aria-controls='customized-panel-content-1'
             >
               {checked.length > 0 ? (
                 <AvatarGroup className='pull-up' max={4}>
                   {checked.map((account: MinAccountDto, index) => (
                     <Tooltip key={index} title={account.fullName}>
-                      <Avatar src={accountImage(account)} alt={account.fullName} sx={{height: 32, width: 32}}/>
+                      <Avatar src={accountImage(account)} alt={account.fullName} sx={{ height: 32, width: 32 }} />
                     </Tooltip>
                   ))}
                 </AvatarGroup>
               ) : (
-                <Typography sx={{ml: 2}}>{t('Participants')}</Typography>
+                <Typography sx={{ ml: 2 }}>{t('Participants')}</Typography>
               )}
             </AccordionSummary>
             <AccordionDetails>
               <List>
                 <ListItem disablePadding>
-                  <ListItemButton sx={{padding: 0}} onClick={handleToggle(defaultValues?.candidate)}>
+                  <ListItemButton sx={{ padding: 0 }} onClick={handleToggle(defaultValues?.candidate)}>
                     <ListItemAvatar>
                       <Avatar
                         src={`${rpmApiUrls.apiUrl_RPM_Resume_ImageDownload_EndPoint}/${defaultValues?.candidate?.id}`}
                         alt={defaultValues?.candidate?.fullName}
-                        sx={{height: 32, width: 32}}
+                        sx={{ height: 32, width: 32 }}
                       />
                     </ListItemAvatar>
                     <div>
@@ -498,30 +509,30 @@ const AddEventDrawer = (props: Props) => {
                         tabIndex={-1}
                         disableRipple
                         defaultChecked={true}
-                        inputProps={{'aria-labelledby': 'checkbox-list-label-0'}}
+                        inputProps={{ 'aria-labelledby': 'checkbox-list-label-0' }}
                       />
                     </ListItemSecondaryAction>
                   </ListItemButton>
                 </ListItem>
-                <Divider/>
+                <Divider />
                 {accounts?.map((account: MinAccountDto) => (
                   <ListItem key={account.code} disablePadding>
-                    <ListItemButton sx={{padding: 0}} onClick={handleToggle(account)}>
+                    <ListItemButton sx={{ padding: 0 }} onClick={handleToggle(account)}>
                       <ListItemAvatar>
                         <Avatar
                           src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${account.id}`}
                           alt={account.fullName}
-                          sx={{height: 32, width: 32}}
+                          sx={{ height: 32, width: 32 }}
                         />
                       </ListItemAvatar>
-                      <ListItemText id='checkbox-list-label-0' primary={account.fullName} secondary={account.email}/>
+                      <ListItemText id='checkbox-list-label-0' primary={account.fullName} secondary={account.email} />
                       <ListItemSecondaryAction>
                         <Checkbox
                           edge='end'
                           tabIndex={-1}
                           disableRipple
                           checked={isChecked(account)}
-                          inputProps={{'aria-labelledby': 'checkbox-list-label-0'}}
+                          inputProps={{ 'aria-labelledby': 'checkbox-list-label-0' }}
                         />
                       </ListItemSecondaryAction>
                     </ListItemButton>
@@ -536,10 +547,10 @@ const AddEventDrawer = (props: Props) => {
               <Accordion>
                 <AccordionSummary
                   id='customized-panel-header-3'
-                  expandIcon={<Icon fontSize='1.25rem' icon='tabler:chevron-down'/>}
+                  expandIcon={<Icon fontSize='1.25rem' icon='tabler:chevron-down' />}
                   aria-controls='customized-panel-content-3'
                 >
-                  <Typography sx={{ml: 2}}>Questions</Typography>
+                  <Typography sx={{ ml: 2 }}>Questions</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <AnswerList
@@ -551,10 +562,10 @@ const AddEventDrawer = (props: Props) => {
               <Accordion>
                 <AccordionSummary
                   id='customized-panel-header-3'
-                  expandIcon={<Icon fontSize='1.25rem' icon='tabler:chevron-down'/>}
+                  expandIcon={<Icon fontSize='1.25rem' icon='tabler:chevron-down' />}
                   aria-controls='customized-panel-content-3'
                 >
-                  <Typography sx={{ml: 2}}>Skills</Typography>
+                  <Typography sx={{ ml: 2 }}>Skills</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid container spacing={8}>
@@ -562,7 +573,7 @@ const AddEventDrawer = (props: Props) => {
                       <Typography variant='h6'>Job Skills</Typography>
                       {defaultValues?.skills?.map((skill, index) =>
                         skill.type == 'JOB' ? (
-                          <Grid container spacing={2} key={skill.id} sx={{mt: 2}}>
+                          <Grid container spacing={2} key={skill.id} sx={{ mt: 2 }}>
                             <Grid item xs={12} sm={5}>
                               <Typography variant='body1'>{skill.name}</Typography>
                             </Grid>
@@ -570,7 +581,7 @@ const AddEventDrawer = (props: Props) => {
                               <Controller
                                 name={`skills.${index}.level`}
                                 control={control}
-                                render={({field: {value, onChange}}) => (
+                                render={({ field: { value, onChange } }) => (
                                   <Select size='small' label='Type' value={value || ''} onChange={onChange} fullWidth>
                                     <MenuItem value='BEGINNER'>{t('Beginner')}</MenuItem>
                                     <MenuItem value='INTERMEDIATE'>{t('Intermediate')}</MenuItem>
@@ -584,8 +595,8 @@ const AddEventDrawer = (props: Props) => {
                               <Controller
                                 name={`skills.${index}.score`}
                                 control={control}
-                                render={({field: {value, onChange}}) => (
-                                  <Rating value={value || 0} onChange={onChange}/>
+                                render={({ field: { value, onChange } }) => (
+                                  <Rating value={value || 0} onChange={onChange} />
                                 )}
                               />
                             </Grid>
@@ -597,7 +608,7 @@ const AddEventDrawer = (props: Props) => {
                       <Typography variant='h6'>Resume Skills</Typography>
                       {defaultValues?.skills?.map((skill, index) =>
                         skill.type == 'RESUME' ? (
-                          <Grid container spacing={2} key={skill.id} sx={{mt: 2}}>
+                          <Grid container spacing={2} key={skill.id} sx={{ mt: 2 }}>
                             <Grid item xs={12} sm={5}>
                               <Typography variant='body1'>{skill.name}</Typography>
                             </Grid>
@@ -605,7 +616,7 @@ const AddEventDrawer = (props: Props) => {
                               <Controller
                                 name={`skills.${index}.level`}
                                 control={control}
-                                render={({field: {value, onChange}}) => (
+                                render={({ field: { value, onChange } }) => (
                                   <Select size='small' label='Type' value={value || ''} onChange={onChange} fullWidth>
                                     <MenuItem value='BEGINNER'>{t('Beginner')}</MenuItem>
                                     <MenuItem value='INTERMEDIATE'>{t('Intermediate')}</MenuItem>
@@ -619,8 +630,8 @@ const AddEventDrawer = (props: Props) => {
                               <Controller
                                 name={`skills.${index}.score`}
                                 control={control}
-                                render={({field: {value, onChange}}) => (
-                                  <Rating value={value || 0} onChange={onChange}/>
+                                render={({ field: { value, onChange } }) => (
+                                  <Rating value={value || 0} onChange={onChange} />
                                 )}
                               />
                             </Grid>
@@ -637,17 +648,17 @@ const AddEventDrawer = (props: Props) => {
           <Accordion>
             <AccordionSummary
               id='customized-panel-header-3'
-              expandIcon={<Icon fontSize='1.25rem' icon='tabler:chevron-down'/>}
+              expandIcon={<Icon fontSize='1.25rem' icon='tabler:chevron-down' />}
               aria-controls='customized-panel-content-3'
             >
-              <Typography sx={{ml: 2}}>Comment</Typography>
+              <Typography sx={{ ml: 2 }}>Comment</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Controller
                 name={`comment`}
                 control={control}
-                render={({field: {value, onChange}}) => (
-                  <TextField size='small' rows={8} value={value || ''} onChange={onChange} fullWidth multiline/>
+                render={({ field: { value, onChange } }) => (
+                  <TextField size='small' rows={8} value={value || ''} onChange={onChange} fullWidth multiline />
                 )}
               />
             </AccordionDetails>

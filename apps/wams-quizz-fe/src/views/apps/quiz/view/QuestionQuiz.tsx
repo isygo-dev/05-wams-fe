@@ -1,11 +1,11 @@
 // ** MUI Imports
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import Repeater from 'template-shared/@core/components/repeater'
-import {Control, Controller, UseFormGetValues, UseFormSetValue} from 'react-hook-form'
+import { Control, Controller, UseFormGetValues, UseFormSetValue } from 'react-hook-form'
 import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
 import CardHeader from '@mui/material/CardHeader'
@@ -20,10 +20,10 @@ import MCQ from './MCQ'
 import MCQMA from './MCQMA'
 import MCQM from './MCQM'
 import MCQA from './MCQA'
-import {Avatar} from '@mui/material'
-import quizApiUrls from "quiz-shared/configs/quiz_apis";
-import {languageOptions} from "template-shared/views/pages/code-editor/constants/languageOptions";
-import {QuestionType, QuizDetailType} from "quiz-shared/@core/types/quiz/quizTypes";
+import { Avatar } from '@mui/material'
+import quizApiUrls from 'quiz-shared/configs/quiz_apis'
+import { languageOptions } from 'template-shared/views/pages/code-editor/constants/languageOptions'
+import { QuestionType, QuizDetailType } from 'quiz-shared/@core/types/quiz/quizTypes'
 
 interface QuestionQuizProps {
   questionCount: number
@@ -35,11 +35,11 @@ interface QuestionQuizProps {
 }
 
 const QuestionsView = (props: QuestionQuizProps) => {
-  const {control, questionCount, setValue, getValues, i, setImages} = props
+  const { control, questionCount, setValue, getValues, i, setImages } = props
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false)
   const [index, setIndex] = useState<number>(null)
   const [count, setCount] = useState<number>(questionCount)
-  const {t} = useTranslation()
+  const { t } = useTranslation()
 
   const handleOpenDeleteDialog = (index: number) => {
     setDeleteDialogOpen(true)
@@ -129,7 +129,7 @@ const QuestionsView = (props: QuestionQuizProps) => {
 
   return (
     <>
-      <h3 style={{marginTop: 0, marginBottom: 0}}> {t('Quiz.Questions')} : </h3>
+      <h3 style={{ marginTop: 0, marginBottom: 0 }}> {t('Quiz.Questions')} : </h3>
 
       <Grid>
         <Grid className='fullWidthRepeater'>
@@ -151,14 +151,14 @@ const QuestionsView = (props: QuestionQuizProps) => {
                             paddingTop: '0px !important'
                           }}
                           title={
-                            <h5 style={{marginTop: ' 12px', marginBottom: '10px'}}>
+                            <h5 style={{ marginTop: ' 12px', marginBottom: '10px' }}>
                               {t('Quiz.Question')}: {j + 1}
                             </h5>
                           }
                           action={
                             <Tooltip title={t('Action.Delete') as string}>
                               <IconButton size='small' onClick={() => handleOpenDeleteDialog(j)}>
-                                <Icon icon='tabler:trash' fontSize='1.25rem'/>
+                                <Icon icon='tabler:trash' fontSize='1.25rem' />
                               </IconButton>
                             </Tooltip>
                           }
@@ -176,8 +176,8 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                 <Controller
                                   name={`sections.${i}.questions.${j}.question`}
                                   control={control}
-                                  rules={{required: true}}
-                                  render={({field: {value, onChange}}) => (
+                                  rules={{ required: true }}
+                                  render={({ field: { value, onChange } }) => (
                                     <TextField
                                       size='small'
                                       value={value}
@@ -195,8 +195,8 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                 <Controller
                                   name={`sections.${i}.questions.${j}.type`}
                                   control={control}
-                                  rules={{required: true}}
-                                  render={({field: {value}}) => (
+                                  rules={{ required: true }}
+                                  render={({ field: { value } }) => (
                                     <Select
                                       name={`sections.${i}.questions.${j}.type`}
                                       size='small'
@@ -224,20 +224,22 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                   <Controller
                                     name={`sections.${i}.questions.${j}.language`}
                                     control={control}
-                                    rules={{required: true}}
-                                    render={({field: {value, onChange}}) => (
+                                    rules={{ required: true }}
+                                    render={({ field: { value, onChange } }) => (
                                       <Select
                                         name={`sections.${i}.questions.${j}.language`}
                                         size='small'
                                         value={value}
                                         labelId={`sections.${i}.questions.${j}.language`}
                                         onChange={e => {
-                                          onChange(e.target.value);
-                                          handleChangeLanguage(e.target.value, j);
+                                          onChange(e.target.value)
+                                          handleChangeLanguage(e.target.value, j)
                                         }}
                                       >
                                         {languageOptions.map((el, index) => (
-                                          <MenuItem key={index} value={el.value}>{el.name}</MenuItem>
+                                          <MenuItem key={index} value={el.value}>
+                                            {el.name}
+                                          </MenuItem>
                                         ))}
                                       </Select>
                                     )}
@@ -250,8 +252,8 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                 <Controller
                                   name={`sections.${i}.questions.${j}.order`}
                                   control={control}
-                                  rules={{required: true}}
-                                  render={({field: {onChange}}) => (
+                                  rules={{ required: true }}
+                                  render={({ field: { onChange } }) => (
                                     <TextField
                                       size='small'
                                       value={j + 1}
@@ -264,19 +266,19 @@ const QuestionsView = (props: QuestionQuizProps) => {
                               </FormControl>
                             </Grid>
                             <Grid item md={12}>
-                              <FormControl fullWidth sx={{mb: 4}}>
+                              <FormControl fullWidth sx={{ mb: 4 }}>
                                 <Controller
                                   name={`sections.${i}.questions.${j}.file`}
                                   control={control}
-                                  rules={{required: true}}
-                                  render={({field: {value}}) => (
-                                    <label key={j} htmlFor='file' style={{alignItems: 'center', cursor: 'pointer'}}>
+                                  rules={{ required: true }}
+                                  render={({ field: { value } }) => (
+                                    <label key={j} htmlFor='file' style={{ alignItems: 'center', cursor: 'pointer' }}>
                                       <Button
                                         color='primary'
                                         variant='outlined'
                                         component='span'
-                                        sx={{width: '100%'}}
-                                        startIcon={<Icon icon='tabler:upload'/>}
+                                        sx={{ width: '100%' }}
+                                        startIcon={<Icon icon='tabler:upload' />}
                                         onClick={() => document.getElementById(getId(j)).click()}
                                       >
                                         {t('Photo')}
@@ -286,7 +288,7 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                         type='file'
                                         name={`file${i}-${j}`}
                                         id={getId(j)}
-                                        style={{display: 'none'}}
+                                        style={{ display: 'none' }}
                                         onChange={e => handleFileChange(e, j)}
                                       />
 
@@ -295,9 +297,9 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                           src={
                                             value
                                               ? URL.createObjectURL(value as any)
-                                              : `${quizApiUrls.apiUrl_QUIZ_Question_ImageDownload_EndPoint}/${getQuestionId(
-                                                j
-                                              )}`
+                                              : `${
+                                                  quizApiUrls.apiUrl_QUIZ_Question_ImageDownload_EndPoint
+                                                }/${getQuestionId(j)}`
                                           }
                                           sx={{
                                             cursor: 'pointer',
@@ -322,8 +324,8 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                   <Controller
                                     name={`sections.${i}.questions.${j}.options`}
                                     control={control}
-                                    rules={{required: true}}
-                                    render={({field: {value}}) => (
+                                    rules={{ required: true }}
+                                    render={({ field: { value } }) => (
                                       <>
                                         <MCQ
                                           countOptions={value?.length}
@@ -347,8 +349,8 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                     <Controller
                                       name={`sections.${i}.questions.${j}.textAnswer`}
                                       control={control}
-                                      rules={{required: true}}
-                                      render={({field: {value, onChange}}) => (
+                                      rules={{ required: true }}
+                                      render={({ field: { value, onChange } }) => (
                                         <TextField
                                           size='small'
                                           value={value}
@@ -372,8 +374,8 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                       <Controller
                                         name={`sections.${i}.questions.${j}.options`}
                                         control={control}
-                                        rules={{required: true}}
-                                        render={({field: {value}}) => (
+                                        rules={{ required: true }}
+                                        render={({ field: { value } }) => (
                                           <>
                                             <MCQMA
                                               countOptions={value?.length}
@@ -399,8 +401,8 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                       <Controller
                                         name={`sections.${i}.questions.${j}.options`}
                                         control={control}
-                                        rules={{required: true}}
-                                        render={({field: {value}}) => (
+                                        rules={{ required: true }}
+                                        render={({ field: { value } }) => (
                                           <>
                                             <MCQM
                                               countOptions={value?.length}
@@ -426,8 +428,8 @@ const QuestionsView = (props: QuestionQuizProps) => {
                                       <Controller
                                         name={`sections.${i}.questions.${j}.options`}
                                         control={control}
-                                        rules={{required: true}}
-                                        render={({field: {value}}) => (
+                                        rules={{ required: true }}
+                                        render={({ field: { value } }) => (
                                           <>
                                             <MCQA
                                               countOptions={value?.length}
@@ -454,9 +456,9 @@ const QuestionsView = (props: QuestionQuizProps) => {
               )
             }}
           </Repeater>
-          <Grid container item md={12} sx={{justifyContent: 'right', paddingBottom: '20px'}}>
+          <Grid container item md={12} sx={{ justifyContent: 'right', paddingBottom: '20px' }}>
             <Button variant='contained' className={'button-padding-style'} onClick={() => handleAddQuestion()}>
-              {t('Quiz.Add_Question')} <Icon icon='tabler:plus' style={{marginLeft: '10px'}}/>
+              {t('Quiz.Add_Question')} <Icon icon='tabler:plus' style={{ marginLeft: '10px' }} />
             </Button>
           </Grid>
         </Grid>

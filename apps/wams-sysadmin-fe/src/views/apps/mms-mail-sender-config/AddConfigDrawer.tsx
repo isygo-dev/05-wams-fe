@@ -2,34 +2,34 @@
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import Icon from 'template-shared/@core/components/icon'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import {InputLabel} from '@mui/material'
+import { InputLabel } from '@mui/material'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
-import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
-import {MailSenderConfigData} from 'mms-shared/@core/types/mms/mailSenderConfigTypes'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { MailSenderConfigData } from 'mms-shared/@core/types/mms/mailSenderConfigTypes'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import {checkPermission} from "template-shared/@core/api/helper/permission";
-import DomainApis from "ims-shared/@core/api/ims/domain";
-import MailSenderConfigApis from "mms-shared/@core/api/mms/mail-sender-config";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
+import DomainApis from 'ims-shared/@core/api/ims/domain'
+import MailSenderConfigApis from 'mms-shared/@core/api/mms/mail-sender-config'
 
 interface SidebarAddConfigType {
   open: boolean
@@ -37,7 +37,7 @@ interface SidebarAddConfigType {
   domain: string
 }
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -57,11 +57,10 @@ const schema = yup.object().shape({
   debug: yup.boolean().required()
 })
 
-
 const SidebarAddConfig = (props: SidebarAddConfigType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const {open, toggle, domain} = props
+  const { open, toggle, domain } = props
   const defaultValues = {
     domain: domain,
     host: '',
@@ -79,14 +78,14 @@ const SidebarAddConfig = (props: SidebarAddConfigType) => {
     reset,
     control,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
-  const {data: domainList} = useQuery(`domains`, () => DomainApis(t).getDomains())
+  const { data: domainList } = useQuery(`domains`, () => DomainApis(t).getDomains())
   const mutation = useMutation({
     mutationFn: (data: MailSenderConfigData) => MailSenderConfigApis(t).addMailSenderConfiguration(data),
     onSuccess: (res: MailSenderConfigData) => {
@@ -116,30 +115,34 @@ const SidebarAddConfig = (props: SidebarAddConfigType) => {
       anchor='right'
       variant='temporary'
       onClose={handleClose}
-      ModalProps={{keepMounted: true}}
-      sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+      ModalProps={{ keepMounted: true }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
         <Typography variant='h6'>{t('Config.Add_Config')}</Typography>
         <IconButton
           size='small'
           onClick={handleClose}
-          sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+          sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
         >
-          <Icon icon='tabler:x' fontSize='1.125rem'/>
+          <Icon icon='tabler:x' fontSize='1.125rem' />
         </IconButton>
       </Header>
-      <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+      <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
             <Controller
               name='domain'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <Select
-                  disabled={checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? false : true}
+                  disabled={
+                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                      ? false
+                      : true
+                  }
                   size='small'
                   label={t('Domain.Domain')}
                   name='domain'
@@ -158,14 +161,14 @@ const SidebarAddConfig = (props: SidebarAddConfigType) => {
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
+            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='host'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -176,14 +179,14 @@ const SidebarAddConfig = (props: SidebarAddConfigType) => {
                 />
               )}
             />
-            {errors.host && <FormHelperText sx={{color: 'error.main'}}>{errors.host.message}</FormHelperText>}
+            {errors.host && <FormHelperText sx={{ color: 'error.main' }}>{errors.host.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='username'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -194,14 +197,14 @@ const SidebarAddConfig = (props: SidebarAddConfigType) => {
                 />
               )}
             />
-            {errors.username && <FormHelperText sx={{color: 'error.main'}}>{errors.username.message}</FormHelperText>}
+            {errors.username && <FormHelperText sx={{ color: 'error.main' }}>{errors.username.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='password'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -212,14 +215,14 @@ const SidebarAddConfig = (props: SidebarAddConfigType) => {
                 />
               )}
             />
-            {errors.password && <FormHelperText sx={{color: 'error.main'}}>{errors.password.message}</FormHelperText>}
+            {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='port'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -237,14 +240,14 @@ const SidebarAddConfig = (props: SidebarAddConfigType) => {
                 />
               )}
             />
-            {errors.port && <FormHelperText sx={{color: 'error.main'}}>{errors.port.message}</FormHelperText>}
+            {errors.port && <FormHelperText sx={{ color: 'error.main' }}>{errors.port.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='smtpAuth'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -255,40 +258,40 @@ const SidebarAddConfig = (props: SidebarAddConfigType) => {
                 />
               )}
             />
-            {errors.smtpAuth && <FormHelperText sx={{color: 'error.main'}}>{errors.smtpAuth.message}</FormHelperText>}
+            {errors.smtpAuth && <FormHelperText sx={{ color: 'error.main' }}>{errors.smtpAuth.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='smtpStarttlsEnable'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <FormControlLabel
-                  control={<Switch checked={value} onChange={onChange}/>}
+                  control={<Switch checked={value} onChange={onChange} />}
                   label={t('Config.smtpStarttlsEnable')}
                 />
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='smtpStarttlsRequired'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <FormControlLabel
-                  control={<Switch checked={value} onChange={onChange}/>}
+                  control={<Switch checked={value} onChange={onChange} />}
                   label={t('Config.smtpStarttlsRequired')}
                 />
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='transportProtocol'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -300,22 +303,22 @@ const SidebarAddConfig = (props: SidebarAddConfigType) => {
               )}
             />
             {errors.transportProtocol && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.transportProtocol.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.transportProtocol.message}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='debug'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
-                <FormControlLabel control={<Switch checked={value} onChange={onChange}/>} label={t('Config.debug')}/>
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <FormControlLabel control={<Switch checked={value} onChange={onChange} />} label={t('Config.debug')} />
               )}
             />
           </FormControl>
 
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

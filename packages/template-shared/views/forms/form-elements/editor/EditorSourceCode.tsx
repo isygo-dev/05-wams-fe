@@ -1,5 +1,5 @@
 export const EditorUncontrolledJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** Component Import
 import ReactDraftWysiwyg from 'template-shared/@core/components/react-draft-wysiwyg'
 
@@ -11,7 +11,7 @@ export default EditorUncontrolled
 )
 
 export const EditorControlledJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -34,7 +34,7 @@ export default EditorControlled
 )
 
 export const EditorControlledTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -57,7 +57,7 @@ export default EditorControlled
 )
 
 export const EditorUncontrolledTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** Component Import
 import ReactDraftWysiwyg from 'template-shared/@core/components/react-draft-wysiwyg'
 

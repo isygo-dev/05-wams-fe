@@ -1,30 +1,29 @@
 // ** React Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import Icon from 'template-shared/@core/components/icon'
-import {useTranslation} from 'react-i18next'
-import {useMutation, useQueryClient} from 'react-query'
-import {CodificationTypes} from "ims-shared/@core/types/ims/nextCodeTypes";
-import NextCodeApis from "kms-shared/@core/api/kms/next-code";
+import { useTranslation } from 'react-i18next'
+import { useMutation, useQueryClient } from 'react-query'
+import { CodificationTypes } from 'ims-shared/@core/types/ims/nextCodeTypes'
+import NextCodeApis from 'kms-shared/@core/api/kms/next-code'
 
 interface SidebarEditNextCodeType {
   open: boolean
   toggle: () => void
   dataNextCode: CodificationTypes | undefined
-
 }
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -39,20 +38,20 @@ const schema = yup.object().shape({
   suffix: yup.string().required(),
   value: yup.number().required().integer().positive(),
   valueLength: yup.number().required().integer().positive(),
-  increment: yup.number().required().integer().positive(),
+  increment: yup.number().required().integer().positive()
 })
 
 const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
-  const {t} = useTranslation()
-  const queryClient = useQueryClient();
-  const {open, toggle} = props
-  const defaultValues: CodificationTypes = {...props.dataNextCode}
+  const { t } = useTranslation()
+  const queryClient = useQueryClient()
+  const { open, toggle } = props
+  const defaultValues: CodificationTypes = { ...props.dataNextCode }
 
   const {
     reset,
     control,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -63,12 +62,12 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
     mutationFn: (data: CodificationTypes) => NextCodeApis(t).updateNextCode(data),
     onSuccess: (res: CodificationTypes) => {
       handleClose()
-      const cachedCodes: CodificationTypes[] = queryClient.getQueryData('codes') || [];
-      const index = cachedCodes.findIndex((obj) => obj.id === res.id);
+      const cachedCodes: CodificationTypes[] = queryClient.getQueryData('codes') || []
+      const index = cachedCodes.findIndex(obj => obj.id === res.id)
       if (index !== -1) {
-        const updatedCodes = [...cachedCodes];
-        updatedCodes[index] = res;
-        queryClient.setQueryData('codes', updatedCodes);
+        const updatedCodes = [...cachedCodes]
+        updatedCodes[index] = res
+        queryClient.setQueryData('codes', updatedCodes)
       }
     },
     onError: err => {
@@ -92,27 +91,27 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
       anchor='right'
       variant='temporary'
       onClose={handleClose}
-      ModalProps={{keepMounted: true}}
-      sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+      ModalProps={{ keepMounted: true }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
         <Typography variant='h6'>{t('Codification.Edit_Next_Code')}</Typography>
         <IconButton
           size='small'
           onClick={handleClose}
-          sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+          sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
         >
-          <Icon icon='tabler:x' fontSize='1.125rem'/>
+          <Icon icon='tabler:x' fontSize='1.125rem' />
         </IconButton>
       </Header>
-      <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+      <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='code'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -124,14 +123,14 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
                 />
               )}
             />
-            {errors.code && <FormHelperText sx={{color: 'error.main'}}>{errors.code.message}</FormHelperText>}
+            {errors.code && <FormHelperText sx={{ color: 'error.main' }}>{errors.code.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='domain'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -143,15 +142,15 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
                 />
               )}
             />
-            {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
+            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='entity'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   rows={4}
@@ -164,14 +163,14 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
                 />
               )}
             />
-            {errors.entity && <FormHelperText sx={{color: 'error.main'}}>{errors.entity.message}</FormHelperText>}
+            {errors.entity && <FormHelperText sx={{ color: 'error.main' }}>{errors.entity.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='attribute'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   rows={4}
@@ -184,14 +183,16 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
                 />
               )}
             />
-            {errors.attribute && <FormHelperText sx={{color: 'error.main'}}>{errors.attribute.message}</FormHelperText>}
+            {errors.attribute && (
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.attribute.message}</FormHelperText>
+            )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='prefix'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   rows={4}
@@ -204,14 +205,14 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
                 />
               )}
             />
-            {errors.prefix && <FormHelperText sx={{color: 'error.main'}}>{errors.prefix.message}</FormHelperText>}
+            {errors.prefix && <FormHelperText sx={{ color: 'error.main' }}>{errors.prefix.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='suffix'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   rows={4}
@@ -224,14 +225,14 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
                 />
               )}
             />
-            {errors.suffix && <FormHelperText sx={{color: 'error.main'}}>{errors.suffix.message}</FormHelperText>}
+            {errors.suffix && <FormHelperText sx={{ color: 'error.main' }}>{errors.suffix.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='value'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   rows={4}
@@ -245,16 +246,14 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
                 />
               )}
             />
-            {errors.value && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.value.message}</FormHelperText>
-            )}
+            {errors.value && <FormHelperText sx={{ color: 'error.main' }}>{errors.value.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='valueLength'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   rows={4}
@@ -269,15 +268,15 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
               )}
             />
             {errors.valueLength && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.valueLength.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.valueLength.message}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='increment'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   rows={4}
@@ -292,11 +291,11 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
               )}
             />
             {errors.increment && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.increment.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.increment.message}</FormHelperText>
             )}
           </FormControl>
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

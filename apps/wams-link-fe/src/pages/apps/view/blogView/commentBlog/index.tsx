@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
-import {useTranslation} from 'react-i18next'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Avatar from '@mui/material/Avatar'
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 import Typography from '@mui/material/Typography'
 import Moment from 'react-moment'
 import Tooltip from '@mui/material/Tooltip'
@@ -11,14 +11,14 @@ import IconButton from '@mui/material/IconButton'
 import Icon from 'template-shared/@core/components/icon'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import DeleteCommonDialog from 'template-shared/@core/components/DeleteCommonDialog'
-import {isTimeAfterHours} from 'template-shared/@core/api/helper'
-import BlogTalkApis from "link-shared/@core/api/link/blog/talk";
-import {BlogTalkType, BlogType} from "link-shared/@core/types/link/BlogTypes";
+import { isTimeAfterHours } from 'template-shared/@core/api/helper'
+import BlogTalkApis from 'link-shared/@core/api/link/blog/talk'
+import { BlogTalkType, BlogType } from 'link-shared/@core/types/link/BlogTypes'
 
-function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRole, user}) {
-  const {t} = useTranslation()
+function CommentBlog({ post, getNameAccount, handelCheckImagePath, getFunctionRole, user }) {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [valueAddComment, setValueAddComment] = useState('')
   const [valueAddCommentOnComment, setValueAddCommentOnComment] = useState('')
@@ -29,7 +29,7 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
   const [editButtonComment, setEditButtonComment] = useState<boolean>(false)
   const [showAddComment, setShowAddComment] = useState<boolean>(false)
   const [commentOnCommentData, setCommentOnCommentData] = useState<BlogTalkType>()
-  const {data: blogTalk, isLoading: isLoadingBlogTalk} = useQuery(
+  const { data: blogTalk, isLoading: isLoadingBlogTalk } = useQuery(
     `blogTalk`,
     () => post.id && BlogTalkApis(t).getBlogTalksByBlogId(post.id)
   )
@@ -177,16 +177,18 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
           {!isLoadingBlogTalk && blogTalk && (
             <>
               {blogTalk?.map((comment: BlogTalkType) => (
-                <Box key={comment.id} sx={{padding: 2, margin: 3}}>
+                <Box key={comment.id} sx={{ padding: 2, margin: 3 }}>
                   <Grid container item>
                     <Grid item md={1} sm={1.25} xs={1.25}>
                       <Avatar
-                        src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(comment?.accountCode)}`}
-                        sx={{mr: 2.5, height: 45, width: 45, marginTop: 3}}
+                        src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(
+                          comment?.accountCode
+                        )}`}
+                        sx={{ mr: 2.5, height: 45, width: 45, marginTop: 3 }}
                       />
                     </Grid>
                     <Grid item md={11} sm={10.75} xs={10.75}>
-                      <Box sx={{backgroundColor: '#dddddd78', borderRadius: '6px', padding: '10px'}}>
+                      <Box sx={{ backgroundColor: '#dddddd78', borderRadius: '6px', padding: '10px' }}>
                         <Grid container spacing={3}>
                           <Grid item md={10} sm={10} xs={10}>
                             <Box width={'-webkit-fill-available'} ml={2} mt={'4px'}>
@@ -226,8 +228,8 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
                                         </Typography>
                                       }
                                     >
-                                      <IconButton size='small' sx={{pt: 0, marginTop: '-5px'}}>
-                                        <Icon icon='tabler:info-circle'/>
+                                      <IconButton size='small' sx={{ pt: 0, marginTop: '-5px' }}>
+                                        <Icon icon='tabler:info-circle' />
                                       </IconButton>
                                     </Tooltip>
                                   )}
@@ -240,9 +242,9 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
                               {/* Action buttons for comment */}
                               <Tooltip title={t('Link.Comment')}>
                                 <Button
-                                  sx={{height: 'fit-content'}}
+                                  sx={{ height: 'fit-content' }}
                                   className={'btnActionLink'}
-                                  startIcon={<Icon icon='basil:comment-outline'/>}
+                                  startIcon={<Icon icon='basil:comment-outline' />}
                                   onClick={() => handleAddComment(comment, showAddComment)}
                                 />
                               </Tooltip>
@@ -250,17 +252,17 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
                                 <>
                                   <Tooltip title={t('Edit')}>
                                     <Button
-                                      sx={{height: ' fit-content'}}
+                                      sx={{ height: ' fit-content' }}
                                       className={'btnActionLink'}
-                                      startIcon={<Icon icon='tabler:edit'/>}
+                                      startIcon={<Icon icon='tabler:edit' />}
                                       onClick={() => handleEditComment(comment)}
                                     ></Button>
                                   </Tooltip>
                                   <Tooltip title={t('Delete')}>
                                     <Button
-                                      sx={{height: ' fit-content'}}
+                                      sx={{ height: ' fit-content' }}
                                       className={'btnActionLink'}
-                                      startIcon={<Icon icon='material-symbols-light:delete-outline'/>}
+                                      startIcon={<Icon icon='material-symbols-light:delete-outline' />}
                                       onClick={() => handleDeleteComment(comment)}
                                     ></Button>
                                   </Tooltip>
@@ -283,7 +285,7 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
                                 />
                                 <Button
                                   onClick={() => handleSaveEditComment(true)}
-                                  sx={{mt: 2, mr: 2, fontSize: '10px' /* , textTransform: 'capitalize' */}}
+                                  sx={{ mt: 2, mr: 2, fontSize: '10px' /* , textTransform: 'capitalize' */ }}
                                   variant={'contained'}
                                   className={'btnActionLink'}
                                 >
@@ -291,7 +293,7 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
                                 </Button>
                                 <Button
                                   onClick={() => handleSaveEditComment(false)}
-                                  sx={{mt: 2, fontSize: '10px' /* , textTransform: 'capitalize' */}}
+                                  sx={{ mt: 2, fontSize: '10px' /* , textTransform: 'capitalize' */ }}
                                   variant={'outlined'}
                                   className={'btnActionLink'}
                                 >
@@ -299,7 +301,7 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
                                 </Button>
                               </div>
                             ) : (
-                              <Typography sx={{display: 'flex', padding: 2}}>{comment.text}</Typography>
+                              <Typography sx={{ display: 'flex', padding: 2 }}>{comment.text}</Typography>
                             )}
 
                             {commentOnCommentData && commentOnCommentData.id === comment.id && (
@@ -331,12 +333,12 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
                                             onClick={() => handleSaveAddCommentOnComment(comment.id)}
                                             size={'small'}
                                           >
-                                            <Icon icon={'tabler:send-2'}/>
+                                            <Icon icon={'tabler:send-2'} />
                                           </IconButton>
                                         </Tooltip>
                                         <Tooltip title={t('Cancel')}>
                                           <IconButton onClick={handleCancelAddCommentOnComment} size={'small'}>
-                                            <Icon icon='tabler:circle-x-filled'/>
+                                            <Icon icon='tabler:circle-x-filled' />
                                           </IconButton>
                                         </Tooltip>
                                       </>
@@ -356,11 +358,11 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
           )}
         </Grid>
       </Grid>
-      <Grid container sx={{marginTop: '13px', paddingRight: '18px', paddingLeft: '17px'}} spacing={1}>
+      <Grid container sx={{ marginTop: '13px', paddingRight: '18px', paddingLeft: '17px' }} spacing={1}>
         <Grid item md={1.22} xs={1.22} sm={1.22}>
           <Avatar
             src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(user?.code)}`}
-            sx={{mr: 2.5, height: 45, width: 45}}
+            sx={{ mr: 2.5, height: 45, width: 45 }}
           />
         </Grid>
         <Grid item md={10.77} sm={10.77} xs={10.77} pl={0}>
@@ -379,7 +381,7 @@ function CommentBlog({post, getNameAccount, handelCheckImagePath, getFunctionRol
               endAdornment: (
                 <Tooltip title={t('Link.Send')}>
                   <IconButton onClick={handleSaveAddComment} size={'small'}>
-                    <Icon icon={'tabler:send-2'}/>
+                    <Icon icon={'tabler:send-2'} />
                   </IconButton>
                 </Tooltip>
               )

@@ -1,5 +1,5 @@
 export const ProgressCircularColorsJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import CircularProgress from '@mui/material/CircularProgress'
 
@@ -21,7 +21,7 @@ export default ProgressCircularColors
 )
 
 export const ProgressCircularCustomizationJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
@@ -53,7 +53,7 @@ export default ProgressCircularCustomization
 )
 
 export const ProgressLinearBufferJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useRef, useState } from 'react'
 
@@ -98,7 +98,7 @@ export default ProcessLinearBuffer
 )
 
 export const ProgressCircularControlledUncontrolledJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useState } from 'react'
 
@@ -146,7 +146,7 @@ export default ProgressCircularControlledUncontrolled
 )
 
 export const ProgressCircularIndeterminateJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import CircularProgress from '@mui/material/CircularProgress'
 
@@ -160,7 +160,7 @@ export default ProgressCircularIndeterminate
 )
 
 export const ProgressCircularWithLabelJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useState } from 'react'
 
@@ -215,7 +215,7 @@ export default ProgressCircularWithLabel
 )
 
 export const ProgressLinearColorsJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Stack from '@mui/material/Stack'
 import LinearProgress from '@mui/material/LinearProgress'
@@ -238,7 +238,7 @@ export default ProgressLinearColors
 )
 
 export const ProgressLinearCustomizationJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import React from 'react'
 
@@ -268,7 +268,7 @@ export default ProcessLinearCustomization
 )
 
 export const ProgressLinearWithLabelJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useState } from 'react'
 
@@ -310,7 +310,7 @@ export default function ProcessLinearWithLabel() {
 )
 
 export const ProgressLinearControlledUncontrolledJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useState } from 'react'
 
@@ -359,7 +359,7 @@ export default ProgressLinearControlledUncontrolled
 )
 
 export const ProgressLinearIndeterminateJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import LinearProgress from '@mui/material/LinearProgress'
 
@@ -373,7 +373,7 @@ export default ProgressLinearIndeterminate
 )
 
 export const ProgressCircularColorsTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import CircularProgress from '@mui/material/CircularProgress'
 
@@ -395,7 +395,7 @@ export default ProgressCircularColors
 )
 
 export const ProgressCircularControlledUncontrolledTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useState } from 'react'
 
@@ -444,7 +444,7 @@ export default ProgressCircularControlledUncontrolled
 )
 
 export const ProgressCircularCustomizationTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
@@ -476,7 +476,7 @@ export default ProgressCircularCustomization
 )
 
 export const ProgressCircularWithLabelTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useState } from 'react'
 
@@ -532,7 +532,7 @@ export default ProgressCircularWithLabel
 )
 
 export const ProgressLinearBufferTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useRef, useState } from 'react'
 
@@ -580,7 +580,7 @@ export default ProcessLinearBuffer
 )
 
 export const ProgressLinearColorsTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Stack from '@mui/material/Stack'
 import LinearProgress from '@mui/material/LinearProgress'
@@ -603,7 +603,7 @@ export default ProgressLinearColors
 )
 
 export const ProgressLinearControlledUncontrolledTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useState } from 'react'
 
@@ -653,7 +653,7 @@ export default ProgressLinearControlledUncontrolled
 )
 
 export const ProgressCircularIndeterminateTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import CircularProgress from '@mui/material/CircularProgress'
 
@@ -667,7 +667,7 @@ export default ProgressCircularIndeterminate
 )
 
 export const ProgressLinearIndeterminateTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import LinearProgress from '@mui/material/LinearProgress'
 
@@ -681,7 +681,7 @@ export default ProgressLinearIndeterminate
 )
 
 export const ProgressLinearCustomizationTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import React from 'react'
 
@@ -711,7 +711,7 @@ export default ProcessLinearCustomization
 )
 
 export const ProgressLinearWithLabelTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useState } from 'react'
 

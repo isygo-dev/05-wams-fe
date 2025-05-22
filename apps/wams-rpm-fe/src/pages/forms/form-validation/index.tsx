@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 
 // ** Custom Components Imports
@@ -17,7 +17,7 @@ import FormValidationSchema from 'template-shared/views/forms/form-validation/Fo
 // ** Styled Component
 import DatePickerWrapper from 'template-shared/@core/styles/libs/react-datepicker'
 
-const LinkStyled = styled(Link)(({theme}) => ({
+const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   color: theme.palette.primary.main
 }))
@@ -37,13 +37,13 @@ const FormValidation = () => {
           subtitle={<Typography variant='body2'>React Hooks for forms validation (Web + React Native)</Typography>}
         />
         <Grid item xs={12}>
-          <FormValidationBasic/>
+          <FormValidationBasic />
         </Grid>
         <Grid item xs={12} md={6}>
-          <FormValidationSchema/>
+          <FormValidationSchema />
         </Grid>
         <Grid item xs={12} md={6}>
-          <FormValidationAsync/>
+          <FormValidationAsync />
         </Grid>
       </Grid>
     </DatePickerWrapper>

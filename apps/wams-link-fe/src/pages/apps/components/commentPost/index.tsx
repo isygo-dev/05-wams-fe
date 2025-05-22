@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
-import {useTranslation} from 'react-i18next'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Avatar from '@mui/material/Avatar'
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 import Typography from '@mui/material/Typography'
 import Moment from 'react-moment'
 import Tooltip from '@mui/material/Tooltip'
@@ -11,14 +11,14 @@ import IconButton from '@mui/material/IconButton'
 import Icon from 'template-shared/@core/components/icon'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import {CommentType, PostType} from 'link-shared/@core/types/link/PostTypes'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
+import { CommentType, PostType } from 'link-shared/@core/types/link/PostTypes'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import DeleteCommonDialog from 'template-shared/@core/components/DeleteCommonDialog'
-import PostApis from "link-shared/@core/api/link/post";
-import {BlogTalkType} from "link-shared/@core/types/link/BlogTypes";
+import PostApis from 'link-shared/@core/api/link/post'
+import { BlogTalkType } from 'link-shared/@core/types/link/BlogTypes'
 
-function Index({post, getNameAccount, handelCheckImagePath, getFunctionRole, user}) {
-  const {t} = useTranslation()
+function Index({ post, getNameAccount, handelCheckImagePath, getFunctionRole, user }) {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [valueAddComment, setValueAddComment] = useState('')
   const [valueAddCommentOnComment, setValueAddCommentOnComment] = useState('')
@@ -28,7 +28,7 @@ function Index({post, getNameAccount, handelCheckImagePath, getFunctionRole, use
   const [editDataComment, setEditDataComment] = useState<CommentType>(null)
   const [editButtonComment, setEditButtonComment] = useState<boolean>(false)
   const [commentOnComment, setCommentOnComment] = useState<number>(null)
-  const {data: dataDetail, isLoading: isLoadingData} = useQuery(
+  const { data: dataDetail, isLoading: isLoadingData } = useQuery(
     `dataDetail`,
     () => post.id && PostApis(t).getPostById(Number(post.id))
   )
@@ -163,16 +163,18 @@ function Index({post, getNameAccount, handelCheckImagePath, getFunctionRole, use
           {!isLoadingData && dataDetail ? (
             <>
               {dataDetail?.map((comment: BlogTalkType) => (
-                <Box key={comment.id} sx={{padding: 2, margin: 3}}>
+                <Box key={comment.id} sx={{ padding: 2, margin: 3 }}>
                   <Grid container item>
                     <Grid item md={1.25} sm={1.25} xs={1.25}>
                       <Avatar
-                        src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(comment?.accountCode)}`}
-                        sx={{mr: 2.5, height: 45, width: 45, marginTop: 3}}
+                        src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(
+                          comment?.accountCode
+                        )}`}
+                        sx={{ mr: 2.5, height: 45, width: 45, marginTop: 3 }}
                       />
                     </Grid>
                     <Grid item md={10.75} sm={10.75} xs={10.75}>
-                      <Box sx={{backgroundColor: '#dddddd78', borderRadius: '6px', padding: '10px'}}>
+                      <Box sx={{ backgroundColor: '#dddddd78', borderRadius: '6px', padding: '10px' }}>
                         <Grid container spacing={3}>
                           <Grid item md={10} sm={10} xs={10}>
                             <Box width={'-webkit-fill-available'} ml={2} mt={'4px'}>
@@ -211,8 +213,8 @@ function Index({post, getNameAccount, handelCheckImagePath, getFunctionRole, use
                                         </Typography>
                                       }
                                     >
-                                      <IconButton size='small' sx={{pt: 0, marginTop: '-5px'}}>
-                                        <Icon icon='tabler:info-circle'/>
+                                      <IconButton size='small' sx={{ pt: 0, marginTop: '-5px' }}>
+                                        <Icon icon='tabler:info-circle' />
                                       </IconButton>
                                     </Tooltip>
                                   )}
@@ -225,25 +227,25 @@ function Index({post, getNameAccount, handelCheckImagePath, getFunctionRole, use
                               {/* Action buttons for comment */}
                               <Tooltip title={t('Link.Comment')}>
                                 <Button
-                                  sx={{height: 'fit-content'}}
+                                  sx={{ height: 'fit-content' }}
                                   className={'btnActionLink'}
-                                  startIcon={<Icon icon='basil:comment-outline'/>}
+                                  startIcon={<Icon icon='basil:comment-outline' />}
                                   onClick={() => handleAddComment(comment.id)}
                                 />
                               </Tooltip>
                               <Tooltip title={t('Edit')}>
                                 <Button
-                                  sx={{height: ' fit-content'}}
+                                  sx={{ height: ' fit-content' }}
                                   className={'btnActionLink'}
-                                  startIcon={<Icon icon='tabler:edit'/>}
+                                  startIcon={<Icon icon='tabler:edit' />}
                                   onClick={() => handleEditComment(comment)}
                                 ></Button>
                               </Tooltip>
                               <Tooltip title={t('Delete')}>
                                 <Button
-                                  sx={{height: ' fit-content'}}
+                                  sx={{ height: ' fit-content' }}
                                   className={'btnActionLink'}
-                                  startIcon={<Icon icon='material-symbols-light:delete-outline'/>}
+                                  startIcon={<Icon icon='material-symbols-light:delete-outline' />}
                                   onClick={() => handleDeleteComment(comment)}
                                 ></Button>
                               </Tooltip>
@@ -265,7 +267,7 @@ function Index({post, getNameAccount, handelCheckImagePath, getFunctionRole, use
                                 <Tooltip title={t('Update')}>
                                   <Button
                                     onClick={handleSaveEditComment}
-                                    sx={{mt: 2, fontSize: '10px' /* , textTransform: 'capitalize' */}}
+                                    sx={{ mt: 2, fontSize: '10px' /* , textTransform: 'capitalize' */ }}
                                     variant={'contained'}
                                     className={'btnActionLink'}
                                   >
@@ -300,7 +302,7 @@ function Index({post, getNameAccount, handelCheckImagePath, getFunctionRole, use
                                         endAdornment: (
                                           <Tooltip title={t('Link.Send')}>
                                             <IconButton onClick={() => handleSaveAddCommentOnComment()} size={'small'}>
-                                              <Icon icon={'tabler:send-2'}/>
+                                              <Icon icon={'tabler:send-2'} />
                                             </IconButton>
                                           </Tooltip>
                                         )
@@ -308,7 +310,7 @@ function Index({post, getNameAccount, handelCheckImagePath, getFunctionRole, use
                                     />
                                   </Box>
                                 ) : (
-                                  <Typography sx={{display: 'flex', padding: 2}}>{comment.text}</Typography>
+                                  <Typography sx={{ display: 'flex', padding: 2 }}>{comment.text}</Typography>
                                 )}
                               </>
                             )}
@@ -325,11 +327,11 @@ function Index({post, getNameAccount, handelCheckImagePath, getFunctionRole, use
           )}
         </Grid>
       </Grid>
-      <Grid container sx={{marginTop: '13px', paddingRight: '18px', paddingLeft: '17px'}} spacing={1}>
+      <Grid container sx={{ marginTop: '13px', paddingRight: '18px', paddingLeft: '17px' }} spacing={1}>
         <Grid item md={1.22} xs={1.22} sm={1.22}>
           <Avatar
             src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(user?.code)}`}
-            sx={{mr: 2.5, height: 45, width: 45}}
+            sx={{ mr: 2.5, height: 45, width: 45 }}
           />
         </Grid>
         <Grid item md={10.77} sm={10.77} xs={10.77} pl={0}>
@@ -348,7 +350,7 @@ function Index({post, getNameAccount, handelCheckImagePath, getFunctionRole, use
               endAdornment: (
                 <Tooltip title={t('Link.Send')}>
                   <IconButton onClick={handleSaveAddComment} size={'small'}>
-                    <Icon icon={'tabler:send-2'}/>
+                    <Icon icon={'tabler:send-2'} />
                   </IconButton>
                 </Tooltip>
               )

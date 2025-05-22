@@ -1,25 +1,25 @@
 import Typography from '@mui/material/Typography'
 import React from 'react'
-import {useTranslation} from 'react-i18next'
-import {useQuery} from 'react-query'
-import {Box, Card, CardContent, Divider, Grid} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { useQuery } from 'react-query'
+import { Box, Card, CardContent, Divider, Grid } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
-import linkApiUrls from "link-shared/configs/link_apis"
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import linkApiUrls from 'link-shared/configs/link_apis'
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 import Moment from 'react-moment'
 import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
 import Icon from 'template-shared/@core/components/icon'
-import DocViewer, {DocViewerRenderers} from 'react-doc-viewer'
+import DocViewer, { DocViewerRenderers } from 'react-doc-viewer'
 import Index from '../blogView/commentBlog'
-import PostApis from "link-shared/@core/api/link/post";
+import PostApis from 'link-shared/@core/api/link/post'
 
-const PostView = ({id, handelCheckImagePath, getNameAccount, getFunctionRole, user}) => {
-  const {t} = useTranslation()
-  const {
-    data: dataDetail,
-    isLoading: isLoadingData
-  } = useQuery(`dataDetail`, () => id && PostApis(t).getPostById(Number(id)))
+const PostView = ({ id, handelCheckImagePath, getNameAccount, getFunctionRole, user }) => {
+  const { t } = useTranslation()
+  const { data: dataDetail, isLoading: isLoadingData } = useQuery(
+    `dataDetail`,
+    () => id && PostApis(t).getPostById(Number(id))
+  )
   const getExtension = fileName => {
     if (!fileName || typeof fileName !== 'string') {
       return ''
@@ -33,16 +33,18 @@ const PostView = ({id, handelCheckImagePath, getNameAccount, getFunctionRole, us
     <>
       {!isLoadingData && dataDetail ? (
         <Grid item md={12}>
-          <Card sx={{mt: 3}}>
-            <CardContent sx={{pt: '10px'}}>
+          <Card sx={{ mt: 3 }}>
+            <CardContent sx={{ pt: '10px' }}>
               <Box>
-                <Grid container spacing={3} sx={{margin: '0'}}>
+                <Grid container spacing={3} sx={{ margin: '0' }}>
                   <Grid item md={10} sm={10} xs={10}>
                     <Box display={'flex'}>
                       <Box>
                         <Avatar
-                          src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(dataDetail.accountCode)}`}
-                          sx={{mr: 'auto', height: 58, width: 58}}
+                          src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(
+                            dataDetail.accountCode
+                          )}`}
+                          sx={{ mr: 'auto', height: 58, width: 58 }}
                         />
                       </Box>
                       <Box width={'-webkit-fill-available'} ml={2} mt={'4px'}>
@@ -55,7 +57,7 @@ const PostView = ({id, handelCheckImagePath, getNameAccount, getFunctionRole, us
                         <Grid container spacing={2}>
                           <Grid item md={12} display={'flex'}>
                             <Typography
-                              sx={{display: 'flex', color: 'rgb(153, 156, 166)', fontSize: '12px', mr: 2}}
+                              sx={{ display: 'flex', color: 'rgb(153, 156, 166)', fontSize: '12px', mr: 2 }}
                               lineHeight={1}
                             >
                               {t('AuditInfo.createDate')}:{' '}
@@ -64,14 +66,14 @@ const PostView = ({id, handelCheckImagePath, getNameAccount, getFunctionRole, us
                             {dataDetail.updateDate && (
                               <Tooltip
                                 title={
-                                  <Typography sx={{display: 'flex', color: 'rgb(153, 156, 166)', fontSize: '12px'}}>
+                                  <Typography sx={{ display: 'flex', color: 'rgb(153, 156, 166)', fontSize: '12px' }}>
                                     {t('AuditInfo.updateDate')}:{' '}
                                     {<Moment format='DD-MM-YY HH:mm'>{dataDetail.updateDate}</Moment>}
                                   </Typography>
                                 }
                               >
-                                <IconButton size='small' sx={{pt: 0, marginTop: '-5px'}}>
-                                  <Icon icon='tabler:info-circle'/>
+                                <IconButton size='small' sx={{ pt: 0, marginTop: '-5px' }}>
+                                  <Icon icon='tabler:info-circle' />
                                 </IconButton>
                               </Tooltip>
                             )}
@@ -121,7 +123,7 @@ const PostView = ({id, handelCheckImagePath, getNameAccount, getFunctionRole, us
                               retainURLParams: false
                             }
                           }}
-                          style={{height: 500}}
+                          style={{ height: 500 }}
                         />
                       </Box>
                     )}
@@ -131,7 +133,7 @@ const PostView = ({id, handelCheckImagePath, getNameAccount, getFunctionRole, us
                           src={`${linkApiUrls.apiUrl_LINK_Post_ImageDownload_EndPoint}/${dataDetail.id}?${Date.now()}`}
                           id={dataDetail.imagePath}
                           alt={dataDetail.title}
-                          style={{maxWidth: '100%', maxHeight: '64vh', height: '100%', cursor: 'pointer'}}
+                          style={{ maxWidth: '100%', maxHeight: '64vh', height: '100%', cursor: 'pointer' }}
                         />
                       </Box>
                     )}
@@ -155,7 +157,7 @@ const PostView = ({id, handelCheckImagePath, getNameAccount, getFunctionRole, us
                     )}
                   </Box>
                 </Grid>
-                <Divider sx={{mt: 2, mb: 2}}/>
+                <Divider sx={{ mt: 2, mb: 2 }} />
                 <Index
                   post={dataDetail}
                   getNameAccount={getNameAccount}

@@ -5,16 +5,16 @@ import Button from '@mui/material/Button'
 import Icon from 'template-shared/@core/components/icon'
 
 const ButtonsWithIconAndLabel = () => {
-    return (
-        <div className='demo-space-x'>
-            <Button variant='contained' endIcon={<Icon icon='tabler:send'/>}>
-                Send
-            </Button>
-            <Button variant='contained' color='secondary' startIcon={<Icon icon='tabler:trash'/>}>
-                Delete
-            </Button>
-        </div>
-    )
+  return (
+    <div className='demo-space-x'>
+      <Button variant='contained' endIcon={<Icon icon='tabler:send' />}>
+        Send
+      </Button>
+      <Button variant='contained' color='secondary' startIcon={<Icon icon='tabler:trash' />}>
+        Delete
+      </Button>
+    </div>
+  )
 }
 
 export default ButtonsWithIconAndLabel

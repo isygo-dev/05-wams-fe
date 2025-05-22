@@ -1,21 +1,21 @@
-import React, {useState} from 'react'
-import {Box, Button, Card, CardContent, CardMedia} from '@mui/material'
+import React, { useState } from 'react'
+import { Box, Button, Card, CardContent, CardMedia } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import Tooltip from '@mui/material/Tooltip'
 import Icon from 'template-shared/@core/components/icon'
-import {useQuery, useQueryClient} from 'react-query'
-import {PostType} from 'link-shared/@core/types/link/PostTypes'
-import {useRouter} from 'next/router'
-import {useTheme} from '@mui/material/styles'
-import {useTranslation} from 'react-i18next'
-import PostApis from "link-shared/@core/api/link/post";
+import { useQuery, useQueryClient } from 'react-query'
+import { PostType } from 'link-shared/@core/types/link/PostTypes'
+import { useRouter } from 'next/router'
+import { useTheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import PostApis from 'link-shared/@core/api/link/post'
 
-const LeftColumn = ({handelCheckImagePath, user, hideAvatar}) => {
-  const {t} = useTranslation()
-  const {data: blogs, isLoading: isLoadingDataBlogs} = useQuery(`blogs`, () => PostApis(t).getPostBlogByPage(0, 5))
+const LeftColumn = ({ handelCheckImagePath, user, hideAvatar }) => {
+  const { t } = useTranslation()
+  const { data: blogs, isLoading: isLoadingDataBlogs } = useQuery(`blogs`, () => PostApis(t).getPostBlogByPage(0, 5))
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
   const theme = useTheme()
@@ -56,7 +56,7 @@ const LeftColumn = ({handelCheckImagePath, user, hideAvatar}) => {
             mb: '0.1rem',
             textDecoration: 'none',
             cursor: 'pointer',
-            '&:hover': {color: theme.palette.primary.main}
+            '&:hover': { color: theme.palette.primary.main }
           }}
           key={index}
           onClick={() => getBlogDetail(blog)}
@@ -71,13 +71,13 @@ const LeftColumn = ({handelCheckImagePath, user, hideAvatar}) => {
     <>
       {!hideAvatar && (
         <Card>
-          <CardMedia sx={{height: '75px', backgroundColor: 'rgb(128,113,144, 0.24)'}} image=''/>
-          <CardContent sx={{pt: 0, mt: -10}}>
+          <CardMedia sx={{ height: '75px', backgroundColor: 'rgb(128,113,144, 0.24)' }} image='' />
+          <CardContent sx={{ pt: 0, mt: -10 }}>
             <Avatar
               src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(user?.code)}`}
-              sx={{height: 80, width: 80, margin: 'auto'}}
+              sx={{ height: 80, width: 80, margin: 'auto' }}
             />
-            <Box sx={{textAlign: 'center', mt: 2}}>
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
               <Typography variant={'subtitle1'}>
                 <strong>{user?.fullName}</strong>
               </Typography>
@@ -87,17 +87,17 @@ const LeftColumn = ({handelCheckImagePath, user, hideAvatar}) => {
         </Card>
       )}
 
-      <Card sx={{pt: 0, mt: 4}}>
-        <CardHeader title={t('Blogs')} sx={{pb: '0.5rem'}}/>
-        <CardContent sx={{pb: 0}}>{!isLoadingDataBlogs && renderBlog()}</CardContent>
+      <Card sx={{ pt: 0, mt: 4 }}>
+        <CardHeader title={t('Blogs')} sx={{ pb: '0.5rem' }} />
+        <CardContent sx={{ pb: 0 }}>{!isLoadingDataBlogs && renderBlog()}</CardContent>
 
-        <Button onClick={getBlogsList} size={'small'} sx={{float: 'right'}} className={'transformIcon'}>
+        <Button onClick={getBlogsList} size={'small'} sx={{ float: 'right' }} className={'transformIcon'}>
           <Typography variant={'subtitle1'}>
             {loading ? (
               t('Loading')
             ) : (
               <Tooltip title={t('See_more')}>
-                <Icon icon='material-symbols:arrows-more-down-rounded'/>
+                <Icon icon='material-symbols:arrows-more-down-rounded' />
               </Tooltip>
             )}
           </Typography>

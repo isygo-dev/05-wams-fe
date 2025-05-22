@@ -1,5 +1,5 @@
 // ** React Imports
-import {Fragment} from 'react'
+import { Fragment } from 'react'
 
 // ** MUI Imports
 import List from '@mui/material/List'
@@ -13,47 +13,47 @@ import ListItemButton from '@mui/material/ListItemButton'
 import Icon from 'template-shared/@core/components/icon'
 
 const ListSimple = () => {
-    return (
-        <Fragment>
-            <List component='nav' aria-label='main mailbox'>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <Icon icon='tabler:mail' fontSize={20}/>
-                        </ListItemIcon>
-                        <ListItemText primary='Inbox'/>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <Icon icon='tabler:copy' fontSize={20}/>
-                        </ListItemIcon>
-                        <ListItemText primary='Draft'/>
-                    </ListItemButton>
-                </ListItem>
-            </List>
-            <Divider sx={{m: '0 !important'}}/>
-            <List component='nav' aria-label='secondary mailbox'>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <Icon icon='tabler:clock' fontSize={20}/>
-                        </ListItemIcon>
-                        <ListItemText primary='Snoozed'/>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component='a' href='#simple-list'>
-                        <ListItemIcon>
-                            <Icon icon='tabler:alert-circle' fontSize={20}/>
-                        </ListItemIcon>
-                        <ListItemText primary='Spam'/>
-                    </ListItemButton>
-                </ListItem>
-            </List>
-        </Fragment>
-    )
+  return (
+    <Fragment>
+      <List component='nav' aria-label='main mailbox'>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <Icon icon='tabler:mail' fontSize={20} />
+            </ListItemIcon>
+            <ListItemText primary='Inbox' />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <Icon icon='tabler:copy' fontSize={20} />
+            </ListItemIcon>
+            <ListItemText primary='Draft' />
+          </ListItemButton>
+        </ListItem>
+      </List>
+      <Divider sx={{ m: '0 !important' }} />
+      <List component='nav' aria-label='secondary mailbox'>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <Icon icon='tabler:clock' fontSize={20} />
+            </ListItemIcon>
+            <ListItemText primary='Snoozed' />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component='a' href='#simple-list'>
+            <ListItemIcon>
+              <Icon icon='tabler:alert-circle' fontSize={20} />
+            </ListItemIcon>
+            <ListItemText primary='Spam' />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Fragment>
+  )
 }
 
 export default ListSimple

@@ -1,6 +1,6 @@
-import {CategoryType} from "./category";
-import {AuthorType} from "./author";
-import {tagType} from "./tags";
+import { CategoryType } from './category'
+import { AuthorType } from './author'
+import { tagType } from './tags'
 
 export interface CategoryTemplateType {
   id?: number
@@ -14,7 +14,7 @@ export interface CategoryTemplateType {
   editionDate: Date
   source: string
   version: string
-  isFavorite: boolean;
+  isFavorite: boolean
 
   typeTs: IEnumDocTempStatus
   typeTv: IEnumTemplateVisibility
@@ -33,7 +33,6 @@ export interface CategoryTemplateType {
   createdBy: string
   updateDate: string
   updatedBy: string
-
 }
 
 export enum IEnumTemplateLanguage {
@@ -42,12 +41,12 @@ export enum IEnumTemplateLanguage {
   AR = 'AR',
   DE = 'DE',
   SPA = 'SPA',
-  ITA = 'ITA',
+  ITA = 'ITA'
 }
 
 export enum IEnumTemplateVisibility {
   PB = 'PB',
-  PRV = 'PRV',
+  PRV = 'PRV'
 }
 
 export enum IEnumDocTempStatus {

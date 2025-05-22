@@ -1,15 +1,15 @@
 // ** React Imports
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 // ** Template Imports
 import BlankLayout from 'template-shared/@core/layouts/BlankLayout'
 import DomainsPage from 'template-shared/views/pages/auth/email-accounts-page/UserEmailAccounts'
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import {styled} from "@mui/material/styles";
-import CardContent, {CardContentProps} from "@mui/material/CardContent";
+import Typography from '@mui/material/Typography'
+import Card from '@mui/material/Card'
+import { styled } from '@mui/material/styles'
+import CardContent, { CardContentProps } from '@mui/material/CardContent'
 
-const StyledCardContent = styled(CardContent)<CardContentProps>(({theme}) => ({
+const StyledCardContent = styled(CardContent)<CardContentProps>(({ theme }) => ({
   paddingTop: `${theme.spacing(10)} !important`,
   paddingBottom: `${theme.spacing(20)} !important`,
   [theme.breakpoints.up('lg')]: {
@@ -26,7 +26,7 @@ const StyledCardContent = styled(CardContent)<CardContentProps>(({theme}) => ({
 const Domains = () => {
   return (
     <>
-      <Card sx={{background: '#F7FAFC', boxShadow: 'none'}}>
+      <Card sx={{ background: '#F7FAFC', boxShadow: 'none' }}>
         <StyledCardContent>
           <Typography
             sx={{
@@ -40,10 +40,11 @@ const Domains = () => {
           >
             Select Your Account
           </Typography>
-          <DomainsPage/>
+          <DomainsPage />
         </StyledCardContent>
       </Card>
-    </>)
+    </>
+  )
 }
 
 // ** Layout Assignment
@@ -53,4 +54,4 @@ Domains.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 Domains.guestGuard = true
 
 // ** Export Component
-export default Domains;
+export default Domains

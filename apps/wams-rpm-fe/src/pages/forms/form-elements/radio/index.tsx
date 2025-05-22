@@ -29,11 +29,11 @@ const Radios = () => {
             jsx: source.RadioGroupJSXCode
           }}
         >
-          <Typography sx={{mb: 2}}>
+          <Typography sx={{ mb: 2 }}>
             <code>RadioGroup</code> is a helpful wrapper used to group <code>Radio</code> components that provides an
             easier API, and proper keyboard accessibility to the group.
           </Typography>
-          <RadioGroup/>
+          <RadioGroup />
         </CardSnippet>
       </Grid>
       <Grid item xs={12}>
@@ -44,12 +44,12 @@ const Radios = () => {
             jsx: source.RadioControlledUncontrolledJSXCode
           }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             Manage <code>value</code> prop with <code>RadioGroup</code> component with the help of a state for
             controlled radio and <code>defaultValue</code> prop with <code>RadioGroup</code> component for uncontrolled
             radio.
           </Typography>
-          <RadioControlledUncontrolled/>
+          <RadioControlledUncontrolled />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -60,10 +60,10 @@ const Radios = () => {
             jsx: source.RadioStandaloneJSXCode
           }}
         >
-          <Typography sx={{mb: 2}}>
+          <Typography sx={{ mb: 2 }}>
             <code>Radio</code> can also be used standalone, without the RadioGroup wrapper.
           </Typography>
-          <RadioStandalone/>
+          <RadioStandalone />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -74,10 +74,10 @@ const Radios = () => {
             jsx: source.RadioColorJSXCode
           }}
         >
-          <Typography sx={{mb: 2}}>
+          <Typography sx={{ mb: 2 }}>
             Use <code>color</code> prop with <code>Radio</code> component for different colored radio button.
           </Typography>
-          <RadioColor/>
+          <RadioColor />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -88,10 +88,10 @@ const Radios = () => {
             jsx: source.RadioSizesJSXCode
           }}
         >
-          <Typography sx={{mb: 2}}>
+          <Typography sx={{ mb: 2 }}>
             Use <code>color</code> prop with <code>Radio</code> component for different colored radio button.
           </Typography>
-          <RadioSizes/>
+          <RadioSizes />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -102,10 +102,10 @@ const Radios = () => {
             jsx: source.RadioCustomizedJSXCode
           }}
         >
-          <Typography sx={{mb: 2}}>
+          <Typography sx={{ mb: 2 }}>
             Use <code>styled</code> hook to customize your radio button.
           </Typography>
-          <RadioCustomized/>
+          <RadioCustomized />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -116,11 +116,11 @@ const Radios = () => {
             jsx: source.RadioLabelPlacementJSXCode
           }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             You can change the placement of the label with <code>FormControlLabel</code> component's{' '}
             <code>labelPlacement</code> prop.
           </Typography>
-          <RadioLabelPlacement/>
+          <RadioLabelPlacement />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -131,11 +131,11 @@ const Radios = () => {
             jsx: source.RadioShowErrorJSXCode
           }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             In general, radio buttons should have a value selected by default. If this is not the case, you can display
             an error if no value is selected when the form is submitted.
           </Typography>
-          <RadioShowError/>
+          <RadioShowError />
         </CardSnippet>
       </Grid>
     </Grid>

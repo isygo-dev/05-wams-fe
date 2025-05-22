@@ -1,22 +1,22 @@
 // ** Next Import
 // ** MUI Components
 import Avatar from '@mui/material/Avatar'
-import React, {useState} from 'react'
-import {useTranslation} from 'react-i18next'
-import {CustomerDetailType} from "ims-shared/@core/types/ims/customerTypes";
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { CustomerDetailType } from 'ims-shared/@core/types/ims/customerTypes'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
-import {AccountDto} from "ims-shared/@core/types/ims/accountTypes";
-import {Autocomplete} from '@mui/lab'
+import { AccountDto } from 'ims-shared/@core/types/ims/accountTypes'
+import { Autocomplete } from '@mui/lab'
 import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 import ListItemText from '@mui/material/ListItemText'
 import TextField from '@mui/material/TextField'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import CustomerApis from 'ims-shared/@core/api/ims/customer'
 
 interface UsersModalProps {
@@ -27,11 +27,11 @@ interface UsersModalProps {
 }
 
 const LinkToAccountModal = (props: UsersModalProps) => {
-  const {t} = useTranslation()
-  const {open, accounts, selectedCustomer, handleClose} = props
+  const { t } = useTranslation()
+  const { open, accounts, selectedCustomer, handleClose } = props
   const queryClient = useQueryClient()
   const [selectAccount, setSelectAccount] = useState<AccountDto>()
-  const {data: customerData, isLoading: isLoadingDataCustomer} = useQuery(
+  const { data: customerData, isLoading: isLoadingDataCustomer } = useQuery(
     `customerData`,
     () => selectedCustomer.id && CustomerApis(t).getCustomerDetails(selectedCustomer.id)
   )
@@ -82,12 +82,16 @@ const LinkToAccountModal = (props: UsersModalProps) => {
             <ListItem {...props} key={option.fullName}>
               <ListItemAvatar>
                 <Avatar
-                  src={option.imagePath !== 'defaultPhoto.jpg' ? `${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${option.id}` : ''}
+                  src={
+                    option.imagePath !== 'defaultPhoto.jpg'
+                      ? `${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${option.id}`
+                      : ''
+                  }
                   alt={option.fullName}
-                  sx={{height: 28, width: 28}}
+                  sx={{ height: 28, width: 28 }}
                 />
               </ListItemAvatar>
-              <ListItemText primary={option.fullName + ' ' + option.code}/>
+              <ListItemText primary={option.fullName + ' ' + option.code} />
             </ListItem>
           )}
           renderInput={params => (

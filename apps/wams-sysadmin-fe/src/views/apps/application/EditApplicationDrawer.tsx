@@ -1,36 +1,36 @@
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import Icon from 'template-shared/@core/components/icon'
-import {useTranslation} from 'react-i18next'
-import {URL_PATTERN} from 'template-shared/@core/types/helper/patternTypes'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
-import {Avatar, InputLabel, MenuItem, Select} from '@mui/material'
-import {ApplicationType} from "ims-shared/@core/types/ims/applicationTypes";
-import {checkPermission} from 'template-shared/@core/api/helper/permission'
+import { useTranslation } from 'react-i18next'
+import { URL_PATTERN } from 'template-shared/@core/types/helper/patternTypes'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { Avatar, InputLabel, MenuItem, Select } from '@mui/material'
+import { ApplicationType } from 'ims-shared/@core/types/ims/applicationTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
 import AnnexApis from 'ims-shared/@core/api/ims/annex'
-import Tooltip from "@mui/material/Tooltip";
-import ApplicationApis from "ims-shared/@core/api/ims/application";
-import DomainApis from "ims-shared/@core/api/ims/domain";
-import {IEnumAnnex} from "ims-shared/@core/types/ims/annexTypes";
-import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import Tooltip from '@mui/material/Tooltip'
+import ApplicationApis from 'ims-shared/@core/api/ims/application'
+import DomainApis from 'ims-shared/@core/api/ims/domain'
+import { IEnumAnnex } from 'ims-shared/@core/types/ims/annexTypes'
+import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -53,9 +53,9 @@ interface SidebarAddApplicationType {
 }
 
 const SidebarAddApplication = (props: SidebarAddApplicationType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const {open, toggle, data, selectedFile, setSelectedFile} = props
+  const { open, toggle, data, selectedFile, setSelectedFile } = props
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     setSelectedFile(file)
@@ -94,17 +94,17 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
     }
   })
 
-  let defaultValues: ApplicationType = {...data}
+  let defaultValues: ApplicationType = { ...data }
 
-  const {data: domainList, isLoading} = useQuery('domains', DomainApis(t).getDomains)
-  const {data: categoryByCodeAnnex, isLoading: isLoadingCategoryByCodeAnnex} = useQuery('categoryByCodeAnnex', () =>
+  const { data: domainList, isLoading } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: categoryByCodeAnnex, isLoading: isLoadingCategoryByCodeAnnex } = useQuery('categoryByCodeAnnex', () =>
     AnnexApis(t).getAnnexByTableCode(IEnumAnnex.APP_CATEGORY)
   )
   const {
     reset,
     control,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -133,31 +133,31 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
       anchor='right'
       variant='temporary'
       onClose={handleClose}
-      ModalProps={{keepMounted: true}}
-      sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+      ModalProps={{ keepMounted: true }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
         <Typography variant='h6'>{t('Application.Edit_Application')}</Typography>
         <IconButton
           size='small'
           onClick={handleClose}
-          sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+          sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
         >
-          <Icon icon='tabler:x' fontSize='1.125rem'/>
+          <Icon icon='tabler:x' fontSize='1.125rem' />
         </IconButton>
       </Header>
-      <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+      <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form
           onSubmit={handleSubmit(row => {
             onSubmit(row)
           })}
         >
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
             <Controller
               name='domain'
               control={control}
-              render={({field: {value, onChange}}) => (
+              render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
                     checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
@@ -182,12 +182,12 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='title'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -197,14 +197,14 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
                 />
               )}
             />
-            {errors.title && <FormHelperText sx={{color: 'error.main'}}>{errors.title.message}</FormHelperText>}
+            {errors.title && <FormHelperText sx={{ color: 'error.main' }}>{errors.title.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='name'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -214,15 +214,15 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
                 />
               )}
             />
-            {errors.name && <FormHelperText sx={{color: 'error.main'}}>{errors.name.message}</FormHelperText>}
+            {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel id='demo-simple-select-helper-label'>{t('Category')}</InputLabel>
             <Controller
               name='category'
               control={control}
-              render={({field: {value, onChange}}) => (
-                <Tooltip title="ANNEX / APPCAT">
+              render={({ field: { value, onChange } }) => (
+                <Tooltip title='ANNEX / APPCAT'>
                   <Select
                     size='small'
                     label={t('Category')}
@@ -243,19 +243,19 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='description'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
                   multiline
                   rows={3}
                   id='form-props-read-only-input'
-                  InputProps={{readOnly: false}}
+                  InputProps={{ readOnly: false }}
                   label={t('Description')}
                   onChange={onChange}
                   error={Boolean(errors.description)}
@@ -263,15 +263,15 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
               )}
             />
             {errors.description && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.description.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.description.message}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='url'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -281,39 +281,39 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
                 />
               )}
             />
-            {errors.url && <FormHelperText sx={{color: 'error.main'}}>{errors.url.message}</FormHelperText>}
+            {errors.url && <FormHelperText sx={{ color: 'error.main' }}>{errors.url.message}</FormHelperText>}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='order'
               control={control}
-              render={({field: {value, onChange}}) => (
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
-                  InputProps={{readOnly: false}}
+                  InputProps={{ readOnly: false }}
                   label={t('Order')}
                   onChange={onChange}
                   error={Boolean(errors.order)}
                 />
               )}
             />
-            {errors.order && <FormHelperText sx={{color: 'error.main'}}>{errors.order.message}</FormHelperText>}
+            {errors.order && <FormHelperText sx={{ color: 'error.main' }}>{errors.order.message}</FormHelperText>}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='imagePath'
               control={control}
-              rules={{required: true}}
+              rules={{ required: true }}
               render={() => (
-                <label style={{display: 'flex'}}>
+                <label style={{ display: 'flex' }}>
                   <input
                     type='file'
                     name='image'
                     accept='image/jpeg, image/png'
-                    style={{display: 'none'}}
+                    style={{ display: 'none' }}
                     onChange={handleFileChange}
                   />
                   <Avatar
@@ -322,15 +322,15 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
                         ? URL.createObjectURL(selectedFile)
                         : `${imsApiUrls.apiUrl_IMS_Application_ImageDownload_EndPoint}/${data?.id}`
                     }
-                    sx={{cursor: 'pointer', marginRight: 2}}
+                    sx={{ cursor: 'pointer', marginRight: 2 }}
                   ></Avatar>
 
                   <Button
                     color='primary'
                     variant='outlined'
                     component='span'
-                    sx={{width: '100%'}}
-                    startIcon={<Icon icon='tabler:upload'/>}
+                    sx={{ width: '100%' }}
+                    startIcon={<Icon icon='tabler:upload' />}
                   >
                     {t('Photo')}
                   </Button>
@@ -338,11 +338,11 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
               )}
             />
             {errors.imagePath && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.imagePath.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.imagePath.message}</FormHelperText>
             )}
           </FormControl>
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

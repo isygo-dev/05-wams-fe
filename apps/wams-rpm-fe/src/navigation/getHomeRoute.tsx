@@ -5,5 +5,4 @@ const getHomeRoute = () => {
   return '/apps/resume/'
 }
 
-
 export default getHomeRoute

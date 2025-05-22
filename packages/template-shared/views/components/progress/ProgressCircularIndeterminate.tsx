@@ -2,7 +2,7 @@
 import CircularProgress from '@mui/material/CircularProgress'
 
 const ProgressCircularIndeterminate = () => {
-    return <CircularProgress/>
+  return <CircularProgress />
 }
 
 export default ProgressCircularIndeterminate

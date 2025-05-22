@@ -1,5 +1,5 @@
 // ** React Imports
-import {ReactNode} from 'react'
+import { ReactNode } from 'react'
 import BlankLayout from 'template-shared/@core/layouts/BlankLayout'
 import ResetPasswordView from 'template-shared/views/pages/auth/reset-password/ResetPasswordView'
 

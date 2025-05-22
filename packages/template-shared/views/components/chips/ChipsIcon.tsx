@@ -5,17 +5,17 @@ import Chip from '@mui/material/Chip'
 import Icon from 'template-shared/@core/components/icon'
 
 const ChipsIcon = () => {
-    return (
-        <div className='demo-space-x'>
-            <Chip label='Previous' icon={<Icon icon='tabler:circle-chevron-left' fontSize={20}/>}/>
-            <Chip
-                label='Next'
-                color='primary'
-                variant='outlined'
-                icon={<Icon icon='tabler:circle-chevron-right' fontSize={20}/>}
-            />
-        </div>
-    )
+  return (
+    <div className='demo-space-x'>
+      <Chip label='Previous' icon={<Icon icon='tabler:circle-chevron-left' fontSize={20} />} />
+      <Chip
+        label='Next'
+        color='primary'
+        variant='outlined'
+        icon={<Icon icon='tabler:circle-chevron-right' fontSize={20} />}
+      />
+    </div>
+  )
 }
 
 export default ChipsIcon

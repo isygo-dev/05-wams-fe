@@ -2,24 +2,24 @@
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import Icon from 'template-shared/@core/components/icon'
-import {MailSenderConfigData, MailSenderConfigTypes} from 'mms-shared/@core/types/mms/mailSenderConfigTypes'
-import {useTranslation} from 'react-i18next'
+import { MailSenderConfigData, MailSenderConfigTypes } from 'mms-shared/@core/types/mms/mailSenderConfigTypes'
+import { useTranslation } from 'react-i18next'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import {useMutation, useQueryClient} from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import React from 'react'
-import MailSenderConfigApis from "mms-shared/@core/api/mms/mail-sender-config";
+import MailSenderConfigApis from 'mms-shared/@core/api/mms/mail-sender-config'
 
 interface SidebarEditConfigType {
   open: boolean
@@ -27,7 +27,7 @@ interface SidebarEditConfigType {
   dataConfig: MailSenderConfigTypes | undefined
 }
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -48,9 +48,9 @@ const schema = yup.object().shape({
 })
 
 const SidebarEditConfig = (props: SidebarEditConfigType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const {open, toggle} = props
+  const { open, toggle } = props
   let defaultValues: MailSenderConfigTypes = {
     id: 0,
     domain: '',
@@ -85,7 +85,7 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
     reset,
     control,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -125,27 +125,27 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
       anchor='right'
       variant='temporary'
       onClose={handleClose}
-      ModalProps={{keepMounted: true}}
-      sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+      ModalProps={{ keepMounted: true }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
         <Typography variant='h6'>{t('Edit  Config')}</Typography>
         <IconButton
           size='small'
           onClick={handleClose}
-          sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+          sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
         >
-          <Icon icon='tabler:x' fontSize='1.125rem'/>
+          <Icon icon='tabler:x' fontSize='1.125rem' />
         </IconButton>
       </Header>
-      <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+      <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='domain'
               control={control}
-              rules={{required: true}}
-              render={({field}) => (
+              rules={{ required: true }}
+              render={({ field }) => (
                 <TextField
                   label={t('Domain.Domain')}
                   fullWidth
@@ -157,12 +157,12 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
               )}
             />
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='host'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -173,14 +173,14 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
                 />
               )}
             />
-            {errors.host && <FormHelperText sx={{color: 'error.main'}}>{errors.host.message}</FormHelperText>}
+            {errors.host && <FormHelperText sx={{ color: 'error.main' }}>{errors.host.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='username'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -191,14 +191,14 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
                 />
               )}
             />
-            {errors.username && <FormHelperText sx={{color: 'error.main'}}>{errors.username.message}</FormHelperText>}
+            {errors.username && <FormHelperText sx={{ color: 'error.main' }}>{errors.username.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='password'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -209,14 +209,14 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
                 />
               )}
             />
-            {errors.password && <FormHelperText sx={{color: 'error.main'}}>{errors.password.message}</FormHelperText>}
+            {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='port'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -233,14 +233,14 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
                 />
               )}
             />
-            {errors.port && <FormHelperText sx={{color: 'error.main'}}>{errors.port.message}</FormHelperText>}
+            {errors.port && <FormHelperText sx={{ color: 'error.main' }}>{errors.port.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='smtpAuth'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -251,44 +251,44 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
                 />
               )}
             />
-            {errors.smtpAuth && <FormHelperText sx={{color: 'error.main'}}>{errors.smtpAuth.message}</FormHelperText>}
+            {errors.smtpAuth && <FormHelperText sx={{ color: 'error.main' }}>{errors.smtpAuth.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='smtpStarttlsEnable'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <FormControlLabel
-                  control={<Switch checked={value} onChange={onChange}/>}
+                  control={<Switch checked={value} onChange={onChange} />}
                   label={t('Config.smtpStarttlsEnable')}
                 />
               )}
             />
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='smtpStarttlsRequired'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <FormControlLabel
-                  control={<Switch checked={value} onChange={onChange}/>}
+                  control={<Switch checked={value} onChange={onChange} />}
                   label={t('Config.smtpStarttlsRequired')}
                 />
               )}
             />
             {errors.smtpStarttlsRequired && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.smtpStarttlsRequired.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.smtpStarttlsRequired.message}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='transportProtocol'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -300,23 +300,23 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
               )}
             />
             {errors.transportProtocol && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.transportProtocol.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.transportProtocol.message}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='debug'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
-                <FormControlLabel control={<Switch checked={value} onChange={onChange}/>} label={t('Config.debug')}/>
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <FormControlLabel control={<Switch checked={value} onChange={onChange} />} label={t('Config.debug')} />
               )}
             />
-            {errors.debug && <FormHelperText sx={{color: 'error.main'}}>{errors.debug.message}</FormHelperText>}
+            {errors.debug && <FormHelperText sx={{ color: 'error.main' }}>{errors.debug.message}</FormHelperText>}
           </FormControl>
 
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

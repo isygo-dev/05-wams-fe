@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
@@ -7,15 +7,15 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import IconButton from '@mui/material/IconButton'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import Icon from 'template-shared/@core/components/icon'
-import {LeaveStatusContext} from '../../../../pages/apps/leaveStatus/view/[id]'
-import {IEnumStatusType} from 'hrm-shared/@core/types/hrm/leaveStatusType'
-import {useMutation} from 'react-query'
-import VaccationApis from "hrm-shared/@core/api/hrm/leaveStatus/vacation";
+import { LeaveStatusContext } from '../../../../pages/apps/leaveStatus/view/[id]'
+import { IEnumStatusType } from 'hrm-shared/@core/types/hrm/leaveStatusType'
+import { useMutation } from 'react-query'
+import VaccationApis from 'hrm-shared/@core/api/hrm/leaveStatus/vacation'
 
-const TableBasic = ({refetch, onLeaveTakenUpdate}) => {
-  const {t} = useTranslation()
+const TableBasic = ({ refetch, onLeaveTakenUpdate }) => {
+  const { t } = useTranslation()
   const LeaveStatus = useContext(LeaveStatusContext)
   const LeaveData = LeaveStatus.LeaveStatusData
   const mutation = useMutation(VaccationApis(t).updateVacation)
@@ -50,7 +50,7 @@ const TableBasic = ({refetch, onLeaveTakenUpdate}) => {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{minWidth: 650}} aria-label='simple table'>
+      <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
           <TableRow>
             <TableCell>{t('LeaveStatus.StartDate')}</TableCell>
@@ -78,35 +78,35 @@ const TableBasic = ({refetch, onLeaveTakenUpdate}) => {
               <TableCell>{row.status}</TableCell>
               <TableCell>
                 {(row.status === IEnumStatusType.CREATED || row.status === IEnumStatusType.REJECTED) && (
-                  <IconButton size='small' sx={{color: 'text.secondary'}} onClick={() => handleDelete(row.id)}>
-                    <Icon icon='tabler:trash'/>
+                  <IconButton size='small' sx={{ color: 'text.secondary' }} onClick={() => handleDelete(row.id)}>
+                    <Icon icon='tabler:trash' />
                   </IconButton>
                 )}
                 {row.status === IEnumStatusType.CREATED && (
                   <IconButton
                     size='small'
-                    sx={{color: 'text.secondary'}}
+                    sx={{ color: 'text.secondary' }}
                     onClick={() => handleStatusUpdate(row.id, IEnumStatusType.PENDING)}
                   >
-                    <Icon icon='tabler:send'/>
+                    <Icon icon='tabler:send' />
                   </IconButton>
                 )}
                 {(row.status === IEnumStatusType.PENDING || row.status === IEnumStatusType.REJECTED) && (
                   <IconButton
                     size='small'
-                    sx={{color: 'text.secondary'}}
+                    sx={{ color: 'text.secondary' }}
                     onClick={() => handleStatusUpdate(row.id, IEnumStatusType.ACCEPTED)}
                   >
-                    <Icon icon='tabler:check'/>
+                    <Icon icon='tabler:check' />
                   </IconButton>
                 )}
                 {(row.status === IEnumStatusType.ACCEPTED || row.status === IEnumStatusType.ACCEPTED) && (
                   <IconButton
                     size='small'
-                    sx={{color: 'text.secondary'}}
+                    sx={{ color: 'text.secondary' }}
                     onClick={() => handleStatusUpdate(row.id, IEnumStatusType.REJECTED)}
                   >
-                    <Icon icon='tabler:x'/>
+                    <Icon icon='tabler:x' />
                   </IconButton>
                 )}
               </TableCell>

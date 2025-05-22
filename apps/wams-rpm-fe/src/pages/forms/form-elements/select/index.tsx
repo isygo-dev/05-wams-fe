@@ -34,7 +34,7 @@ const Selects = () => {
             different variants of select and use <code>MenuItem</code> component as children of <code>Select</code>{' '}
             component.
           </Typography>
-          <SelectVariants/>
+          <SelectVariants />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -49,7 +49,7 @@ const Selects = () => {
             Use <code>native</code> prop with <code>Select</code> component and <code>&lt;option&gt;</code> element
             inside <code>Select</code> component for native select.
           </Typography>
-          <SelectNative/>
+          <SelectNative />
         </CardSnippet>
       </Grid>
       <Grid item xs={12}>
@@ -65,7 +65,7 @@ const Selects = () => {
             <code>autoWidth</code>, <code>required</code> & <code>inputProps</code> props and{' '}
             <code>FormHelperText</code> component for different types of selects.
           </Typography>
-          <SelectProps/>
+          <SelectProps />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -80,7 +80,7 @@ const Selects = () => {
             Manage <code>value</code> prop with the help of a state for controlled <code>Select</code> and use{' '}
             <code>defaultValue</code> prop for uncontrolled <code>Select</code>.
           </Typography>
-          <SelectControlledUncontrolled/>
+          <SelectControlledUncontrolled />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -94,7 +94,7 @@ const Selects = () => {
           <Typography>
             Use <code>styled</code> hook to customize your select.
           </Typography>
-          <SelectCustomized/>
+          <SelectCustomized />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -108,7 +108,7 @@ const Selects = () => {
           <Typography>
             Use <code>multiple</code> prop for multiple selections.
           </Typography>
-          <SelectMultiple/>
+          <SelectMultiple />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -121,7 +121,7 @@ const Selects = () => {
                 jsx: source.SelectWithDialogJSXCode
               }}
             >
-              <SelectWithDialog/>
+              <SelectWithDialog />
             </CardSnippet>
           </Grid>
           <Grid item xs={12}>
@@ -136,7 +136,7 @@ const Selects = () => {
                 Display categories with the <code>ListSubheader</code> component or the native{' '}
                 <code>&lt;optgroup&gt;</code> element.
               </Typography>
-              <SelectGrouping/>
+              <SelectGrouping />
             </CardSnippet>
           </Grid>
         </Grid>

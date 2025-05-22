@@ -1,14 +1,14 @@
 // ** React Imports
-import {ReactNode} from 'react'
+import { ReactNode } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
 
 // ** MUI Components
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 
 // ** Layout Import
 import BlankLayout from 'template-shared/@core/layouts/BlankLayout'
@@ -17,13 +17,13 @@ import BlankLayout from 'template-shared/@core/layouts/BlankLayout'
 import FooterIllustrations from 'template-shared/views/pages/misc/FooterIllustrations'
 
 // ** Styled Components
-const BoxWrapper = styled(Box)<BoxProps>(({theme}) => ({
+const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     width: '90vw'
   }
 }))
 
-const Img = styled('img')(({theme}) => ({
+const Img = styled('img')(({ theme }) => ({
   [theme.breakpoints.down('lg')]: {
     height: 450,
     marginTop: theme.spacing(10)
@@ -39,22 +39,22 @@ const Img = styled('img')(({theme}) => ({
 const Error401 = () => {
   return (
     <Box className='content-center'>
-      <Box sx={{p: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center'}}>
+      <Box sx={{ p: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <BoxWrapper>
-          <Typography variant='h4' sx={{mb: 1.5}}>
+          <Typography variant='h4' sx={{ mb: 1.5 }}>
             You are not authorized!
           </Typography>
-          <Typography sx={{color: 'text.secondary'}}>
+          <Typography sx={{ color: 'text.secondary' }}>
             You do not have permission to view this page using the credentials that you have provided while login.
           </Typography>
-          <Typography sx={{mb: 6, color: 'text.secondary'}}>Please contact your site administrator.</Typography>
+          <Typography sx={{ mb: 6, color: 'text.secondary' }}>Please contact your site administrator.</Typography>
           <Button href='/' component={Link} variant='contained'>
             Back to Home
           </Button>
         </BoxWrapper>
-        <Img height='500' alt='error-illustration' src='/images/pages/401.png'/>
+        <Img height='500' alt='error-illustration' src='/images/pages/401.png' />
       </Box>
-      <FooterIllustrations/>
+      <FooterIllustrations />
     </Box>
   )
 }

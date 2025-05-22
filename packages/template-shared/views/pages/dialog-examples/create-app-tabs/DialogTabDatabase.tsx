@@ -1,5 +1,5 @@
 // ** React Imports
-import {ChangeEvent, useState} from 'react'
+import { ChangeEvent, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -14,80 +14,79 @@ import Icon from 'template-shared/@core/components/icon'
 import CustomAvatar from 'template-shared/@core/components/mui/avatar'
 
 const TabDatabase = () => {
-    const [value, setValue] = useState<string>('firebase')
+  const [value, setValue] = useState<string>('firebase')
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value)
-    }
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value)
+  }
 
-    return (
-        <div>
-            <TextField fullWidth sx={{mb: 4}} label='Database Name' placeholder='vuexy_database'/>
-            <Typography variant='h6' sx={{mb: 4}}>
-                Select Database Engine
-            </Typography>
-            <Box sx={{mb: 8}}>
-                <Box
-                    onClick={() => setValue('firebase')}
-                    sx={{
-                        mb: 6,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                    }}
-                >
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                        <CustomAvatar skin='light' color='error' variant='rounded' sx={{mr: 3, width: 48, height: 48}}>
-                            <Icon icon='tabler:brand-firebase'/>
-                        </CustomAvatar>
-                        <div>
-                            <Typography>Firebase</Typography>
-                            <Typography variant='caption'>Cloud Firestore</Typography>
-                        </div>
-                    </Box>
-                    <Radio value='firebase' onChange={handleChange} checked={value === 'firebase'}/>
-                </Box>
-                <Box
-                    onClick={() => setValue('aws')}
-                    sx={{
-                        mb: 6,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                    }}
-                >
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                        <CustomAvatar skin='light' color='warning' variant='rounded'
-                                      sx={{mr: 3, width: 48, height: 48}}>
-                            <Icon icon='tabler:brand-amazon'/>
-                        </CustomAvatar>
-                        <div>
-                            <Typography>AWS</Typography>
-                            <Typography variant='caption'>Amazon Fast NoSQL Database</Typography>
-                        </div>
-                    </Box>
-                    <Radio value='aws' onChange={handleChange} checked={value === 'aws'}/>
-                </Box>
-                <Box
-                    onClick={() => setValue('sql')}
-                    sx={{cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}
-                >
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                        <CustomAvatar skin='light' color='info' variant='rounded' sx={{mr: 3, width: 48, height: 48}}>
-                            <Icon icon='tabler:database'/>
-                        </CustomAvatar>
-                        <div>
-                            <Typography>MySQL</Typography>
-                            <Typography variant='caption'>Basic MySQL database</Typography>
-                        </div>
-                    </Box>
-                    <Radio value='sql' onChange={handleChange} checked={value === 'sql'}/>
-                </Box>
-            </Box>
-        </div>
-    )
+  return (
+    <div>
+      <TextField fullWidth sx={{ mb: 4 }} label='Database Name' placeholder='vuexy_database' />
+      <Typography variant='h6' sx={{ mb: 4 }}>
+        Select Database Engine
+      </Typography>
+      <Box sx={{ mb: 8 }}>
+        <Box
+          onClick={() => setValue('firebase')}
+          sx={{
+            mb: 6,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CustomAvatar skin='light' color='error' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
+              <Icon icon='tabler:brand-firebase' />
+            </CustomAvatar>
+            <div>
+              <Typography>Firebase</Typography>
+              <Typography variant='caption'>Cloud Firestore</Typography>
+            </div>
+          </Box>
+          <Radio value='firebase' onChange={handleChange} checked={value === 'firebase'} />
+        </Box>
+        <Box
+          onClick={() => setValue('aws')}
+          sx={{
+            mb: 6,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CustomAvatar skin='light' color='warning' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
+              <Icon icon='tabler:brand-amazon' />
+            </CustomAvatar>
+            <div>
+              <Typography>AWS</Typography>
+              <Typography variant='caption'>Amazon Fast NoSQL Database</Typography>
+            </div>
+          </Box>
+          <Radio value='aws' onChange={handleChange} checked={value === 'aws'} />
+        </Box>
+        <Box
+          onClick={() => setValue('sql')}
+          sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CustomAvatar skin='light' color='info' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
+              <Icon icon='tabler:database' />
+            </CustomAvatar>
+            <div>
+              <Typography>MySQL</Typography>
+              <Typography variant='caption'>Basic MySQL database</Typography>
+            </div>
+          </Box>
+          <Radio value='sql' onChange={handleChange} checked={value === 'sql'} />
+        </Box>
+      </Box>
+    </div>
+  )
 }
 
 export default TabDatabase

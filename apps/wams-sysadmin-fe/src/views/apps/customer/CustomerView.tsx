@@ -1,51 +1,51 @@
-import React, {useState} from 'react'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import React, { useState } from 'react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import {useTranslation} from 'react-i18next'
-import {CustomerDetailType} from "ims-shared/@core/types/ims/customerTypes";
+import { useTranslation } from 'react-i18next'
+import { CustomerDetailType } from 'ims-shared/@core/types/ims/customerTypes'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import {FormHelperText, IconButton} from '@mui/material'
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import { FormHelperText, IconButton } from '@mui/material'
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 import Icon from 'template-shared/@core/components/icon'
 import CropperCommon from 'template-shared/@core/components/cropper'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import CardHeader from '@mui/material/CardHeader'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 import CommonAddress from 'template-shared/@core/components/common-address/CommonAddress'
 import Button from '@mui/material/Button'
-import {AddressTypes} from 'ims-shared/@core/types/ims/addressTypes'
+import { AddressTypes } from 'ims-shared/@core/types/ims/addressTypes'
 import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import InputAdornment from '@mui/material/InputAdornment'
 import Tooltip from '@mui/material/Tooltip'
 import LinkToAccountModal from './LinkToAccountModal'
-import {checkPermission} from 'template-shared/@core/api/helper/permission'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
 import PictureCard from 'template-shared/@core/components/pictureCard'
 import MuiPhoneNumber from 'material-ui-phone-number'
 import EmailInputMask from 'template-shared/views/forms/form-elements/input-mask/EmailInputMask'
-import AccountApis from "ims-shared/@core/api/ims/account";
-import CustomerApis from "ims-shared/@core/api/ims/customer";
-import {AdminStatus} from "ims-shared/@core/types/ims/accountTypes";
-import {RequestStatus} from "template-shared/@core/types/helper/userTypes";
+import AccountApis from 'ims-shared/@core/api/ims/account'
+import CustomerApis from 'ims-shared/@core/api/ims/customer'
+import { AdminStatus } from 'ims-shared/@core/types/ims/accountTypes'
+import { RequestStatus } from 'template-shared/@core/types/helper/userTypes'
 
 type propsType = {
   customerData: CustomerDetailType
 }
 
 const CustomerView = (props: propsType) => {
-  const {customerData} = props
+  const { customerData } = props
   const queryClient = useQueryClient()
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const [photoFile, setPhotoFile] = useState<File>()
   const [updateImage, setUpdateImage] = useState<boolean>(false)
   const initialAdress = {
@@ -73,7 +73,7 @@ const CustomerView = (props: propsType) => {
     control,
     handleSubmit,
     setValue,
-    formState: {errors}
+    formState: { errors }
   } = useForm<CustomerDetailType>({
     defaultValues: customerData, // Start with an empty object
     mode: 'onChange',
@@ -85,7 +85,7 @@ const CustomerView = (props: propsType) => {
   }
 
   const onSaveImage = (newImage: Blob) => {
-    updatePictureMutation.mutate({id: customerData.id, file: newImage})
+    updatePictureMutation.mutate({ id: customerData.id, file: newImage })
     setPhotoFile(newImage as File)
   }
 
@@ -127,7 +127,7 @@ const CustomerView = (props: propsType) => {
 
   const handleReset = () => {
     if (customerData) {
-      setEditedAddress({...customerData.address})
+      setEditedAddress({ ...customerData.address })
       reset()
     }
   }
@@ -135,8 +135,8 @@ const CustomerView = (props: propsType) => {
   const {
     control: controlCheck,
     handleSubmit: handleSubmitCheck,
-    formState: {errors: errorsCheck}
-  } = useForm({defaultValues: {checkbox: false}})
+    formState: { errors: errorsCheck }
+  } = useForm({ defaultValues: { checkbox: false } })
 
   const onSubmitCheck = () => {
     const data: RequestStatus = {
@@ -149,7 +149,7 @@ const CustomerView = (props: propsType) => {
   }
 
   const [linkedUser, setLinkUser] = useState<boolean>(false)
-  const {data: accounts, isLoading: isLoadingAccounts} = useQuery(`accounts`, () => AccountApis(t).getAccounts())
+  const { data: accounts, isLoading: isLoadingAccounts } = useQuery(`accounts`, () => AccountApis(t).getAccounts())
   const handleClose = (accountCodeDta: string) => {
     console.log('accountCodeDta', accountCodeDta)
     if (accountCodeDta !== null) {
@@ -172,7 +172,7 @@ const CustomerView = (props: propsType) => {
             />
           </Grid>
           <Grid item xs={12} sm={6} md={10}>
-            <Card sx={{height: '100%'}}>
+            <Card sx={{ height: '100%' }}>
               <CardContent className='container'></CardContent>
             </Card>
           </Grid>
@@ -180,35 +180,35 @@ const CustomerView = (props: propsType) => {
       </Grid>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title={t('Customer Details')}/>
+          <CardHeader title={t('Customer Details')} />
           <form onSubmit={handleSubmit(onSubmit)}>
-            <CardContent style={{padding: '5px !important'}}>
+            <CardContent style={{ padding: '5px !important' }}>
               <Grid container item md={12}>
                 <Grid item md={6}>
-                  <CardHeader title={t('Personal Information ')}/>
+                  <CardHeader title={t('Personal Information ')} />
                 </Grid>
               </Grid>
 
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth sx={{mb: 4}}>
+                  <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
                       name='domain'
                       control={control}
-                      rules={{required: true}}
-                      render={({field: {value}}) => (
-                        <TextField disabled size='small' value={value} label={t('Domain.Domain')}/>
+                      rules={{ required: true }}
+                      render={({ field: { value } }) => (
+                        <TextField disabled size='small' value={value} label={t('Domain.Domain')} />
                       )}
                     />
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth sx={{mb: 4}}>
+                  <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
                       name='name'
                       control={control}
-                      rules={{required: true}}
-                      render={({field: {value, onChange}}) => (
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange } }) => (
                         <TextField
                           size='small'
                           value={value}
@@ -224,18 +224,16 @@ const CustomerView = (props: propsType) => {
                         />
                       )}
                     />
-                    {errors.name && (
-                      <FormHelperText sx={{color: 'error.main'}}>{errors.name.message}</FormHelperText>
-                    )}
+                    {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth sx={{mb: 4}}>
+                  <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
                       name='email'
                       control={control}
-                      rules={{required: true}}
-                      render={({field: {value, onChange}}) => (
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange } }) => (
                         <EmailInputMask
                           value={value}
                           onChange={
@@ -250,18 +248,18 @@ const CustomerView = (props: propsType) => {
                       )}
                     />
                     {errors.email && (
-                      <FormHelperText sx={{color: 'error.main'}}>{errors.email.message}</FormHelperText>
+                      <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>
                     )}
                   </FormControl>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth sx={{mb: 4}}>
+                  <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
                       name='phoneNumber'
                       control={control}
-                      rules={{required: true}}
-                      render={({field: {value}}) => (
+                      rules={{ required: true }}
+                      render={({ field: { value } }) => (
                         <MuiPhoneNumber
                           variant='outlined'
                           size='small'
@@ -286,17 +284,17 @@ const CustomerView = (props: propsType) => {
                       )}
                     />
                     {errors.phoneNumber && (
-                      <FormHelperText sx={{color: 'error.main'}}>{errors.phoneNumber.message}</FormHelperText>
+                      <FormHelperText sx={{ color: 'error.main' }}>{errors.phoneNumber.message}</FormHelperText>
                     )}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth sx={{mb: 4}}>
+                  <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
                       name='url'
                       control={control}
-                      rules={{required: true}}
-                      render={({field: {value, onChange}}) => (
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange } }) => (
                         <TextField
                           size='small'
                           value={value}
@@ -312,18 +310,16 @@ const CustomerView = (props: propsType) => {
                         />
                       )}
                     />
-                    {errors.url && (
-                      <FormHelperText sx={{color: 'error.main'}}>{errors.url.message}</FormHelperText>
-                    )}
+                    {errors.url && <FormHelperText sx={{ color: 'error.main' }}>{errors.url.message}</FormHelperText>}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth sx={{mb: 4}}>
+                  <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
                       name='accountCode'
                       control={control}
-                      rules={{required: true}}
-                      render={({field: {value, onChange}}) => (
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange } }) => (
                         <>
                           <TextField
                             size='small'
@@ -337,7 +333,7 @@ const CustomerView = (props: propsType) => {
                                   <Tooltip title={t('Customer.LinkedUser')}>
                                     <IconButton
                                       size='small'
-                                      sx={{color: 'text.secondary'}}
+                                      sx={{ color: 'text.secondary' }}
                                       onClick={() =>
                                         checkPermission(
                                           PermissionApplication.IMS,
@@ -346,7 +342,7 @@ const CustomerView = (props: propsType) => {
                                         ) && setLinkUser(true)
                                       }
                                     >
-                                      <Icon icon='tabler:link-plus'/>
+                                      <Icon icon='tabler:link-plus' />
                                     </IconButton>
                                   </Tooltip>
                                 </InputAdornment>
@@ -359,17 +355,17 @@ const CustomerView = (props: propsType) => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={12}>
-                  <FormControl fullWidth sx={{mb: 4}}>
+                  <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
                       name='description'
                       control={control}
-                      render={({field: {value, onChange}}) => (
+                      render={({ field: { value, onChange } }) => (
                         <TextField
                           size='small'
                           value={value}
                           multiline
                           rows={3}
-                          InputProps={{readOnly: false}}
+                          InputProps={{ readOnly: false }}
                           label={t('Description')}
                           onChange={
                             checkPermission(
@@ -384,7 +380,7 @@ const CustomerView = (props: propsType) => {
                     />
                   </FormControl>
                 </Grid>
-                <CardHeader title={t('Address.Address')} sx={{paddingBottom: '0px !important'}}/>
+                <CardHeader title={t('Address.Address')} sx={{ paddingBottom: '0px !important' }} />
 
                 <CommonAddress
                   editedAddress={editedAddress}
@@ -395,21 +391,13 @@ const CustomerView = (props: propsType) => {
                 />
               </Grid>
 
-              <Grid item xs={12} sx={{pt: theme => `${theme.spacing(6.5)} !important`}}>
-                {checkPermission(
-                  PermissionApplication.IMS,
-                  PermissionPage.CUSTOMER,
-                  PermissionAction.WRITE
-                ) && (
-                  <Button type='submit' variant='contained' sx={{mr: 3}}>
+              <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(6.5)} !important` }}>
+                {checkPermission(PermissionApplication.IMS, PermissionPage.CUSTOMER, PermissionAction.WRITE) && (
+                  <Button type='submit' variant='contained' sx={{ mr: 3 }}>
                     {t('Save Changes')}
                   </Button>
                 )}
-                {checkPermission(
-                  PermissionApplication.IMS,
-                  PermissionPage.CUSTOMER,
-                  PermissionAction.WRITE
-                ) && (
+                {checkPermission(PermissionApplication.IMS, PermissionPage.CUSTOMER, PermissionAction.WRITE) && (
                   <Button type='reset' variant='outlined' color='secondary' onClick={() => handleReset()}>
                     {t('Reset')}
                   </Button>
@@ -424,44 +412,38 @@ const CustomerView = (props: propsType) => {
           <Card>
             <CardContent>
               <form onSubmit={handleSubmitCheck(onSubmitCheck)}>
-                <Box sx={{mb: 4}}>
+                <Box sx={{ mb: 4 }}>
                   <FormControl>
                     <Controller
                       name='checkbox'
                       control={controlCheck}
-                      rules={{required: true}}
-                      render={({field}) => (
+                      rules={{ required: true }}
+                      render={({ field }) => (
                         <FormControlLabel
                           label={`I confirm my customer ${
                             customerData && customerData.adminStatus === 'ENABLED' ? 'deactivation' : 'activation'
                           }`}
-                          sx={errorsCheck.checkbox ? {'& .MuiTypography-root': {color: 'error.main'}} : null}
+                          sx={errorsCheck.checkbox ? { '& .MuiTypography-root': { color: 'error.main' } } : null}
                           control={
                             <Checkbox
                               {...field}
                               size='small'
                               name='validation-basic-checkbox'
-                              sx={errorsCheck.checkbox ? {color: 'error.main'} : null}
+                              sx={errorsCheck.checkbox ? { color: 'error.main' } : null}
                             />
                           }
                         />
                       )}
                     />
                     {errorsCheck.checkbox && (
-                      <FormHelperText sx={{color: 'error.main'}} id='validation-basic-checkbox'>
+                      <FormHelperText sx={{ color: 'error.main' }} id='validation-basic-checkbox'>
                         Please confirm you want to{' '}
-                        {customerData && customerData.adminStatus == 'DISABLED' ? 'activate' : 'deactivate'}{' '}
-                        customer
+                        {customerData && customerData.adminStatus == 'DISABLED' ? 'activate' : 'deactivate'} customer
                       </FormHelperText>
                     )}
                   </FormControl>
                 </Box>
-                <Button
-                  variant='contained'
-                  color='error'
-                  type='submit'
-                  disabled={errorsCheck.checkbox !== undefined}
-                >
+                <Button variant='contained' color='error' type='submit' disabled={errorsCheck.checkbox !== undefined}>
                   {customerData && customerData.adminStatus == 'DISABLED' ? 'Activate' : 'Deactivate'} Customer
                 </Button>
               </form>
@@ -470,7 +452,7 @@ const CustomerView = (props: propsType) => {
         )}
       </Grid>
       {checkPermission(PermissionApplication.IMS, PermissionPage.CUSTOMER, PermissionAction.WRITE) && (
-        <CropperCommon open={updateImage} setOpen={setUpdateImage} size={250} onSave={onSaveImage}/>
+        <CropperCommon open={updateImage} setOpen={setUpdateImage} size={250} onSave={onSaveImage} />
       )}
       {linkedUser &&
         !isLoadingAccounts &&

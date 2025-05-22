@@ -1,36 +1,36 @@
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import Icon from 'template-shared/@core/components/icon'
-import {DomainType, DomainTypeRequest} from "ims-shared/@core/types/ims/domainTypes";
-import React, {useState} from 'react'
+import { DomainType, DomainTypeRequest } from 'ims-shared/@core/types/ims/domainTypes'
+import React, { useState } from 'react'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import {useTranslation} from 'react-i18next'
-import {URL_PATTERN} from 'template-shared/@core/types/helper/patternTypes'
-import {Avatar, InputLabel, MenuItem, Select} from '@mui/material'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
-import {AdminStatus} from "ims-shared/@core/types/ims/accountTypes";
+import { useTranslation } from 'react-i18next'
+import { URL_PATTERN } from 'template-shared/@core/types/helper/patternTypes'
+import { Avatar, InputLabel, MenuItem, Select } from '@mui/material'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { AdminStatus } from 'ims-shared/@core/types/ims/accountTypes'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import {checkPermission} from 'template-shared/@core/api/helper/permission'
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import MuiPhoneNumber from 'material-ui-phone-number'
 import EmailInputMask from 'template-shared/views/forms/form-elements/input-mask/EmailInputMask'
-import DomainApis from "ims-shared/@core/api/ims/domain";
+import DomainApis from 'ims-shared/@core/api/ims/domain'
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -54,12 +54,12 @@ interface SidebarAddDomainType {
 }
 
 const SidebarAddDomain = (props: SidebarAddDomainType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const {open, toggle, domain} = props
+  const { open, toggle, domain } = props
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
 
-  const {data: domainList, isLoading} = useQuery('domains', DomainApis(t).getDomains)
+  const { data: domainList, isLoading } = useQuery('domains', DomainApis(t).getDomains)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -112,7 +112,7 @@ const SidebarAddDomain = (props: SidebarAddDomainType) => {
     control,
     handleSubmit,
     setValue,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -140,33 +140,37 @@ const SidebarAddDomain = (props: SidebarAddDomainType) => {
       anchor='right'
       variant='temporary'
       onClose={handleClose}
-      ModalProps={{keepMounted: true}}
-      sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+      ModalProps={{ keepMounted: true }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
         <Typography variant='h6'>{t('Domain.Add_Domain')}</Typography>
         <IconButton
           size='small'
           onClick={handleClose}
-          sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+          sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
         >
-          <Icon icon='tabler:x' fontSize='1.125rem'/>
+          <Icon icon='tabler:x' fontSize='1.125rem' />
         </IconButton>
       </Header>
-      <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+      <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form
           onSubmit={handleSubmit(row => {
             onSubmit(row)
           })}
         >
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
             <Controller
               name='domain'
               control={control}
-              render={({field: {value, onChange}}) => (
+              render={({ field: { value, onChange } }) => (
                 <Select
-                  disabled={checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? false : true}
+                  disabled={
+                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                      ? false
+                      : true
+                  }
                   size='small'
                   label={t('Domain.Domain')}
                   name='domain'
@@ -186,39 +190,39 @@ const SidebarAddDomain = (props: SidebarAddDomainType) => {
             />
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='name'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
                   id='form-props-read-only-input'
-                  InputProps={{readOnly: false}}
+                  InputProps={{ readOnly: false }}
                   label={t('Name')}
                   onChange={onChange}
                   error={Boolean(errors.name)}
                 />
               )}
             />
-            {errors.name && <FormHelperText sx={{color: 'error.main'}}>{errors.name.message}</FormHelperText>}
+            {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='description'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
                   id='form-props-read-only-input'
                   multiline
                   rows={3}
-                  InputProps={{readOnly: false}}
+                  InputProps={{ readOnly: false }}
                   label={t('Description')}
                   onChange={onChange}
                   error={Boolean(errors.description)}
@@ -226,26 +230,26 @@ const SidebarAddDomain = (props: SidebarAddDomainType) => {
               )}
             />
             {errors.description && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.description.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.description.message}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='email'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
-                <EmailInputMask value={value} onChange={onChange} error={Boolean(errors.email)}/>
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <EmailInputMask value={value} onChange={onChange} error={Boolean(errors.email)} />
               )}
             />
-            {errors.email && <FormHelperText sx={{color: 'error.main'}}>{errors.email.message}</FormHelperText>}
+            {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='phone'
               control={control}
-              rules={{required: true}}
-              render={({field: {value}}) => (
+              rules={{ required: true }}
+              render={({ field: { value } }) => (
                 <MuiPhoneNumber
                   variant='outlined'
                   fullWidth
@@ -262,14 +266,14 @@ const SidebarAddDomain = (props: SidebarAddDomainType) => {
                 />
               )}
             />
-            {errors.phone && <FormHelperText sx={{color: 'error.main'}}>{errors.phone.message}</FormHelperText>}
+            {errors.phone && <FormHelperText sx={{ color: 'error.main' }}>{errors.phone.message}</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='url'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -279,7 +283,7 @@ const SidebarAddDomain = (props: SidebarAddDomainType) => {
                 />
               )}
             />
-            {errors.url && <FormHelperText sx={{color: 'error.main'}}>{errors.url.message}</FormHelperText>}
+            {errors.url && <FormHelperText sx={{ color: 'error.main' }}>{errors.url.message}</FormHelperText>}
           </FormControl>
 
           <FormControlLabel
@@ -290,7 +294,7 @@ const SidebarAddDomain = (props: SidebarAddDomainType) => {
                 name='adminStatus'
                 control={control}
                 defaultValue={defaultValues.adminStatus}
-                render={({field: {value, onChange}}) => (
+                render={({ field: { value, onChange } }) => (
                   <Switch
                     checked={value == AdminStatus.ENABLED}
                     onChange={e => onChange(e.target.checked ? AdminStatus.ENABLED : AdminStatus.DISABLED)}
@@ -298,31 +302,31 @@ const SidebarAddDomain = (props: SidebarAddDomainType) => {
                 )}
               />
             }
-            sx={{mb: 4, alignItems: 'flex-start', marginLeft: 0}}
+            sx={{ mb: 4, alignItems: 'flex-start', marginLeft: 0 }}
           />
 
-          <FormControl fullWidth sx={{mb: 4}}>
-            <label htmlFor='file' style={{alignItems: 'center', cursor: 'pointer', display: 'flex'}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <label htmlFor='file' style={{ alignItems: 'center', cursor: 'pointer', display: 'flex' }}>
               <Avatar
                 src={selectedFile ? URL.createObjectURL(selectedFile) : ''}
-                sx={{cursor: 'pointer', mr: 2}}
+                sx={{ cursor: 'pointer', mr: 2 }}
               ></Avatar>
 
               <Button
                 color='primary'
                 variant='outlined'
                 component='span'
-                sx={{width: '100%'}}
-                startIcon={<Icon icon='tabler:upload'/>}
+                sx={{ width: '100%' }}
+                startIcon={<Icon icon='tabler:upload' />}
               >
                 {t('Photo')}
               </Button>
-              <input type='file' name='file' id='file' style={{display: 'none'}} onChange={handleFileChange}/>
+              <input type='file' name='file' id='file' style={{ display: 'none' }} onChange={handleFileChange} />
             </label>
           </FormControl>
 
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

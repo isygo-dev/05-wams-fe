@@ -1,37 +1,35 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
-import {Controller, useForm} from 'react-hook-form'
-
+import { Controller, useForm } from 'react-hook-form'
 
 // ** Icon Imports
 import Icon from 'template-shared/@core/components/icon'
-import {useTranslation} from 'react-i18next'
-import {yupResolver} from '@hookform/resolvers/yup'
+import { useTranslation } from 'react-i18next'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
-import {InputLabel, MenuItem, Select} from '@mui/material'
-import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { InputLabel, MenuItem, Select } from '@mui/material'
+import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
 import DomainApis from 'ims-shared/@core/api/ims/domain'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import {checkPermission} from "template-shared/@core/api/helper/permission";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import {
   IntegrationOrderData,
   integrationOrderType
-} from "integration-shared/@core/types/integration/IntegrationOrderTypes";
-import IntegrationOrderApis from "integration-shared/@core/api/integration/order";
-
+} from 'integration-shared/@core/types/integration/IntegrationOrderTypes'
+import IntegrationOrderApis from 'integration-shared/@core/api/integration/order'
 
 interface SidebarAddResumeType {
   open: boolean
@@ -39,8 +37,7 @@ interface SidebarAddResumeType {
   domain: string
 }
 
-
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -48,9 +45,9 @@ const Header = styled(Box)<BoxProps>(({theme}) => ({
 }))
 
 const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const {data: domainList, isFetched: isFetchedDomains} = useQuery('domains', DomainApis(t).getDomains)
+  const { data: domainList, isFetched: isFetchedDomains } = useQuery('domains', DomainApis(t).getDomains)
   const [file, setFile] = useState<File | null>(null)
   const schema = yup.object().shape({
     name: yup.string().required(),
@@ -61,14 +58,14 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
     integrationOrder: yup.string().required(),
     file: yup.mixed().required()
   })
-  const {open, toggle} = props
+  const { open, toggle } = props
   const {
     reset,
     control,
     setValue,
     trigger,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm<IntegrationOrderData>({
     defaultValues: {
       name: '',
@@ -85,9 +82,7 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
     resolver: yupResolver(schema)
   })
 
-
   const onSubmit = (data: IntegrationOrderData) => {
-
     const formData = new FormData()
 
     formData.append('name', data.name)
@@ -131,7 +126,6 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
     trigger('file')
   }
 
-
   return (
     <>
       {isFetchedDomains ? (
@@ -140,30 +134,34 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
           anchor='right'
           variant='temporary'
           onClose={handleClose}
-          ModalProps={{keepMounted: true}}
-          sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+          ModalProps={{ keepMounted: true }}
+          sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
         >
           <Header>
             <Typography variant='h6'>{t('IntegrationOrder.Add_Integration_Order') as string}</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
-              sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+              sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
             >
-              <Icon icon='tabler:x' fontSize='1.125rem'/>
+              <Icon icon='tabler:x' fontSize='1.125rem' />
             </IconButton>
           </Header>
-          <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+          <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
                 <Controller
                   name='domain'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <Select
-                      disabled={checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? false : true}
+                      disabled={
+                        checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                          ? false
+                          : true
+                      }
                       size='small'
                       label={t('Domain.Domain')}
                       name='domain'
@@ -182,14 +180,14 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
                     </Select>
                   )}
                 />
-                {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
+                {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='name'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       value={value}
@@ -199,13 +197,13 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
                     />
                   )}
                 />
-                {errors.name && <FormHelperText sx={{color: 'error.main'}}>{errors.name.message}</FormHelperText>}
+                {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='description'
                   control={control}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       rows={4}
@@ -220,12 +218,12 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
                   )}
                 />
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='serviceName'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       value={value}
@@ -236,15 +234,15 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
                   )}
                 />
                 {errors.serviceName && (
-                  <FormHelperText sx={{color: 'error.main'}}>{errors.serviceName.message}</FormHelperText>
+                  <FormHelperText sx={{ color: 'error.main' }}>{errors.serviceName.message}</FormHelperText>
                 )}
               </FormControl>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='mapping'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       value={value}
@@ -255,17 +253,17 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
                   )}
                 />
                 {errors.mapping && (
-                  <FormHelperText sx={{color: 'error.main'}}>{errors.mapping.message}</FormHelperText>
+                  <FormHelperText sx={{ color: 'error.main' }}>{errors.mapping.message}</FormHelperText>
                 )}
               </FormControl>
 
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <InputLabel>Integration order</InputLabel>
                 <Controller
                   name='integrationOrder'
                   control={control}
-                  rules={{required: true}}
-                  render={({field: {value, onChange}}) => (
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
                     <Select
                       name='integrationOrder'
                       size='small'
@@ -277,35 +275,30 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
                       <MenuItem value={integrationOrderType.UPDATE}>UPDATE</MenuItem>
                       <MenuItem value={integrationOrderType.DELETE}>DELETE</MenuItem>
                       <MenuItem value={integrationOrderType.EXTRACT}>EXTRACT</MenuItem>
-
                     </Select>
                   )}
                 />
               </FormControl>
 
-
-              <FormControl fullWidth sx={{mb: 4}}>
-
-
-                <label htmlFor='file' style={{alignItems: 'center', cursor: 'pointer'}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
+                <label htmlFor='file' style={{ alignItems: 'center', cursor: 'pointer' }}>
                   <Button
                     color='primary'
                     variant='outlined'
                     component='span'
-                    sx={{width: '100%'}}
-                    startIcon={<Icon icon='tabler:upload'/>}
+                    sx={{ width: '100%' }}
+                    startIcon={<Icon icon='tabler:upload' />}
                   >
                     Select Validation file
                   </Button>
-                  <input type='file' name='file' id='file' style={{display: 'none'}} onChange={handleFileChange}/>
+                  <input type='file' name='file' id='file' style={{ display: 'none' }} onChange={handleFileChange} />
                   <a>{file ? file.name : ''}</a>
                 </label>
-                {errors.file && <FormHelperText sx={{color: 'error.main'}}>{errors.file.message}</FormHelperText>}
+                {errors.file && <FormHelperText sx={{ color: 'error.main' }}>{errors.file.message}</FormHelperText>}
               </FormControl>
 
-
-              <Box sx={{display: 'flex', alignItems: 'center'}}>
-                <Button type='submit' variant='contained' sx={{mr: 3}}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Button type='submit' variant='contained' sx={{ mr: 3 }}>
                   {t('Submit') as string}
                 </Button>
                 <Button variant='outlined' color='secondary' onClick={handleClose}>

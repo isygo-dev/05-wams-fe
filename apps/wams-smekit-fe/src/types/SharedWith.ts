@@ -1,4 +1,4 @@
-import {DocumentType} from "./document";
+import { DocumentType } from './document'
 
 export interface SharedWithType {
   id?: number

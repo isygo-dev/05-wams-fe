@@ -23,11 +23,11 @@ const Textarea = () => {
             jsx: source.TextareaBasicJSXCode
           }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             Use <code>minRows</code> prop with <code>TextareaAutosize</code> component to add minimum rows in textarea
             and <code>maxRows</code> prop to add maximum rows.
           </Typography>
-          <TextareaBasic/>
+          <TextareaBasic />
         </CardSnippet>
       </Grid>
       <Grid item xs={12}>
@@ -43,7 +43,7 @@ const Textarea = () => {
             <code>textarea</code>. Use <code>variant</code> prop with <code>TextField</code> component for different
             variants of textarea.
           </Typography>
-          <TextareaVariant/>
+          <TextareaVariant />
         </CardSnippet>
       </Grid>
     </Grid>

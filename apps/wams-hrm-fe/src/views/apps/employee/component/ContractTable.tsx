@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
@@ -6,14 +6,14 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-import {useTranslation} from 'react-i18next'
-import {EmployeeContext} from '../../../../pages/apps/employee/view/[id]'
+import { useTranslation } from 'react-i18next'
+import { EmployeeContext } from '../../../../pages/apps/employee/view/[id]'
 import IconButton from '@mui/material/IconButton'
 import Icon from 'template-shared/@core/components/icon'
 import Link from 'next/link'
 
 const ContractTable = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const employee = useContext(EmployeeContext)
   const employeeData = employee.employeeData
   const formatDate = date => {
@@ -21,7 +21,7 @@ const ContractTable = () => {
   }
 
   return (
-    <TableContainer component={Paper} sx={{mt: 5}}>
+    <TableContainer component={Paper} sx={{ mt: 5 }}>
       <Table aria-label='simple table'>
         <TableHead>
           <TableRow>
@@ -50,10 +50,10 @@ const ContractTable = () => {
                 <IconButton
                   size='small'
                   component={Link}
-                  sx={{color: 'text.secondary'}}
+                  sx={{ color: 'text.secondary' }}
                   href={`/apps/contract/view/${row.id}`}
                 >
-                  <Icon icon='fluent:slide-text-edit-24-regular'/>
+                  <Icon icon='fluent:slide-text-edit-24-regular' />
                 </IconButton>
               </TableCell>
             </TableRow>

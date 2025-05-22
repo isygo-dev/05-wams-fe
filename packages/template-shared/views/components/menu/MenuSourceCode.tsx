@@ -1,5 +1,5 @@
 export const MenuCompositionJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useEffect, useRef, useState } from 'react'
 
@@ -118,7 +118,7 @@ export default MenuComposition
 )
 
 export const MenuBasicJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -159,7 +159,7 @@ export default MenuBasic
 )
 
 export const MenuContextJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -223,7 +223,7 @@ export default MenuContext
 )
 
 export const MenuTransitionJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -272,7 +272,7 @@ export default MenuTransition
 )
 
 export const MenuMaxHeightJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -347,7 +347,7 @@ export default MenuMaxHeight
 )
 
 export const MenuCustomizedJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -452,7 +452,7 @@ export default MenuCustomized
 )
 
 export const MenuSelectedJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -528,7 +528,7 @@ export default MenuSelected
 )
 
 export const MenuMaxHeightTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { MouseEvent, useState } from 'react'
 
@@ -604,7 +604,7 @@ export default MenuMaxHeight
 )
 
 export const MenuSelectedTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { MouseEvent, useState } from 'react'
 
@@ -680,7 +680,7 @@ export default MenuSelected
 )
 
 export const MenuContextTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { MouseEvent, useState } from 'react'
 
@@ -749,7 +749,7 @@ export default MenuContext
 )
 
 export const MenuCompositionTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { KeyboardEvent, useEffect, useRef, useState, MouseEvent, TouchEvent } from 'react'
 
@@ -870,7 +870,7 @@ export default MenuComposition
 )
 
 export const MenuTransitionTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { MouseEvent, useState } from 'react'
 
@@ -919,7 +919,7 @@ export default MenuTransition
 )
 
 export const MenuCustomizedTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { MouseEvent, useState } from 'react'
 
@@ -1024,7 +1024,7 @@ export default MenuCustomized
 )
 
 export const MenuBasicTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { MouseEvent, useState } from 'react'
 

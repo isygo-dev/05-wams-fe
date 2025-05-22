@@ -1,30 +1,30 @@
 // ** React Imports
-import {ReactNode} from 'react'
-import {t} from 'i18next'
+import { ReactNode } from 'react'
+import { t } from 'i18next'
 
 // ** Next Imports
 import Head from 'next/head'
-import {Router} from 'next/router'
-import type {NextPage} from 'next'
-import type {AppProps} from 'next/app'
+import { Router } from 'next/router'
+import type { NextPage } from 'next'
+import type { AppProps } from 'next/app'
 
 // ** Loader Import
 import NProgress from 'nprogress'
 
 // ** Emotion Imports
-import {CacheProvider} from '@emotion/react'
-import type {EmotionCache} from '@emotion/cache'
+import { CacheProvider } from '@emotion/react'
+import type { EmotionCache } from '@emotion/cache'
 
 // ** Config Imports
 import 'template-shared/configs/i18n'
-import {defaultACLObj} from 'template-shared/configs/acl'
+import { defaultACLObj } from 'template-shared/configs/acl'
 import themeConfig from 'template-shared/configs/themeConfig'
 
 // ** Fake-DB Import
 import 'template-shared/@fake-db'
 
 // ** Third Party Import
-import {Toaster} from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 
 // ** Component Imports
 import UserLayout from 'template-shared/layouts/UserLayout'
@@ -39,15 +39,14 @@ import VerticalNavItems from '../../src/navigation/vertical'
 import Spinner from 'template-shared/@core/components/spinner'
 
 // ** Contexts
-import {AuthProvider} from 'template-shared/context/AuthContext'
-import {SettingsConsumer, SettingsProvider} from 'template-shared/@core/context/settingsContext'
+import { AuthProvider } from 'template-shared/context/AuthContext'
+import { SettingsConsumer, SettingsProvider } from 'template-shared/@core/context/settingsContext'
 
 // ** Styled Components
 import ReactHotToast from 'template-shared/@core/styles/libs/react-hot-toast'
 
 // ** Utils Imports
-import {createEmotionCache} from 'template-shared/@core/utils/create-emotion-cache'
-
+import { createEmotionCache } from 'template-shared/@core/utils/create-emotion-cache'
 
 // ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css'
@@ -57,9 +56,8 @@ import 'template-shared/iconify-bundle/icons-bundle-react'
 // ** Global css styles
 import '../../styles/globals.css'
 import getHomeRoute from '../navigation/getHomeRoute'
-import CustomQueryClientProvider from "template-shared/@core/components/CustomQueryClientProvider";
-import {NotificationsType} from "template-shared/@core/layouts/components/shared-components/NotificationDropdown";
-
+import CustomQueryClientProvider from 'template-shared/@core/components/CustomQueryClientProvider'
+import { NotificationsType } from 'template-shared/@core/layouts/components/shared-components/NotificationDropdown'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -88,16 +86,15 @@ if (themeConfig.routingLoader) {
   })
 }
 
-const Guard = ({children, authGuard, guestGuard}: GuardProps) => {
+const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
   if (guestGuard) {
-    return <GuestGuard fallback={<Spinner/>}>{children}</GuestGuard>
+    return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
   } else if (!guestGuard && !authGuard) {
     return <>{children}</>
   } else {
-    return <AuthGuard fallback={<Spinner/>}>{children}</AuthGuard>
+    return <AuthGuard fallback={<Spinner />}>{children}</AuthGuard>
   }
 }
-
 
 const notifications: NotificationsType[] = [
   {
@@ -144,14 +141,14 @@ const notifications: NotificationsType[] = [
   }
 ]
 
-
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
-  const {Component, emotionCache = clientSideEmotionCache, pageProps} = props
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   const contentHeightFixed = Component.contentHeightFixed ?? false
 
-  const getLayout = Component.getLayout ??
+  const getLayout =
+    Component.getLayout ??
     (page => (
       <UserLayout
         contentHeightFixed={contentHeightFixed}
@@ -162,7 +159,6 @@ const App = (props: ExtendedAppProps) => {
         {page}
       </UserLayout>
     ))
-
 
   const setConfig = Component.setConfig ?? undefined
 
@@ -176,22 +172,18 @@ const App = (props: ExtendedAppProps) => {
 
   return (
     <AuthProvider>
-
       <CustomQueryClientProvider>
         <CacheProvider value={emotionCache}>
           <Head>
             <title>{title}</title>
-            <meta
-              name='description'
-              content={`${themeConfig.templateName} – WAMS Template`}
-            />
-            <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template'/>
-            <meta name='viewport' content='initial-scale=1, width=device-width'/>
+            <meta name='description' content={`${themeConfig.templateName} – WAMS Template`} />
+            <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
+            <meta name='viewport' content='initial-scale=1, width=device-width' />
           </Head>
 
-          <SettingsProvider {...(setConfig ? {pageSettings: setConfig()} : {})}>
+          <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
             <SettingsConsumer>
-              {({settings}) => {
+              {({ settings }) => {
                 return (
                   <ThemeComponent settings={settings}>
                     <Guard authGuard={authGuard} guestGuard={guestGuard}>
@@ -205,8 +197,7 @@ const App = (props: ExtendedAppProps) => {
                       </AclGuard>
                     </Guard>
                     <ReactHotToast>
-                      <Toaster position={settings.toastPosition}
-                               toastOptions={{className: 'react-hot-toast'}}/>
+                      <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
                     </ReactHotToast>
                   </ThemeComponent>
                 )
@@ -215,9 +206,7 @@ const App = (props: ExtendedAppProps) => {
           </SettingsProvider>
         </CacheProvider>
       </CustomQueryClientProvider>
-
     </AuthProvider>
-
   )
 }
 

@@ -12,8 +12,7 @@ import SwitchesColors from 'template-shared/views/forms/form-elements/switch/Swi
 import SwitchesCustomized from 'template-shared/views/forms/form-elements/switch/SwitchesCustomized'
 import SwitchesStandalone from 'template-shared/views/forms/form-elements/switch/SwitchesStandalone'
 import SwitchesLabelPlacement from 'template-shared/views/forms/form-elements/switch/SwitchesLabelPlacement'
-import SwitchesControlledUncontrolled
-  from 'template-shared/views/forms/form-elements/switch/SwitchesControlledUncontrolled'
+import SwitchesControlledUncontrolled from 'template-shared/views/forms/form-elements/switch/SwitchesControlledUncontrolled'
 
 // ** Source code imports
 import * as source from 'template-shared/views/forms/form-elements/switch/SwitchesSourceCode'
@@ -29,7 +28,7 @@ const Switches = () => {
             jsx: source.SwitchesBasicJSXCode
           }}
         >
-          <SwitchesBasic/>
+          <SwitchesBasic />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -40,11 +39,11 @@ const Switches = () => {
             jsx: source.SwitchesControlledUncontrolledJSXCode
           }}
         >
-          <Typography sx={{mb: 2}}>
+          <Typography sx={{ mb: 2 }}>
             Manage <code>checked</code> prop with the help of a state for controlled <code>Switch</code> and use
             <code>defaultChecked</code> prop for uncontrolled <code>Switch</code>.
           </Typography>
-          <SwitchesControlledUncontrolled/>
+          <SwitchesControlledUncontrolled />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -55,11 +54,11 @@ const Switches = () => {
             jsx: source.SwitchesLabelPlacementJSXCode
           }}
         >
-          <Typography sx={{mb: 2}}>
+          <Typography sx={{ mb: 2 }}>
             Use <code>labelPlacement</code> prop with <code>FormControlLabel</code> component to change the placement of
             the label.
           </Typography>
-          <SwitchesLabelPlacement/>
+          <SwitchesLabelPlacement />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -70,10 +69,10 @@ const Switches = () => {
             jsx: source.SwitchesColorsJSXCode
           }}
         >
-          <Typography sx={{mb: 2}}>
+          <Typography sx={{ mb: 2 }}>
             Use <code>color</code> prop with <code>Switch</code> component for different colored switch.
           </Typography>
-          <SwitchesColors/>
+          <SwitchesColors />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -84,10 +83,10 @@ const Switches = () => {
             jsx: source.SwitchesCustomizedJSXCode
           }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             Use <code>styled</code> hook to customize your switch.
           </Typography>
-          <SwitchesCustomized/>
+          <SwitchesCustomized />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -98,10 +97,10 @@ const Switches = () => {
             jsx: source.SwitchesSizesJSXCode
           }}
         >
-          <Typography sx={{mb: 2}}>
+          <Typography sx={{ mb: 2 }}>
             Use <code>size='small'</code> prop with <code>Switch</code> component for small switch.
           </Typography>
-          <SwitchesSizes/>
+          <SwitchesSizes />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -112,7 +111,7 @@ const Switches = () => {
             jsx: source.SwitchesStandaloneJSXCode
           }}
         >
-          <SwitchesStandalone/>
+          <SwitchesStandalone />
         </CardSnippet>
       </Grid>
     </Grid>

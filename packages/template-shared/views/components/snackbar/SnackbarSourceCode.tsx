@@ -1,5 +1,5 @@
 export const SnackbarAlertJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { Fragment, useState } from 'react'
 
@@ -50,7 +50,7 @@ export default SnackbarAlert
 )
 
 export const SnackbarConsecutiveJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { Fragment, useEffect, useState } from 'react'
 
@@ -126,7 +126,7 @@ export default SnackbarConsecutive
 )
 
 export const SnackbarPositionedJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { Fragment, useState } from 'react'
 
@@ -192,7 +192,7 @@ export default SnackbarPositioned
 )
 
 export const SnackbarTransitionJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { Fragment, useState } from 'react'
 
@@ -263,7 +263,7 @@ export default SnackbarTransition
 )
 
 export const SnackbarControlSlideDirectionJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { Fragment, useState } from 'react'
 
@@ -336,7 +336,7 @@ export default SnackbarControlSlideDirection
 )
 
 export const SnackbarSimpleJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { Fragment, useState } from 'react'
 
@@ -394,7 +394,7 @@ export default SnackbarSimple
 )
 
 export const SnackbarAlertTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { Fragment, SyntheticEvent, useState } from 'react'
 
@@ -445,7 +445,7 @@ export default SnackbarAlert
 )
 
 export const SnackbarConsecutiveTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { Fragment, SyntheticEvent, useEffect, useState } from 'react'
 
@@ -527,7 +527,7 @@ export default SnackbarConsecutive
 )
 
 export const SnackbarControlSlideDirectionTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { ComponentType, Fragment, useState } from 'react'
 
@@ -602,7 +602,7 @@ export default SnackbarControlSlideDirection
 )
 
 export const SnackbarPositionedTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { Fragment, useState } from 'react'
 
@@ -672,7 +672,7 @@ export default SnackbarPositioned
 )
 
 export const SnackbarSimpleTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { Fragment, SyntheticEvent, useState } from 'react'
 
@@ -730,7 +730,7 @@ export default SnackbarSimple
 )
 
 export const SnackbarTransitionTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { ComponentType, Fragment, ReactElement, useState } from 'react'
 

@@ -2,18 +2,17 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import Typography from '@mui/material/Typography'
 import Icon from 'template-shared/@core/components/icon'
-import {DialogContent} from '@mui/material'
-import IconButton, {IconButtonProps} from '@mui/material/IconButton'
+import { DialogContent } from '@mui/material'
+import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import React from 'react'
-import {useTranslation} from 'react-i18next'
-import {styled} from '@mui/material/styles'
-import Box from "@mui/material/Box";
-import DocViewer, {DocViewerRenderers} from 'react-doc-viewer'
-import {MiniResume} from "rpm-shared/@core/types/rpm/ResumeTypes";
-import rpmApiUrls from "rpm-shared/configs/rpm_apis";
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Box from '@mui/material/Box'
+import DocViewer, { DocViewerRenderers } from 'react-doc-viewer'
+import { MiniResume } from 'rpm-shared/@core/types/rpm/ResumeTypes'
+import rpmApiUrls from 'rpm-shared/configs/rpm_apis'
 
-
-const CustomCloseButton = styled(IconButton)<IconButtonProps>(({theme}) => ({
+const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
   top: 20,
   right: 20,
   color: 'grey.500',
@@ -36,8 +35,8 @@ interface DialogProps {
 }
 
 const ResumeDialog = (props: DialogProps) => {
-  const {open, onCloseClick, resumePreview} = props
-  const {t} = useTranslation()
+  const { open, onCloseClick, resumePreview } = props
+  const { t } = useTranslation()
 
   return (
     <Dialog fullScreen open={open}>
@@ -51,13 +50,11 @@ const ResumeDialog = (props: DialogProps) => {
             onCloseClick()
           }}
         >
-          <Icon icon='tabler:x'/>
+          <Icon icon='tabler:x' />
         </CustomCloseButton>
       </DialogTitle>
       <DialogContent>
-
         <Box textAlign='center'>
-
           <DocViewer
             key={Date.now()}
             pluginRenderers={DocViewerRenderers}
@@ -76,7 +73,6 @@ const ResumeDialog = (props: DialogProps) => {
             }}
           />
         </Box>
-
       </DialogContent>
     </Dialog>
   )

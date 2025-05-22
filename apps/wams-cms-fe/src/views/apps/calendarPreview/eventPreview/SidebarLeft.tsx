@@ -10,15 +10,15 @@ import DatePicker from 'react-datepicker'
 // ** Styled Component
 import DatePickerWrapper from 'template-shared/@core/styles/libs/react-datepicker'
 import IconButton from '@mui/material/IconButton'
-import {useMutation} from 'react-query'
+import { useMutation } from 'react-query'
 import Icon from 'template-shared/@core/components/icon'
 import React from 'react'
-import CalendarApis from "cms-shared/@core/api/cms/calendar";
-import {useTranslation} from "react-i18next";
-import {SidebarCalLeftType} from "template-shared/@core/types/helper/calendarTypes";
+import CalendarApis from 'cms-shared/@core/api/cms/calendar'
+import { useTranslation } from 'react-i18next'
+import { SidebarCalLeftType } from 'template-shared/@core/types/helper/calendarTypes'
 
 const SidebarLeft = (props: SidebarCalLeftType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const {
     mdAbove,
     calendarApi,
@@ -39,8 +39,7 @@ const SidebarLeft = (props: SidebarCalLeftType) => {
 
   const mutationDownload = useMutation({
     mutationFn: () => CalendarApis(t).downloadCalendarIcsFile(domain, name),
-    onSuccess: () => {
-    },
+    onSuccess: () => {},
     onError: err => {
       console.log(err)
     }
@@ -81,32 +80,32 @@ const SidebarLeft = (props: SidebarCalLeftType) => {
         }
       }}
     >
-      <Box sx={{p: 6, width: '100%'}} className='d-flex-row'>
+      <Box sx={{ p: 6, width: '100%' }} className='d-flex-row'>
         <div>
           <IconButton aria-label='capture screenshot' onClick={lock ? undefined : handleSidebarToggleSidebar}>
-            <Icon icon='ic:baseline-add-box'/>
+            <Icon icon='ic:baseline-add-box' />
           </IconButton>
           <IconButton aria-label='capture screenshot'>
-            {lock ? <Icon icon='material-symbols:lock'/> : <Icon icon={'tabler:x'} color={'primary'}/>}
+            {lock ? <Icon icon='material-symbols:lock' /> : <Icon icon={'tabler:x'} color={'primary'} />}
           </IconButton>
           <IconButton aria-label='capture screenshot' onClick={handlerToggelDownload}>
-            <Icon icon='ic:baseline-file-download'/>
+            <Icon icon='ic:baseline-file-download' />
           </IconButton>
         </div>
       </Box>
 
-      <Divider sx={{width: '100%', m: '0 !important'}}/>
+      <Divider sx={{ width: '100%', m: '0 !important' }} />
       <DatePickerWrapper
         sx={{
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
-          '& .react-datepicker': {boxShadow: 'none !important', border: 'none !important'}
+          '& .react-datepicker': { boxShadow: 'none !important', border: 'none !important' }
         }}
       >
-        <DatePicker inline onChange={date => calendarApi.gotoDate(date)}/>
+        <DatePicker inline onChange={date => calendarApi.gotoDate(date)} />
       </DatePickerWrapper>
-      <Divider sx={{width: '100%', m: '0 !important'}}/>
+      <Divider sx={{ width: '100%', m: '0 !important' }} />
     </Drawer>
   )
 }

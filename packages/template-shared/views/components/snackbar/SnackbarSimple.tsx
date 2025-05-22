@@ -1,5 +1,5 @@
 // ** React Imports
-import {Fragment, SyntheticEvent, useState} from 'react'
+import { Fragment, SyntheticEvent, useState } from 'react'
 
 // ** MUI Imports
 import Button from '@mui/material/Button'
@@ -10,43 +10,43 @@ import IconButton from '@mui/material/IconButton'
 import Icon from 'template-shared/@core/components/icon'
 
 const SnackbarSimple = () => {
-    // ** State
-    const [open, setOpen] = useState<boolean>(false)
+  // ** State
+  const [open, setOpen] = useState<boolean>(false)
 
-    const handleClick = () => {
-        setOpen(true)
+  const handleClick = () => {
+    setOpen(true)
+  }
+
+  const handleClose = (event: Event | SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return
     }
+    setOpen(false)
+  }
 
-    const handleClose = (event: Event | SyntheticEvent, reason?: string) => {
-        if (reason === 'clickaway') {
-            return
-        }
-        setOpen(false)
-    }
-
-    return (
-        <Fragment>
-            <Button variant='outlined' onClick={handleClick}>
-                Open simple snackbar
+  return (
+    <Fragment>
+      <Button variant='outlined' onClick={handleClick}>
+        Open simple snackbar
+      </Button>
+      <Snackbar
+        open={open}
+        onClose={handleClose}
+        message='Note archived'
+        autoHideDuration={3000}
+        action={
+          <Fragment>
+            <Button size='small' onClick={handleClose}>
+              Undo
             </Button>
-            <Snackbar
-                open={open}
-                onClose={handleClose}
-                message='Note archived'
-                autoHideDuration={3000}
-                action={
-                    <Fragment>
-                        <Button size='small' onClick={handleClose}>
-                            Undo
-                        </Button>
-                        <IconButton size='small' aria-label='close' color='inherit' onClick={handleClose}>
-                            <Icon icon='tabler:x' fontSize={20}/>
-                        </IconButton>
-                    </Fragment>
-                }
-            />
-        </Fragment>
-    )
+            <IconButton size='small' aria-label='close' color='inherit' onClick={handleClose}>
+              <Icon icon='tabler:x' fontSize={20} />
+            </IconButton>
+          </Fragment>
+        }
+      />
+    </Fragment>
+  )
 }
 
 export default SnackbarSimple

@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Rating from '@mui/material/Rating'
 import TextField from '@mui/material/TextField'
-import {AnswerType, QuestionDetailsType} from "quiz-shared/@core/types/quiz/quizCandidateType";
+import { AnswerType, QuestionDetailsType } from 'quiz-shared/@core/types/quiz/quizCandidateType'
 
 interface AnswerItem {
   allQuestions: QuestionDetailsType[]
@@ -11,7 +11,7 @@ interface AnswerItem {
 }
 
 const AnswerList = (props: AnswerItem) => {
-  const {allQuestions, onAnswerChange} = props
+  const { allQuestions, onAnswerChange } = props
   const [answers, setAnswers] = useState<AnswerType[]>([])
 
   useEffect(() => {
@@ -26,14 +26,14 @@ const AnswerList = (props: AnswerItem) => {
 
   const handleRatingChange = (index: number, value: number) => {
     const newAnswers = [...answers]
-    newAnswers[index] = {...newAnswers[index], score: value}
+    newAnswers[index] = { ...newAnswers[index], score: value }
     setAnswers(newAnswers)
     onAnswerChange(index, newAnswers[index])
   }
 
   const handleNoteChange = (index: number, value: string) => {
     const newAnswers = [...answers]
-    newAnswers[index] = {...newAnswers[index], answerText: value}
+    newAnswers[index] = { ...newAnswers[index], answerText: value }
     setAnswers(newAnswers)
     onAnswerChange(index, newAnswers[index])
   }
@@ -41,7 +41,7 @@ const AnswerList = (props: AnswerItem) => {
   return (
     <>
       {allQuestions.map((question, index) => (
-        <Grid container key={index} spacing={3} sx={{mt: 3}}>
+        <Grid container key={index} spacing={3} sx={{ mt: 3 }}>
           <Grid item md={4}>
             <Typography>
               Q{index + 1}: {question.question}

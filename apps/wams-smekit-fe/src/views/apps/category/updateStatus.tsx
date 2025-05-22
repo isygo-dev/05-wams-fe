@@ -1,11 +1,10 @@
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import {useTranslation} from "react-i18next";
-
+import Dialog from '@mui/material/Dialog'
+import DialogContent from '@mui/material/DialogContent'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import DialogActions from '@mui/material/DialogActions'
+import Button from '@mui/material/Button'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   open: boolean
@@ -14,15 +13,13 @@ type Props = {
   handleConfirmation: () => void
 }
 const UpdateStatus = (props: Props) => {
-  const {open, setOpen, handleClose, handleConfirmation} = props;
+  const { open, setOpen, handleClose, handleConfirmation } = props
 
-  const {t} = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <>
-
-      <Dialog fullWidth open={open} onClose={handleClose}
-              sx={{'& .MuiPaper-root': {width: '100%', maxWidth: 512}}}>
+      <Dialog fullWidth open={open} onClose={handleClose} sx={{ '& .MuiPaper-root': { width: '100%', maxWidth: 512 } }}>
         <DialogContent
           sx={{
             px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
@@ -36,10 +33,10 @@ const UpdateStatus = (props: Props) => {
               alignItems: 'center',
               flexDirection: 'column',
               justifyContent: 'center',
-              '& svg': {mb: 8, color: 'warning.main'}
+              '& svg': { mb: 8, color: 'warning.main' }
             }}
           >
-            <Typography variant='h4' sx={{mb: 5, color: 'text.secondary'}}>
+            <Typography variant='h4' sx={{ mb: 5, color: 'text.secondary' }}>
               Are you sure you want to change this status ?
             </Typography>
           </Box>
@@ -51,12 +48,10 @@ const UpdateStatus = (props: Props) => {
             pb: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
           }}
         >
-          <Button variant='contained' sx={{mr: 2}} onClick={() => handleConfirmation()}
-          >
+          <Button variant='contained' sx={{ mr: 2 }} onClick={() => handleConfirmation()}>
             {t('Change ')}
           </Button>
-          <Button variant='outlined' color='secondary' onClick={() =>
-            handleClose()}>
+          <Button variant='outlined' color='secondary' onClick={() => handleClose()}>
             {t('Cancel')}
           </Button>
         </DialogActions>

@@ -2,24 +2,24 @@
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {Controller, useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, useForm } from 'react-hook-form'
 import Icon from 'template-shared/@core/components/icon'
-import {PasswordConfigType} from 'kms-shared/@core/types/kms/passwordConfigTypes'
+import { PasswordConfigType } from 'kms-shared/@core/types/kms/passwordConfigTypes'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import {useTranslation} from 'react-i18next'
-import {useMutation, useQueryClient} from 'react-query'
-import PasswordConfigApis from "kms-shared/@core/api/kms/password-config";
+import { useTranslation } from 'react-i18next'
+import { useMutation, useQueryClient } from 'react-query'
+import PasswordConfigApis from 'kms-shared/@core/api/kms/password-config'
 
 interface SidebarEditPwdConfigType {
   open: boolean
@@ -27,7 +27,7 @@ interface SidebarEditPwdConfigType {
   dataPwdConfig: PasswordConfigType | undefined
 }
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -46,15 +46,15 @@ const schema = yup.object().shape({
 })
 
 const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const {open, toggle} = props
+  const { open, toggle } = props
   const defaultValues = props.dataPwdConfig
   const {
     reset,
     control,
     handleSubmit,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -93,27 +93,27 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
       anchor='right'
       variant='temporary'
       onClose={handleClose}
-      ModalProps={{keepMounted: true}}
-      sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+      ModalProps={{ keepMounted: true }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
         <Typography variant='h6'>{t('Password.Edit_Password_Config')}</Typography>
         <IconButton
           size='small'
           onClick={handleClose}
-          sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+          sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
         >
-          <Icon icon='tabler:x' fontSize='1.125rem'/>
+          <Icon icon='tabler:x' fontSize='1.125rem' />
         </IconButton>
       </Header>
-      <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+      <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='domain'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -126,22 +126,18 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                 />
               )}
             />
-            {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
+            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
-            <InputLabel
-              id='validation-type-select'
-              error={Boolean(errors.type)}
-              htmlFor='validation-type-select'
-            >
+          <FormControl fullWidth sx={{ mb: 4 }}>
+            <InputLabel id='validation-type-select' error={Boolean(errors.type)} htmlFor='validation-type-select'>
               {t('Password.Type')}
             </InputLabel>
             <Controller
               name='type'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <Select
                   size='small'
                   value={value}
@@ -161,18 +157,18 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
               )}
             />
             {errors.type && (
-              <FormHelperText sx={{color: 'error.main'}} id='validation-type-select'>
+              <FormHelperText sx={{ color: 'error.main' }} id='validation-type-select'>
                 This type is required
               </FormHelperText>
             )}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='pattern'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
@@ -183,10 +179,10 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                 />
               )}
             />
-            {errors.pattern && <FormHelperText sx={{color: 'error.main'}}>{errors.pattern.message}</FormHelperText>}
+            {errors.pattern && <FormHelperText sx={{ color: 'error.main' }}>{errors.pattern.message}</FormHelperText>}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel
               id='validation-type-select'
               error={Boolean(errors.charSetType)}
@@ -197,8 +193,8 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
             <Controller
               name='charSetType'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <Select
                   size='small'
                   value={value}
@@ -218,18 +214,18 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
               )}
             />
             {errors.charSetType && (
-              <FormHelperText sx={{color: 'error.main'}} id='validation-type-select'>
+              <FormHelperText sx={{ color: 'error.main' }} id='validation-type-select'>
                 This type is required
               </FormHelperText>
             )}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='initial'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   type='text'
@@ -241,17 +237,15 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                 />
               )}
             />
-            {errors.initial && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.initial.message}</FormHelperText>
-            )}
+            {errors.initial && <FormHelperText sx={{ color: 'error.main' }}>{errors.initial.message}</FormHelperText>}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='minLength'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   type='number'
@@ -264,16 +258,16 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
               )}
             />
             {errors.minLength && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.minLength.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.minLength.message}</FormHelperText>
             )}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='maxLength'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   type='number'
@@ -286,16 +280,16 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
               )}
             />
             {errors.maxLength && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.maxLength.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.maxLength.message}</FormHelperText>
             )}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='lifeTime'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   type='number'
@@ -307,13 +301,11 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
                 />
               )}
             />
-            {errors.lifeTime && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.lifeTime.message}</FormHelperText>
-            )}
+            {errors.lifeTime && <FormHelperText sx={{ color: 'error.main' }}>{errors.lifeTime.message}</FormHelperText>}
           </FormControl>
 
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               Submit
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

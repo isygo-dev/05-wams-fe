@@ -1,15 +1,15 @@
 import React from 'react'
-import {useMutation, useQuery} from 'react-query'
-import {useAuth} from 'template-shared/hooks/useAuth'
-import {useTranslation} from 'react-i18next'
-import ResumeApis from "rpm-shared/@core/api/rpm/resume";
-import {AddressTypes} from "ims-shared/@core/types/ims/addressTypes";
-import {ResumeDetails} from "rpm-shared/@core/types/rpm/ResumeDetails";
-import {ResumeTypes} from "rpm-shared/@core/types/rpm/ResumeTypes";
-import ViewResumeDrawer from "rpm-shared/@core/components/common-resume-view/list/ViewResumeDrawer";
+import { useMutation, useQuery } from 'react-query'
+import { useAuth } from 'template-shared/hooks/useAuth'
+import { useTranslation } from 'react-i18next'
+import ResumeApis from 'rpm-shared/@core/api/rpm/resume'
+import { AddressTypes } from 'ims-shared/@core/types/ims/addressTypes'
+import { ResumeDetails } from 'rpm-shared/@core/types/rpm/ResumeDetails'
+import { ResumeTypes } from 'rpm-shared/@core/types/rpm/ResumeTypes'
+import ViewResumeDrawer from 'rpm-shared/@core/components/common-resume-view/list/ViewResumeDrawer'
 
 const ResumeViewCfo = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const authUser = useAuth().user
   const defaultResume: ResumeTypes = {
     birthDate: null,
@@ -33,7 +33,7 @@ const ResumeViewCfo = () => {
     version: 0
   }
 
-  const {data: resumeData, isLoading, isError} = useQuery('resumeData', () => ResumeApis(t).getResumeByCandidate())
+  const { data: resumeData, isLoading, isError } = useQuery('resumeData', () => ResumeApis(t).getResumeByCandidate())
   window.localStorage.setItem('resumeCode', resumeData ? resumeData.code : '')
   const addResumeMutation = useMutation({
     mutationFn: (data: ResumeTypes) => ResumeApis(t).addResumeCandidate(data),
@@ -48,8 +48,7 @@ const ResumeViewCfo = () => {
 
   const updateResumeMutation = useMutation({
     mutationFn: (newMutation: ResumeTypes) => ResumeApis(t).updateResume(newMutation),
-    onSuccess: () => {
-    }
+    onSuccess: () => {}
   })
 
   const updateResume = (data: ResumeTypes) => {
@@ -68,7 +67,7 @@ const ResumeViewCfo = () => {
         {isError ? (
           <div>Resume not found</div>
         ) : (
-          <ViewResumeDrawer resumeDetailsData={defaultResume} saveResume={addResumeCandidate}/>
+          <ViewResumeDrawer resumeDetailsData={defaultResume} saveResume={addResumeCandidate} />
         )}
       </div>
     )
@@ -76,7 +75,7 @@ const ResumeViewCfo = () => {
 
   return (
     <div>
-      <ViewResumeDrawer resumeDetailsData={resumeData} saveResume={updateResume}/>
+      <ViewResumeDrawer resumeDetailsData={resumeData} saveResume={updateResume} />
     </div>
   )
 }

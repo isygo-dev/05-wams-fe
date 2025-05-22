@@ -2,15 +2,15 @@
 
 import CalendarWrapper from 'template-shared/@core/styles/libs/fullcalendar'
 import AddEventSidebar from './AddEventSidebar'
-import {useSettings} from 'template-shared/@core/hooks/useSettings'
-import {Box, Theme, useMediaQuery} from '@mui/material'
-import {useState} from 'react'
+import { useSettings } from 'template-shared/@core/hooks/useSettings'
+import { Box, Theme, useMediaQuery } from '@mui/material'
+import { useState } from 'react'
 import CalendarEvent from './CalendarEvent'
-import {useQuery} from 'react-query'
+import { useQuery } from 'react-query'
 import SidebarLeft from './SidebarLeft'
-import {useTranslation} from "react-i18next";
-import {CalendarColors, CalendarsLayoutProps, EventType} from "template-shared/@core/types/helper/calendarTypes";
-import EventApis from "cms-shared/@core/api/cms/events";
+import { useTranslation } from 'react-i18next'
+import { CalendarColors, CalendarsLayoutProps, EventType } from 'template-shared/@core/types/helper/calendarTypes'
+import EventApis from 'cms-shared/@core/api/cms/events'
 
 const calendarsColor: CalendarColors = {
   Personal: 'error',
@@ -21,8 +21,8 @@ const calendarsColor: CalendarColors = {
   INTERVIEW: 'secondary'
 }
 
-const CalPreviewCard = ({calendarDetail}: CalendarsLayoutProps) => {
-  const {t} = useTranslation()
+const CalPreviewCard = ({ calendarDetail }: CalendarsLayoutProps) => {
+  const { t } = useTranslation()
   const [calendarApi, setCalendarApi] = useState<null | any>(null)
   const [leftSidebarOpen, setLeftSidebarOpen] = useState<boolean>(false)
   const [addEventSidebarOpen, setAddEventSidebarOpen] = useState<boolean>(false)
@@ -31,12 +31,14 @@ const CalPreviewCard = ({calendarDetail}: CalendarsLayoutProps) => {
     data: eventsList,
     isLoading: isLoadingEvent,
     refetch
-  } = useQuery(['eventsList', calendarDetail?.domain, calendarDetail?.name], () => EventApis(t).getEventsByDomainAndCalendar(calendarDetail?.domain, calendarDetail?.name))
+  } = useQuery(['eventsList', calendarDetail?.domain, calendarDetail?.name], () =>
+    EventApis(t).getEventsByDomainAndCalendar(calendarDetail?.domain, calendarDetail?.name)
+  )
 
-  const {settings} = useSettings()
+  const { settings } = useSettings()
   const leftSidebarWidth = 300
   const addEventSidebarWidth = 400
-  const {skin, direction} = settings
+  const { skin, direction } = settings
   const mdAbove = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
   const handleLeftSidebarToggle = () => setLeftSidebarOpen(!leftSidebarOpen)
   const handleAddEventSidebarToggle = () => setAddEventSidebarOpen(!addEventSidebarOpen)
@@ -52,7 +54,7 @@ const CalPreviewCard = ({calendarDetail}: CalendarsLayoutProps) => {
           className='app-calendar'
           sx={{
             boxShadow: skin === 'bordered' ? 0 : 6,
-            ...(skin === 'bordered' && {border: theme => `1px solid ${theme.palette.divider}`})
+            ...(skin === 'bordered' && { border: theme => `1px solid ${theme.palette.divider}` })
           }}
         >
           <SidebarLeft
@@ -74,7 +76,7 @@ const CalPreviewCard = ({calendarDetail}: CalendarsLayoutProps) => {
               borderRadius: 1,
               boxShadow: 'none',
               backgroundColor: 'background.paper',
-              ...(mdAbove ? {borderTopLeftRadius: 0, borderBottomLeftRadius: 0} : {})
+              ...(mdAbove ? { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 } : {})
             }}
           >
             <CalendarEvent

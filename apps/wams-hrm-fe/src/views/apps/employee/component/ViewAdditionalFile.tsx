@@ -1,7 +1,7 @@
-import React, {Fragment, useState} from 'react'
-import {useDropzone} from 'react-dropzone'
+import React, { Fragment, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 import Icon from 'template-shared/@core/components/icon'
-import {Accordion, ListItem} from '@mui/material'
+import { Accordion, ListItem } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
@@ -9,21 +9,21 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import Divider from '@mui/material/Divider'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import Grid from '@mui/material/Grid'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import List from '@mui/material/List'
 import Button from '@mui/material/Button'
-import {styled} from '@mui/material/styles'
-import {useTranslation} from 'react-i18next'
-import {useMutation} from 'react-query'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import { useMutation } from 'react-query'
 import DeleteEmployeeAdditionalFileDrawer from './DeleteEmployeeAdditionalFileDrawer'
-import {AdditionalFiles} from "template-shared/@core/types/helper/fileTypes";
+import { AdditionalFiles } from 'template-shared/@core/types/helper/fileTypes'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import {checkPermission} from "template-shared/@core/api/helper/permission";
-import EmployeeAdditionalFilesApis from "hrm-shared/@core/api/hrm/employee/additionalFiles";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
+import EmployeeAdditionalFilesApis from 'hrm-shared/@core/api/hrm/employee/additionalFiles'
 
 interface FileProp {
   name: string
@@ -37,7 +37,7 @@ interface AdditionalFilesDetails {
   onDataFromChild: (files: AdditionalFiles[]) => void
 }
 
-const DropzoneWrapper = styled(Box)<BoxProps>(({theme}) => ({
+const DropzoneWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   '&.dropzone, & .dropzone': {
     minHeight: 170,
     display: 'flex',
@@ -108,8 +108,8 @@ const DropzoneWrapper = styled(Box)<BoxProps>(({theme}) => ({
   }
 }))
 const ViewAdditionalFile = (props: AdditionalFilesDetails) => {
-  const {t} = useTranslation()
-  const {id, additionalFilesDetails, onDataFromChild} = props
+  const { t } = useTranslation()
+  const { id, additionalFilesDetails, onDataFromChild } = props
   const [filesAdditional, setFilesAdditional] = useState<File[]>([])
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false)
   const [slectedEmployeeId, setSlectedEmployeeId] = useState<number | null>(null)
@@ -117,10 +117,8 @@ const ViewAdditionalFile = (props: AdditionalFilesDetails) => {
   const [selectedCodeAdditionalFile] = useState('')
 
   const updateAdditionalFileMutation = useMutation({
-    mutationFn: (data: {
-      parentId: number;
-      files: Blob[]
-    }) => EmployeeAdditionalFilesApis(t).uploadAdditionalFiles(data),
+    mutationFn: (data: { parentId: number; files: Blob[] }) =>
+      EmployeeAdditionalFilesApis(t).uploadAdditionalFiles(data),
     onSuccess: (res: any) => {
       onDataFromChild(res)
     }
@@ -134,28 +132,23 @@ const ViewAdditionalFile = (props: AdditionalFilesDetails) => {
 
         return []
       })
-      updateAdditionalFileMutation.mutate({parentId: id, files: filesAdditional})
+      updateAdditionalFileMutation.mutate({ parentId: id, files: filesAdditional })
     }
   }
 
   function downloadAdditionalFiles(data: {
-    parentId: number;
-    fileId: number;
-    version: number;
+    parentId: number
+    fileId: number
+    version: number
     originalFileName: string
   }) {
     downloadAdditionalFileMutation.mutate(data)
   }
 
   const downloadAdditionalFileMutation = useMutation({
-    mutationFn: (data: {
-      parentId: number;
-      fileId: number;
-      version: number;
-      originalFileName: string
-    }) => EmployeeAdditionalFilesApis(t).downloadAdditionalFile(data),
-    onSuccess: () => {
-    }
+    mutationFn: (data: { parentId: number; fileId: number; version: number; originalFileName: string }) =>
+      EmployeeAdditionalFilesApis(t).downloadAdditionalFile(data),
+    onSuccess: () => {}
   })
 
   const handleStateDelete = data => {
@@ -174,7 +167,7 @@ const ViewAdditionalFile = (props: AdditionalFilesDetails) => {
     setSlectedEmployeeId(id)
   }
 
-  const {getRootProps: getRootAdditionalProps, getInputProps: getInputAdditionalProps} = useDropzone({
+  const { getRootProps: getRootAdditionalProps, getInputProps: getInputAdditionalProps } = useDropzone({
     multiple: true,
     accept: {
       'file/*': ['.pdf', '.doc', '.docx', '.png', '.jpg', '.jpeg', '.gif']
@@ -187,9 +180,9 @@ const ViewAdditionalFile = (props: AdditionalFilesDetails) => {
 
   const renderFilePreview = (file: FileProp) => {
     if (file?.type?.startsWith('image')) {
-      return <img width={38} height={38} alt={file.name} src={URL.createObjectURL(file as any)}/>
+      return <img width={38} height={38} alt={file.name} src={URL.createObjectURL(file as any)} />
     } else {
-      return <Icon icon='tabler:file-description'/>
+      return <Icon icon='tabler:file-description' />
     }
   }
 
@@ -210,12 +203,12 @@ const ViewAdditionalFile = (props: AdditionalFilesDetails) => {
         border: '1px solid rgba(93, 89, 98, 0.14)'
       }}
     >
-      <div className='file-details' style={{display: 'flex'}}>
-        <div className='file-preview' style={{marginRight: '0.9375rem', fontSize: '2rem'}}>
-          <Icon style={{fontSize: '2rem'}} icon='tabler:file-description'/>
+      <div className='file-details' style={{ display: 'flex' }}>
+        <div className='file-preview' style={{ marginRight: '0.9375rem', fontSize: '2rem' }}>
+          <Icon style={{ fontSize: '2rem' }} icon='tabler:file-description' />
         </div>
         <div>
-          <Typography className='file-name' style={{fontWeight: '600'}}>
+          <Typography className='file-name' style={{ fontWeight: '600' }}>
             {file.originalFileName}
           </Typography>
           <Typography className='file-size' variant='body2'>
@@ -228,21 +221,26 @@ const ViewAdditionalFile = (props: AdditionalFilesDetails) => {
         <Tooltip title={t('Action.Download') as string}>
           <IconButton
             size='small'
-            sx={{color: 'text.secondary'}}
-            onClick={() => downloadAdditionalFiles({
-              parentId: id,
-              fileId: file.id,
-              version: 1,
-              originalFileName: file.originalFileName
-            })}
+            sx={{ color: 'text.secondary' }}
+            onClick={() =>
+              downloadAdditionalFiles({
+                parentId: id,
+                fileId: file.id,
+                version: 1,
+                originalFileName: file.originalFileName
+              })
+            }
           >
-            <Icon icon='material-symbols:download'/>
+            <Icon icon='material-symbols:download' />
           </IconButton>
         </Tooltip>
         <Tooltip title='Delete'>
-          <IconButton size='small' sx={{color: 'text.secondary'}}
-                      onClick={() => deleteAdditionalFiles({parentId: id, fileId: file.id, version: 1})}>
-            <Icon icon='tabler:trash'/>
+          <IconButton
+            size='small'
+            sx={{ color: 'text.secondary' }}
+            onClick={() => deleteAdditionalFiles({ parentId: id, fileId: file.id, version: 1 })}
+          >
+            <Icon icon='tabler:trash' />
           </IconButton>
         </Tooltip>
       </div>
@@ -266,28 +264,28 @@ const ViewAdditionalFile = (props: AdditionalFilesDetails) => {
         </div>
       </div>
       <IconButton onClick={() => handleRemoveAdditionalFile(file)}>
-        <Icon icon='tabler:x' fontSize={20}/>
+        <Icon icon='tabler:x' fontSize={20} />
       </IconButton>
     </ListItem>
   ))
 
   return (
     <>
-      <Accordion sx={{boxShadow: 'none !important'}} defaultExpanded={false}>
+      <Accordion sx={{ boxShadow: 'none !important' }} defaultExpanded={false}>
         <AccordionSummary
-          expandIcon={<Icon icon='tabler:chevron-down'/>}
+          expandIcon={<Icon icon='tabler:chevron-down' />}
           id='form-layouts-collapsible-header-1'
           aria-controls='form-layouts-collapsible-content-1'
         >
           <Typography className={'title-card'}>Additional files</Typography>
         </AccordionSummary>
-        <Divider sx={{m: '0 !important'}}/>
+        <Divider sx={{ m: '0 !important' }} />
         <AccordionDetails>
           <Grid item xs={12} sm={12} md={12}>
-            <DropzoneWrapper style={{minHeight: 170}}>
+            <DropzoneWrapper style={{ minHeight: 170 }}>
               <Fragment>
-                {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE, PermissionAction.WRITE) &&
-                  <div {...getRootAdditionalProps({className: 'dropzone'})}>
+                {checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE, PermissionAction.WRITE) && (
+                  <div {...getRootAdditionalProps({ className: 'dropzone' })}>
                     <input {...getInputAdditionalProps()} />
                     <Box
                       sx={{
@@ -297,18 +295,19 @@ const ViewAdditionalFile = (props: AdditionalFilesDetails) => {
                         flexDirection: 'column'
                       }}
                     >
-                      <Icon icon='tabler:upload' fontSize='1.75rem'/>
-                      <Typography variant='h4' sx={{mb: 2.5}}>
+                      <Icon icon='tabler:upload' fontSize='1.75rem' />
+                      <Typography variant='h4' sx={{ mb: 2.5 }}>
                         Drop files here or click to upload.
                       </Typography>
-                      <Typography sx={{color: 'text.secondary'}}>
+                      <Typography sx={{ color: 'text.secondary' }}>
                         (You can upload your employee on multiple languages.)
                       </Typography>
                     </Box>
                   </div>
-                }
+                )}
                 <List>{fileAdditionalList}</List>
-                {filesAdditional?.length > 0 && checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE, PermissionAction.WRITE) ? (
+                {filesAdditional?.length > 0 &&
+                checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE, PermissionAction.WRITE) ? (
                   <>
                     <div className='buttons'>
                       <Button color='error' variant='outlined' onClick={handleRemoveAllAdditionalFiles}>

@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
-import {useTranslation} from 'react-i18next'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Avatar from '@mui/material/Avatar'
-import imsApiUrls from "ims-shared/configs/ims_apis"
+import imsApiUrls from 'ims-shared/configs/ims_apis'
 import Typography from '@mui/material/Typography'
 import Moment from 'react-moment'
 import Tooltip from '@mui/material/Tooltip'
@@ -11,25 +11,25 @@ import IconButton from '@mui/material/IconButton'
 import Icon from 'template-shared/@core/components/icon'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import {CommentType, PostType} from 'link-shared/@core/types/link/PostTypes'
-import {useMutation, useQueryClient} from 'react-query'
+import { CommentType, PostType } from 'link-shared/@core/types/link/PostTypes'
+import { useMutation, useQueryClient } from 'react-query'
 import DeleteCommonDialog from 'template-shared/@core/components/DeleteCommonDialog'
-import {Divider} from '@mui/material'
-import {isTimeAfterHours} from 'template-shared/@core/api/helper'
-import PostApis from "link-shared/@core/api/link/post";
+import { Divider } from '@mui/material'
+import { isTimeAfterHours } from 'template-shared/@core/api/helper'
+import PostApis from 'link-shared/@core/api/link/post'
 
 function Comments({
-                    post,
-                    getNameAccount,
-                    handelCheckImagePath,
-                    getFunctionRole,
-                    checkMyCode,
-                    handleTypographyClick,
-                    countLikeComment,
-                    user,
-                    showComments
-                  }) {
-  const {t} = useTranslation()
+  post,
+  getNameAccount,
+  handelCheckImagePath,
+  getFunctionRole,
+  checkMyCode,
+  handleTypographyClick,
+  countLikeComment,
+  user,
+  showComments
+}) {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [valueAddComment, setValueAddComment] = useState('')
   const [deleteCommentDialogOpen, setDeleteCommentDialogOpen] = useState<boolean>(false)
@@ -130,7 +130,7 @@ function Comments({
 
         const index = postEditComment.comments.findIndex(obj => obj.id === res.id)
         if (index !== -1) {
-          const likePost: PostType = {...postEditComment}
+          const likePost: PostType = { ...postEditComment }
           likePost.comments[index] = res
 
           const indexPost = cachedData.findIndex(obj => obj.id === res.postId)
@@ -153,7 +153,7 @@ function Comments({
 
         const index = postEditComment.comments.findIndex(obj => obj.id === res.id)
         if (index !== -1) {
-          const dislikePost: PostType = {...postEditComment}
+          const dislikePost: PostType = { ...postEditComment }
           dislikePost.comments[index] = res
 
           const indexPost = cachedData.findIndex(obj => obj.id === res.postId)
@@ -196,12 +196,12 @@ function Comments({
 
   return (
     <Box>
-      <Grid container sx={{marginTop: '13px'}} spacing={3}>
+      <Grid container sx={{ marginTop: '13px' }} spacing={3}>
         <Grid item md={1.22} xs={2} sm={1.5}>
           <Avatar
             className={'avatarComment'}
             src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(user?.code)}`}
-            sx={{mr: 2.5}}
+            sx={{ mr: 2.5 }}
           />
         </Grid>
         <Grid item md={10.77} sm={10} xs={10} pl={0}>
@@ -218,7 +218,7 @@ function Comments({
               endAdornment: (
                 <Tooltip title={t('Link.Send')}>
                   <IconButton onClick={handleSaveAddComment} size={'small'}>
-                    <Icon icon={'tabler:send-2'}/>
+                    <Icon icon={'tabler:send-2'} />
                   </IconButton>
                 </Tooltip>
               )
@@ -232,16 +232,18 @@ function Comments({
           {showComments &&
             post.showComments &&
             post.comments?.map((comment: CommentType) => (
-              <Box key={comment.id} sx={{padding: 2, margin: 3}}>
+              <Box key={comment.id} sx={{ padding: 2, margin: 3 }}>
                 <Grid container item>
                   <Grid item md={1.25} sm={1.25} xs={1.25}>
                     <Avatar
-                      src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(comment.accountCode)}`}
-                      sx={{mr: 2.5, height: 45, width: 45, marginTop: 3}}
+                      src={`${imsApiUrls.apiUrl_IMS_Account_ImageDownload_EndPoint}/${handelCheckImagePath(
+                        comment.accountCode
+                      )}`}
+                      sx={{ mr: 2.5, height: 45, width: 45, marginTop: 3 }}
                     />
                   </Grid>
                   <Grid item md={10.75} sm={10.75} xs={10.75}>
-                    <Box sx={{backgroundColor: '#dddddd78', borderRadius: '6px', padding: '10px'}}>
+                    <Box sx={{ backgroundColor: '#dddddd78', borderRadius: '6px', padding: '10px' }}>
                       <Grid container spacing={3}>
                         <Grid item md={10} sm={10} xs={10}>
                           <Grid item md={11} sm={11} xs={11}>
@@ -281,8 +283,8 @@ function Comments({
                                         </Typography>
                                       }
                                     >
-                                      <IconButton size='small' sx={{pt: 0, marginTop: '-5px'}}>
-                                        <Icon icon='tabler:info-circle'/>
+                                      <IconButton size='small' sx={{ pt: 0, marginTop: '-5px' }}>
+                                        <Icon icon='tabler:info-circle' />
                                       </IconButton>
                                     </Tooltip>
                                   )}
@@ -296,17 +298,17 @@ function Comments({
                             <Grid item md={2} sm={2} xs={2} justifyContent={'right'} display={'flex'}>
                               <Tooltip title={t('Edit')}>
                                 <Button
-                                  sx={{height: ' fit-content'}}
+                                  sx={{ height: ' fit-content' }}
                                   className={'btnActionLink'}
-                                  startIcon={<Icon icon='tabler:edit'/>}
+                                  startIcon={<Icon icon='tabler:edit' />}
                                   onClick={() => handleEditComment(comment)}
                                 ></Button>
                               </Tooltip>
                               <Tooltip title={t('Delete')}>
                                 <Button
-                                  sx={{height: ' fit-content'}}
+                                  sx={{ height: ' fit-content' }}
                                   className={'btnActionLink'}
-                                  startIcon={<Icon icon='material-symbols-light:delete-outline'/>}
+                                  startIcon={<Icon icon='material-symbols-light:delete-outline' />}
                                   onClick={() => handleDeleteComment(comment)}
                                 ></Button>
                               </Tooltip>
@@ -330,7 +332,7 @@ function Comments({
                               <Tooltip title={t('Update')}>
                                 <Button
                                   onClick={handleSaveEditComment}
-                                  sx={{mt: 2, fontSize: '10px' /* , textTransform: 'capitalize' */}}
+                                  sx={{ mt: 2, fontSize: '10px' /* , textTransform: 'capitalize' */ }}
                                   variant={'contained'}
                                   className={'btnActionLink'}
                                 >
@@ -340,11 +342,11 @@ function Comments({
                             </div>
                           ) : (
                             <>
-                              <Typography sx={{display: 'flex', padding: 2}}>{comment.text}</Typography>
+                              <Typography sx={{ display: 'flex', padding: 2 }}>{comment.text}</Typography>
 
-                              <Divider/>
+                              <Divider />
                               <Grid container alignItems='center' spacing={2}>
-                                <Grid item md={12} sx={{display: 'flex', alignItems: 'center', mt: 2}}>
+                                <Grid item md={12} sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
                                   {checkMyCode(user.code, comment.usersAccountCode) ? (
                                     <Tooltip title={t('Link.Dislike')}>
                                       <Button
@@ -353,7 +355,7 @@ function Comments({
                                         aria-haspopup='true'
                                         onClick={() => handleLikeComment(false, comment)}
                                       >
-                                        <Icon icon='solar:like-bold-duotone' style={{fontSize: '1.2rem'}}/>
+                                        <Icon icon='solar:like-bold-duotone' style={{ fontSize: '1.2rem' }} />
                                       </Button>
                                     </Tooltip>
                                   ) : (
@@ -364,7 +366,7 @@ function Comments({
                                         aria-haspopup='true'
                                         onClick={() => handleLikeComment(true, comment)}
                                       >
-                                        <Icon icon='solar:like-line-duotone' style={{fontSize: '1.2rem'}}/>
+                                        <Icon icon='solar:like-line-duotone' style={{ fontSize: '1.2rem' }} />
                                       </Button>
                                     </Tooltip>
                                   )}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -8,11 +8,11 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import FormHelperText from '@mui/material/FormHelperText'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
-import {useTranslation} from 'react-i18next'
-import {Controller, useForm} from 'react-hook-form'
-import {useMutation} from 'react-query'
-import {RequestContractStatus} from 'hrm-shared/@core/types/hrm/contractType'
-import ContractApis from "hrm-shared/@core/api/hrm/contract";
+import { useTranslation } from 'react-i18next'
+import { Controller, useForm } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import { RequestContractStatus } from 'hrm-shared/@core/types/hrm/contractType'
+import ContractApis from 'hrm-shared/@core/api/hrm/contract'
 
 interface LockContractButtonProps {
   isLocked: boolean
@@ -20,13 +20,13 @@ interface LockContractButtonProps {
   refetch: () => void
 }
 
-const LockContractButton: React.FC<LockContractButtonProps> = ({isLocked, contractId, refetch}) => {
-  const {t} = useTranslation()
+const LockContractButton: React.FC<LockContractButtonProps> = ({ isLocked, contractId, refetch }) => {
+  const { t } = useTranslation()
   const {
     handleSubmit: handleSubmitCheck,
     control: controlCheck,
-    formState: {errors: errorsCheck}
-  } = useForm({defaultValues: {isLocked}})
+    formState: { errors: errorsCheck }
+  } = useForm({ defaultValues: { isLocked } })
 
   const [newStatus, setNewStatus] = useState<boolean>(isLocked)
 
@@ -40,8 +40,7 @@ const LockContractButton: React.FC<LockContractButtonProps> = ({isLocked, contra
       await mutation.mutateAsync(data)
       refetch()
       setNewStatus(!newStatus)
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   return (
@@ -49,29 +48,29 @@ const LockContractButton: React.FC<LockContractButtonProps> = ({isLocked, contra
       <Card>
         <CardContent>
           <form onSubmit={handleSubmitCheck(onSubmitCheck)}>
-            <Box sx={{mb: 4}}>
+            <Box sx={{ mb: 4 }}>
               <FormControl>
                 <Controller
                   name='isLocked'
                   control={controlCheck}
-                  rules={{required: true}}
-                  render={({field}) => (
+                  rules={{ required: true }}
+                  render={({ field }) => (
                     <FormControlLabel
                       label={`${t('Contract.I_confirm_my_contract')} ${!isLocked ? t('Lock') : t('unlock')}`}
-                      sx={errorsCheck.isLocked ? {'& .MuiTypography-root': {color: 'error.main'}} : null}
+                      sx={errorsCheck.isLocked ? { '& .MuiTypography-root': { color: 'error.main' } } : null}
                       control={
                         <Checkbox
                           {...field}
                           size='small'
                           name='validation-basic-checkbox'
-                          sx={errorsCheck.isLocked ? {color: 'error.main'} : null}
+                          sx={errorsCheck.isLocked ? { color: 'error.main' } : null}
                         />
                       }
                     />
                   )}
                 />
                 {errorsCheck.isLocked && (
-                  <FormHelperText sx={{color: 'error.main'}} id='validation-basic-checkbox'>
+                  <FormHelperText sx={{ color: 'error.main' }} id='validation-basic-checkbox'>
                     {t('Contract.Please_confirm_you_want_to')} {isLocked ? t('activate') : t('deactivate')}{' '}
                     {t('Contract.contract')}=
                   </FormHelperText>

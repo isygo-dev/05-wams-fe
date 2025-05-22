@@ -1,9 +1,9 @@
 // ** MUI Imports
-import {Theme} from '@mui/material/styles'
-import {ComponentsPropsList} from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import { ComponentsPropsList } from '@mui/material'
 
 // ** Type Import
-import {Settings} from 'template-shared/@core/context/settingsContext'
+import { Settings } from 'template-shared/@core/context/settingsContext'
 
 // ** Overrides Imports
 import MuiCard from './card'
@@ -41,77 +41,77 @@ import MuiAutocomplete from './autocomplete'
 import MuiToggleButton from './toggleButton'
 
 export type OwnerStateThemeType = {
-    theme: Theme
-    ownerState: ComponentsPropsList[keyof ComponentsPropsList] & Record<string, unknown>
+  theme: Theme
+  ownerState: ComponentsPropsList[keyof ComponentsPropsList] & Record<string, unknown>
 }
 
 const Overrides = (settings: Settings) => {
-    const {skin} = settings
+  const { skin } = settings
 
-    const button = MuiButton()
-    const chip = MuiChip()
-    const list = MuiList()
-    const tabs = MuiTabs()
-    const radio = MuiRadio()
-    const input = MuiInput()
-    const tables = MuiTable()
-    const alerts = MuiAlerts()
-    const rating = MuiRating()
-    const slider = MuiSlider()
-    const avatars = MuiAvatar()
-    const divider = MuiDivider()
-    const menu = MuiMenu(skin)
-    const tooltip = MuiTooltip()
-    const cards = MuiCard(skin)
-    const checkbox = MuiCheckbox()
-    const backdrop = MuiBackdrop()
-    const dataGrid = MuiDataGrid()
-    const progress = MuiProgress()
-    const switches = MuiSwitches()
-    const timeline = MuiTimeline()
-    const accordion = MuiAccordion()
-    const dialog = MuiDialog(skin)
-    const pagination = MuiPagination()
-    const popover = MuiPopover(skin)
-    const breadcrumb = MuiBreadcrumb()
-    const snackbar = MuiSnackbar(skin)
-    const autocomplete = MuiAutocomplete(skin)
+  const button = MuiButton()
+  const chip = MuiChip()
+  const list = MuiList()
+  const tabs = MuiTabs()
+  const radio = MuiRadio()
+  const input = MuiInput()
+  const tables = MuiTable()
+  const alerts = MuiAlerts()
+  const rating = MuiRating()
+  const slider = MuiSlider()
+  const avatars = MuiAvatar()
+  const divider = MuiDivider()
+  const menu = MuiMenu(skin)
+  const tooltip = MuiTooltip()
+  const cards = MuiCard(skin)
+  const checkbox = MuiCheckbox()
+  const backdrop = MuiBackdrop()
+  const dataGrid = MuiDataGrid()
+  const progress = MuiProgress()
+  const switches = MuiSwitches()
+  const timeline = MuiTimeline()
+  const accordion = MuiAccordion()
+  const dialog = MuiDialog(skin)
+  const pagination = MuiPagination()
+  const popover = MuiPopover(skin)
+  const breadcrumb = MuiBreadcrumb()
+  const snackbar = MuiSnackbar(skin)
+  const autocomplete = MuiAutocomplete(skin)
 
-    return Object.assign(
-        chip,
-        list,
-        menu,
-        tabs,
-        cards,
-        radio,
-        input,
-        alerts,
-        button,
-        dialog,
-        rating,
-        slider,
-        tables,
-        avatars,
-        divider,
-        MuiLink,
-        popover,
-        tooltip,
-        checkbox,
-        backdrop,
-        dataGrid,
-        MuiPaper,
-        progress,
-        snackbar,
-        switches,
-        timeline,
-        accordion,
-        MuiSelect,
-        breadcrumb,
-        pagination,
-        autocomplete,
-        MuiTypography,
-        MuiToggleButton
-    )
+  return Object.assign(
+    chip,
+    list,
+    menu,
+    tabs,
+    cards,
+    radio,
+    input,
+    alerts,
+    button,
+    dialog,
+    rating,
+    slider,
+    tables,
+    avatars,
+    divider,
+    MuiLink,
+    popover,
+    tooltip,
+    checkbox,
+    backdrop,
+    dataGrid,
+    MuiPaper,
+    progress,
+    snackbar,
+    switches,
+    timeline,
+    accordion,
+    MuiSelect,
+    breadcrumb,
+    pagination,
+    autocomplete,
+    MuiTypography,
+    MuiToggleButton
+  )
 }
 
 export default Overrides

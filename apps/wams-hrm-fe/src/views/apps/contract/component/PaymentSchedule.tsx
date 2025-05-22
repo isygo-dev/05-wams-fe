@@ -13,14 +13,14 @@ import {
   GridRowModes,
   GridRowModesModel
 } from '@mui/x-data-grid'
-import {useMutation, useQuery} from 'react-query'
-import {PaymentSchedule} from 'hrm-shared/@core/types/hrm/contractType'
-import {useTranslation} from "react-i18next";
-import PaymentScheduleApis from "hrm-shared/@core/api/hrm/contract/paymentSchedule";
+import { useMutation, useQuery } from 'react-query'
+import { PaymentSchedule } from 'hrm-shared/@core/types/hrm/contractType'
+import { useTranslation } from 'react-i18next'
+import PaymentScheduleApis from 'hrm-shared/@core/api/hrm/contract/paymentSchedule'
 
-export default function TableEditable({contractId, checkPermissionUpdatePayment}) {
-  const {t} = useTranslation()
-  const {data: payments} = useQuery<PaymentSchedule[]>(['PaymentData', contractId], () =>
+export default function TableEditable({ contractId, checkPermissionUpdatePayment }) {
+  const { t } = useTranslation()
+  const { data: payments } = useQuery<PaymentSchedule[]>(['PaymentData', contractId], () =>
     PaymentScheduleApis(t).getPaymentScheduleById(contractId)
   )
   const [rows, setRows] = React.useState(payments)
@@ -36,17 +36,17 @@ export default function TableEditable({contractId, checkPermissionUpdatePayment}
   }
 
   const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({...rowModesModel, [id]: {mode: GridRowModes.Edit}})
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } })
   }
 
   const handleSaveClick = (id: GridRowId) => () => {
-    setRowModesModel({...rowModesModel, [id]: {mode: GridRowModes.View}})
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
   }
 
   const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
       ...rowModesModel,
-      [id]: {mode: GridRowModes.View, ignoreModifications: true}
+      [id]: { mode: GridRowModes.View, ignoreModifications: true }
     })
 
     const editedRow = rows?.find(row => row.id === id)
@@ -55,7 +55,7 @@ export default function TableEditable({contractId, checkPermissionUpdatePayment}
   }
 
   const processRowUpdate = async (newRow: PaymentSchedule) => {
-    const data = {...newRow}
+    const data = { ...newRow }
     console.log(data)
     await mutation.mutateAsync(data)
   }
@@ -101,21 +101,20 @@ export default function TableEditable({contractId, checkPermissionUpdatePayment}
       field: 'submitDate',
       valueGetter: params => new Date(params.value)
     },
-    checkPermissionUpdatePayment &&
-    {
+    checkPermissionUpdatePayment && {
       field: 'actions',
       type: 'actions',
       headerName: '',
       width: 100,
       cellClassName: 'actions',
-      getActions: ({id}) => {
+      getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit
 
         if (isInEditMode) {
           return [
             <GridActionsCellItem
               key={id}
-              icon={<SaveIcon/>}
+              icon={<SaveIcon />}
               label='Save'
               sx={{
                 color: 'primary.main'
@@ -124,7 +123,7 @@ export default function TableEditable({contractId, checkPermissionUpdatePayment}
             />,
             <GridActionsCellItem
               key={id}
-              icon={<CancelIcon/>}
+              icon={<CancelIcon />}
               label='Cancel'
               className='textPrimary'
               onClick={checkPermissionUpdatePayment && handleCancelClick(id)}
@@ -135,7 +134,7 @@ export default function TableEditable({contractId, checkPermissionUpdatePayment}
 
         return [
           <GridActionsCellItem
-            icon={<EditIcon/>}
+            icon={<EditIcon />}
             key={id}
             label='Edit'
             className='textPrimary'
@@ -143,7 +142,6 @@ export default function TableEditable({contractId, checkPermissionUpdatePayment}
             color='inherit'
           />
         ]
-
       }
     }
   ]
@@ -171,7 +169,7 @@ export default function TableEditable({contractId, checkPermissionUpdatePayment}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
         slotProps={{
-          toolbar: {setRows, setRowModesModel}
+          toolbar: { setRows, setRowModesModel }
         }}
       />
     </Box>

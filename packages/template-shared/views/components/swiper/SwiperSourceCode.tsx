@@ -1,5 +1,5 @@
 export const SwiperCenteredJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 
@@ -44,7 +44,7 @@ export default SwiperCentered
 )
 
 export const SwiperAutoSwitchJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 
@@ -119,7 +119,7 @@ export default SwiperAutoSwitch
 )
 
 export const SwiperControlsJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -219,7 +219,7 @@ export default SwiperControls
 )
 
 export const SwiperDefaultJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 
@@ -259,7 +259,7 @@ export default SwiperDefault
 )
 
 export const SwiperFaderJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -307,7 +307,7 @@ export default SwiperFader
 )
 
 export const SwiperFreeModeJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 
@@ -353,7 +353,7 @@ export default SwiperFreeMode
 )
 
 export const SwiperLoopJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 
@@ -391,7 +391,7 @@ export default SwiperLoop
 )
 
 export const SwiperMultipleSlidesJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 
@@ -434,7 +434,7 @@ export default SwiperMultipleSlides
 )
 
 export const SwiperSpacingJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 
@@ -478,7 +478,7 @@ export default SwiperSpacing
 )
 
 export const SwiperMutationObserverJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -559,7 +559,7 @@ export default SwiperMutationObserver
 )
 
 export const SwiperThumbnailsJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import { useTheme } from '@mui/material/styles'
@@ -672,7 +672,7 @@ export default SwiperThumbnails
 )
 
 export const SwiperVerticalJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 
@@ -706,7 +706,7 @@ export default SwiperVertical
 )
 
 export const SwiperZoomJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -768,7 +768,7 @@ export default SwiperZoom
 )
 
 export const SwiperAutoSwitchTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import { Direction } from '@mui/material'
@@ -842,7 +842,7 @@ export default SwiperAutoSwitch
 )
 
 export const SwiperCenteredTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import { Direction } from '@mui/material'
@@ -888,7 +888,7 @@ export default SwiperCentered
 )
 
 export const SwiperControlsTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -989,7 +989,7 @@ export default SwiperControls
 )
 
 export const SwiperFreeModeTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import { Direction } from '@mui/material'
@@ -1036,7 +1036,7 @@ export default SwiperFreeMode
 )
 
 export const SwiperLoopTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import { Direction } from '@mui/material'
@@ -1075,7 +1075,7 @@ export default SwiperLoop
 )
 
 export const SwiperMultipleSlidesTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import { Direction } from '@mui/material'
@@ -1119,7 +1119,7 @@ export default SwiperMultipleSlides
 )
 
 export const SwiperMutationObserverTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1201,7 +1201,7 @@ export default SwiperMutationObserver
 )
 
 export const SwiperSpacingTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import { Direction } from '@mui/material'
@@ -1246,7 +1246,7 @@ export default SwiperSpacing
 )
 
 export const SwiperThumbnailsTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { MutableRefObject } from 'react'
 
@@ -1364,7 +1364,7 @@ export default SwiperThumbnails
 )
 
 export const SwiperFaderTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1413,7 +1413,7 @@ export default SwiperFader
 )
 
 export const SwiperVerticalTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 
@@ -1447,7 +1447,7 @@ export default SwiperVertical
 )
 
 export const SwiperZoomTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -1510,7 +1510,7 @@ export default SwiperZoom
 )
 
 export const SwiperDefaultTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Box from '@mui/material/Box'
 import { Direction } from '@mui/material'

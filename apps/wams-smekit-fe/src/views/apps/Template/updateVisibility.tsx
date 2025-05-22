@@ -1,22 +1,22 @@
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import {useTranslation} from "react-i18next";
-import {Theme} from "@mui/material/styles";
+import Dialog from '@mui/material/Dialog'
+import DialogContent from '@mui/material/DialogContent'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import DialogActions from '@mui/material/DialogActions'
+import Button from '@mui/material/Button'
+import { useTranslation } from 'react-i18next'
+import { Theme } from '@mui/material/styles'
 
 type Props = {
-  open: boolean;
-  setOpen: (val: boolean) => void;
-  handleClose: () => void;
-  handleConfirmation: () => void;
-};
+  open: boolean
+  setOpen: (val: boolean) => void
+  handleClose: () => void
+  handleConfirmation: () => void
+}
 
 const UpdateVisibility = (props: Props) => {
-  const {open, setOpen, handleClose, handleConfirmation} = props;
-  const {t} = useTranslation();
+  const { open, setOpen, handleClose, handleConfirmation } = props
+  const { t } = useTranslation()
 
   return (
     <Dialog
@@ -51,7 +51,7 @@ const UpdateVisibility = (props: Props) => {
             }
           }}
         >
-          <Typography variant='h4' sx={{mb: 5, color: 'text.secondary'}}>
+          <Typography variant='h4' sx={{ mb: 5, color: 'text.secondary' }}>
             {t('Are you sure you want to change the visibility?')}
           </Typography>
         </Box>
@@ -63,23 +63,15 @@ const UpdateVisibility = (props: Props) => {
           pb: (theme: Theme) => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
         }}
       >
-        <Button
-          variant='contained'
-          sx={{mr: 2}}
-          onClick={handleConfirmation}
-        >
+        <Button variant='contained' sx={{ mr: 2 }} onClick={handleConfirmation}>
           {t('Change')}
         </Button>
-        <Button
-          variant='outlined'
-          color='secondary'
-          onClick={handleClose}
-        >
+        <Button variant='outlined' color='secondary' onClick={handleClose}>
           {t('Cancel')}
         </Button>
       </DialogActions>
     </Dialog>
-  );
-};
+  )
+}
 
-export default UpdateVisibility;
+export default UpdateVisibility

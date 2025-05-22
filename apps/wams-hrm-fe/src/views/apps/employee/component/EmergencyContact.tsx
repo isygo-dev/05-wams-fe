@@ -1,19 +1,19 @@
-import {useTranslation} from 'react-i18next'
-import React, {useContext, useState} from 'react'
-import {EmployeeContext} from '../../../../pages/apps/employee/view/[id]'
-import {useFormContext} from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import React, { useContext, useState } from 'react'
+import { EmployeeContext } from '../../../../pages/apps/employee/view/[id]'
+import { useFormContext } from 'react-hook-form'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import {Accordion, AccordionDetails, AccordionSummary, CardContent, IconButton, Typography} from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, CardContent, IconButton, Typography } from '@mui/material'
 import Icon from 'template-shared/@core/components/icon'
 
-export function EmergencyContact({checkPermissionUpdate}) {
-  const {t} = useTranslation()
+export function EmergencyContact({ checkPermissionUpdate }) {
+  const { t } = useTranslation()
   const employee = useContext(EmployeeContext)
   const employeeData = employee.employeeData || {}
 
-  const {register} = useFormContext()
+  const { register } = useFormContext()
   const [emergencyContacts, setEmergencyContacts] = useState(employeeData.details?.emergencyContact || [{}])
 
   const handleAddContact = () => {
@@ -33,9 +33,9 @@ export function EmergencyContact({checkPermissionUpdate}) {
   }
 
   return (
-    <Accordion defaultExpanded={false} style={{marginTop: 16}}>
+    <Accordion defaultExpanded={false} style={{ marginTop: 16 }}>
       <AccordionSummary
-        expandIcon={<Icon icon='tabler:chevron-down'/>}
+        expandIcon={<Icon icon='tabler:chevron-down' />}
         aria-controls='panel1a-content'
         id='panel1a-header'
       >
@@ -55,7 +55,7 @@ export function EmergencyContact({checkPermissionUpdate}) {
                       fullWidth
                       variant='outlined'
                       disabled={!checkPermissionUpdate}
-                      {...checkPermissionUpdate && register(`details.emergencyContact[${index}].name`)}
+                      {...(checkPermissionUpdate && register(`details.emergencyContact[${index}].name`))}
                     />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -66,7 +66,7 @@ export function EmergencyContact({checkPermissionUpdate}) {
                       fullWidth
                       variant='outlined'
                       disabled={!checkPermissionUpdate}
-                      {...checkPermissionUpdate && register(`details.emergencyContact[${index}].relation`)}
+                      {...(checkPermissionUpdate && register(`details.emergencyContact[${index}].relation`))}
                     />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -77,16 +77,17 @@ export function EmergencyContact({checkPermissionUpdate}) {
                       fullWidth
                       variant='outlined'
                       disabled={!checkPermissionUpdate}
-                      {...checkPermissionUpdate && register(`details.emergencyContact[${index}].phoneNumber`)}
+                      {...(checkPermissionUpdate && register(`details.emergencyContact[${index}].phoneNumber`))}
                     />
                   </Grid>
                   <Grid item>
                     <Grid container>
                       <Grid item>
-                        {checkPermissionUpdate &&
+                        {checkPermissionUpdate && (
                           <IconButton onClick={() => handleDeleteEmergency(index)}>
-                            <Icon icon='tabler:x' fontSize='1.25rem'/>
-                          </IconButton>}
+                            <Icon icon='tabler:x' fontSize='1.25rem' />
+                          </IconButton>
+                        )}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -94,16 +95,18 @@ export function EmergencyContact({checkPermissionUpdate}) {
               </Grid>
             ))}
           </Grid>
-          {checkPermissionUpdate &&
-
-            <Button variant='contained' size={'small'} color='primary'
-                    style={{marginTop: '20px'}}
-                    className={'button-padding-style'} onClick={handleAddContact}>
-              <Icon icon='tabler:plus'
-                    style={{marginRight: '6px'}}/> {t('Employee.Add_Contact')}
+          {checkPermissionUpdate && (
+            <Button
+              variant='contained'
+              size={'small'}
+              color='primary'
+              style={{ marginTop: '20px' }}
+              className={'button-padding-style'}
+              onClick={handleAddContact}
+            >
+              <Icon icon='tabler:plus' style={{ marginRight: '6px' }} /> {t('Employee.Add_Contact')}
             </Button>
-
-          }
+          )}
         </CardContent>
       </AccordionDetails>
     </Accordion>

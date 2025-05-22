@@ -1,8 +1,8 @@
 import React from 'react'
-import CommonJobList from "rpm-shared/@core/components/common-job";
+import CommonJobList from 'rpm-shared/@core/components/common-job'
 
 const JobListRpm = () => {
-  return <CommonJobList/>
+  return <CommonJobList />
 }
 
 export default JobListRpm

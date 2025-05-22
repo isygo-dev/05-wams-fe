@@ -1,41 +1,41 @@
-import React, {useCallback, useState} from 'react'
+import React, { useCallback, useState } from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import {DataGrid, GridApi, GridColDef} from '@mui/x-data-grid'
+import { DataGrid, GridApi, GridColDef } from '@mui/x-data-grid'
 import Icon from 'template-shared/@core/components/icon'
 import Tooltip from '@mui/material/Tooltip'
 import DeleteRoleDialog from 'template-shared/@core/components/DeleteCommonDialog'
-import {TokenConfigType} from 'kms-shared/@core/types/kms/tokenConfig'
-import {useTranslation} from 'react-i18next'
+import { TokenConfigType } from 'kms-shared/@core/types/kms/tokenConfig'
+import { useTranslation } from 'react-i18next'
 import EditTokenConfig from '../../../views/apps/kms-token-config/EditTokenConfig'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
-import {GridApiCommunity} from '@mui/x-data-grid/internals'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { GridApiCommunity } from '@mui/x-data-grid/internals'
 import TableHeader from 'template-shared/views/table/TableHeader'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import {checkPermission} from 'template-shared/@core/api/helper/permission'
-import themeConfig from "template-shared/configs/themeConfig";
-import Styles from "template-shared/style/style.module.css";
-import AccountApis from "ims-shared/@core/api/ims/account";
-import TokenConfigApis from "kms-shared/@core/api/kms/token-config";
-import AddTokenConfig from "../../../views/apps/kms-token-config/AddTokenConfig";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
+import themeConfig from 'template-shared/configs/themeConfig'
+import Styles from 'template-shared/style/style.module.css'
+import AccountApis from 'ims-shared/@core/api/ims/account'
+import TokenConfigApis from 'kms-shared/@core/api/kms/token-config'
+import AddTokenConfig from '../../../views/apps/kms-token-config/AddTokenConfig'
 
 interface CellType {
   row: TokenConfigType
 }
 
 const TokenManagement = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [value, setValue] = useState<string>('')
   const [addTokenOpen, setAddTokenOpen] = useState<boolean>(false)
-  const [paginationModel, setPaginationModel] = useState({page: 0, pageSize: 10})
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
   const [editDataToken, setEditDataToken] = useState<TokenConfigType>()
   const [editTokenOpen, setEditTokenOpen] = useState<boolean>(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false)
@@ -51,7 +51,7 @@ const TokenManagement = () => {
     setEditDataToken(data)
   }
 
-  const {data: profileUser, isLoading: isLoadingProfileUser} = useQuery(
+  const { data: profileUser, isLoading: isLoadingProfileUser } = useQuery(
     'profileUser',
     AccountApis(t).getAccountProfile
   )
@@ -59,7 +59,7 @@ const TokenManagement = () => {
   // ** Hooks
   const dataGridApiRef = React.useRef<GridApi>()
 
-  const {data: tokens, isLoading, isStale} = useQuery(`tokens`, () => TokenConfigApis(t).getTokenConfigurations())
+  const { data: tokens, isLoading, isStale } = useQuery(`tokens`, () => TokenConfigApis(t).getTokenConfigurations())
   console.log('isStale', isStale)
 
   const mutationDelete = useMutation({
@@ -93,10 +93,10 @@ const TokenManagement = () => {
       field: 'domain',
       minWidth: 170,
       headerName: t('Domain.Domain') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary' /* , textTransform: 'capitalize' */}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' /* , textTransform: 'capitalize' */ }}>
               {row.domain}
             </Typography>
           </Box>
@@ -108,10 +108,10 @@ const TokenManagement = () => {
       minWidth: 170,
       field: 'code',
       headerName: t('code') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.code}
             </Typography>
           </Box>
@@ -123,10 +123,10 @@ const TokenManagement = () => {
       field: 'tokenType',
       minWidth: 170,
       headerName: t('Token.Token_Type') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.tokenType}
             </Typography>
           </Box>
@@ -138,9 +138,9 @@ const TokenManagement = () => {
       minWidth: 120,
       headerName: t('Token.issuer') as string,
       field: 'issuer',
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Typography noWrap sx={{fontWeight: 500, color: 'text.secondary'}}>
+          <Typography noWrap sx={{ fontWeight: 500, color: 'text.secondary' }}>
             {row.issuer}
           </Typography>
         )
@@ -151,10 +151,10 @@ const TokenManagement = () => {
       field: 'audience',
       minWidth: 170,
       headerName: t('Token.audience') as string,
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap sx={{color: 'text.secondary'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap sx={{ color: 'text.secondary' }}>
               {row.audience}
             </Typography>
           </Box>
@@ -168,25 +168,28 @@ const TokenManagement = () => {
       field: 'actions',
       headerName: '' as string,
       align: 'right',
-      renderCell: ({row}: CellType) => (
+      renderCell: ({ row }: CellType) => (
         <>
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {checkPermission(PermissionApplication.KMS, PermissionPage.TOKEN_CONFIG, PermissionAction.DELETE) && (
               <Tooltip title={t('Action.Delete')}>
                 <IconButton
                   className={Styles.sizeIcon}
-                  sx={{color: 'text.secondary'}}
+                  sx={{ color: 'text.secondary' }}
                   onClick={() => handleOpenDeleteDialog(row.id)}
                 >
-                  <Icon icon='tabler:trash'/>
+                  <Icon icon='tabler:trash' />
                 </IconButton>
               </Tooltip>
             )}
             {checkPermission(PermissionApplication.KMS, PermissionPage.TOKEN_CONFIG, PermissionAction.WRITE) && (
               <Tooltip title={t('Action.Edit')}>
                 <IconButton
-                  className={Styles.sizeIcon} sx={{color: 'text.secondary'}} onClick={() => handelOpenEdit(row)}>
-                  <Icon icon='tabler:edit'/>
+                  className={Styles.sizeIcon}
+                  sx={{ color: 'text.secondary' }}
+                  onClick={() => handelOpenEdit(row)}
+                >
+                  <Icon icon='tabler:edit' />
                 </IconButton>
               </Tooltip>
             )}
@@ -214,7 +217,6 @@ const TokenManagement = () => {
             <Box className={Styles.boxTable}>
               <DataGrid
                 autoHeight
-
                 className={Styles.tableStyleNov}
                 columnHeaderHeight={themeConfig.columnHeaderHeight}
                 rowHeight={themeConfig.rowHeight}
@@ -227,7 +229,7 @@ const TokenManagement = () => {
                 slotProps={{
                   pagination: {
                     labelRowsPerPage: t('Rows_per_page'),
-                    labelDisplayedRows: ({from, to, count}) => t('pagination footer', {from, to, count})
+                    labelDisplayedRows: ({ from, to, count }) => t('pagination footer', { from, to, count })
                   }
                 }}
                 apiRef={dataGridApiRef as React.MutableRefObject<GridApiCommunity>}
@@ -236,13 +238,14 @@ const TokenManagement = () => {
           )}
         </Card>
       </Grid>
-      {!isLoadingProfileUser && addTokenOpen &&
+      {!isLoadingProfileUser &&
+        addTokenOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.TOKEN_CONFIG, PermissionAction.WRITE) && (
-          <AddTokenConfig open={addTokenOpen} domain={profileUser?.domain} toggle={toggleAddTokenDrawer}/>
+          <AddTokenConfig open={addTokenOpen} domain={profileUser?.domain} toggle={toggleAddTokenDrawer} />
         )}
       {editTokenOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.TOKEN_CONFIG, PermissionAction.WRITE) && (
-          <EditTokenConfig open={editTokenOpen} toggle={toggleEditRoleDrawer} dataToken={editDataToken}/>
+          <EditTokenConfig open={editTokenOpen} toggle={toggleEditRoleDrawer} dataToken={editDataToken} />
         )}
       {deleteDialogOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.TOKEN_CONFIG, PermissionAction.DELETE) && (

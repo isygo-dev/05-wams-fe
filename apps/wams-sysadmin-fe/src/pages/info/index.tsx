@@ -1,5 +1,5 @@
 // ** React Imports
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 // ** Layout Import
 import BlankLayout from 'template-shared/@core/layouts/BlankLayout'

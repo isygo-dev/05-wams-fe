@@ -1,8 +1,8 @@
 // ** MUI Imports
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
-import {useTranslation} from 'react-i18next'
-import {Control, Controller, UseFormGetValues, UseFormSetValue} from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { Control, Controller, UseFormGetValues, UseFormSetValue } from 'react-hook-form'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Icon from 'template-shared/@core/components/icon'
@@ -10,11 +10,11 @@ import DeleteCommonDialog from 'template-shared/@core/components/DeleteCommonDia
 import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 import Repeater from 'template-shared/@core/components/repeater'
-import {Radio} from '@mui/material'
+import { Radio } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import {Option, QuizDetailType} from "quiz-shared/@core/types/quiz/quizTypes";
+import { Option, QuizDetailType } from 'quiz-shared/@core/types/quiz/quizTypes'
 
 interface QuestionQuizProps {
   countOptions: number
@@ -26,8 +26,8 @@ interface QuestionQuizProps {
 }
 
 const MCQ = (props: QuestionQuizProps) => {
-  const {t} = useTranslation()
-  const {control, countOptions, setValue, getValues, indexSection, indexQuestion} = props
+  const { t } = useTranslation()
+  const { control, countOptions, setValue, getValues, indexSection, indexQuestion } = props
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false)
   const [index, setIndex] = useState<number>(null)
   const [count, setCount] = useState<number>(countOptions)
@@ -82,31 +82,31 @@ const MCQ = (props: QuestionQuizProps) => {
               <Grid
                 container
                 key={`sections.${indexSection}.questions.${indexQuestion}.options.${x}.id`}
-                sx={{mb: 3}}
+                sx={{ mb: 3 }}
               >
                 <Grid item md={10}>
                   <FormControl fullWidth>
                     <Controller
                       name={`sections.${indexSection}.questions.${indexQuestion}.options.${x}.option`}
                       control={control}
-                      rules={{required: true}}
-                      render={({field: {value, onChange}}) => (
-                        <TextField size='small' value={value} label={t('Quiz.Option_Name')} onChange={onChange}/>
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange } }) => (
+                        <TextField size='small' value={value} label={t('Quiz.Option_Name')} onChange={onChange} />
                       )}
                     />
                   </FormControl>
                 </Grid>
-                <Grid item md={2} sx={{display: 'flex', justifyContent: 'end'}}>
-                  <FormControl sx={{width: 'fit-content !important'}}>
+                <Grid item md={2} sx={{ display: 'flex', justifyContent: 'end' }}>
+                  <FormControl sx={{ width: 'fit-content !important' }}>
                     <Controller
                       name={`sections.${indexSection}.questions.${indexQuestion}.options`}
                       control={control}
-                      rules={{required: true}}
-                      render={({field: {value}}) => (
+                      rules={{ required: true }}
+                      render={({ field: { value } }) => (
                         <RadioGroup
                           value={value[x]?.option}
                           name='controller'
-                          sx={{ml: 0.8}}
+                          sx={{ ml: 0.8 }}
                           onChange={() => handleChangeChek(x)}
                         >
                           <div>
@@ -130,7 +130,7 @@ const MCQ = (props: QuestionQuizProps) => {
 
                   <Tooltip title={t('Quiz.Delete_Option') as string}>
                     <IconButton size='small' onClick={() => handleOpenDeleteDialog(x)}>
-                      <Icon icon='tabler:trash' fontSize='1.25rem'/>
+                      <Icon icon='tabler:trash' fontSize='1.25rem' />
                     </IconButton>
                   </Tooltip>
                 </Grid>
@@ -141,11 +141,11 @@ const MCQ = (props: QuestionQuizProps) => {
         <Button
           variant='outlined'
           color='primary'
-          sx={{mb: 3, mt: 2}}
+          sx={{ mb: 3, mt: 2 }}
           className={'button-padding-style'}
           onClick={() => handleAddOptions()}
         >
-          {t('Quiz.Add_Options')} <Icon icon='tabler:plus' style={{marginLeft: '10px'}}/>
+          {t('Quiz.Add_Options')} <Icon icon='tabler:plus' style={{ marginLeft: '10px' }} />
         </Button>
       </Grid>
 

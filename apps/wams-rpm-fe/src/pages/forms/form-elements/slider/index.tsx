@@ -36,29 +36,29 @@ const Sliders = () => {
             tsx: source.SliderBasicTSXCode,
             jsx: source.SliderBasicJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             Use <code>defaultValue</code> prop for default slider value and <code>disabled</code> prop for disabled
             slider.
           </Typography>
-          <SliderBasic/>
+          <SliderBasic />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
         <CardSnippet
-          sx={{px: 2}}
+          sx={{ px: 2 }}
           title='Controlled and Uncontrolled'
           code={{
             tsx: source.SliderControlledUncontrolledTSXCode,
             jsx: source.SliderControlledUncontrolledJSXCode
           }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             Manage <code>value</code> prop with the help of a state for controlled slider and use{' '}
             <code>defaultValue</code> prop for uncontrolled slider.
           </Typography>
-          <SliderControlledUncontrolled/>
+          <SliderControlledUncontrolled />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -68,12 +68,12 @@ const Sliders = () => {
             tsx: source.SliderDiscreteTSXCode,
             jsx: source.SliderDiscreteJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             You can generate a mark for each step with <code>marks</code> prop.
           </Typography>
-          <SliderDiscrete/>
+          <SliderDiscrete />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -83,12 +83,12 @@ const Sliders = () => {
             tsx: source.SliderSmallStepsTSXCode,
             jsx: source.SliderSmallStepsJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             You can change the default step increment with <code>step</code> prop.
           </Typography>
-          <SliderSmallSteps/>
+          <SliderSmallSteps />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -98,12 +98,12 @@ const Sliders = () => {
             tsx: source.SliderCustomMarksTSXCode,
             jsx: source.SliderCustomMarksJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             You can have custom marks by providing a rich array to the <code>marks</code> prop.
           </Typography>
-          <SliderCustomMarks/>
+          <SliderCustomMarks />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -113,28 +113,28 @@ const Sliders = () => {
             tsx: source.SliderRestrictedValuesTSXCode,
             jsx: source.SliderRestrictedValuesJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             You can restrict the selectable values to those provided with the <code>marks</code> prop with{' '}
             <code>step={null}</code>.
           </Typography>
-          <SliderRestrictedValues/>
+          <SliderRestrictedValues />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
         <CardSnippet
           title='Label Always Visible'
-          sx={{px: 2}}
+          sx={{ px: 2 }}
           code={{
             tsx: source.SliderLabelAlwaysVisibleTSXCode,
             jsx: source.SliderLabelAlwaysVisibleJSXCode
           }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             You can force the thumb label to be always visible with <code>valueLabelDisplay='on'</code>.
           </Typography>
-          <SliderLabelAlwaysVisible/>
+          <SliderLabelAlwaysVisible />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -144,13 +144,13 @@ const Sliders = () => {
             tsx: source.SliderRangeTSXCode,
             jsx: source.SliderRangeJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             The slider can be used to set the start and end of a range by supplying an array of values to the{' '}
             <code>value</code> or <code>defaultValue</code> prop.
           </Typography>
-          <SliderRange/>
+          <SliderRange />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -160,12 +160,12 @@ const Sliders = () => {
             tsx: source.SliderColorsTSXCode,
             jsx: source.SliderColorsJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             Use <code>color</code> prop for different colored slider.
           </Typography>
-          <SliderColors/>
+          <SliderColors />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -175,12 +175,12 @@ const Sliders = () => {
             tsx: source.SliderCustomizedTSXCode,
             jsx: source.SliderCustomizedJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 8}}>
+          <Typography sx={{ mb: 8 }}>
             Use <code>styled</code> hook to customize your slider.
           </Typography>
-          <SliderCustomized/>
+          <SliderCustomized />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -190,12 +190,12 @@ const Sliders = () => {
             tsx: source.SliderCustomColorsTSXCode,
             jsx: source.SliderCustomColorsJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             Use <code>styled</code> hook to customize your slider.
           </Typography>
-          <SliderCustomColors/>
+          <SliderCustomColors />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -205,12 +205,12 @@ const Sliders = () => {
             tsx: source.SliderVerticalTSXCode,
             jsx: source.SliderVerticalJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             Use <code>orientation='vertical'</code> prop for vertical slider.
           </Typography>
-          <SliderVertical/>
+          <SliderVertical />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -220,12 +220,12 @@ const Sliders = () => {
             tsx: source.SliderRemovedTrackTSXCode,
             jsx: source.SliderRemovedTrackJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             The track can be turned off with <code>track={`{false}`}</code> prop.
           </Typography>
-          <SliderRemovedTrack/>
+          <SliderRemovedTrack />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -235,12 +235,12 @@ const Sliders = () => {
             tsx: source.SliderInvertedTrackTSXCode,
             jsx: source.SliderInvertedTrackJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             The track can be inverted with <code>track='inverted'</code> prop.
           </Typography>
-          <SliderInvertedTrack/>
+          <SliderInvertedTrack />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -250,12 +250,12 @@ const Sliders = () => {
             tsx: source.SliderSizesTSXCode,
             jsx: source.SliderSizesJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             Use <code>size</code> prop for different sizes of slider.
           </Typography>
-          <SliderSizes/>
+          <SliderSizes />
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -265,12 +265,12 @@ const Sliders = () => {
             tsx: source.SliderMinimumDistanceTSXCode,
             jsx: source.SliderMinimumDistanceJSXCode
           }}
-          sx={{px: 2}}
+          sx={{ px: 2 }}
         >
-          <Typography sx={{mb: 4}}>
+          <Typography sx={{ mb: 4 }}>
             You can enforce a minimum distance between values in the <code>onChange</code> event handler.
           </Typography>
-          <SliderMinimumDistance/>
+          <SliderMinimumDistance />
         </CardSnippet>
       </Grid>
     </Grid>

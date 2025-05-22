@@ -1,17 +1,17 @@
-import React from 'react';
+import React from 'react'
 
 type JsonViewerProps = {
-  data: string;
-};
+  data: string
+}
 
-const JsonViewer: React.FC<JsonViewerProps> = ({data}) => {
+const JsonViewer: React.FC<JsonViewerProps> = ({ data }) => {
   try {
-    const jsonData = JSON.parse(data);
+    const jsonData = JSON.parse(data)
 
-    return <pre>{JSON.stringify(jsonData, null, 2)}</pre>;
+    return <pre>{JSON.stringify(jsonData, null, 2)}</pre>
   } catch (error) {
-    return <div>Invalid JSON</div>;
+    return <div>Invalid JSON</div>
   }
-};
+}
 
-export default JsonViewer;
+export default JsonViewer

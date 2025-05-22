@@ -196,7 +196,7 @@
 /* eslint-enable */
 
 const BillingHistoryTable = () => {
-    /*
+  /*
       // ** State
       const [value, setValue] = useState<string>('')
       const [statusValue, setStatusValue] = useState<string>('')

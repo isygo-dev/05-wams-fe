@@ -1,39 +1,39 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {DataGrid, GridApi, GridColDef} from '@mui/x-data-grid'
+import React, { useCallback, useEffect, useState } from 'react'
+import { DataGrid, GridApi, GridColDef } from '@mui/x-data-grid'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
 import Icon from 'template-shared/@core/components/icon'
 import Typography from '@mui/material/Typography'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import Card from '@mui/material/Card'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import DeleteCommonDialog from 'template-shared/@core/components/DeleteCommonDialog'
 import AddAnnexDrawer from '../../../views/apps/annex/AddAnnexDrawer'
 import SidebarEditAnnex from '../../../views/apps/annex/EditAnnexConfig'
-import {GridApiCommunity} from '@mui/x-data-grid/internals'
+import { GridApiCommunity } from '@mui/x-data-grid/internals'
 import TableHeader from 'template-shared/views/table/TableHeader'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import {checkPermission} from 'template-shared/@core/api/helper/permission'
-import themeConfig from "template-shared/configs/themeConfig";
-import Styles from "template-shared/style/style.module.css"
-import {GridPaginationModel} from "@mui/x-data-grid/models/gridPaginationProps";
-import localStorageKeys from "template-shared/configs/localeStorage";
-import AnnexApis from "ims-shared/@core/api/ims/annex";
-import AccountApis from "ims-shared/@core/api/ims/account";
-import {AnnexType} from "ims-shared/@core/types/ims/annexTypes";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
+import themeConfig from 'template-shared/configs/themeConfig'
+import Styles from 'template-shared/style/style.module.css'
+import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps'
+import localStorageKeys from 'template-shared/configs/localeStorage'
+import AnnexApis from 'ims-shared/@core/api/ims/annex'
+import AccountApis from 'ims-shared/@core/api/ims/account'
+import { AnnexType } from 'ims-shared/@core/types/ims/annexTypes'
 
 interface CellType {
   row: AnnexType
 }
 
 const AnnexList = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [paginationPage, setPaginationPage] = useState<number>(0)
   const [value, setValue] = useState<string>('')
@@ -44,14 +44,14 @@ const AnnexList = () => {
   const [editDataAnnex, setEditDataAnnex] = useState<AnnexType>()
   const [addAnnexOpen, setAddAnnexOpen] = useState<boolean>(false)
   const [editAnnexOpen, setEditAnnexOpen] = useState<boolean>(false)
-  const [paginationModel, setPaginationModel] =
-    useState<GridPaginationModel>({
-        page: paginationPage,
-        pageSize: localStorage.getItem(localStorageKeys.paginationSize) &&
-        Number(localStorage.getItem(localStorageKeys.paginationSize)) > 9 ?
-          Number(localStorage.getItem(localStorageKeys.paginationSize)) : 20
-      }
-    )
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: paginationPage,
+    pageSize:
+      localStorage.getItem(localStorageKeys.paginationSize) &&
+      Number(localStorage.getItem(localStorageKeys.paginationSize)) > 9
+        ? Number(localStorage.getItem(localStorageKeys.paginationSize))
+        : 20
+  })
   useEffect(() => {
     const getPage = localStorage.getItem(localStorageKeys.paginationSize)
     if (!getPage || Number(getPage) < 9) {
@@ -64,12 +64,12 @@ const AnnexList = () => {
       })
     }
   }, [setPaginationModel])
-  const {data: annexList, isLoading} = useQuery('annexList', () =>
-    AnnexApis(t).getAnnexesByPage(paginationModel.page, paginationModel.pageSize))
-  const {
-    data: countAnnex,
-    isLoading: isLoadingCountAnnex
-  } = useQuery(`countAnnex`, () => AnnexApis(t).getAnnexesCount())
+  const { data: annexList, isLoading } = useQuery('annexList', () =>
+    AnnexApis(t).getAnnexesByPage(paginationModel.page, paginationModel.pageSize)
+  )
+  const { data: countAnnex, isLoading: isLoadingCountAnnex } = useQuery(`countAnnex`, () =>
+    AnnexApis(t).getAnnexesCount()
+  )
   const [disabledNextBtn, setDisabledNextBtn] = useState<boolean>(false)
   const toggleEditAnnexDrawer = () => setEditAnnexOpen(!editAnnexOpen)
   const toggleAddAnnexDrawer = () => setAddAnnexOpen(!addAnnexOpen)
@@ -103,7 +103,7 @@ const AnnexList = () => {
     setEditDataAnnex(data)
   }
 
-  const {data: profileUser, isLoading: isLoadingProfileUser} = useQuery(
+  const { data: profileUser, isLoading: isLoadingProfileUser } = useQuery(
     'profileUser',
     AccountApis(t).getAccountProfile
   )
@@ -114,17 +114,17 @@ const AnnexList = () => {
       headerName: t('tableCode') as string,
       type: 'string',
       flex: 1,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row?.tableCode}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row?.tableCode}</Typography>
     },
     {
       field: 'domain',
       headerName: t('Domain.Domain') as string,
       flex: 1,
 
-      renderCell: ({row}: CellType) => {
+      renderCell: ({ row }: CellType) => {
         return (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Typography noWrap variant='body2' sx={{color: 'text.disabled'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography noWrap variant='body2' sx={{ color: 'text.disabled' }}>
               {row.domain}
             </Typography>
           </Box>
@@ -135,31 +135,30 @@ const AnnexList = () => {
       field: 'value',
       headerName: t('Parameter.Value') as string,
       flex: 1,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row?.value}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row?.value}</Typography>
     },
     {
       field: 'Reference',
       headerName: t('Reference') as string,
       flex: 1,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row?.reference}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row?.reference}</Typography>
     },
     {
       field: 'Language',
       headerName: t('Language') as string,
       flex: 1,
-      renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row?.language}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row?.language}</Typography>
     },
     {
       field: 'actions',
       headerName: '' as string,
       align: 'right',
       flex: 1,
-      renderCell: ({row}: CellType) => (
-        <Box sx={{display: 'flex', alignItems: 'center'}}>
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Tooltip title={row.description}>
-            <IconButton
-              className={Styles.sizeIcon} sx={{color: 'text.secondary'}}>
-              <Icon icon='tabler:info-circle'/>
+            <IconButton className={Styles.sizeIcon} sx={{ color: 'text.secondary' }}>
+              <Icon icon='tabler:info-circle' />
             </IconButton>
           </Tooltip>
 
@@ -167,10 +166,10 @@ const AnnexList = () => {
             <Tooltip title={t('Action.Delete')}>
               <IconButton
                 className={Styles.sizeIcon}
-                sx={{color: 'text.secondary'}}
+                sx={{ color: 'text.secondary' }}
                 onClick={() => handleOpenDeleteDialog(row.id ?? 0)}
               >
-                <Icon icon='tabler:trash'/>
+                <Icon icon='tabler:trash' />
               </IconButton>
             </Tooltip>
           )}
@@ -178,8 +177,10 @@ const AnnexList = () => {
             <Tooltip title={t('Action.Save')}>
               <IconButton
                 className={Styles.sizeIcon}
-                sx={{color: 'text.secondary'}} onClick={() => handleOpenEdit(row)}>
-                <Icon icon='tabler:edit'/>
+                sx={{ color: 'text.secondary' }}
+                onClick={() => handleOpenEdit(row)}
+              >
+                <Icon icon='tabler:edit' />
               </IconButton>
             </Tooltip>
           )}
@@ -187,7 +188,6 @@ const AnnexList = () => {
       )
     }
   ]
-
 
   const onChangePagination = async (item: any) => {
     if (item.pageSize !== paginationModel.pageSize) {
@@ -198,13 +198,12 @@ const AnnexList = () => {
       queryClient.removeQueries('annexList')
       queryClient.setQueryData('annexList', apiList)
       setPaginationPage(0)
-      setPaginationModel({page: 0, pageSize: item.pageSize})
+      setPaginationModel({ page: 0, pageSize: item.pageSize })
       setDisabledNextBtn(false)
     }
   }
 
-  const onChangePage = async (item) => {
-
+  const onChangePage = async item => {
     let newPagination: GridPaginationModel
     if (item === 'backIconButtonProps') {
       newPagination = {
@@ -219,9 +218,7 @@ const AnnexList = () => {
         setPaginationModel(newPagination)
       }
       setDisabledNextBtn(false)
-
     } else if (item === 'nextIconButtonProps') {
-
       newPagination = {
         page: paginationModel.page + 1,
         pageSize: paginationModel.pageSize
@@ -233,13 +230,10 @@ const AnnexList = () => {
         setPaginationPage(newPagination.page)
         setPaginationModel(newPagination)
       } else {
-
         setDisabledNextBtn(true)
       }
     }
-
   }
-
 
   return (
     <>
@@ -261,7 +255,6 @@ const AnnexList = () => {
                   <DataGrid
                     autoHeight
                     pagination
-
                     className={Styles.tableStyleNov}
                     columnHeaderHeight={themeConfig.columnHeaderHeight}
                     rowHeight={themeConfig.rowHeight}
@@ -272,29 +265,25 @@ const AnnexList = () => {
                     paginationModel={paginationModel}
                     onPaginationModelChange={onChangePagination}
                     slotProps={{
-
                       pagination: {
-
                         count: countAnnex,
                         page: paginationPage,
 
-
-                        labelDisplayedRows: ({page, count}) =>
+                        labelDisplayedRows: ({ page, count }) =>
                           `${t('pagination footer')} ${page + 1} - ${paginationModel.pageSize} of ${count}`,
                         labelRowsPerPage: t('Rows_per_page'),
                         nextIconButtonProps: {
-                          'onClick': () => onChangePage('nextIconButtonProps'),
-                          disabled: disabledNextBtn || annexList?.length < paginationModel.pageSize,
-
+                          onClick: () => onChangePage('nextIconButtonProps'),
+                          disabled: disabledNextBtn || annexList?.length < paginationModel.pageSize
                         },
                         backIconButtonProps: {
-                          'onClick': () => onChangePage('backIconButtonProps'),
-                          disabled: paginationModel.page === 0,
+                          onClick: () => onChangePage('backIconButtonProps'),
+                          disabled: paginationModel.page === 0
                         }
                       },
                       toolbar: {
                         showQuickFilter: true,
-                        quickFilterProps: {debounceMs: 500}
+                        quickFilterProps: { debounceMs: 500 }
                       }
                     }}
                     apiRef={dataGridApiRef as React.MutableRefObject<GridApiCommunity>}
@@ -303,10 +292,15 @@ const AnnexList = () => {
               )}
             </Card>
           </Grid>
-          {!isLoadingProfileUser && checkPermission(PermissionApplication.IMS, PermissionPage.ANNEX, PermissionAction.WRITE) && (
-            <AddAnnexDrawer open={addAnnexOpen} toggle={toggleAddAnnexDrawer} domain={profileUser?.domain}
-                            uniqueTableCodes={uniqueTableCodes}/>
-          )}
+          {!isLoadingProfileUser &&
+            checkPermission(PermissionApplication.IMS, PermissionPage.ANNEX, PermissionAction.WRITE) && (
+              <AddAnnexDrawer
+                open={addAnnexOpen}
+                toggle={toggleAddAnnexDrawer}
+                domain={profileUser?.domain}
+                uniqueTableCodes={uniqueTableCodes}
+              />
+            )}
 
           {checkPermission(PermissionApplication.IMS, PermissionPage.ANNEX, PermissionAction.DELETE) && (
             <DeleteCommonDialog
@@ -320,8 +314,12 @@ const AnnexList = () => {
 
           {editAnnexOpen &&
             checkPermission(PermissionApplication.IMS, PermissionPage.ANNEX, PermissionAction.WRITE) && (
-              <SidebarEditAnnex open={editAnnexOpen} toggle={toggleEditAnnexDrawer} dataParameter={editDataAnnex}
-                                uniqueTableCodes={uniqueTableCodes}/>
+              <SidebarEditAnnex
+                open={editAnnexOpen}
+                toggle={toggleEditAnnexDrawer}
+                dataParameter={editDataAnnex}
+                uniqueTableCodes={uniqueTableCodes}
+              />
             )}
         </Grid>
       ) : null}

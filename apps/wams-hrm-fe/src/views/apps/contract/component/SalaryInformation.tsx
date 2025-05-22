@@ -1,6 +1,6 @@
-import React, {useContext} from 'react'
-import {Controller, useFieldArray, useForm, useFormContext} from 'react-hook-form'
-import {useTranslation} from 'react-i18next'
+import React, { useContext } from 'react'
+import { Controller, useFieldArray, useForm, useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import {
   Accordion,
   AccordionDetails,
@@ -13,50 +13,50 @@ import {
   Select
 } from '@mui/material'
 import Icon from 'template-shared/@core/components/icon'
-import {ContractContext} from '../../../../pages/apps/contract/view/[id]'
+import { ContractContext } from '../../../../pages/apps/contract/view/[id]'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import PaymentSchedule from './PaymentSchedule'
-import {useQuery} from 'react-query'
-import Box from "@mui/material/Box";
+import { useQuery } from 'react-query'
+import Box from '@mui/material/Box'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
-import {checkPermission} from "template-shared/@core/api/helper/permission";
-import TableEditablePaymentBonus from "./PaymentBonusSchedule";
-import Tooltip from "@mui/material/Tooltip";
-import AnnexApis from "ims-shared/@core/api/ims/annex";
-import {IEnumAnnex} from "ims-shared/@core/types/ims/annexTypes";
-import {IEnumPrime, IEnumSalaryType} from "hrm-shared/@core/types/hrm/contractType";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
+import TableEditablePaymentBonus from './PaymentBonusSchedule'
+import Tooltip from '@mui/material/Tooltip'
+import AnnexApis from 'ims-shared/@core/api/ims/annex'
+import { IEnumAnnex } from 'ims-shared/@core/types/ims/annexTypes'
+import { IEnumPrime, IEnumSalaryType } from 'hrm-shared/@core/types/hrm/contractType'
 
-export default function SalaryInformation({checkPermissionUpdate}) {
-  const {t} = useTranslation()
+export default function SalaryInformation({ checkPermissionUpdate }) {
+  const { t } = useTranslation()
   const contractData = useContext(ContractContext)
   const contract = contractData.contractData || {}
 
-  const {control: formControl} = useForm({
-    defaultValues: contract.salaryInformation?.primes ? {salaryInformation: contract.salaryInformation.primes} : {}
+  const { control: formControl } = useForm({
+    defaultValues: contract.salaryInformation?.primes ? { salaryInformation: contract.salaryInformation.primes } : {}
   })
 
-  const {data: CurrencyAmount, isLoading: isLoadingCurrency} = useQuery('CurrencyAmount', () =>
+  const { data: CurrencyAmount, isLoading: isLoadingCurrency } = useQuery('CurrencyAmount', () =>
     AnnexApis(t).getAnnexByTableCode(IEnumAnnex.CURRENCY_AMOOUNT)
   )
   console.log('CurrencyAmount', CurrencyAmount)
 
-  const {control: formContextControl} = useFormContext()
+  const { control: formContextControl } = useFormContext()
 
-  const {fields, append, remove} = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control: formControl,
     name: 'salaryInformation'
   })
 
   return (
-    <Accordion style={{marginTop: 16}}>
+    <Accordion style={{ marginTop: 16 }}>
       <AccordionSummary
-        expandIcon={<Icon icon='tabler:chevron-down'/>}
+        expandIcon={<Icon icon='tabler:chevron-down' />}
         aria-controls='panel1a-content'
         id='panel1a-header'
       >
@@ -69,18 +69,23 @@ export default function SalaryInformation({checkPermissionUpdate}) {
               name='salaryInformation.currency'
               control={formContextControl}
               defaultValue={contract?.salaryInformation?.currency || null}
-              render={({field: {value, onChange}}) => (
+              render={({ field: { value, onChange } }) => (
                 <FormControl fullWidth>
                   <InputLabel>{t('Currency')}</InputLabel>
-                  <Tooltip title="ANNEX / CURNCY">
-                    <Select size='small' value={value} onChange={checkPermissionUpdate && onChange}
-                            disabled={!checkPermissionUpdate} label='Currency'>
+                  <Tooltip title='ANNEX / CURNCY'>
+                    <Select
+                      size='small'
+                      value={value}
+                      onChange={checkPermissionUpdate && onChange}
+                      disabled={!checkPermissionUpdate}
+                      label='Currency'
+                    >
                       {!isLoadingCurrency
                         ? CurrencyAmount?.map(res => (
-                          <MenuItem key={res.id} value={res.value}>
-                            {res.value}
-                          </MenuItem>
-                        ))
+                            <MenuItem key={res.id} value={res.value}>
+                              {res.value}
+                            </MenuItem>
+                          ))
                         : null}
                     </Select>
                   </Tooltip>
@@ -91,13 +96,12 @@ export default function SalaryInformation({checkPermissionUpdate}) {
 
           <Grid item xs={2.5}>
             <Controller
-              render={({field: {value, onChange}}) => (
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   disabled={contract.isLocked || !checkPermissionUpdate}
                   fullWidth
                   label={t('Contract.base_Salary')}
-
                   value={value}
                   onChange={checkPermissionUpdate && onChange}
                 />
@@ -109,13 +113,12 @@ export default function SalaryInformation({checkPermissionUpdate}) {
           </Grid>
           <Grid item xs={2.5}>
             <Controller
-              render={({field: {value, onChange}}) => (
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   disabled={contract.isLocked || !checkPermissionUpdate}
                   fullWidth
                   label={t('Contract.net_Salary')}
-
                   value={value}
                   onChange={checkPermissionUpdate && onChange}
                 />
@@ -126,16 +129,19 @@ export default function SalaryInformation({checkPermissionUpdate}) {
             />
           </Grid>
           <Grid item xs={2.5}>
-            <FormControl size='small' style={{width: '100%', marginRight: '10px'}}>
+            <FormControl size='small' style={{ width: '100%', marginRight: '10px' }}>
               <InputLabel>{t('Contract.Salary_Type')}</InputLabel>
               <Controller
                 name={`salaryInformation.salaryType`}
                 defaultValue={contract.salaryInformation?.salaryType || null}
-                render={({field: {value, onChange}}) => (
-                  <Select disabled={contract.isLocked || !checkPermissionUpdate}
-                          value={value}
-                          onChange={checkPermissionUpdate && onChange}
-                          variant='outlined' label={t('Contract.Salary_Type')}>
+                render={({ field: { value, onChange } }) => (
+                  <Select
+                    disabled={contract.isLocked || !checkPermissionUpdate}
+                    value={value}
+                    onChange={checkPermissionUpdate && onChange}
+                    variant='outlined'
+                    label={t('Contract.Salary_Type')}
+                  >
                     {Object.values(IEnumSalaryType).map(value => (
                       <MenuItem key={value} value={value}>
                         {t(value)}
@@ -151,14 +157,13 @@ export default function SalaryInformation({checkPermissionUpdate}) {
             <Controller
               name={`salaryInformation.frequency`}
               control={formContextControl}
-              render={({field: {value, onChange}}) => (
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   disabled={contract.isLocked || !checkPermissionUpdate}
                   type='number'
                   size='small'
                   fullWidth
                   label={t('Contract.frequency')}
-
                   value={value}
                   onChange={checkPermissionUpdate && onChange}
                 />
@@ -167,10 +172,20 @@ export default function SalaryInformation({checkPermissionUpdate}) {
             />
           </Grid>
         </Grid>
-        {checkPermission(PermissionApplication.HRM, PermissionPage.CONTRACT_PAYMENT_SCHEDULE, PermissionAction.READ) &&
-          <PaymentSchedule contractId={contract?.id}
-                           checkPermissionUpdatePayment={checkPermission(PermissionApplication.HRM, PermissionPage.CONTRACT_PAYMENT_SCHEDULE, PermissionAction.WRITE)}/>
-        }
+        {checkPermission(
+          PermissionApplication.HRM,
+          PermissionPage.CONTRACT_PAYMENT_SCHEDULE,
+          PermissionAction.READ
+        ) && (
+          <PaymentSchedule
+            contractId={contract?.id}
+            checkPermissionUpdatePayment={checkPermission(
+              PermissionApplication.HRM,
+              PermissionPage.CONTRACT_PAYMENT_SCHEDULE,
+              PermissionAction.WRITE
+            )}
+          />
+        )}
 
         {fields.map((salary, index) => (
           <Box
@@ -184,23 +199,22 @@ export default function SalaryInformation({checkPermissionUpdate}) {
             }}
           >
             <IconButton
-              style={{position: 'absolute', top: '0px', right: '-7px'}}
+              style={{ position: 'absolute', top: '0px', right: '-7px' }}
               size='small'
               onClick={() => remove(index)}
             >
-              <Icon icon='tabler:x' fontSize='1.25rem'/>
+              <Icon icon='tabler:x' fontSize='1.25rem' />
             </IconButton>
             <Grid container spacing={2}>
               <Grid item xs={6}>
-                <FormControl size='small' style={{width: '100%', marginRight: '10px'}}>
+                <FormControl size='small' style={{ width: '100%', marginRight: '10px' }}>
                   <InputLabel>{t('Contract.Bonus_Type')}</InputLabel>
                   <Controller
                     name={`salaryInformation.primes[${index}].primeType`}
                     defaultValue={contract.salaryInformation?.primes[index]?.primeType || ''}
-                    render={({field: {value, onChange}}) => (
+                    render={({ field: { value, onChange } }) => (
                       <Select
                         disabled={contract.isLocked || !checkPermissionUpdate}
-
                         value={value}
                         onChange={checkPermissionUpdate && onChange}
                         variant='outlined'
@@ -221,14 +235,13 @@ export default function SalaryInformation({checkPermissionUpdate}) {
                 <Controller
                   name={`salaryInformation.primes[${index}].annualFrequency`}
                   control={formContextControl}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       disabled={contract.isLocked || !checkPermissionUpdate}
                       type='number'
                       size='small'
                       fullWidth
                       label={t('Contract.Annual_Frequency')}
-
                       value={value}
                       onChange={checkPermissionUpdate && onChange}
                     />
@@ -241,7 +254,7 @@ export default function SalaryInformation({checkPermissionUpdate}) {
                 <Controller
                   name={`salaryInformation.primes[${index}].annualMinAmount`}
                   control={formContextControl}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       disabled={contract.isLocked || !checkPermissionUpdate}
                       size='small'
@@ -258,7 +271,7 @@ export default function SalaryInformation({checkPermissionUpdate}) {
               <Grid item xs={6}>
                 <Controller
                   name={`salaryInformation.primes[${index}].annualMaxAmount`}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       disabled={contract.isLocked || !checkPermissionUpdate}
                       size='small'
@@ -276,18 +289,20 @@ export default function SalaryInformation({checkPermissionUpdate}) {
             </Grid>
           </Box>
         ))}
-        <TableEditablePaymentBonus contractId={contract?.id}/>
+        <TableEditablePaymentBonus contractId={contract?.id} />
 
-
-        {checkPermissionUpdate &&
-          <Button variant='contained' size={'small'} color='primary'
-                  style={{marginTop: '20px'}}
-                  className={'button-padding-style'} onClick={() => append({})}>
-            <Icon icon='tabler:plus'
-                  style={{marginRight: '6px'}}/> {t('Contract.Add_Bonus')}
+        {checkPermissionUpdate && (
+          <Button
+            variant='contained'
+            size={'small'}
+            color='primary'
+            style={{ marginTop: '20px' }}
+            className={'button-padding-style'}
+            onClick={() => append({})}
+          >
+            <Icon icon='tabler:plus' style={{ marginRight: '6px' }} /> {t('Contract.Add_Bonus')}
           </Button>
-        }
-
+        )}
       </AccordionDetails>
     </Accordion>
   )

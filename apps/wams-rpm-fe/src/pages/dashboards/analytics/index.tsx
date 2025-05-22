@@ -24,7 +24,7 @@ const AnalyticsDashboard = () => {
               avatarColor='success'
               title='Revenue Generated'
               avatarIcon='tabler:credit-card'
-              chartSeries={[{data: [6, 35, 25, 61, 32, 84, 70]}]}
+              chartSeries={[{ data: [6, 35, 25, 61, 32, 84, 70] }]}
             />
           </Grid>
           <Grid item xs={12} md={6}>

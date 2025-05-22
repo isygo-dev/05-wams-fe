@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
@@ -9,16 +9,16 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 import Icon from 'template-shared/@core/components/icon'
-import {useTranslation} from 'react-i18next'
-import {Controller, useForm} from 'react-hook-form'
-import {useMutation} from 'react-query'
+import { useTranslation } from 'react-i18next'
+import { Controller, useForm } from 'react-hook-form'
+import { useMutation } from 'react-query'
 import DatePickerWrapper from 'template-shared/@core/styles/libs/react-datepicker'
 import DatePicker from 'react-datepicker'
 import * as yup from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {EmployeeType, Passport} from 'hrm-shared/@core/types/hrm/employeeTypes'
-import hrmApiUrls from "hrm-shared/configs/hrm_apis";
-import EmployeeApis from "hrm-shared/@core/api/hrm/employee";
+import { yupResolver } from '@hookform/resolvers/yup'
+import { EmployeeType, Passport } from 'hrm-shared/@core/types/hrm/employeeTypes'
+import hrmApiUrls from 'hrm-shared/configs/hrm_apis'
+import EmployeeApis from 'hrm-shared/@core/api/hrm/employee'
 
 interface UpdatePassportType {
   open?: boolean
@@ -34,8 +34,8 @@ const schema = yup.object().shape({
   issuedPlace: yup.string().required('Issued place is required')
 })
 
-export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, dataParameter, refetch}) => {
-  const {t} = useTranslation()
+export const UpdatePassport: React.FC<UpdatePassportType> = ({ open, toggle, dataParameter, refetch }) => {
+  const { t } = useTranslation()
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +59,7 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, data
     reset,
     handleSubmit,
     control,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     mode: 'onChange',
     defaultValues,
@@ -67,7 +67,8 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, data
   })
 
   const updatePictureMutation = useMutation({
-    mutationFn: (data: FormData) => EmployeeApis(t).updateEmployeeTravelDocImage(data, dataParameter?.details?.passport[0]?.id),
+    mutationFn: (data: FormData) =>
+      EmployeeApis(t).updateEmployeeTravelDocImage(data, dataParameter?.details?.passport[0]?.id),
     onSuccess: () => {
       handleClose()
       refetch()
@@ -130,7 +131,7 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, data
       open={open}
       aria-labelledby='user-view-billing-edit-card'
       aria-describedby='user-view-billing-edit-card-description'
-      sx={{'& .MuiPaper-root': {width: '100%', maxWidth: 650}}}
+      sx={{ '& .MuiPaper-root': { width: '100%', maxWidth: 650 } }}
     >
       <DialogTitle
         id='user-view-billing-edit-card'
@@ -152,23 +153,23 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, data
         <DialogContentText
           variant='body2'
           id='user-view-billing-edit-card-description'
-          sx={{textAlign: 'center', mb: 7}}
+          sx={{ textAlign: 'center', mb: 7 }}
         >
           Update your saved Passport
         </DialogContentText>
         <form onSubmit={handleSubmit(onSubmitCin)}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='cardNumber'
                   control={control}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       value={value}
                       id='form-props-read-only-input'
-                      InputProps={{readOnly: false}}
+                      InputProps={{ readOnly: false }}
                       label={t('CardNumber')}
                       onChange={onChange}
                       defaultValue={dataParameter?.details?.passport[0]?.cardNumber}
@@ -180,16 +181,16 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, data
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth sx={{mb: 4}}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='issuedPlace'
                   control={control}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       value={value}
                       id='form-props-read-only-input'
-                      InputProps={{readOnly: false}}
+                      InputProps={{ readOnly: false }}
                       label={t('issuedPlace')}
                       onChange={onChange}
                       defaultValue={dataParameter?.details?.passport[0]?.issuedPlace}
@@ -207,12 +208,12 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, data
                   name='issuedDate'
                   control={control}
                   defaultValue={dataParameter?.details?.passport[0]?.issuedDate || null}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <DatePicker
                       selected={value ? new Date(value) : null}
                       dateFormat='dd/MM/yyyy'
                       onChange={date => onChange(date)}
-                      customInput={<TextField size='small' fullWidth label={t('issuedDate')}/>}
+                      customInput={<TextField size='small' fullWidth label={t('issuedDate')} />}
                     />
                   )}
                 />
@@ -224,19 +225,19 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, data
                   name='expiredDate'
                   control={control}
                   defaultValue={dataParameter?.details?.passport[0]?.expiredDate || null}
-                  render={({field: {value, onChange}}) => (
+                  render={({ field: { value, onChange } }) => (
                     <DatePicker
                       selected={value ? new Date(value) : null}
                       dateFormat='dd/MM/yyyy'
                       onChange={date => onChange(date)}
-                      customInput={<TextField size='small' fullWidth label={t('expiredDate')}/>}
+                      customInput={<TextField size='small' fullWidth label={t('expiredDate')} />}
                     />
                   )}
                 />
               </DatePickerWrapper>
             </Grid>
             <Grid item xs={12}>
-              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px'}}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
                 {(selectedFile != null ||
                   undefined ||
                   dataParameter?.details?.passport[0]?.imagePath != null ||
@@ -246,8 +247,8 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, data
                       selectedFile
                         ? URL.createObjectURL(selectedFile)
                         : dataParameter?.details?.passport[0]?.imagePath
-                          ? `${hrmApiUrls.apiUrl_HRM_TravelDoc_ImageDownload_EndPoint}/${dataParameter?.details?.passport[0]?.id}`
-                          : undefined
+                        ? `${hrmApiUrls.apiUrl_HRM_TravelDoc_ImageDownload_EndPoint}/${dataParameter?.details?.passport[0]?.id}`
+                        : undefined
                     }
                     alt={selectedFile ? '' : dataParameter?.details?.passport[0]?.imagePath ? 'Passport Image' : ''}
                     style={{
@@ -261,17 +262,17 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, data
                 )}
 
                 <FormControl fullWidth sx={{}}>
-                  <label htmlFor='file' style={{alignItems: 'center', cursor: 'pointer', display: 'flex'}}>
+                  <label htmlFor='file' style={{ alignItems: 'center', cursor: 'pointer', display: 'flex' }}>
                     <Button
                       color='primary'
                       variant='outlined'
                       component='span'
-                      sx={{width: '100%', marginTop: '10px'}}
-                      startIcon={<Icon icon='tabler:upload'/>}
+                      sx={{ width: '100%', marginTop: '10px' }}
+                      startIcon={<Icon icon='tabler:upload' />}
                     >
                       {t('Photo')}
                     </Button>
-                    <input type='file' name='file' id='file' style={{display: 'none'}} onChange={handleFileChange}/>
+                    <input type='file' name='file' id='file' style={{ display: 'none' }} onChange={handleFileChange} />
                   </label>
                 </FormControl>
               </div>
@@ -284,7 +285,7 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({open, toggle, data
               pb: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
             }}
           >
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

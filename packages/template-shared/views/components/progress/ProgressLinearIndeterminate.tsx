@@ -2,7 +2,7 @@
 import LinearProgress from '@mui/material/LinearProgress'
 
 const ProgressLinearIndeterminate = () => {
-    return <LinearProgress/>
+  return <LinearProgress />
 }
 
 export default ProgressLinearIndeterminate

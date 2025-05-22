@@ -1,17 +1,17 @@
-import React, {Fragment, useState} from 'react'
+import React, { Fragment, useState } from 'react'
 import IconButton from '@mui/material/IconButton'
-import {useMutation} from 'react-query'
+import { useMutation } from 'react-query'
 import Icon from 'template-shared/@core/components/icon'
 import Typography from '@mui/material/Typography'
-import Box, {BoxProps} from '@mui/material/Box'
+import Box, { BoxProps } from '@mui/material/Box'
 import List from '@mui/material/List'
 import Button from '@mui/material/Button'
-import {Accordion, AccordionDetails, AccordionSummary, ListItem} from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, ListItem } from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
-import {useDropzone} from 'react-dropzone'
-import {useTranslation} from 'react-i18next'
-import {styled} from '@mui/material/styles'
-import ContractApis from "hrm-shared/@core/api/hrm/contract";
+import { useDropzone } from 'react-dropzone'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import ContractApis from 'hrm-shared/@core/api/hrm/contract'
 
 interface FileProp {
   name: string
@@ -26,7 +26,7 @@ interface Props {
   checkPermissionUpdate: boolean
 }
 
-const DropzoneWrapper = styled(Box)<BoxProps>(({theme}) => ({
+const DropzoneWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   '&.dropzone, & .dropzone': {
     minHeight: 100, // Adjust the height as needed
     display: 'flex',
@@ -97,20 +97,20 @@ const DropzoneWrapper = styled(Box)<BoxProps>(({theme}) => ({
   }
 }))
 const ViewUploadContract = (props: Props) => {
-  const {t} = useTranslation()
-  const {id, originalFileName, toggleChangeName, checkPermissionUpdate} = props
+  const { t } = useTranslation()
+  const { id, originalFileName, toggleChangeName, checkPermissionUpdate } = props
   const [contractId, setContractId] = useState<number>(id)
   const [files, setFiles] = useState<File[]>([])
 
   const renderFilePreview = (file: FileProp) => {
     if (file?.type?.startsWith('image')) {
-      return <img width={38} height={38} alt={file.name} src={URL.createObjectURL(file as any)}/>
+      return <img width={38} height={38} alt={file.name} src={URL.createObjectURL(file as any)} />
     } else {
-      return <Icon icon='tabler:file-description'/>
+      return <Icon icon='tabler:file-description' />
     }
   }
 
-  const {getRootProps, getInputProps} = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
     accept: {
       'file/*': ['.pdf', '.doc', '.docx']
@@ -128,15 +128,14 @@ const ViewUploadContract = (props: Props) => {
 
   const downloadMutation = useMutation({
     mutationFn: (data: { id: number; originalFileName: string }) => ContractApis(t).downloadContractFile(data),
-    onSuccess: () => {
-    },
+    onSuccess: () => {},
     onError: err => {
       console.log(err)
     }
   })
 
   const uploadContractMutation = useMutation({
-    mutationFn: () => ContractApis(t).uploadContractFile({id: id, file: files[0]}),
+    mutationFn: () => ContractApis(t).uploadContractFile({ id: id, file: files[0] }),
     onSuccess: () => {
       setContractId(id)
       toggleChangeName(files[0])
@@ -147,7 +146,7 @@ const ViewUploadContract = (props: Props) => {
   })
 
   function download() {
-    downloadMutation.mutate({id: id, originalFileName: originalFileName})
+    downloadMutation.mutate({ id: id, originalFileName: originalFileName })
   }
 
   function onUploadFile() {
@@ -172,7 +171,7 @@ const ViewUploadContract = (props: Props) => {
         </div>
       </div>
       <IconButton onClick={() => handleRemoveFile(file)}>
-        <Icon icon='tabler:x' fontSize={20}/>
+        <Icon icon='tabler:x' fontSize={20} />
       </IconButton>
     </ListItem>
   ))
@@ -182,19 +181,19 @@ const ViewUploadContract = (props: Props) => {
 
   return (
     <>
-      <Accordion sx={{height: '100%'}}>
+      <Accordion sx={{ height: '100%' }}>
         <AccordionSummary
-          expandIcon={<Icon icon='tabler:chevron-down'/>}
+          expandIcon={<Icon icon='tabler:chevron-down' />}
           aria-controls='panel1a-content'
           id='panel1a-header'
         >
           <Typography>{t('Contract File')}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <DropzoneWrapper style={{minHeight: 100}}>
+          <DropzoneWrapper style={{ minHeight: 100 }}>
             <Fragment>
               {checkPermissionUpdate && (
-                <div {...getRootProps({className: 'dropzone'})}>
+                <div {...getRootProps({ className: 'dropzone' })}>
                   <input {...getInputProps()} />
                   <Box
                     sx={{
@@ -204,11 +203,11 @@ const ViewUploadContract = (props: Props) => {
                       flexDirection: 'column'
                     }}
                   >
-                    <Icon icon='tabler:upload' fontSize='1.75rem'/>
-                    <Typography variant='h4' sx={{mb: 2.5}}>
+                    <Icon icon='tabler:upload' fontSize='1.75rem' />
+                    <Typography variant='h4' sx={{ mb: 2.5 }}>
                       Drop files here or click to upload.
                     </Typography>
-                    <Typography sx={{color: 'text.secondary'}}>
+                    <Typography sx={{ color: 'text.secondary' }}>
                       (You can upload your contract on multiple languages.)
                     </Typography>
                   </Box>
@@ -228,10 +227,10 @@ const ViewUploadContract = (props: Props) => {
                 </>
               ) : (
                 <List>
-                  <ListItem key={contractId} sx={{display: 'flex', justifyContent: 'space-between'}}>
+                  <ListItem key={contractId} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div className='file-details'>
                       <div className='file-preview'>
-                        <Icon icon='tabler:file-description'/>
+                        <Icon icon='tabler:file-description' />
                       </div>
                       <div>
                         <Typography className='file-name'>{contractId}</Typography>
@@ -239,8 +238,8 @@ const ViewUploadContract = (props: Props) => {
                     </div>
                     <div>
                       <Tooltip title={t('Action.Download') as string}>
-                        <IconButton size='small' sx={{color: 'text.secondary'}} onClick={download}>
-                          <Icon icon='material-symbols:download'/>
+                        <IconButton size='small' sx={{ color: 'text.secondary' }} onClick={download}>
+                          <Icon icon='material-symbols:download' />
                         </IconButton>
                       </Tooltip>
                     </div>

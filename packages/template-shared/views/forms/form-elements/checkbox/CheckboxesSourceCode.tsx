@@ -1,5 +1,5 @@
 export const CheckboxesCustomIconsJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
@@ -43,7 +43,7 @@ export default CheckboxesCustomIcons
 )
 
 export const CheckboxesCustomizedJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import { styled } from '@mui/material/styles'
 import Checkbox from '@mui/material/Checkbox'
@@ -123,7 +123,7 @@ export default CheckboxesCustomized
 )
 
 export const CheckboxesControlledUncontrolledJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -157,7 +157,7 @@ export default CheckboxesControlledUncontrolled
 )
 
 export const CheckboxesLabelPlacementJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
@@ -184,7 +184,7 @@ export default CheckboxesLabelPlacement
 )
 
 export const CheckboxesSizesJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
@@ -209,7 +209,7 @@ export default CheckboxesSizes
 )
 
 export const CheckboxesShowErrorJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState } from 'react'
 
@@ -286,7 +286,7 @@ export default CheckboxesShowError
 )
 
 export const CheckboxesColorsJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
@@ -314,7 +314,7 @@ export default CheckboxesColors
 )
 
 export const CheckboxesBasicJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
@@ -341,7 +341,7 @@ export default CheckboxesBasic
 )
 
 export const CheckboxesBasicTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
@@ -368,7 +368,7 @@ export default CheckboxesBasic
 )
 
 export const CheckboxesShowErrorTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { ChangeEvent, useState } from 'react'
 
@@ -449,7 +449,7 @@ export default CheckboxesShowError
 )
 
 export const CheckboxesCustomizedTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import { styled } from '@mui/material/styles'
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox'
@@ -529,7 +529,7 @@ export default CheckboxesCustomized
 )
 
 export const CheckboxesSizesTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
@@ -554,7 +554,7 @@ export default CheckboxesSizes
 )
 
 export const CheckboxesColorsTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
@@ -582,7 +582,7 @@ export default CheckboxesColors
 )
 
 export const CheckboxesLabelPlacementTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
@@ -609,7 +609,7 @@ export default CheckboxesLabelPlacement
 )
 
 export const CheckboxesCustomIconsTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
@@ -653,7 +653,7 @@ export default CheckboxesCustomIcons
 )
 
 export const CheckboxesControlledUncontrolledTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { ChangeEvent, useState } from 'react'
 

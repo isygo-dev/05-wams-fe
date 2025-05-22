@@ -1,5 +1,5 @@
 export const BadgesAlignmentJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
@@ -29,7 +29,7 @@ export default BadgesAlignment
 )
 
 export const BadgesLightJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Avatar from '@mui/material/Avatar'
 import { styled } from '@mui/material/styles'
@@ -75,7 +75,7 @@ export default BadgesLight
 )
 
 export const BadgesMaxValueJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
@@ -110,7 +110,7 @@ export default BadgesMaxValue
 )
 
 export const BadgesBasicJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
@@ -146,7 +146,7 @@ export default BadgesBasic
 )
 
 export const BadgesOverlapJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
@@ -184,7 +184,7 @@ export default BadgesOverlap
 )
 
 export const BadgesVisibilityJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState, Fragment } from 'react'
 
@@ -253,7 +253,7 @@ export default BadgesVisibility
 )
 
 export const BadgesDotJSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
@@ -281,7 +281,7 @@ export default BadgesDot
 )
 
 export const BadgesAlignmentTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
@@ -311,7 +311,7 @@ export default BadgesAlignment
 )
 
 export const BadgesLightTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Avatar from '@mui/material/Avatar'
 import { styled } from '@mui/material/styles'
@@ -357,7 +357,7 @@ export default BadgesLight
 )
 
 export const BadgesDotTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
@@ -385,7 +385,7 @@ export default BadgesDot
 )
 
 export const BadgesMaxValueTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
@@ -420,7 +420,7 @@ export default BadgesMaxValue
 )
 
 export const BadgesOverlapTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
@@ -458,7 +458,7 @@ export default BadgesOverlap
 )
 
 export const BadgesBasicTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** MUI Imports
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
@@ -494,7 +494,7 @@ export default BadgesBasic
 )
 
 export const BadgesVisibilityTSXCode = (
-    <pre className='language-jsx'>
+  <pre className='language-jsx'>
     <code className='language-jsx'>{`// ** React Imports
 import { useState, Fragment } from 'react'
 

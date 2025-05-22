@@ -1,4 +1,4 @@
-import {yupResolver} from '@hookform/resolvers/yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import {
   Box,
   BoxProps,
@@ -18,30 +18,30 @@ import {
 } from '@mui/material'
 
 import React from 'react'
-import {Controller, useForm} from 'react-hook-form'
-import {useTranslation} from 'react-i18next'
+import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import Icon from 'template-shared/@core/components/icon'
 import * as yup from 'yup'
-import {useMutation, useQuery, useQueryClient} from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import Checkbox from '@mui/material/Checkbox'
 import ListItemText from '@mui/material/ListItemText'
-import {checkPermission} from 'template-shared/@core/api/helper/permission'
+import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
+} from 'template-shared/@core/types/helper/apiPermissionTypes'
 import MuiPhoneNumber from 'material-ui-phone-number'
 import EmailInputMask from 'template-shared/views/forms/form-elements/input-mask/EmailInputMask'
-import AnnexApis from "ims-shared/@core/api/ims/annex";
-import Tooltip from "@mui/material/Tooltip";
-import DomainApis from "ims-shared/@core/api/ims/domain";
-import RolePermissionApis from "ims-shared/@core/api/ims/role-permission";
-import AccountApis from "ims-shared/@core/api/ims/account";
-import {AccountDto} from "ims-shared/@core/types/ims/accountTypes";
-import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
-import {RoleTypes} from "ims-shared/@core/types/ims/roleTypes";
-import {IEnumAnnex} from "ims-shared/@core/types/ims/annexTypes";
+import AnnexApis from 'ims-shared/@core/api/ims/annex'
+import Tooltip from '@mui/material/Tooltip'
+import DomainApis from 'ims-shared/@core/api/ims/domain'
+import RolePermissionApis from 'ims-shared/@core/api/ims/role-permission'
+import AccountApis from 'ims-shared/@core/api/ims/account'
+import { AccountDto } from 'ims-shared/@core/types/ims/accountTypes'
+import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { RoleTypes } from 'ims-shared/@core/types/ims/roleTypes'
+import { IEnumAnnex } from 'ims-shared/@core/types/ims/annexTypes'
 
 interface SidebarAddAccountType {
   open: boolean
@@ -49,7 +49,7 @@ interface SidebarAddAccountType {
   domain: string
 }
 
-const Header = styled(Box)<BoxProps>(({theme}) => ({
+const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(6),
@@ -80,12 +80,12 @@ const MenuProps = {
   }
 }
 const SidebarAddAccount = (props: SidebarAddAccountType) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const {open, toggle, domain} = props
-  const {data: domainList, isFetched: isFetchedDomains} = useQuery('domains', DomainApis(t).getDomains)
-  const {data: rolesList, isFetched: isFetchedRoles} = useQuery('roles', RolePermissionApis(t).getRoles)
-  const {data: functionsRole, isLoading: isLoadingFunctionRole} = useQuery('functionsRole', () =>
+  const { open, toggle, domain } = props
+  const { data: domainList, isFetched: isFetchedDomains } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: rolesList, isFetched: isFetchedRoles } = useQuery('roles', RolePermissionApis(t).getRoles)
+  const { data: functionsRole, isLoading: isLoadingFunctionRole } = useQuery('functionsRole', () =>
     AnnexApis(t).getAnnexByTableCode(IEnumAnnex.FUNCTION_ROL)
   )
 
@@ -122,7 +122,7 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
     control,
     handleSubmit,
     setValue,
-    formState: {errors}
+    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onChange',
@@ -131,7 +131,7 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
 
   const onSubmit = async (data: AccountDto) => {
     const mappeAdminStatus = data.adminStatus ? 'ENABLED' : 'DISABLED'
-    const dataForm = {...data, adminStatus: mappeAdminStatus}
+    const dataForm = { ...data, adminStatus: mappeAdminStatus }
     console.log(dataForm)
     addMutation.mutate(dataForm)
   }
@@ -146,30 +146,34 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
       open={open}
       anchor='right'
       onClose={handleClose}
-      ModalProps={{keepMounted: true}}
-      sx={{'& .MuiDrawer-paper': {width: {xs: 300, sm: 400}}}}
+      ModalProps={{ keepMounted: true }}
+      sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
       <Header>
         <Typography variant='h6'>{t('Account.Add_New_Account')} </Typography>
         <IconButton
           size='small'
           onClick={handleClose}
-          sx={{borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected'}}
+          sx={{ borderRadius: 1, color: 'text.primary', backgroundColor: 'action.selected' }}
         >
-          <Icon icon='tabler:x' fontSize='1.125rem'/>
+          <Icon icon='tabler:x' fontSize='1.125rem' />
         </IconButton>
       </Header>
-      <Box sx={{p: theme => theme.spacing(0, 6, 6)}}>
+      <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
             <Controller
               name='domain'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <Select
-                  disabled={checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE) ? false : true}
+                  disabled={
+                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                      ? false
+                      : true
+                  }
                   size='small'
                   label={t('Domain.Domain')}
                   name='domain'
@@ -187,15 +191,15 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{color: 'error.main'}}>{errors.domain.message}</FormHelperText>}
+            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='accountDetails.firstName'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   type='text'
@@ -207,16 +211,16 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
               )}
             />
             {errors.accountDetails?.firstName && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.accountDetails?.firstName.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.accountDetails?.firstName.message}</FormHelperText>
             )}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='accountDetails.lastName'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   type='text'
@@ -228,15 +232,15 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
               )}
             />
             {errors.accountDetails?.lastName && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.accountDetails?.lastName.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.accountDetails?.lastName.message}</FormHelperText>
             )}
           </FormControl>
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='phoneNumber'
               control={control}
-              rules={{required: true}}
-              render={({field: {value}}) => (
+              rules={{ required: true }}
+              render={({ field: { value } }) => (
                 <MuiPhoneNumber
                   variant='outlined'
                   fullWidth
@@ -254,30 +258,30 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
               )}
             />
             {errors.phoneNumber && (
-              <FormHelperText sx={{color: 'error.main'}}>{errors.phoneNumber.message}</FormHelperText>
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.phoneNumber.message}</FormHelperText>
             )}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
               name='email'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
-                <EmailInputMask value={value} onChange={onChange} error={Boolean(errors.email)}/>
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <EmailInputMask value={value} onChange={onChange} error={Boolean(errors.email)} />
               )}
             />
-            {errors.email && <FormHelperText sx={{color: 'error.main'}}>{errors.email.message}</FormHelperText>}
+            {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
           </FormControl>
 
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel id='demo-simple-select-helper-label'>{t('Role.Functional_Role')}</InputLabel>
             <Controller
               name='functionRole'
               control={control}
-              rules={{required: true}}
-              render={({field: {value, onChange}}) => (
-                <Tooltip title="ANNEX / JOBFUN">
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <Tooltip title='ANNEX / JOBFUN'>
                   <Select
                     size='small'
                     label={t('Role.Functional_Role')}
@@ -287,28 +291,28 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
                   >
                     {!isLoadingFunctionRole
                       ? functionsRole?.map(res => (
-                        <MenuItem key={res.id} value={res.value}>
-                          {res.value}
-                        </MenuItem>
-                      ))
+                          <MenuItem key={res.id} value={res.value}>
+                            {res.value}
+                          </MenuItem>
+                        ))
                       : null}
                   </Select>
                 </Tooltip>
               )}
             />
-            {errors.functionRole &&
-              <FormHelperText sx={{color: 'error.main'}}>{errors.functionRole.message}</FormHelperText>}
+            {errors.functionRole && (
+              <FormHelperText sx={{ color: 'error.main' }}>{errors.functionRole.message}</FormHelperText>
+            )}
           </FormControl>
 
-
-          <FormControl fullWidth sx={{mb: 4}}>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel id='demo-multiple-chip-label'>{t('Roles')}</InputLabel>
 
             <Controller
               name='roleInfo'
               control={control}
-              rules={{required: true}}
-              render={({field}) => {
+              rules={{ required: true }}
+              render={({ field }) => {
                 return (
                   <Select
                     size='small'
@@ -334,15 +338,15 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
                   >
                     {rolesList?.map((role: any) => (
                       <MenuItem key={role.code} value={role}>
-                        <Checkbox checked={field.value?.some(r => r.code === role.code)}/>
-                        <ListItemText primary={role.name}/>
+                        <Checkbox checked={field.value?.some(r => r.code === role.code)} />
+                        <ListItemText primary={role.name} />
                       </MenuItem>
                     ))}
                   </Select>
                 )
               }}
             />
-            {errors.roleInfo && <FormHelperText sx={{color: 'error.main'}}>{errors.roleInfo.message}</FormHelperText>}
+            {errors.roleInfo && <FormHelperText sx={{ color: 'error.main' }}>{errors.roleInfo.message}</FormHelperText>}
           </FormControl>
           <FormControlLabel
             labelPlacement='top'
@@ -352,14 +356,14 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
                 name='isAdmin'
                 control={control}
                 defaultValue={defaultValues.isAdmin}
-                render={({field: {value, onChange}}) => (
-                  <Switch checked={value} onChange={e => onChange(e.target.checked)}/>
+                render={({ field: { value, onChange } }) => (
+                  <Switch checked={value} onChange={e => onChange(e.target.checked)} />
                 )}
               />
             }
-            sx={{mb: 4, alignItems: 'flex-start', marginLeft: 0}}
+            sx={{ mb: 4, alignItems: 'flex-start', marginLeft: 0 }}
           />
-          <br/>
+          <br />
           <FormControlLabel
             labelPlacement='top'
             label={t('Admin_Status')}
@@ -368,16 +372,16 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
                 name='adminStatus'
                 control={control}
                 defaultValue={defaultValues.adminStatus}
-                render={({field: {value, onChange}}) => (
-                  <Switch checked={value == 'ENABLED' ? true : false} onChange={e => onChange(e.target.checked)}/>
+                render={({ field: { value, onChange } }) => (
+                  <Switch checked={value == 'ENABLED' ? true : false} onChange={e => onChange(e.target.checked)} />
                 )}
               />
             }
-            sx={{mb: 4, alignItems: 'flex-start', marginLeft: 0}}
+            sx={{ mb: 4, alignItems: 'flex-start', marginLeft: 0 }}
           />
 
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Button type='submit' variant='contained' sx={{mr: 3}}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ mr: 3 }}>
               {t('Submit')}
             </Button>
             <Button variant='outlined' color='secondary' onClick={handleClose}>

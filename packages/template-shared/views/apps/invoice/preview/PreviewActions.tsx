@@ -10,50 +10,50 @@ import CardContent from '@mui/material/CardContent'
 import Icon from 'template-shared/@core/components/icon'
 
 interface Props {
-    id: string | undefined
-    toggleAddPaymentDrawer: () => void
-    toggleSendInvoiceDrawer: () => void
+  id: string | undefined
+  toggleAddPaymentDrawer: () => void
+  toggleSendInvoiceDrawer: () => void
 }
 
-const PreviewActions = ({id, toggleSendInvoiceDrawer, toggleAddPaymentDrawer}: Props) => {
-    return (
-        <Card>
-            <CardContent>
-                <Button fullWidth variant='contained' onClick={toggleSendInvoiceDrawer} sx={{mb: 2, '& svg': {mr: 2}}}>
-                    <Icon fontSize='1.125rem' icon='tabler:send'/>
-                    Send Invoice
-                </Button>
-                <Button fullWidth sx={{mb: 2}} color='secondary' variant='outlined'>
-                    Download
-                </Button>
-                <Button
-                    fullWidth
-                    sx={{mb: 2}}
-                    target='_blank'
-                    component={Link}
-                    color='secondary'
-                    variant='outlined'
-                    href={`/apps/invoice/print/${id}`}
-                >
-                    Print
-                </Button>
-                <Button
-                    fullWidth
-                    sx={{mb: 2}}
-                    component={Link}
-                    color='secondary'
-                    variant='outlined'
-                    href={`/apps/invoice/edit/${id}`}
-                >
-                    Edit Invoice
-                </Button>
-                <Button fullWidth variant='contained' sx={{'& svg': {mr: 2}}} onClick={toggleAddPaymentDrawer}>
-                    <Icon fontSize='1.125rem' icon='tabler:currency-dollar'/>
-                    Add Payment
-                </Button>
-            </CardContent>
-        </Card>
-    )
+const PreviewActions = ({ id, toggleSendInvoiceDrawer, toggleAddPaymentDrawer }: Props) => {
+  return (
+    <Card>
+      <CardContent>
+        <Button fullWidth variant='contained' onClick={toggleSendInvoiceDrawer} sx={{ mb: 2, '& svg': { mr: 2 } }}>
+          <Icon fontSize='1.125rem' icon='tabler:send' />
+          Send Invoice
+        </Button>
+        <Button fullWidth sx={{ mb: 2 }} color='secondary' variant='outlined'>
+          Download
+        </Button>
+        <Button
+          fullWidth
+          sx={{ mb: 2 }}
+          target='_blank'
+          component={Link}
+          color='secondary'
+          variant='outlined'
+          href={`/apps/invoice/print/${id}`}
+        >
+          Print
+        </Button>
+        <Button
+          fullWidth
+          sx={{ mb: 2 }}
+          component={Link}
+          color='secondary'
+          variant='outlined'
+          href={`/apps/invoice/edit/${id}`}
+        >
+          Edit Invoice
+        </Button>
+        <Button fullWidth variant='contained' sx={{ '& svg': { mr: 2 } }} onClick={toggleAddPaymentDrawer}>
+          <Icon fontSize='1.125rem' icon='tabler:currency-dollar' />
+          Add Payment
+        </Button>
+      </CardContent>
+    </Card>
+  )
 }
 
 export default PreviewActions

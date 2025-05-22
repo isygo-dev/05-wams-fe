@@ -1,4 +1,4 @@
-import {DocumentType} from "./document";
+import { DocumentType } from './document'
 
 export interface DocCommentType {
   id?: number
@@ -18,8 +18,5 @@ export interface DocCommentType {
 export enum IEnumDocCommentsStaus {
   OPEN = 'OPEN',
   CLOSED = 'CLOSED',
-  VALIDATED = 'VALIDATED',
-
+  VALIDATED = 'VALIDATED'
 }
-
-

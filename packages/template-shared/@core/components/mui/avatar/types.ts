@@ -1,10 +1,10 @@
 // ** MUI Imports
-import {AvatarProps} from '@mui/material/Avatar'
+import { AvatarProps } from '@mui/material/Avatar'
 
 // ** Types
-import {ThemeColor} from '../../../layouts/types'
+import { ThemeColor } from '../../../layouts/types'
 
 export type CustomAvatarProps = AvatarProps & {
-    color?: ThemeColor
-    skin?: 'filled' | 'light' | 'light-static'
+  color?: ThemeColor
+  skin?: 'filled' | 'light' | 'light-static'
 }

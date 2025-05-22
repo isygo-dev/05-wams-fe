@@ -1,10 +1,10 @@
 // ** Next Imports
-import {GetStaticProps, InferGetStaticPropsType} from 'next/types'
+import { GetStaticProps, InferGetStaticPropsType } from 'next/types'
 
 import Card from '@mui/material/Card'
-import {styled} from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
-import CardContent, {CardContentProps} from '@mui/material/CardContent'
+import CardContent, { CardContentProps } from '@mui/material/CardContent'
 
 // ** Third Party Imports
 import axios from 'axios'
@@ -12,8 +12,8 @@ import axios from 'axios'
 // ** Types
 // ** Demo Imports
 import AllowedToolsOverview from 'template-shared/views/pages/auth/allowed-tools-page/landing/AllowedToolsOverview'
-import {useTranslation} from 'react-i18next'
-import {HelpCenterArticlesOverviewType, HelpCenterCategoriesType} from 'template-shared/@fake-db/types'
+import { useTranslation } from 'react-i18next'
+import { HelpCenterArticlesOverviewType, HelpCenterCategoriesType } from 'template-shared/@fake-db/types'
 
 type ApiDataType = {
   categories: HelpCenterCategoriesType[]
@@ -21,7 +21,7 @@ type ApiDataType = {
   popularArticles: HelpCenterArticlesOverviewType[]
 }
 
-const StyledCardContent = styled(CardContent)<CardContentProps>(({theme}) => ({
+const StyledCardContent = styled(CardContent)<CardContentProps>(({ theme }) => ({
   paddingTop: `${theme.spacing(10)} !important`,
   paddingBottom: `${theme.spacing(20)} !important`,
   [theme.breakpoints.up('lg')]: {
@@ -34,15 +34,15 @@ const StyledCardContent = styled(CardContent)<CardContentProps>(({theme}) => ({
   }
 }))
 
-const AllowedTools = ({apiData}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const {t} = useTranslation()
+const AllowedTools = ({ apiData }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { t } = useTranslation()
 
   return (
-    <Card sx={{background: '#F7FAFC', boxShadow: 'none'}}>
+    <Card sx={{ background: '#F7FAFC', boxShadow: 'none' }}>
       {apiData !== null ? (
         <>
           <StyledCardContent>
-            <Typography sx={{marginBottom: '3rem', fontWeight: 500, textAlign: 'left', fontSize: '1.625rem'}}>
+            <Typography sx={{ marginBottom: '3rem', fontWeight: 500, textAlign: 'left', fontSize: '1.625rem' }}>
               {t('Welcome to your space')}
             </Typography>
             <Typography
@@ -57,7 +57,7 @@ const AllowedTools = ({apiData}: InferGetStaticPropsType<typeof getStaticProps>)
             >
               {t('Allowed Tools')}
             </Typography>
-            <AllowedToolsOverview/>
+            <AllowedToolsOverview />
           </StyledCardContent>
           {/*<StyledCardContent sx={{backgroundColor: 'action.hover'}}>*/}
           {/*  <Typography sx={{marginBottom: '2rem', fontWeight: 500, textAlign: 'left', fontSize: '1.625rem'}}>*/}

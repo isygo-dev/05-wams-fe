@@ -1,66 +1,65 @@
-import React, {useState} from 'react';
-import {CircularProgress, IconButton, Tooltip} from '@mui/material';
-import Icon from 'template-shared/@core/components/icon';
-import {useMutation, useQuery, useQueryClient} from 'react-query';
-import toast from 'react-hot-toast';
-import {checkPinStatus, toggleTemplatePin} from "../../../api/FavoriteTemplate";
-
+import React, { useState } from 'react'
+import { CircularProgress, IconButton, Tooltip } from '@mui/material'
+import Icon from 'template-shared/@core/components/icon'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import toast from 'react-hot-toast'
+import { checkPinStatus, toggleTemplatePin } from '../../../api/FavoriteTemplate'
 
 interface PinIconProps {
-  templateId: number;
-  isPinned?: boolean;
-  onToggle?: (newStatus: boolean) => void;
-  size?: 'small' | 'medium' | 'large';
-  tooltipPlacement?: 'top' | 'bottom' | 'left' | 'right';
+  templateId: number
+  isPinned?: boolean
+  onToggle?: (newStatus: boolean) => void
+  size?: 'small' | 'medium' | 'large'
+  tooltipPlacement?: 'top' | 'bottom' | 'left' | 'right'
 }
 
-const PinIcon: React.FC<PinIconProps> = ({templateId, size = 'small'}) => {
-  const queryClient = useQueryClient();
-  const [isHovered, setIsHovered] = useState(false);
+const PinIcon: React.FC<PinIconProps> = ({ templateId, size = 'small' }) => {
+  const queryClient = useQueryClient()
+  const [isHovered, setIsHovered] = useState(false)
 
-  const {data: isPinned, isLoading, isError} = useQuery<boolean, Error>(
-    ['templatePinStatus', templateId],
-    () => checkPinStatus(templateId),
-    {
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 10 * 60 * 1000,
-      onError: (error) => {
-        toast.error(`Erreur: ${error.message || 'Impossible de vérifier l\'état du pin'}`);
-      }
+  const {
+    data: isPinned,
+    isLoading,
+    isError
+  } = useQuery<boolean, Error>(['templatePinStatus', templateId], () => checkPinStatus(templateId), {
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+    onError: error => {
+      toast.error(`Erreur: ${error.message || "Impossible de vérifier l'état du pin"}`)
     }
-  );
+  })
 
   const pinMutation = useMutation(toggleTemplatePin, {
     onMutate: async () => {
-      await queryClient.cancelQueries(['templatePinStatus', templateId]);
-      const previousStatus = isPinned;
-      queryClient.setQueryData(['templatePinStatus', templateId], !isPinned);
+      await queryClient.cancelQueries(['templatePinStatus', templateId])
+      const previousStatus = isPinned
+      queryClient.setQueryData(['templatePinStatus', templateId], !isPinned)
 
-      return {previousStatus};
+      return { previousStatus }
     },
     onError: (error: Error, _, context) => {
-      queryClient.setQueryData(['templatePinStatus', templateId], context?.previousStatus);
-      toast.error(`Erreur: ${error.message || 'Échec de la modification du pin'}`);
+      queryClient.setQueryData(['templatePinStatus', templateId], context?.previousStatus)
+      toast.error(`Erreur: ${error.message || 'Échec de la modification du pin'}`)
     },
     onSuccess: (_, __, context) => {
-      const newStatus = !context?.previousStatus;
-      toast.success(newStatus ? 'Template épinglé avec succès' : 'Template désépinglé avec succès');
+      const newStatus = !context?.previousStatus
+      toast.success(newStatus ? 'Template épinglé avec succès' : 'Template désépinglé avec succès')
     },
     onSettled: () => {
-      queryClient.invalidateQueries(['templatePinStatus', templateId]);
+      queryClient.invalidateQueries(['templatePinStatus', templateId])
     }
-  });
+  })
 
   const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    pinMutation.mutate(templateId);
-  };
+    e.stopPropagation()
+    pinMutation.mutate(templateId)
+  }
 
-  if (isError) return null;
+  if (isError) return null
 
   return (
-    <Tooltip title={isPinned ? "Désépingler" : "Épingler"} arrow>
-      <div style={{position: 'relative'}}>
+    <Tooltip title={isPinned ? 'Désépingler' : 'Épingler'} arrow>
+      <div style={{ position: 'relative' }}>
         <IconButton
           size={size}
           onClick={handleClick}
@@ -97,7 +96,7 @@ const PinIcon: React.FC<PinIconProps> = ({templateId, size = 'small'}) => {
         )}
       </div>
     </Tooltip>
-  );
-};
+  )
+}
 
-export default PinIcon;
+export default PinIcon

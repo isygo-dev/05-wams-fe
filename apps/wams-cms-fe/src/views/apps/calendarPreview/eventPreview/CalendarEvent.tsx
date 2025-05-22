@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import listPlugin from '@fullcalendar/list'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -6,7 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import bootstrap5Plugin from '@fullcalendar/bootstrap5'
 import interactionPlugin from '@fullcalendar/interaction'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import {CalendarEventType, EventType} from "template-shared/@core/types/helper/calendarTypes";
+import { CalendarEventType, EventType } from 'template-shared/@core/types/helper/calendarTypes'
 
 const blankEvent: EventType = {
   id: null,
@@ -52,7 +52,7 @@ const Calendar = (props: CalendarEventType) => {
       },
       views: {
         week: {
-          titleFormat: {year: 'numeric', month: 'long', day: 'numeric'}
+          titleFormat: { year: 'numeric', month: 'long', day: 'numeric' }
         }
       },
 
@@ -86,7 +86,7 @@ const Calendar = (props: CalendarEventType) => {
     */
       navLinks: true,
 
-      eventClassNames({event: calendarEvent}: any) {
+      eventClassNames({ event: calendarEvent }: any) {
         // @ts-ignore
         const colorName = calendarsColor[calendarEvent._def.extendedProps.calendar]
 
@@ -96,7 +96,7 @@ const Calendar = (props: CalendarEventType) => {
         ]
       },
 
-      eventClick({event: clickedEvent}: any) {
+      eventClick({ event: clickedEvent }: any) {
         if (clickedEvent !== null) {
           const selectedEvent: EventType = {
             id: clickedEvent.id,
@@ -132,7 +132,6 @@ const Calendar = (props: CalendarEventType) => {
           if (!lock) {
             handleAddEventSidebarToggle()
           }
-
         } else {
           handleSelectEvent(null)
         }
@@ -154,7 +153,7 @@ const Calendar = (props: CalendarEventType) => {
       },
 
       dateClick(info: any) {
-        const ev = {...blankEvent}
+        const ev = { ...blankEvent }
         ev.start = info.date
         ev.end = info.date
         ev.allDay = true
@@ -168,7 +167,7 @@ const Calendar = (props: CalendarEventType) => {
       ? Docs: https://fullcalendar.io/docs/eventDrop
       ? We can use `eventDragStop` but it doesn't return updated event so we have to use `eventDrop` which returns updated event
     */
-      eventDrop({event: droppedEvent}: any) {
+      eventDrop({ event: droppedEvent }: any) {
         console.log('droppedEvent', droppedEvent)
 
         // const modifiedEvent: EventType = {
@@ -205,7 +204,7 @@ const Calendar = (props: CalendarEventType) => {
       Handle event resize
       ? Docs: https://fullcalendar.io/docs/eventResize
     */
-      eventResize({event: resizedEvent}: any) {
+      eventResize({ event: resizedEvent }: any) {
         // dispatch(updateEvent(resizedEvent))
         console.log(resizedEvent)
 
@@ -231,7 +230,7 @@ const Calendar = (props: CalendarEventType) => {
       },
       views: {
         week: {
-          titleFormat: {year: 'numeric', month: 'long', day: 'numeric'}
+          titleFormat: { year: 'numeric', month: 'long', day: 'numeric' }
         }
       },
 
@@ -265,7 +264,7 @@ const Calendar = (props: CalendarEventType) => {
     */
       navLinks: true,
 
-      eventClassNames({event: calendarEvent}: any) {
+      eventClassNames({ event: calendarEvent }: any) {
         // @ts-ignore
         const colorName = calendarsColor[calendarEvent._def.extendedProps.calendar]
 
@@ -275,7 +274,7 @@ const Calendar = (props: CalendarEventType) => {
         ]
       },
 
-      eventClick({event: clickedEvent}: any) {
+      eventClick({ event: clickedEvent }: any) {
         if (clickedEvent !== null) {
           const selectedEvent: EventType = {
             id: clickedEvent.id,
@@ -329,7 +328,7 @@ const Calendar = (props: CalendarEventType) => {
       },
 
       dateClick(info: any) {
-        const ev = {...blankEvent}
+        const ev = { ...blankEvent }
         ev.start = info.date
         ev.end = info.date
         ev.allDay = true
@@ -343,7 +342,7 @@ const Calendar = (props: CalendarEventType) => {
       ? Docs: https://fullcalendar.io/docs/eventDrop
       ? We can use `eventDragStop` but it doesn't return updated event so we have to use `eventDrop` which returns updated event
     */
-      eventDrop({event: droppedEvent}: any) {
+      eventDrop({ event: droppedEvent }: any) {
         console.log('droppedEvent', droppedEvent)
 
         // const modifiedEvent: EventType = {
@@ -380,7 +379,7 @@ const Calendar = (props: CalendarEventType) => {
       Handle event resize
       ? Docs: https://fullcalendar.io/docs/eventResize
     */
-      eventResize({event: resizedEvent}: any) {
+      eventResize({ event: resizedEvent }: any) {
         // dispatch(updateEvent(resizedEvent))
         console.log(resizedEvent)
 
