@@ -36,8 +36,8 @@ const apiUrls = {
 
 //template
   apiUrl_smekit_Template_FetchAll_Endpoint: apiUrl_SMEKIT + '/api/v1/private/template',
-  apiUrl_smekit_Template_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/templatefile/file',
-  apiUrl_smekit_TemplateDownload_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/templatefile/file/download',
+  apiUrl_smekit_Template_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/template/file',
+  apiUrl_smekit_TemplateDownload_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/template/file/download',
   apiUrl_smekit_Template_Count_Endpoint : apiUrl_SMEKIT + '/api/v1/private/template/count',
   apiUrl_smekit_Template_FetchByCategory_Endpoint : apiUrl_SMEKIT + api_version +  '/private/template/category',
 
@@ -45,8 +45,8 @@ const apiUrls = {
   apiUrl_smekit_Author_Image_Endpoint: apiUrl_SMEKIT + '/api/v1/private/Author/image',
   apiUrl_smekit_Author_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/Author',
   apiUrl_smekit_Author_ImageDownload_Endpoint: apiUrl_SMEKIT + api_version + '/private/Author/image/download',
-  apiUrl_smekit_Author_FileDownload_Endpoint: apiUrl_SMEKIT + api_version +'private/authorfile/file/download',
-  apiUrl_Author_File_Upload: apiUrl_SMEKIT + '/api/v1/private/authorfile/file/upload',
+  apiUrl_smekit_Author_FileDownload_Endpoint: apiUrl_SMEKIT + api_version +'private/author/file/download',
+  apiUrl_Author_File_Upload: apiUrl_SMEKIT + '/api/v1/private/author/file/upload',
 
 //tags
   apiUrl_smekit_tag_Endpoint: apiUrl_SMEKIT + '/api/v1/private/tag',

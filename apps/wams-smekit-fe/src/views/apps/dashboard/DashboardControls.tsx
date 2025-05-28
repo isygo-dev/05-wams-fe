@@ -5,12 +5,12 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
-  Switch,
-  Divider,
+
   Box,
   Tooltip,
   Typography,
-  useTheme
+  useTheme,
+  Chip
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { DashboardLayout } from "../../../types/Dashboard";
@@ -49,6 +49,22 @@ const DashboardControls: React.FC<DashboardControlsProps> = ({
     onCustomizeClick();
     handleClose();
   }
+
+  // Logique de cycle automatique : 2 → 3 → 4 → 2...
+  const handleStatsColumnsClick = () => {
+    const nextColumns = layout.statsColumns === 4 ? 2 : layout.statsColumns + 1;
+    const newLayout = {
+      ...layout,
+      statsColumns: nextColumns
+    };
+
+    setLayout(newLayout);
+
+    // Sauvegarder dans localStorage
+    localStorage.setItem('dashboardLayout', JSON.stringify(newLayout));
+
+    handleClose();
+  };
 
   const toggleDenseMode = () => {
     setLayout({
@@ -138,67 +154,45 @@ const DashboardControls: React.FC<DashboardControlsProps> = ({
             />
           </MenuItem>
 
-          <MenuItem sx={{ py: 1.5 }}>
+          {/*<MenuItem sx={{ py: 1.5 }}>*/}
+          {/*  <ListItemIcon sx={{ minWidth: 40 }}>*/}
+          {/*    <Icon*/}
+          {/*      icon="mdi:arrow-collapse"*/}
+          {/*      width={20}*/}
+          {/*      color={theme.palette.text.secondary}*/}
+          {/*    />*/}
+          {/*  </ListItemIcon>*/}
+          {/*  <ListItemText*/}
+          {/*    primary={t("Mode compact")}*/}
+          {/*    primaryTypographyProps={{ variant: 'body2', fontWeight: 500 }}*/}
+          {/*  />*/}
+          {/*  <Switch*/}
+          {/*    checked={layout.denseMode}*/}
+          {/*    onChange={toggleDenseMode}*/}
+          {/*    edge="end"*/}
+          {/*    inputProps={{ 'aria-label': 'Basculer mode compact' }}*/}
+          {/*  />*/}
+          {/*</MenuItem>*/}
+
+          <MenuItem onClick={handleStatsColumnsClick} sx={{ py: 1.5 }}>
             <ListItemIcon sx={{ minWidth: 40 }}>
               <Icon
-                icon="mdi:arrow-collapse"
+                icon="mdi:view-column"
                 width={20}
                 color={theme.palette.text.secondary}
               />
             </ListItemIcon>
             <ListItemText
-              primary={t("Mode compact")}
+              primary={t("Gérer les colonnes")}
+              secondary={t("Widgets et disposition")}
               primaryTypographyProps={{ variant: 'body2', fontWeight: 500 }}
+              secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
             />
-            <Switch
-              checked={layout.denseMode}
-              onChange={toggleDenseMode}
-              edge="end"
-              inputProps={{ 'aria-label': 'Basculer mode compact' }}
+            <Icon
+              icon="mdi:chevron-right"
+              width={16}
+              style={{ marginLeft: 'auto', color: theme.palette.text.secondary }}
             />
-          </MenuItem>
-
-          <Divider sx={{ my: 1 }} />
-
-          <MenuItem sx={{ py: 1.5 }}>
-            <ListItemIcon sx={{ minWidth: 40 }}>
-              <Icon
-                icon="mdi:view-grid-outline"
-                width={20}
-                color={theme.palette.text.secondary}
-              />
-            </ListItemIcon>
-            <ListItemText
-              primary={t("Colonnes des stats")}
-              primaryTypographyProps={{ variant: 'body2', fontWeight: 500 }}
-            />
-            <Box sx={{ display: 'flex', gap: 0.5, ml: 2 }}>
-              {[2, 3, 4].map(col => (
-                <IconButton
-                  key={col}
-                  size="small"
-                  onClick={() => changeStatsColumns(col)}
-                  sx={{
-                    bgcolor: layout.statsColumns === col
-                      ? theme.palette.primary.main
-                      : theme.palette.action.hover,
-                    color: layout.statsColumns === col
-                      ? theme.palette.primary.contrastText
-                      : theme.palette.text.primary,
-                    '&:hover': {
-                      bgcolor: layout.statsColumns === col
-                        ? theme.palette.primary.dark
-                        : theme.palette.action.selected
-                    },
-                    minWidth: 32,
-                    height: 32
-                  }}
-                  aria-label={`${col} colonnes`}
-                >
-                  {col}
-                </IconButton>
-              ))}
-            </Box>
           </MenuItem>
         </Menu>
       </Box>

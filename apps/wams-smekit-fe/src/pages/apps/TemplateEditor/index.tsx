@@ -1,93 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
+// apps/template/DocxEditorField.tsx
+import React, { useEffect, useState } from 'react'
+import * as mammoth from 'mammoth'
+import HtmlDocx from 'html-docx-js/dist/html-docx'
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import { Box, Typography, Button } from '@mui/material'
 
-import { Button, Box, Typography } from '@mui/material';
-import SaveIcon from '@mui/icons-material/Save';
-import DownloadIcon from '@mui/icons-material/Download';
+interface Props {
+  file: File | null
+  onChange: (docxFile: File) => void
+}
 
-const DocumentEditor = ({ documentId, initialContent }) => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [isLoading, setIsLoading] = useState(true);
+const DocxEditorField: React.FC<Props> = ({ file, onChange }) => {
+  const [loaded, setLoaded] = useState(false)
+
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: '<p>Chargement du fichier .docx...</p>',
+  })
 
   useEffect(() => {
-    if (initialContent) {
-      const blocksFromHtml = convertFromHTML(initialContent);
-      const contentState = ContentState.createFromBlockArray(
-        blocksFromHtml.contentBlocks,
-        blocksFromHtml.entityMap
-      );
-      setEditorState(EditorState.createWithContent(contentState));
+    const loadDocx = async () => {
+      if (!file) return
+      setLoaded(false)
+
+      const arrayBuffer = await file.arrayBuffer()
+      const result = await mammoth.convertToHtml({ arrayBuffer })
+      editor?.commands.setContent(result.value)
     }
-    setIsLoading(false);
-  }, [documentId, initialContent]);
 
+    loadDocx().then(() => setLoaded(true))
+  }, [file])
 
+  const handleSaveAsDocx = () => {
+    if (!editor) return
 
-  const handleExport = async () => {
-    const content = convertToRaw(editorState.getCurrentContent());
-    const htmlContent = stateToHTML(content);
-    const docx = await htmlToDocx(htmlContent);
+    const htmlContent = `<!DOCTYPE html><html><body>${editor.getHTML()}</body></html>`
+    const blob = HtmlDocx.asBlob(htmlContent)
+    const newFile = new File([blob], 'modified.docx', { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' })
 
-    const blob = new Blob([docx], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `document-${documentId}.docx`;
-    link.click();
-  };
-
-  if (isLoading) return <Typography>Chargement...</Typography>;
+    onChange(newFile)
+  }
 
   return (
-    <Box sx={{ p: 3, border: '1px solid #eee', borderRadius: 2 }}>
-      <Editor
-        editorState={editorState}
-        onEditorStateChange={setEditorState}
-        toolbar={{
-          options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'link', 'embedded', 'image'],
-          image: {
-            uploadCallback: uploadImageCallBack,
-            previewImage: true,
-          },
-        }}
-        wrapperClassName="wrapper-class"
-        editorClassName="editor-class"
-        toolbarClassName="toolbar-class"
-      />
-      <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
-        <Button
-          variant="contained"
-          startIcon={<SaveIcon />}
-          onClick={handleSave}
-        >
-          Sauvegarder
-        </Button>
-        <Button
-          variant="outlined"
-          startIcon={<DownloadIcon />}
-          onClick={handleExport}
-        >
-          Exporter en DOCX
-        </Button>
+    <Box>
+      <Typography variant="h6" mb={2}>
+        Modifier le contenu du fichier Word
+      </Typography>
+
+      <Box sx={{ border: '1px solid #ccc', borderRadius: 2, padding: 2, minHeight: 200 }}>
+        <EditorContent editor={editor} />
       </Box>
+
+      {loaded && (
+        <Box mt={2}>
+          <Button variant="contained" onClick={handleSaveAsDocx}>
+            Sauvegarder les modifications
+          </Button>
+        </Box>
+      )}
     </Box>
-  );
-};
+  )
+}
 
-const uploadImageCallBack = (file) => {
-  return new Promise((resolve, reject) => {
-    const formData = new FormData();
-    formData.append('image', file);
-
-    fetch('/api/upload-image', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => resolve({ data: { link: data.imageUrl } }))
-      .catch((error) => reject(error));
-  });
-};
-
-export default DocumentEditor;
+export default DocxEditorField

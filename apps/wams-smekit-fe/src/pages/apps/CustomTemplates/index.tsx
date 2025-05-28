@@ -173,7 +173,7 @@ const PinnedTemplatesView = () => {
                   variant="outlined"
                   color="primary"
                   startIcon={<Icon icon="mdi:pin-outline" />}
-                  onClick={() => {/* Naviguer vers les templates */}}
+                  onClick={() => window.location.href = '/apps/template'}
                   sx={{ mt: 2 }}
                 >
                   {t('Browse Templates')}

@@ -40,6 +40,11 @@ const TemplatePreviewDialog = (props: DialogProps) => {
   const {open, onCloseClick, templatePreview} = props
   const {t} = useTranslation()
 
+  console.log('templatePreview', templatePreview)
+
+
+
+
   return (
     <Dialog fullScreen open={open}>
       <DialogTitle>
@@ -64,7 +69,7 @@ const TemplatePreviewDialog = (props: DialogProps) => {
             pluginRenderers={DocViewerRenderers}
             documents={[
               {
-                uri: `${apiUrls.apiUrl_smekit_Template_Count_Endpoint}?id=${templatePreview.id}&version=1`,
+                uri: `${apiUrls.apiUrl_smekit_TemplateDownload_StorageConfigEndpoint}?id=${templatePreview.id}&version=1`,
                 fileType: templatePreview.extension
               }
             ]}

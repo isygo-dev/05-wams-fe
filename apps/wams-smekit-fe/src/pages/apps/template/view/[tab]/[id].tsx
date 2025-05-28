@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import toast from 'react-hot-toast';
@@ -32,6 +32,9 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import TemplatePreviewDialog from "../../../../../views/apps/Template/TemplatePreviewDialog";
+import localeStorage from "template-shared/configs/localeStorage";
+
 
 const UpdateTemplate = () => {
   const { t } = useTranslation();
@@ -39,10 +42,10 @@ const UpdateTemplate = () => {
   const { id } = router.query;
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [authors, setAuthors] = useState<AuthorType[]>([]);
-  const [filePreview, setFilePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [templateData, setTemplateData] = useState<CategoryTemplateType | null>(null);
-  const [previewError, setPreviewError] = useState<string | null>(null);
+  const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
+  const [previewTemplate, setPreviewTemplate] = useState<CategoryTemplateType | null>(null);
 
   const { control, handleSubmit, watch, setValue, formState: { errors } } = useForm<CategoryTemplateType>({
     defaultValues: {
@@ -106,40 +109,6 @@ const UpdateTemplate = () => {
   }, [id, setValue, router, t]);
 
   useEffect(() => {
-    if (templateData) {
-      setValue('originalFileName', templateData.originalFileName);
-    }
-  }, [templateData, setValue]);
-
-  const loadPreview = useCallback(async () => {
-    if (!templateData?.id) return;
-
-    try {
-      setPreviewError(null);
-      const blob = await getTemplatePreview(templateData.id);
-      setFilePreview(URL.createObjectURL(blob));
-    } catch (error) {
-      console.error('Error loading file preview:', error);
-      if (error.message.includes('n\'a pas été trouvé')) {
-        setPreviewError(t('Le fichier original n\'existe pas sur le serveur'));
-      } else {
-        setPreviewError(t('Échec du chargement de l\'aperçu du fichier'));
-      }
-      setFilePreview(null);
-    }
-  }, [templateData?.id, t]);
-
-  useEffect(() => {
-    loadPreview();
-
-    return () => {
-      if (filePreview) {
-        URL.revokeObjectURL(filePreview);
-      }
-    };
-  }, [loadPreview, filePreview])
-
-  useEffect(() => {
     const loadData = async () => {
       try {
         const [cats, auths] = await Promise.all([
@@ -157,10 +126,24 @@ const UpdateTemplate = () => {
     loadData();
   }, [t]);
 
+  const handlePreviewClick = () => {
+    if (templateData) {
+      const currentFormData = watch();
+      const previewData: CategoryTemplateType = {
+        ...templateData,
+        ...currentFormData,
+        file: currentFormData.file || undefined
+      };
+
+      setPreviewTemplate(previewData);
+      setPreviewDialogOpen(true);
+    }
+  };
+
   const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newType = event.target.checked ? IEnumTemplateVisibility.PRV : IEnumTemplateVisibility.PB;
     setValue('typeTv', newType, { shouldValidate: true });
-  }
+  };
 
   const updateTemplateMutation = useMutation(updateTemplate, {
     onSuccess: () => {
@@ -181,20 +164,20 @@ const UpdateTemplate = () => {
       }
     },
   });
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setValue('file', file);
       setValue('originalFileName', file.name);
-      setFilePreview(URL.createObjectURL(file));
-      setPreviewError(null);
 
       setTemplateData(prev => prev ? {
         ...prev,
-        originalFileName: file.name
+        originalFileName: file.name,
+        file: file
       } : null);
     }
-  }
+  };
 
   const onSubmit = (data: CategoryTemplateType) => {
     const formData = new FormData();
@@ -207,17 +190,18 @@ const UpdateTemplate = () => {
     formData.append('typeTl', data.typeTl || IEnumTemplateLanguage.EN);
     formData.append('typeTv', data.typeTv || IEnumTemplateVisibility.PB);
     formData.append('typeTs', data.typeTs || IEnumDocTempStatus.EDITING);
+    formData.append('domain', data.domain?.toString() || 'default-domain' );
 
     if (data.file) {
       formData.append('file', data.file);
       formData.append('originalFileName', data.file.name);
     } else if (templateData?.originalFileName) {
       formData.append('originalFileName', templateData.originalFileName);
-      formData.append('preserveFile', 'true'); // Ajout important
+      formData.append('preserveFile', 'true');
     }
 
     updateTemplateMutation.mutate(formData);
-  }
+  };
 
   if (isLoading) {
     return (
@@ -356,41 +340,26 @@ const UpdateTemplate = () => {
               />
               <Divider />
               <CardContent>
-                {previewError ? (
-                  <Alert severity="warning" sx={{ mb: 4 }}>
-                    {previewError}
-                    <Box sx={{ mt: 2 }}>
-                      <Button
-                        variant="outlined"
-                        onClick={() => loadPreview()}
-                        startIcon={<Icon icon="mdi:refresh" />}
-                      >
-                        {t('Réessayer')}
-                      </Button>
-                    </Box>
-                  </Alert>
-                ) : filePreview ? (
+                {templateData?.originalFileName || selectedFile ? (
                   <Paper elevation={0} variant="outlined" sx={{ mb: 4, p: 3 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
                       <Icon icon="mdi:file-document" fontSize={40} color="primary" />
                     </Box>
                     <Typography variant="body1" sx={{ mb: 2, fontWeight: 'medium' }}>
-                      {templateData?.originalFileName || watch('originalFileName')}
+                      {selectedFile?.name || templateData?.originalFileName}
                     </Typography>
-                    {filePreview && (
-                      <Button
-                        size="small"
-                        variant="contained"
-                        startIcon={<Icon icon="mdi:eye" />}
-                        onClick={() => window.open(filePreview)}
-                      >
-                        {t('Preview')}
-                      </Button>
-                    )}
+                    <Button
+                      size="small"
+                      variant="contained"
+                      startIcon={<Icon icon="mdi:eye" />}
+                      onClick={handlePreviewClick}
+                    >
+                      {t('Preview')}
+                    </Button>
                   </Paper>
-                ) : !previewError && (
+                ) : (
                   <Alert severity="info" sx={{ mb: 4 }}>
-                    {t('No file preview available')}
+                    {t('No file available for preview')}
                   </Alert>
                 )}
 
@@ -539,7 +508,7 @@ const UpdateTemplate = () => {
                         variant="body2"
                         sx={{ color: 'text.primary' }}
                       >
-                        { t('Private') }
+                        {t('Private')}
                       </Typography>
                     </Box>
                     <Controller
@@ -594,6 +563,17 @@ const UpdateTemplate = () => {
           </Grid>
         </Grid>
       </form>
+
+      {previewTemplate && (
+        <TemplatePreviewDialog
+          open={previewDialogOpen}
+          onCloseClick={() => {
+            setPreviewDialogOpen(false);
+            setPreviewTemplate(null);
+          }}
+          templatePreview={previewTemplate}
+        />
+      )}
     </Box>
   );
 };

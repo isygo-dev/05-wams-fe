@@ -159,13 +159,7 @@ const Template = () => {
     }
   }, [allCategories])
 
-  // const toggleViewMode = () => {
-  //   if (isMobile && viewMode === 'auto') {
-  //     setViewMode(prevViewMode => (prevViewMode === 'auto' ? 'grid' : 'card'))
-  //   } else if (!isMobile && viewMode === 'auto') {
-  //     setViewMode(prevViewMode => (prevViewMode === 'auto' ? 'card' : 'grid'))
-  //   } else setViewMode(prevViewMode => (prevViewMode === 'grid' ? 'card' : 'grid'))
-  // }
+
 
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState<GridColumnVisibilityModel>({
     createDate: false,
@@ -180,21 +174,7 @@ const Template = () => {
     }
   }
 
-  // const handlePaginationChange = async (newModel: GridPaginationModel) => {
-  //   try {
-  //     if (newModel.pageSize !== paginationModel.pageSize) {
-  //       localStorage.setItem(localStorageKeys.paginationSize, String(newModel.pageSize))
-  //     }
-  //
-  //     const apiList = await getTemplatesByPage(newModel.page, newModel.pageSize)
-  //     queryClient.setQueryData('categoryTemplate', apiList)
-  //     setPaginationModel(newModel)
-  //     setDisabledNextBtn(apiList.length < newModel.pageSize)
-  //   } catch (error) {
-  //     console.error('Erreur de pagination:', error)
-  //     toast.error('Échec du chargement des données')
-  //   }
-  // }
+
   const onChangePagination = async (item: any) => {
     if (item.pageSize !== paginationModel.pageSize) {
       setPaginationModel(item)
