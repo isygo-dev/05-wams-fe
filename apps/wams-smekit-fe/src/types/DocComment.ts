@@ -1,12 +1,21 @@
 import {DocumentType} from "./document";
 
+export enum IEnumDocCommentsStaus {
+  OPEN = 'OPEN',
+  CLOSED = 'CLOSED',
+  VALIDATED = 'VALIDATED',
+
+}
 export interface DocCommentType {
+  resolved: boolean;
   id?: number
-  text: string
   user: string
-  type: string
-  document: DocumentType
-  DocCommentsStaus: IEnumDocCommentsStaus
+  document: Pick<DocumentType, 'id'>;
+  type: IEnumDocCommentsStaus;
+  startOffset: number
+  endOffset: number
+  textCommented:string
+  text:string
 
   //Audit info
   createDate: string
@@ -14,11 +23,17 @@ export interface DocCommentType {
   updateDate: string
   updatedBy: string
 }
-export enum IEnumDocCommentsStaus {
-  OPEN = 'OPEN',
-  CLOSED = 'CLOSED',
-  VALIDATED = 'VALIDATED',
 
+
+export interface DocCommentPayload {
+  textCommented: string;
+  text:string
+  user: string;
+  type: IEnumDocCommentsStaus;
+  document: { id: number };
+  startOffset: number;
+  endOffset: number;
+  id?: string;
 }
 
 

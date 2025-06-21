@@ -20,11 +20,6 @@ import Icon from 'template-shared/@core/components/icon';
 import { getPinnedTemplates, toggleTemplatePin } from "../../../api/FavoriteTemplate";
 import TemplateCard from "../../../views/apps/Template/TemplateCard";
 
-// interface TemplateCardProps {
-//   data: CategoryTemplateType;
-//   onPinToggle?: (templateId: number) => Promise<void>;
-//   isPinned?: boolean;
-// }
 
 const PinnedTemplatesView = () => {
   const { t } = useTranslation();
@@ -124,7 +119,7 @@ const PinnedTemplatesView = () => {
           <CardHeader
             title={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Icon icon="mdi:pin" fontSize="1.5rem" sx={{ mr: 2, color: 'primary.main' }} />
+                <Icon icon="mdi:pin" fontSize="1.5rem" style={{ marginRight: 2, color: 'primary.main' }} />
                 <Typography variant="h5" component="h1">
                   {t('Pinned Templates')}
                 </Typography>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient, useMutation, useQuery } from 'react-query';
 import toast from 'react-hot-toast';
@@ -40,28 +40,14 @@ import {
   updateAuthor,
   getAuthorTemplates,
   uploadAuthorFile,
-  downloadAuthorFile
+  downloadAuthorFile, updateAutherPicture
 } from "../../../../../api/author";
 import {downloadTemplateFile, getTemplatePreview} from "../../../../../api/template";
 import Tooltip from "@mui/material/Tooltip";
+import {AuthorType} from "../../../../../types/author";
+import AuthorFilePreviewDialog from "../../../../../views/apps/Author/AuthorFilePreviewDialog";
+import TemplatePreviewDialog from "../../../../../views/apps/Template/TemplatePreviewDialog";
 
-interface AuthorFormData {
-  id: string;
-  code: string;
-  firstname: string;
-  lastname: string;
-  domain: string;
-  email: string;
-  phone: string;
-  type: string;
-  imageFile?: File;
-  imagePath: string;
-  file?: File;
-  fileName: string;
-  originalFileName: string;
-  path: string;
-  extension: string;
-}
 
 const UpdateAuthor = () => {
   const { t } = useTranslation();
@@ -69,9 +55,11 @@ const UpdateAuthor = () => {
   const router = useRouter();
   const { id } = router.query;
   const authorId = Array.isArray(id) ? id[0] : id;
+  const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
 
-  const [formData, setFormData] = useState<AuthorFormData>({
-    id: '',
+
+  const [formData, setFormData] = useState<AuthorType>({
+    id: undefined,
     code: '',
     firstname: '',
     lastname: '',
@@ -90,6 +78,8 @@ const UpdateAuthor = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [openPreview, setOpenPreview] = useState(false);
   const [templateToPreview, setTemplateToPreview] = useState(null);
+  const [openCVPreview, setOpenCVPreview] = useState(false);
+  const [cvPreviewUrl] = useState<string>('');
 
   const { data: domainList } = useQuery('domains', DomainApis(t).getDomains);
 
@@ -98,7 +88,13 @@ const UpdateAuthor = () => {
     () => getAuthorTemplates(Number(authorId)),
     {
       enabled: !!authorId,
-      onError: () => toast.error(t('Failed to load templates'))
+      onError: (error) => {
+        console.error('[UpdateAuthor] Template fetch error:', error);
+        toast.error(t('Failed to load templates'));
+      },
+      onSuccess: (data) => {
+        console.log('[UpdateAuthor] Successfully loaded templates:', data);
+      }
     }
   );
 
@@ -124,13 +120,23 @@ const UpdateAuthor = () => {
     }
   );
 
+  useEffect(() => {
+
+
+    return () => {
+      if (cvPreviewUrl) {
+        URL.revokeObjectURL(cvPreviewUrl);
+      }
+    };
+  }, [cvPreviewUrl]);
+
   const updateAuthorMutation = useMutation({
-    mutationFn: (data: FormData) => updateAuthor(data),
+    mutationFn: (data: AuthorType) => updateAuthor(data),
     onSuccess: () => {
       queryClient.invalidateQueries(['author', authorId]);
       queryClient.invalidateQueries('authorList');
       toast.success(t('Author updated successfully'));
-      router.push('/apps/author');
+
     },
     onError: (error: Error) => {
       toast.error(t('Error updating author'));
@@ -138,16 +144,24 @@ const UpdateAuthor = () => {
     }
   });
 
+  const handlePreviewCV = () => {
+    if (formData.path) {
+      setOpenCVPreview(true);
+    } else {
+      toast.error(t('No CV available for preview'));
+    }
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  }
 
+  const [fileExist, setFileExist] = useState<File | undefined>(undefined)
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       const file = e.target.files[0];
-      setPreviewUrl(URL.createObjectURL(file));
-      setFormData(prev => ({ ...prev, imageFile: file }));
+      setFileExist(file)
     }
   };
 
@@ -170,17 +184,49 @@ const UpdateAuthor = () => {
     }
   };
 
+  const updatePictureMutation = useMutation({
+    mutationFn: (data: { id: number; file: Blob }) => updateAutherPicture(data),
+    onSuccess: () => {
+
+      toast.success(t('Picture updated successfully'));
+    },
+    onError: (error) => {
+      toast.error(t('Failed to update picture'));
+      console.error('Update picture error:', error);
+    }
+  });
+
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formDataToSend = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value !== undefined && value !== '') {
-        formDataToSend.append(key, value instanceof File ? value : String(value));
-      }
-    });
+    const newData: AuthorType = {
+      id:  formData.id,
+      code: formData.code,
+      firstname: formData.firstname,
+      lastname: formData.lastname,
+      domain: formData.domain,
+      email: formData.email,
+      phone: formData.phone,
+      type: formData.type,
+      imagePath: fileExist ? undefined : formData.imagePath,
+      fileName: fileExist ? fileExist.name : formData.fileName,
+      originalFileName: formData.originalFileName,
+      path: formData.path,
+      extension: formData.extension
+    }
 
-    updateAuthorMutation.mutate(formDataToSend);
+    updateAuthorMutation.mutate(newData);
+
+
+    if (fileExist && formData?.id) {
+      updatePictureMutation.mutate({
+        id: formData.id,
+        file: fileExist
+      });
+    }
+
+
   }
 
   const [previewLoading, setPreviewLoading] = useState(false);
@@ -195,16 +241,20 @@ const UpdateAuthor = () => {
 
     try {
       const blob = await getTemplatePreview(template.id);
-      const previewUrl = URL.createObjectURL(blob);
-      setPreviewContent(previewUrl);
+      const url = URL.createObjectURL(blob);
+      setPreviewContent(url);
     } catch (error) {
-      toast.error(t('Failed to load template preview'));
+      if (error.message === 'FILE_NOT_FOUND') {
+        toast.error(t('Template file not found on server'));
+      } else {
+        toast.error(t('Failed to load template preview'));
+      }
       console.error('Preview error:', error);
+      handleClosePreview();
     } finally {
       setPreviewLoading(false);
     }
   }
-
   const handleClosePreview = () => {
     setOpenPreview(false);
     setTemplateToPreview(null);
@@ -217,13 +267,14 @@ const UpdateAuthor = () => {
   const handleDownloadCV = async () => {
     if (!formData.path) return;
 
+    console.log('frfrffrrf', formData)
     setIsDownloading(true);
     try {
       const blob = await downloadAuthorFile(Number(authorId));
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = formData.fileName || `author_${authorId}_cv.${formData.extension || 'pdf'}`;
+      a.download = formData.originalFileName || `author_${authorId}_cv.${formData.extension || 'pdf'}`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -249,6 +300,19 @@ const UpdateAuthor = () => {
   if (isError) return <Typography color="error">{t('Error loading author data')}</Typography>;
   if (!authorData) return <Typography>{t('No author data found')}</Typography>;
 
+
+  {templateToPreview && (
+    <TemplatePreviewDialog
+      open={previewDialogOpen}
+      onCloseClick={() => {
+        setPreviewDialogOpen(false);
+        setTemplateToPreview(null);
+      }}
+      templatePreview={templateToPreview}
+    />
+  )}
+
+
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
@@ -265,7 +329,7 @@ const UpdateAuthor = () => {
                     {t('Profile Photo')}
                   </Typography>
                   <Avatar
-                    src={previewUrl}
+                    src={fileExist ? URL.createObjectURL(fileExist) : previewUrl}
                     alt={`${formData.firstname} ${formData.lastname}`}
                     sx={{ width: 150, height: 150, mb: 2 }}
                   />
@@ -310,16 +374,28 @@ const UpdateAuthor = () => {
                 </Button>
 
                 {formData.originalFileName && (
-                  <Chip
-                    icon={<InsertDriveFileIcon />}
-                    label={formData.originalFileName}
-                    onClick={handleDownloadCV}
-                    deleteIcon={isDownloading ? <CircularProgress size={20} /> : <DownloadIcon />}
-                    onDelete={handleDownloadCV}
-                    variant="outlined"
-                    sx={{ width: '100%', justifyContent: 'space-between' }}
-                    disabled={isDownloading}
-                  />
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Chip
+                      icon={<InsertDriveFileIcon />}
+                      label={formData.originalFileName}
+                      onClick={handleDownloadCV}
+                      deleteIcon={isDownloading ? <CircularProgress size={20} /> : <DownloadIcon />}
+                      onDelete={handleDownloadCV}
+                      variant="outlined"
+                      sx={{ width: '100%', justifyContent: 'space-between' }}
+                      disabled={isDownloading}
+                    />
+
+                    <Button
+                      variant="outlined"
+                      startIcon={<VisibilityIcon />}
+                      onClick={handlePreviewCV}
+                      fullWidth
+                      size="small"
+                    >
+                      {t('Preview CV')}
+                    </Button>
+                  </Box>
                 )}
               </CardContent>
             </Card>
@@ -370,7 +446,7 @@ const UpdateAuthor = () => {
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
-                      label={t('First Name')}
+                      label={t('First name')}
                       name="firstname"
                       value={formData.firstname}
                       onChange={handleChange}
@@ -383,7 +459,7 @@ const UpdateAuthor = () => {
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
-                      label={t('Last Name')}
+                      label={t('Last_Name')}
                       name="lastname"
                       value={formData.lastname}
                       onChange={handleChange}
@@ -483,36 +559,60 @@ const UpdateAuthor = () => {
               <CloseIcon />
             </IconButton>
           </DialogTitle>
-          <DialogContent dividers>
+          <DialogContent>
             {previewLoading ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
                 <CircularProgress />
               </Box>
             ) : previewContent ? (
-              <Box sx={{ p: 2, minHeight: '50vh' }}>
+              <Box sx={{ height: '70vh', width: '100%' }}>
                 {templateToPreview?.extension?.toLowerCase() === 'pdf' ? (
-                  <iframe
-                    src={previewContent}
-                    style={{ width: '100%', height: '70vh', border: 'none' }}
-                    title={templateToPreview.name}
-                  />
+                  <object
+                    data={previewContent}
+                    type="application/pdf"
+                    width="100%"
+                    height="100%"
+                  >
+                    <Box sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                      gap: 2
+                    }}>
+                      <Typography>{t('Unable to display PDF directly')}</Typography>
+                      <Button
+                        variant="contained"
+                        startIcon={<DownloadIcon />}
+                        onClick={() => handleDownloadTemplate(templateToPreview?.id, templateToPreview?.name)}
+                      >
+                        {t('Download to view')}
+                      </Button>
+                    </Box>
+                  </object>
                 ) : (
                   <Box sx={{
-                    width: '100%',
-                    height: '70vh',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 2,
+                    bgcolor: 'background.paper',
                     p: 3,
-                    overflow: 'auto',
-                    backgroundColor: '#f9f9f9'
+                    borderRadius: 1
                   }}>
-                    <Typography variant="body1">
-                      {t('Preview not available for this file type')}
+                    <InsertDriveFileIcon sx={{ fontSize: 60, color: 'primary.main' }} />
+                    <Typography variant="h6">
+                      {templateToPreview?.name}
+                    </Typography>
+                    <Typography color="text.secondary" align="center">
+                      {t('This file type cannot be previewed directly')}
                     </Typography>
                     <Button
                       variant="contained"
                       startIcon={<DownloadIcon />}
-                      sx={{ mt: 2 }}
                       onClick={() => handleDownloadTemplate(templateToPreview?.id, templateToPreview?.name)}
                     >
                       {t('Download to view')}
@@ -521,7 +621,25 @@ const UpdateAuthor = () => {
                 )}
               </Box>
             ) : (
-              <Typography color="text.secondary">{t('No template content to preview')}</Typography>
+              <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '50vh',
+                gap: 2
+              }}>
+                <Typography color="text.secondary">
+                  {t('No preview available')}
+                </Typography>
+                <Button
+                  variant="outlined"
+                  startIcon={<DownloadIcon />}
+                  onClick={() => handleDownloadTemplate(templateToPreview?.id, templateToPreview?.name)}
+                >
+                  {t('Download file')}
+                </Button>
+              </Box>
             )}
           </DialogContent>
           <DialogActions>
@@ -540,7 +658,9 @@ const UpdateAuthor = () => {
         <Box sx={{ mt: 4, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
           <Button
             variant="outlined"
-            onClick={() => router.back()}
+            onClick={() => {
+              router.back(); setFileExist(undefined)
+            }}
           >
             {t('Cancel')}
           </Button>
@@ -554,6 +674,12 @@ const UpdateAuthor = () => {
           </Button>
         </Box>
       </form>
+
+      <AuthorFilePreviewDialog
+        open={openCVPreview}
+        onCloseClick={() => setOpenCVPreview(false)}
+        author={formData}
+      />
     </Box>
   );
 };

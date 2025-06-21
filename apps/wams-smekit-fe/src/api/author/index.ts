@@ -1,6 +1,8 @@
 import {AppQuery, HttpError} from "template-shared/@core/utils/fetchWrapper";
 import apiUrls from "../../config/apiUrl";
 import {TemplateType} from "mms-shared/@core/types/mms/templateTypes";
+import {AuthorType} from "../../types/author";
+import toast from "react-hot-toast";
 
 export const fetchAllAuthor = async () => {
   console.log("[fetchAllAuthor] Envoi de la requête GET vers :", apiUrls.apiUrl_smekit_Author_StorageConfigEndpoint);
@@ -51,7 +53,6 @@ export const getAuthorByPage = async (page: number, size: number) => {
 
 
 export const addAuthor = async (data: FormData) => {
-  console.log("[addAuthor] Envoi de la requête POST avec les données :", data);
 
   const response = await AppQuery(apiUrls.apiUrl_smekit_Author_Image_Endpoint, {
     method: "POST",
@@ -78,43 +79,43 @@ export const addAuthor = async (data: FormData) => {
 export const getAuthorTemplates = async (authorId: number): Promise<TemplateType[]> => {
   console.log("[getAuthorTemplates] Fetching templates for author ID:", authorId);
 
-  const response = await AppQuery(
-    `${apiUrls.apiUrl_smekit_Template_FetchAll_Endpoint}?authorId=${authorId}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-      },
+  try {
+    const response = await AppQuery(
+      `${apiUrls.apiUrl_smekit_Template_FetchAll_Endpoint}/author/${authorId}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch author templates');
     }
-  );
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch author templates');
+    const data = await response.json();
+    console.log("[getAuthorTemplates] Received templates:", data);
+
+    return data;
+  } catch (error) {
+    console.error('[getAuthorTemplates] Error:', error);
+    throw error;
   }
-
-  return await response.json();
 }
+export const updateAuthor = async (formData: AuthorType) => {
 
-
-export const updateAuthor = async (formData: FormData) => {
-  const id = formData.get('id');
-
-  if (!id) {
+  if (!formData.id) {
     throw new Error("Author ID is required for update");
   }
 
-  console.log("[updateAuthor] Envoi de la requête PUT pour l'ID:", id);
+  console.log("[updateAuthor] Envoi de la requête PUT pour l'ID:", formData.id);
 
-  const endpoint = `${apiUrls.apiUrl_smekit_Author_StorageConfigEndpoint}?id=${id}`;
+  const endpoint = `${apiUrls.apiUrl_smekit_Author_StorageConfigEndpoint}?id=${formData.id}`;
   console.log("[updateAuthor] URL utilisée:", endpoint);
 
   try {
-    const jsonData = {};
-    Array.from(formData.entries()).forEach(([key, value]) => {
-      if (!(value instanceof File)) {
-        jsonData[key] = value;
-      }
-    });
+
 
     const response = await AppQuery(endpoint, {
       method: "PUT",
@@ -123,7 +124,7 @@ export const updateAuthor = async (formData: FormData) => {
         "Accept": "application/json",
         "Access-Control-Allow-Origin": "*"
       },
-      body: JSON.stringify(jsonData),
+      body: JSON.stringify(formData),
     });
 
     console.log("[updateAuthor] Statut de la réponse:", response.status);
@@ -144,7 +145,28 @@ export const updateAuthor = async (formData: FormData) => {
   }
 }
 
+export const updateAutherPicture = async (data: { id: number; file: Blob }) => {
 
+
+  const formData = new FormData()
+  formData.append('file', data.file as File)
+  const response = await AppQuery(`${apiUrls.apiUrl_smekit_Author_ImageUpload_Endpoint}/${data.id}`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: formData
+  })
+
+  if (!response.ok) {
+    return
+  } else {
+    toast.success('Employee.picture_updated_successfully')
+  }
+
+  return await response.json()
+}
 export const uploadAuthorFile = async (file: File, authorId: number) => {
   const formData = new FormData();
   formData.append('file', file);

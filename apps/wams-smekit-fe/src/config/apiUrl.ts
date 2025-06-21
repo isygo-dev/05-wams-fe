@@ -45,7 +45,8 @@ const apiUrls = {
   apiUrl_smekit_Author_Image_Endpoint: apiUrl_SMEKIT + '/api/v1/private/Author/image',
   apiUrl_smekit_Author_StorageConfigEndpoint: apiUrl_SMEKIT + '/api/v1/private/Author',
   apiUrl_smekit_Author_ImageDownload_Endpoint: apiUrl_SMEKIT + api_version + '/private/Author/image/download',
-  apiUrl_smekit_Author_FileDownload_Endpoint: apiUrl_SMEKIT + api_version +'private/author/file/download',
+  apiUrl_smekit_Author_ImageUpload_Endpoint: apiUrl_SMEKIT + api_version + '/private/Author/image/upload',
+  apiUrl_smekit_Author_FileDownload_Endpoint: apiUrl_SMEKIT + api_version +'/private/author/file/download',
   apiUrl_Author_File_Upload: apiUrl_SMEKIT + '/api/v1/private/author/file/upload',
 
 //tags
@@ -55,6 +56,9 @@ const apiUrls = {
 
 
   apiUrl_smekit_Dashboard_Endpoint : apiUrl_SMEKIT +api_version + '/private/dashboard',
+  apiUrl_smekit_Document_Endpoint : apiUrl_SMEKIT +api_version + '/private/document',
+
+  apiUrl_smekit_DocComments_Endpoint: apiUrl_SMEKIT+api_version+'/private/docComments'
 }
 
 export default apiUrls

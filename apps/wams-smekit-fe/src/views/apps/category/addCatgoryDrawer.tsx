@@ -42,6 +42,14 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const AddCategoryDrawer = ({ category, showDialogue, setShowDialogue }) => {
   const { t } = useTranslation();
+  const schema = yup.object().shape({
+    domain: yup.string().required(t("Domain is required")),
+    name: yup.string().required(t("Name is required")),
+    description: yup.string().required(t("Description is required")),
+    type: yup.string().required()
+  });
+
+
   const queryClient = useQueryClient();
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const { data: domainList } = useQuery('domains', DomainApis(t).getDomains);
@@ -52,12 +60,7 @@ const AddCategoryDrawer = ({ category, showDialogue, setShowDialogue }) => {
   const [inputValue, setInputValue] = useState('');
   const [currentImage] = useState<string | undefined>(undefined);
 
-  const schema = yup.object().shape({
-    domain: yup.string().required(t("Domain is required")),
-    name: yup.string().required(t("Name is required")),
-    description: yup.string().required(t("Description is required")),
-    type: yup.string().required()
-  });
+
 
   const {
     reset,
@@ -305,23 +308,22 @@ const AddCategoryDrawer = ({ category, showDialogue, setShowDialogue }) => {
       </Header>
       <Box sx={{ p: 6 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
+
           <FormControl fullWidth sx={{ mb: 4 }} size="small">
             <InputLabel id="domain-select-label">{t('Domain.Domain')}</InputLabel>
             <Controller
               name='domain'
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={({ field }) => (
                 <Select
                   labelId="domain-select-label"
                   disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
-                  size='small'
                   label={t('Domain.Domain')}
-                  name='domain'
-                  onChange={onChange}
-                  value={value || ''}
+                  error={Boolean(errors.domain)}
+                  {...field}
                 >
-                  <MenuItem value=''>
+                  <MenuItem value="">
                     <em>{t('None')}</em>
                   </MenuItem>
                   {domainList?.map((domain: DomainType) => (
@@ -332,7 +334,11 @@ const AddCategoryDrawer = ({ category, showDialogue, setShowDialogue }) => {
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.domain && (
+              <FormHelperText sx={{ color: 'error.main' }}>
+                {errors.domain?.message}
+              </FormHelperText>
+            )}
           </FormControl>
 
 

@@ -1,29 +1,31 @@
-// ** Type import
 import {VerticalNavItemsType} from 'template-shared/@core/layouts/types'
 import {t} from "i18next";
 
 const Navigation = (): VerticalNavItemsType => {
 
+
+
   return [
     {
-      sectionTitle: 'Apps & Pages'
+      sectionTitle: t('Apps & Pages'),
     },
     {
       title: t('Dashboard'),
-      icon: 'tabler:home',
+      icon: 'tabler:layout-dashboard',
       path: '/apps/dashboard',
     },
     {
-      title: t('fav'),
-      icon: 'tabler:home',
+      title: t('Pinned Templates'),
+      icon: 'tabler:bookmark',
       path: '/apps/CustomTemplates',
     },
+
     {
-      sectionTitle: 'Content Management'
+      sectionTitle: t('Content Management'),
     },
     {
       title: t('Categories'),
-      icon: 'tabler:category',
+      icon: 'tabler:grid-dots',
       path: '/apps/category',
     },
     {
@@ -35,10 +37,12 @@ const Navigation = (): VerticalNavItemsType => {
       title: t('Templates'),
       icon: 'tabler:template',
       path: '/apps/template',
-    }
-
-
-  ]
-}
+    },
+    {
+      title: t('Document'),
+      icon: 'tabler:file-text',
+      path: '/apps/document',
+    },
+  ]}
 
 export default Navigation

@@ -15,7 +15,7 @@ import TextField from "@mui/material/TextField";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { AuthorType } from "../../../types/author";
-import { addAuthor, updateAuthor } from "../../../api/author";
+import { addAuthor } from "../../../api/author";
 import {Avatar, FormHelperText, InputLabel, MenuItem, Select} from "@mui/material";
 import {checkPermission} from "template-shared/@core/api/helper/permission";
 import {
@@ -36,7 +36,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: 'space-between'
 }));
 
-const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
+const AddAuthorDrawer = ({ author, setSelectedAuthor,  showDialogue, setShowDialogue }) => {
   const { t } = useTranslation()
   const {data: domainList} = useQuery('domains', DomainApis(t).getDomains)
   const queryClient = useQueryClient();
@@ -85,12 +85,8 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
     formData.append('domain', data.domain);
     formData.append('email', data.email);
 
-
-    if (author?.id) {
-      updateAuthorMutation.mutate({ ...data, id: author.id });
-    } else {
       addAuthorMutation.mutate(formData);
-    }
+
 
   };
 
@@ -102,36 +98,22 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
         queryClient.setQueryData('authorList', (oldData: AuthorType[] = []) => [...oldData, res]);
         toast.success("Author added successfully");
         handleClose();
+        setSelectedFile(undefined)
+        setSelectedAuthor({
+          email: "", extension: "", file: undefined, fileName: "", originalFileName: "", path: "", phone: "", type: "",
+          domain: "", firstname: "", lastname: "",
+          code: "",
+          createDate: "",
+          createdBy: "",
+          updateDate: "",
+          updatedBy: "",
+          imagePath: ""
+
+        })
       }
     }
   });
 
-
-
-  const updateAuthorMutation = useMutation({
-    mutationFn: (data: AuthorType) => {
-      const formData = new FormData();
-      Object.keys(data).forEach(key => {
-        formData.append(key, data[key]);
-      });
-
-      return updateAuthor(formData);
-    },
-    onSuccess: (res: AuthorType) => {
-      if (res) {
-        queryClient.invalidateQueries('AuthorType');
-        const cachedData: AuthorType[] = queryClient.getQueryData('authorList') || []
-        const index = cachedData.findIndex(obj => obj.id === res.id)
-        if (index !== -1) {
-          const updatedData = [...cachedData]
-          updatedData[index] = res
-          queryClient.setQueryData('authorList', updatedData)
-        }
-        toast.success("Author updated successfully");
-        handleClose();
-      }
-    }
-  });
 
 
   return (
@@ -157,22 +139,20 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
 
           <FormControl fullWidth sx={{ mb: 4 }} size="small">
-            <InputLabel id="Domaine-select-label">{t('Domain.Domain')}</InputLabel>
+            <InputLabel id="domain-select-label">{t('Domain.Domain')}</InputLabel>
             <Controller
               name='domain'
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={({ field }) => (
                 <Select
-                  labelId="Domaine-select-label"
+                  labelId="domain-select-label"
                   disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
-                  size='small'
-                  label={t('Domaine')}
-                  name='Domaine'
-                  onChange={onChange}
-                  value={value || ''}
+                  label={t('Domain.Domain')}
+                  error={Boolean(errors.domain)}
+                  {...field}
                 >
-                  <MenuItem value=''>
+                  <MenuItem value="">
                     <em>{t('None')}</em>
                   </MenuItem>
                   {domainList?.map((domain: DomainType) => (
@@ -183,7 +163,11 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.domain && (
+              <FormHelperText sx={{ color: 'error.main' }}>
+                {errors.domain?.message}
+              </FormHelperText>
+            )}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>
@@ -226,10 +210,10 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
                 <TextField
                   size='small'
                   {...field}
-                  label={t('email')}
+                  label={t('Email')}
                   placeholder={t('Enter email')}
                   error={Boolean(errors.email)}
-                  helperText={errors.lastname?.message}
+                  helperText={errors.email?.message}
                 />
               )}
             />
@@ -279,7 +263,7 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
               >
                 {t('Photo')}
               </Button>
-              <input type='file' name='file' id='file' style={{display: 'none'}} onChange={handleFileChange}/>
+              <input type='file'  accept="image/*"  name='file' id='file' style={{display: 'none'}} onChange={handleFileChange}/>
             </label>
           </FormControl>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

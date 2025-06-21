@@ -71,16 +71,19 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
   const [file, setFile] = useState<File | null>(null);
 
   const schema = yup.object().shape({
-    name: yup.string().required("Name is required"),
-    description: yup.string().required("Description is required"),
-    categoryId: yup.number().required("Category is required"),
-    typeTs: yup.string().required("Status type is required"),
-    typeTv: yup.string().required("Visibility type is required"),
-    typeTl: yup.string().required("Language type is required"),
+    name: yup.string().required(t("Name is required")),
+    domain: yup.string().required(t("Domain is required")),
+    description: yup.string().required(t("Description is required")),
+    categoryId: yup.number().required(t("Category is required")),
+    authorId: yup.number().required(t("Author is required")),
+
+    typeTs: yup.string().required(t("Status type is required")),
+    typeTv: yup.string().required(t("Visibility type is required")),
+    typeTl: yup.string().required(t("Language type is required")),
     version: yup.string().notRequired(),
     file: yup.mixed().when('id', {
       is: (id: number) => !id,
-      then: (schema) => schema.required("File is required"),
+      then: (schema) => schema.required(t("File is required")),
       otherwise: (schema) => schema.notRequired()
     })
   });
@@ -309,17 +312,15 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
               name='domain'
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange } }) => (
+              render={({ field }) => (
                 <Select
                   labelId="domain-select-label"
                   disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
-                  size='small'
                   label={t('Domain.Domain')}
-                  name='domain'
-                  onChange={onChange}
-                  value={value || ''}
+                  error={Boolean(errors.domain)}
+                  {...field}
                 >
-                  <MenuItem value=''>
+                  <MenuItem value="">
                     <em>{t('None')}</em>
                   </MenuItem>
                   {domainList?.map((domain: DomainType) => (
@@ -330,8 +331,13 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.domain && (
+              <FormHelperText sx={{ color: 'error.main' }}>
+                {errors.domain?.message}
+              </FormHelperText>
+            )}
           </FormControl>
+
 
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
@@ -377,10 +383,9 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
               render={({ field }) => (
                 <Select
                   labelId="author-select-label"
-                  {...field}
                   label={t('Author')}
-                  size="small"
-                  value={field.value || ''}
+                  error={Boolean(errors.authorId)}
+                  {...field}
                 >
                   <MenuItem value="" disabled>
                     {t('Select an author')}

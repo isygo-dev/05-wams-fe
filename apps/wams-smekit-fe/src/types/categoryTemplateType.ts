@@ -12,8 +12,8 @@ export interface CategoryTemplateType {
   originalFileName: string | undefined
   extension: string
   editionDate: Date
-  source: string
-  version: string
+  content: string
+  version: number
   isFavorite: boolean;
 
   typeTs: IEnumDocTempStatus

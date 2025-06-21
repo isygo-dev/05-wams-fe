@@ -5,7 +5,7 @@ import CardHeader from "@mui/material/CardHeader";
 import React, {useState, useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {
-  Avatar,
+  Avatar, Menu, MenuItem,
   Switch,
   ToggleButton,
   ToggleButtonGroup
@@ -41,7 +41,7 @@ import localStorageKeys from "template-shared/configs/localeStorage";
 import {
   deleteTemplate,
   downloadTemplateFile,
-  fetchAllTemplate,
+  fetchAllTemplate, fetchTemplateHtmlContent,
   getTemplateCount,
   getTemplatesByCategory,
   getUserConnect,
@@ -56,13 +56,14 @@ import {useRouter} from "next/navigation";
 import {fetchAll, getCategoryByPage} from "../../../api/category";
 import CategorySelector from "../../../views/apps/Template/CategorySelector";
 import TreeViewCategoriesTemplates from "../../../views/apps/Template/TreeViewCategoriesTemplates";
+import CreateDocumentDialog from "../../../views/apps/Editor/CreateDocumentDialog";
 import PinIcon from "../../../views/apps/FavoriteTemplate/PinIcon";
 
 const initialValue: CategoryTemplateType = {
   isFavorite: false,
   file: undefined,
   extension: " ",
-  version: " ",
+  version:undefined ,
   typeTs: IEnumDocTempStatus.EDITING,
   typeTv: IEnumTemplateVisibility.PRV,
   typeTl: IEnumTemplateLanguage.EN,
@@ -73,7 +74,7 @@ const initialValue: CategoryTemplateType = {
   editionDate: undefined,
   originalFileName: "",
   path: "",
-  source: "",
+  content: "",
   tag: undefined,
   updateDate: "",
   updatedBy: "",
@@ -125,7 +126,10 @@ const Template = () => {
   const [showDialogue, setShowDialogue] = useState<boolean>(false)
   const [SelectedTemplate, setSelectedTemplate] = useState<CategoryTemplateType>(initialValue)
   const [newStatus, setNewStatus] = useState<boolean>(false)
-
+  const [templateContent, setTemplateContent] = useState<string>('');
+  const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [templateName, setTemplateName] = useState<string>('');
   const [viewMode, setViewMode] = useState<'grid' | 'card' | 'tree'>('grid')
   const queryClient = useQueryClient()
   const dataGridApiRef = React.useRef<GridApi>()
@@ -133,7 +137,10 @@ const Template = () => {
   const { data: allCategories } = useQuery('categories', fetchAll)
   const [filteredData, setFilteredData] = useState<CategoryTemplateType[] | null>(null)
   const [, setPaginationPage] = useState<number>(0)
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuRow, setMenuRow] = useState<CategoryTemplateType | null>(null);
 
+  const open = Boolean(menuAnchorEl);
   const { data: categoryTemplate, isLoading } = useQuery(
     ['categoryTemplate', selectedCategory],
     () => selectedCategory ? getTemplatesByCategory(selectedCategory) : fetchAllTemplate(),
@@ -159,8 +166,6 @@ const Template = () => {
     }
   }, [allCategories])
 
-
-
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState<GridColumnVisibilityModel>({
     createDate: false,
     createdBy: false,
@@ -168,11 +173,21 @@ const Template = () => {
     updatedBy: false,
     categories:false
   })
+
   const handleViewModeChange = (event, newViewMode) => {
     if (newViewMode !== null) {
       setViewMode(newViewMode);
     }
   }
+  const handlePinToggle = async (id: number, isPinned: boolean) => {
+    try {
+      toast.success(isPinned ? t("Modèle épinglé") : t("Modèle désépinglé"));
+
+      await queryClient.invalidateQueries('categoryTemplate');
+    } catch (error) {
+      toast.error(t("Erreur lors du changement d’état d’épingle"));
+    }
+  };
 
 
   const onChangePagination = async (item: any) => {
@@ -188,6 +203,7 @@ const Template = () => {
       setDisabledNextBtn(false)
     }
   }
+
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
     pageSize: localStorage.getItem(localStorageKeys.paginationSize)
@@ -246,7 +262,15 @@ const Template = () => {
       toast.error(error.message || 'Failed to update template')
     }
   })
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>, row: CategoryTemplateType) => {
+    setMenuAnchorEl(event.currentTarget);
+    setMenuRow(row);
+  };
 
+  const handleMenuClose = () => {
+    setMenuAnchorEl(null);
+    setMenuRow(null);
+  };
   const handleFilter = (val: string) => {
     setValue(val);
     if (val.trim() === '') {
@@ -270,9 +294,11 @@ const Template = () => {
     setSelectId(rowId)
     setDeleteDialog(true)
   }
+
   const handleTreeDeleteClick = (template: CategoryTemplateType) => {
     handleDeleteClick(template.id);
   };
+
   const [previewOpen, setPreviewOpen] = useState(false)
   const [previewTemplate, setPreviewTemplate] = useState<CategoryTemplateType | null>(null)
 
@@ -296,14 +322,28 @@ const Template = () => {
 
   const router = useRouter()
 
-  const handleUpdateClick = (CategoryTemplate) => {
-    router.push(`/apps/template/view/update/${CategoryTemplate.id}`)
+
+  const handleUpdateClick = (CategoryTemplate: CategoryTemplateType | null | undefined) => {
+    if (!CategoryTemplate || !CategoryTemplate.id) {
+      toast.error("Impossible d'éditer ce template (ID manquant)");
+
+      return;
+    }
+
+    router.push(`/apps/template/view/update/${CategoryTemplate.id}`);
   }
+
 
   const handleClose =() => {
     setNewStatus(false)
     setSelectedTemplate(undefined)
   }
+  const handleClosepopup = () => {
+    setIsOpen(false)
+    setTemplateContent('')
+    setSelectedTemplateId(null)
+  }
+
 
   const downloadTemplateMutation = useMutation({
     mutationFn: downloadTemplateFile,
@@ -337,8 +377,8 @@ const Template = () => {
       formData.append('typeTs', updatedTemplate.typeTs)
       formData.append('typeTl', updatedTemplate.typeTl)
       formData.append('typeTv', updatedTemplate.typeTv)
-      formData.append('version', updatedTemplate.version || '1.0.0')
-      formData.append('source', updatedTemplate.source || '')
+      formData.append('version', updatedTemplate.version ? String(updatedTemplate.version) : '')
+      formData.append('source', updatedTemplate.content || '')
       formData.append('path', updatedTemplate.path || '')
       formData.append('extension', updatedTemplate.extension || '')
       formData.append('originalFileName', updatedTemplate.originalFileName || '')
@@ -382,22 +422,23 @@ const Template = () => {
 
   const defaultColumns: GridColDef[] = [
     {
-      flex: 0.1,
+      flex: 0.15,
       field: ' ',
-      minWidth: 20,
+      minWidth: 30,
       renderCell: ({ row }) => (
-        <Avatar
-          sx={{
-            width: 30,
-            height: 30,
-            bgcolor: 'transparent',
-            color: getFileTypeColor(row.extension),
-            '& .MuiSvgIcon-root': { fontSize: '2rem' },
-            '& svg': { fontSize: '2rem' }
-          }}
-        >
-          <Icon icon={getFileTypeIcon(row.extension)} fontSize="large"/>
-        </Avatar>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Avatar
+            sx={{
+              width: 30,
+              height: 30,
+              bgcolor: 'transparent',
+              color: getFileTypeColor(row.extension),
+              '& .MuiSvgIcon-root': { fontSize: '2rem' }
+            }}
+          >
+            <Icon icon={getFileTypeIcon(row.extension)} fontSize="large"/>
+          </Avatar>
+        </Box>
       )
     },
     {
@@ -418,7 +459,7 @@ const Template = () => {
       flex: 0.1,
       field: 'author',
       minWidth: 100,
-      headerName: t('author') as string,
+      headerName: t('Author') as string,
       renderCell: ({ row }: CellType) => (
         <Typography>
           {row.author
@@ -428,7 +469,6 @@ const Template = () => {
         </Typography>
       )
     },
-
     {
       flex: 0.1,
       field: 'category',
@@ -444,7 +484,7 @@ const Template = () => {
       flex: 0.1,
       field: 'typeTs',
       minWidth: 100,
-      headerName: `Status` as string,
+      headerName: t(`Status`) as string,
       renderCell: ({ row }: CellType) => {
         return (
           <Tooltip title={t(row?.typeTs)}>
@@ -552,90 +592,75 @@ const Template = () => {
     }
   ]
 
+
+
+
   const columns: GridColDef[] = [
     ...defaultColumns,
     {
       field: 'actions',
-      headerName: ('') as string,
+      headerName: '',
       align: 'right',
-      width: 200,
+      minWidth: 200,
       sortable: false,
       filterable: false,
-      renderCell: ({row}: CellType) => (
-        <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-          <PinIcon
-            templateId={row.id}
-            isPinned={row.isFavorite}
-            onToggle={(newStatus) => {
-              queryClient.setQueryData(['categoryTemplate'], (old: CategoryTemplateType[] | undefined) => {
-                if (!old) return old
-
-                return old.map(item =>
-                  item.id === row.id ? {...item, isFavorite: newStatus} : item
-                );
-              });
-            }}
-
-        />
-
+      disableColumnMenu: true,
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {/* Info (description) */}
           {row.description && (
-            <Tooltip title={t(row.description)}>
+            <Tooltip title={t(row.description)} placement="top">
               <IconButton
                 size="small"
-                sx={{color: 'text.secondary'}}
+                sx={{ color: 'text.secondary' }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <Icon icon='tabler:info-circle'/>
+                <Icon icon="tabler:info-circle" />
               </IconButton>
             </Tooltip>
           )}
+          <PinIcon templateId={row.id} />
 
-          {/* Bouton de suppression */}
-          {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (
-            <Tooltip title={t('Action.Delete')}>
+          {/* Télécharger */}
+          {row.originalFileName && (
+            <Tooltip title={t("Télécharger")} placement="top">
               <IconButton
                 size="small"
-                sx={{color: 'text.secondary'}}
+                sx={{ color: 'text.secondary' }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleDeleteClick(row.id);
+                  onDownload(row);
                 }}
               >
-                <Icon icon='tabler:trash'/>
+                <Icon icon="material-symbols:download" />
               </IconButton>
             </Tooltip>
           )}
 
-          {/* Bouton d'édition */}
-          {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.WRITE) && (
-            <Tooltip title={t('Action.Edit')}>
-              <IconButton
-                size="small"
-                sx={{color: 'text.secondary'}}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleUpdateClick(row);
-                }}
-              >
-                <Icon icon='tabler:edit'/>
-              </IconButton>
-            </Tooltip>
-          )}
-
-          {/* Bouton de téléchargement */}
-          <Tooltip title={t('Action.Download')}>
+          {/* Éditer */}
+          <Tooltip title={t("Modifier le template")} placement="top">
             <IconButton
               size="small"
               sx={{ color: 'text.secondary' }}
               onClick={(e) => {
                 e.stopPropagation();
-                onDownload(row);
+                handleUpdateClick(row);
               }}
-              disabled={!row.originalFileName}
             >
-              <Icon icon='material-symbols:download'/>
+              <Icon icon="tabler:edit" />
             </IconButton>
           </Tooltip>
+
+          {/* Menu contextuel */}
+          <IconButton
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleMenuClick(e, row);
+            }}
+          >
+            <Icon icon="mdi:dots-vertical" />
+          </IconButton>
         </Box>
       )
     }
@@ -653,7 +678,17 @@ const Template = () => {
             onViewClick={handleUpdateClick}
             onDownloadClick={onDownload}
             onPreviewClick={handleFilePreview}
+            onCreateDoc={(id, name, content) => {
+              setSelectedTemplateId(id);
+              setTemplateName(name);
+              setTemplateContent(content);
+              setIsOpen(true);
+            }}
+            onPinToggle={(id, isPinned) => {
+              handlePinToggle(id, isPinned);
+            }}
           />
+
         </Grid>
       ))}
     </Grid>
@@ -705,11 +740,21 @@ const Template = () => {
       return (
         <TreeViewCategoriesTemplates
           categories={categories}
-          templates={filteredData || categoryTemplate || []}
           onUpdateClick={handleUpdateClick}
           onDownload={onDownload}
           onDeleteClick={handleTreeDeleteClick}
+          onPreviewClick={handleFilePreview}
+          onCreateDoc={(id, name, content) => {
+            setSelectedTemplateId(id);
+            setTemplateName(name);
+            setTemplateContent(content);
+            setIsOpen(true);
+          }}
+          onEditDoc={(id, version) => {
+            router.push(`/apps/editor/view/edit/${id}/${version}`);
+          }}
         />
+
       );
     } else if (viewMode === 'grid') {
       return gridView;
@@ -757,7 +802,6 @@ const Template = () => {
                   categoryTemplate={SelectedTemplate}
                   showDialogue={showDialogue}
                   setShowDialogue={setShowDialogue}
-
                 />
               )}
 
@@ -775,6 +819,16 @@ const Template = () => {
                 handleConfirmation={handleConfirmation}
                 handleClose={handleClose}
               />
+              {templateContent && (
+                <CreateDocumentDialog
+                  open={isOpen}
+                  onClose={handleClosepopup}
+                  defaultName={templateName}
+                  templateId={selectedTemplateId}
+                  content={templateContent}
+                />
+              )}
+
 
               {previewOpen && previewTemplate && (
                 <TemplatePreviewDialog
@@ -783,6 +837,58 @@ const Template = () => {
                   templatePreview={previewTemplate}
                 />
               )}
+
+              <Menu
+                anchorEl={menuAnchorEl}
+                open={open}
+                onClose={handleMenuClose}
+                PaperProps={{ style: { minWidth: 180 } }}
+              >
+                {menuRow && (
+                  <>
+                    <MenuItem onClick={() => { handleMenuClose(); handleFilePreview(menuRow); }}>
+                      <Icon icon="solar:document-bold" style={{ marginRight: 8 }} /> {t("Aperçu")}
+                    </MenuItem>
+
+
+
+                    {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.WRITE) && (
+                      <MenuItem onClick={(e) => {     e.stopPropagation(); handleMenuClose(); router.push(`/apps/editor/view/edit/${menuRow.id}/${menuRow.version || '1'}`); }}>
+                        <Icon icon="mdi:file-document-edit-outline" style={{ marginRight: 8 }} /> {t("Éditer le document")}
+                      </MenuItem>
+                    )}
+
+
+
+                    <MenuItem onClick={async () => {
+                      handleMenuClose();
+                      try {
+                        const html = await fetchTemplateHtmlContent(menuRow.id, menuRow.version || 1);
+                        if (html?.trim().length > 0) {
+                          setTemplateContent(html);
+                          setSelectedTemplateId(menuRow.id);
+                          setTemplateName(menuRow.name)
+                          setIsOpen(true);
+                        } else {
+                          toast.error("Le contenu du template est vide.");
+                        }
+                      } catch (error) {
+                        toast.error("Erreur : " + (error as Error).message);
+                      }
+                    }}>
+                      <Icon icon="mdi:file-document-plus" style={{ marginRight: 8 }} /> {t("Créer document")}
+                    </MenuItem>
+
+                    {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (
+                      <MenuItem onClick={() => { handleMenuClose(); handleDeleteClick(menuRow.id); }}>
+                        <Icon icon="tabler:trash" style={{ marginRight: 8 }} /> {t("Supprimer")}
+                      </MenuItem>
+                    )}
+                  </>
+                )}
+              </Menu>
+
+
             </Card>
           </Grid>
         </Grid>

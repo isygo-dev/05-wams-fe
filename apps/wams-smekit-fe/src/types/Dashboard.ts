@@ -1,4 +1,5 @@
 import { PaletteMode } from '@mui/material';
+import {FavoriteTemplateType} from "./FavoriteTemplate";
 
 export type Widget = {
   id: string;
@@ -11,7 +12,7 @@ export type DashboardLayout = {
   widgets: Widget[];
   denseMode: boolean;
   colorMode: PaletteMode;
-  statsColumns: number;
+  statsWidgets: string[];
 };
 
 export interface RecentTemplate {
@@ -37,6 +38,7 @@ export type DashboardStats = {
   documentFormats: Record<string, number>;
   topCategories: Category[];
   languageStats: Record<string, number>;
+  favoriteTemplate?: FavoriteTemplateType;
 };
 
 export type StatItem = {
@@ -47,4 +49,5 @@ export type StatItem = {
   color: 'primary' | 'success' | 'warning' | 'info' | 'error';
   trend: 'up' | 'down' | 'neutral';
   path?: string;
+  visible?: boolean;
 };

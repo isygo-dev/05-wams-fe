@@ -4,6 +4,7 @@ import Icon from 'template-shared/@core/components/icon';
 import { useMutation, useQueryClient, useQuery } from 'react-query';
 import toast from 'react-hot-toast';
 import { toggleTemplatePin, checkPinStatus } from "../../../api/FavoriteTemplate";
+import {useTranslation} from "react-i18next";
 
 
 interface PinIconProps {
@@ -17,6 +18,7 @@ interface PinIconProps {
 const PinIcon: React.FC<PinIconProps> = ({ templateId, size = 'small' }) => {
   const queryClient = useQueryClient();
   const [isHovered, setIsHovered] = useState(false);
+  const {t} = useTranslation()
 
   const { data: isPinned, isLoading, isError } = useQuery<boolean, Error>(
     ['templatePinStatus', templateId],
@@ -25,7 +27,7 @@ const PinIcon: React.FC<PinIconProps> = ({ templateId, size = 'small' }) => {
       staleTime: 5 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
       onError: (error) => {
-        toast.error(`Erreur: ${error.message || 'Impossible de vérifier l\'état du pin'}`);
+        toast.error(`Erreur: ${error.message || t('Impossible de vérifier l\'état du pin')}`);
       }
     }
   );
@@ -40,11 +42,11 @@ const PinIcon: React.FC<PinIconProps> = ({ templateId, size = 'small' }) => {
     },
     onError: (error: Error, _, context) => {
       queryClient.setQueryData(['templatePinStatus', templateId], context?.previousStatus);
-      toast.error(`Erreur: ${error.message || 'Échec de la modification du pin'}`);
+      toast.error(`Erreur: ${error.message || t('Échec de la modification du pin')}`);
     },
     onSuccess: (_, __, context) => {
       const newStatus = !context?.previousStatus;
-      toast.success(newStatus ? 'Template épinglé avec succès' : 'Template désépinglé avec succès');
+      toast.success(newStatus ? t('Template épinglé avec succès') : t('Template désépinglé avec succès'));
     },
     onSettled: () => {
       queryClient.invalidateQueries(['templatePinStatus', templateId]);
@@ -59,7 +61,7 @@ const PinIcon: React.FC<PinIconProps> = ({ templateId, size = 'small' }) => {
   if (isError) return null;
 
   return (
-    <Tooltip title={isPinned ? "Désépingler" : "Épingler"} arrow>
+    <Tooltip title={isPinned ? t("Désépingler") : t("Épingler")} arrow>
       <div style={{ position: 'relative' }}>
         <IconButton
           size={size}

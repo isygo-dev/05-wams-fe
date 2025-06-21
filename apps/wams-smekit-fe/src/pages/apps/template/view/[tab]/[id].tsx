@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import toast from 'react-hot-toast';
@@ -21,7 +21,7 @@ import {
   Alert
 } from '@mui/material';
 import Icon from 'template-shared/@core/components/icon';
-import { getTemplatePreview, updateTemplate, fetchAllTemplate } from "../../../../../api/template";
+import {  updateTemplate, fetchAllTemplate } from "../../../../../api/template";
 import { CategoryTemplateType, IEnumDocTempStatus, IEnumTemplateLanguage, IEnumTemplateVisibility } from "../../../../../types/categoryTemplateType";
 import { fetchAll } from "../../../../../api/category";
 import { fetchAllAuthor } from "../../../../../api/author";
@@ -33,7 +33,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import TemplatePreviewDialog from "../../../../../views/apps/Template/TemplatePreviewDialog";
-import localeStorage from "template-shared/configs/localeStorage";
 
 
 const UpdateTemplate = () => {

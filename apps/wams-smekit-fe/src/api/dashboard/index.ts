@@ -1,33 +1,10 @@
 import {AppQuery} from "template-shared/@core/utils/fetchWrapper";
 import apiUrls from "../../config/apiUrl";
 import localStorageKeys from "template-shared/configs/localeStorage";
+import {DashboardStats} from "../../types/Dashboard";
 
 
-export interface DashboardStats {
-  totalTemplates: number;
-  totalCategories: number;
-  activeAuthors: number;
-  pinnedTemplates: number;
-  documentFormats: Record<string, number>;
-  languageStats: Record<string, number>;
-  recentTemplates: RecentTemplate[];
-  topCategories: CategoryStat[];
-}
 
-interface RecentTemplate {
-  id: number;
-  name: string;
-  category: string;
-  author: string;
-  status: 'active' | 'pending';
-  date: string;
-}
-
-interface CategoryStat {
-  name: string;
-  count: number;
-  color: string;
-}
 
 
 function decodeJwtPayload(token: string): Record<string, any> {

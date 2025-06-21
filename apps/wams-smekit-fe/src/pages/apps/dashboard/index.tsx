@@ -9,11 +9,11 @@ import {
 } from '@mui/material';
 import { useQuery } from 'react-query';
 import { useTranslation } from "react-i18next";
-import { DashboardStats, fetchDashboardStats } from "../../../api/dashboard";
+import {  fetchDashboardStats } from "../../../api/dashboard";
 import DashboardControls from "../../../views/apps/dashboard/DashboardControls";
 import StatsWidget from "../../../views/apps/dashboard/StatsWidget";
 import RecentTemplatesWidget from "../../../views/apps/dashboard/RecentTemplatesWidget";
-import { DashboardLayout, StatItem } from "../../../types/Dashboard";
+import {DashboardLayout, DashboardStats, StatItem} from "../../../types/Dashboard";
 import DocumentFormatsWidget from "../../../views/apps/dashboard/DocumentFormatsWidget";
 import TopCategoriesWidget from "../../../views/apps/dashboard/TopCategoriesWidget";
 import LanguagesWidget from "../../../views/apps/dashboard/LanguagesWidget";
@@ -30,18 +30,30 @@ const Dashboard = () => {
       { id: 'categories', title: t('Top Catégories'), visible: true, column: 'right' },
       { id: 'languages', title: t('Langues Disponibles'), visible: true, column: 'right' },
       { id: 'pinned', title: t('Templates Épinglés'), visible: true, column: 'right' }
-
     ],
     denseMode: false,
     colorMode: 'light',
-    statsColumns: 3
+    statsWidgets: ['totalTemplates', 'totalCategories', 'activeAuthors', 'pinnedTemplates']
   };
 
   const [layout, setLayout] = useState<DashboardLayout>(() => {
     const savedLayout = localStorage.getItem('dashboardLayout');
+    if (savedLayout) {
+      try {
+        const parsedLayout = JSON.parse(savedLayout);
+        if (!parsedLayout.statsWidgets) {
+          parsedLayout.statsWidgets = [t('totalTemplates'), 'totalCategories', 'activeAuthors', 'pinnedTemplates'];
+        }
 
+        return parsedLayout;
+      } catch (error) {
+        console.error('Error parsing saved layout:', error);
 
-    return savedLayout ? JSON.parse(savedLayout) : defaultLayout;
+        return defaultLayout;
+      }
+    }
+
+    return defaultLayout;
   });
 
   const [customizeOpen, setCustomizeOpen] = useState(false);
@@ -90,18 +102,17 @@ const Dashboard = () => {
       trend: 'neutral',
       path:'/apps/CustomTemplates'
     }
-  ]
+  ];
 
   const { data, isLoading, error, refetch } = useQuery<DashboardStats>(
     'dashboardStats',
     fetchDashboardStats,
-  {
-    onSuccess: (data) => {
-      console.log('Dashboard data received:', data);
+    {
+      onSuccess: (data) => {
+        console.log('Dashboard data received:', data);
+      }
     }
-  }
   );
-
 
   if (isLoading) {
     return (
@@ -153,6 +164,7 @@ const Dashboard = () => {
           onClose={() => setCustomizeOpen(false)}
           layout={layout}
           setLayout={setLayout}
+          statItems={statItems}
         />
 
         {layout.widgets.find(w => w.id === 'stats')?.visible && (
@@ -160,10 +172,10 @@ const Dashboard = () => {
             stats={data}
             items={statItems}
             denseMode={layout.denseMode}
-            columns={layout.statsColumns}
+            statsWidgets={layout.statsWidgets}
+            favoriteTemplate={data.favoriteTemplate}
           />
         )}
-
 
         <Grid container spacing={layout.denseMode ? 2 : 3}>
           <Grid item xs={12} md={8}>

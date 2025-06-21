@@ -10,8 +10,8 @@ export interface AuthorType {
   type: string
 
   //file
-  file: File | null
-  originalFileName: string | undefined
+  file?: File | null
+  originalFileName?: string | undefined
   path: string
   fileName: string
   extension: string
@@ -19,8 +19,8 @@ export interface AuthorType {
  //file
 
   //Audit info
-  createDate: string
-  createdBy: string
-  updateDate: string
-  updatedBy: string
+  createDate?: string
+  createdBy?: string
+  updateDate?: string
+  updatedBy?: string
 }

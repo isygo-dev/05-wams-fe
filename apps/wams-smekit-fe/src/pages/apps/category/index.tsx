@@ -244,7 +244,7 @@ const Category = () => {
     },
 
 
-    /*create Date column*/
+    /*edit Date column*/
     {
       field: 'createDate',
       minWidth: 140,

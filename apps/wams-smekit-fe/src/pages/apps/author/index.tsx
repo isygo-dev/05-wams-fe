@@ -27,7 +27,6 @@ import IconButton from "@mui/material/IconButton";
 import {checkPermission} from "template-shared/@core/api/helper/permission";
 import {GridPaginationModel} from "@mui/x-data-grid/models/gridPaginationProps";
 import localStorageKeys from "template-shared/configs/localeStorage";
-import ResumeApis from "rpm-shared/@core/api/rpm/resume";
 import Typography from "@mui/material/Typography";
 import Moment from "react-moment";
 import AddAuthorDrawer from "../../../views/apps/Author/AddAuthorDrawer";
@@ -190,18 +189,18 @@ const Author =()=>{
       flex: 0.1,
       field: 'email',
       minWidth: 100,
-      headerName: t('email') as string,
+      headerName: t('Email') as string,
       renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.email}</Typography>
     },
     {
       flex: 0.1,
       field: 'phone',
       minWidth: 100,
-      headerName: t('phone') as string,
+      headerName: t('Phone') as string,
       renderCell: ({row}: CellType) => <Typography sx={{color: 'text.secondary'}}>{row.phone}</Typography>
     },
 
-    /*create Date column*/
+    /*edit Date column*/
     {
       field: 'createDate',
       minWidth: 140,
@@ -279,14 +278,8 @@ const Author =()=>{
       flex: 1,
       renderCell: ({row}: CellType) => (
         <Box sx={{display: 'flex', alignItems: 'center'}}>
-          {/*<Tooltip title={t(row.description)}>*/}
-          {/*  <IconButton*/}
-          {/*    className={Styles.sizeIcon} sx={{color: 'text.secondary'}}>*/}
-          {/*    <Icon icon='tabler:info-circle'/>*/}
-          {/*  </IconButton>*/}
-          {/*</Tooltip>*/}
           {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (
-            <Tooltip title={t('Action.update')}>
+            <Tooltip title={t('Action.Edit')}>
               <IconButton
                 className={Styles.sizeIcon}
                 sx={{ color: 'text.secondary' }}
@@ -437,6 +430,7 @@ const Author =()=>{
             {renderViewBasedOnMode()}
             {showDialogue && (
               <AddAuthorDrawer
+                setSelectedAuthor={setSelectedAuthor}
                 author={selectedAuthor}
                 showDialogue={showDialogue}
                 setShowDialogue={setShowDialogue}

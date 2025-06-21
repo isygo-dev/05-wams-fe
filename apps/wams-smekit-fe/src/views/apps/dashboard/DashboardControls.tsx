@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
   useTheme,
-  Chip
+
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { DashboardLayout } from "../../../types/Dashboard";
@@ -26,13 +26,12 @@ interface DashboardControlsProps {
 }
 
 const DashboardControls: React.FC<DashboardControlsProps> = ({
-                                                               layout,
-                                                               setLayout,
-                                                               anchorEl,
-                                                               setAnchorEl,
-                                                               // setCustomizeOpen,
-                                                               onCustomizeClick
-                                                             }) => {
+  layout,
+  setLayout,
+  anchorEl,
+  setAnchorEl,
+  onCustomizeClick
+}) => {
   const theme = useTheme();
   const open = Boolean(anchorEl);
   const { t } = useTranslation();
@@ -50,40 +49,15 @@ const DashboardControls: React.FC<DashboardControlsProps> = ({
     handleClose();
   }
 
-  // Logique de cycle automatique : 2 → 3 → 4 → 2...
-  const handleStatsColumnsClick = () => {
-    const nextColumns = layout.statsColumns === 4 ? 2 : layout.statsColumns + 1;
+  const toggleDenseMode = () => {
     const newLayout = {
       ...layout,
-      statsColumns: nextColumns
+      denseMode: !layout.denseMode
     };
 
     setLayout(newLayout);
-
-    // Sauvegarder dans localStorage
     localStorage.setItem('dashboardLayout', JSON.stringify(newLayout));
-
-    handleClose();
   };
-
-  const toggleDenseMode = () => {
-    setLayout({
-      ...layout,
-      denseMode: !layout.denseMode
-    });
-  };
-
-  const changeStatsColumns = (columns: number) => {
-    setLayout({
-      ...layout,
-      statsColumns: columns
-    });
-  };
-
-  // const handleOpenCustomizeDialog = () => {
-  //   setCustomizeOpen(true);
-  //   handleClose();
-  // };
 
   return (
     <Box sx={{
@@ -150,48 +124,9 @@ const DashboardControls: React.FC<DashboardControlsProps> = ({
             </ListItemIcon>
             <ListItemText
               primary={t("Personnaliser la disposition")}
-              primaryTypographyProps={{ variant: 'body2', fontWeight: 500 }}
-            />
-          </MenuItem>
-
-          {/*<MenuItem sx={{ py: 1.5 }}>*/}
-          {/*  <ListItemIcon sx={{ minWidth: 40 }}>*/}
-          {/*    <Icon*/}
-          {/*      icon="mdi:arrow-collapse"*/}
-          {/*      width={20}*/}
-          {/*      color={theme.palette.text.secondary}*/}
-          {/*    />*/}
-          {/*  </ListItemIcon>*/}
-          {/*  <ListItemText*/}
-          {/*    primary={t("Mode compact")}*/}
-          {/*    primaryTypographyProps={{ variant: 'body2', fontWeight: 500 }}*/}
-          {/*  />*/}
-          {/*  <Switch*/}
-          {/*    checked={layout.denseMode}*/}
-          {/*    onChange={toggleDenseMode}*/}
-          {/*    edge="end"*/}
-          {/*    inputProps={{ 'aria-label': 'Basculer mode compact' }}*/}
-          {/*  />*/}
-          {/*</MenuItem>*/}
-
-          <MenuItem onClick={handleStatsColumnsClick} sx={{ py: 1.5 }}>
-            <ListItemIcon sx={{ minWidth: 40 }}>
-              <Icon
-                icon="mdi:view-column"
-                width={20}
-                color={theme.palette.text.secondary}
-              />
-            </ListItemIcon>
-            <ListItemText
-              primary={t("Gérer les colonnes")}
-              secondary={t("Widgets et disposition")}
+              secondary={t("Gérer les widgets et les statistiques")}
               primaryTypographyProps={{ variant: 'body2', fontWeight: 500 }}
               secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
-            />
-            <Icon
-              icon="mdi:chevron-right"
-              width={16}
-              style={{ marginLeft: 'auto', color: theme.palette.text.secondary }}
             />
           </MenuItem>
         </Menu>
