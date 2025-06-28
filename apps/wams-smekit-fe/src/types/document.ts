@@ -1,4 +1,4 @@
-import {SharedWithType} from "./SharedWith";
+import {IEnumPermissionLevel, SharedWithType} from "./SharedWith";
 import {DocCommentType} from "./DocComment";
 import {CategoryTemplateType, IEnumDocTempStatus} from "./categoryTemplateType";
 
@@ -23,7 +23,7 @@ export interface DocumentType {
   type?: string;
   path?: string;
   extension?: string;
-  version?: string;
+  version?: number;
 
   // Audit
   createDate: string | Date;

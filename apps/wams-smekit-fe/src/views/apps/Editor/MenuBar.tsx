@@ -47,6 +47,9 @@ import { DocCommentPayload, IEnumDocCommentsStaus } from '../../../types/DocComm
 import { useQuery } from 'react-query';
 import { getUserConnect } from '../../../api/template';
 import { DocumentType } from '../../../types/document';
+import SpellCheckIcon from '@mui/icons-material/Spellcheck';
+
+import { useEffect } from 'react';
 
 export interface MenuBarProps {
   editor: Editor;
@@ -84,7 +87,37 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor, document }) => {
     message: '',
     severity: 'info',
   });
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [selectedGrammarError, setSelectedGrammarError] = useState<{
+    message: string;
+    replacements: string[];
+    offset: number;
+    length: number;
+  } | null>(null);
 
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains('grammar-error')) {
+        const message = target.getAttribute('data-message') || '';
+        const offset = parseInt(target.getAttribute('data-offset') || '0', 10);
+        const length = parseInt(target.getAttribute('data-length') || '0', 10);
+        const replacements = target.getAttribute('data-replacements')?.split('||') || [];
+
+        setSelectedGrammarError({ message, offset, length, replacements });
+        setAnchorEl(target);
+      } else {
+        setAnchorEl(null);
+        setSelectedGrammarError(null);
+      }
+    };
+
+    window.document.addEventListener('click', handleClick);
+
+    return () => {
+      window.document.removeEventListener('click', handleClick);
+    };
+  }, []);
 
 
   const { data: userData, isLoading: isLoadingUserData } = useQuery('userData', getUserConnect);
@@ -93,7 +126,17 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor, document }) => {
 
   const showNotification = (message: string, severity: NotificationState['severity'] = 'info') => {
     setNotification({ open: true, message, severity });
+  }
+
+  const handleGrammarCheck = () => {
+    if (!editor) return;
+
+    if ('checkGrammar' in editor.commands) {
+      (editor.commands as any).checkGrammar();
+    }
   };
+
+
 
   const handleAddComment = async () => {
     if (!editor) return;
@@ -454,6 +497,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor, document }) => {
             <CommentIcon />
           </IconButton>
         </Tooltip>
+
       </Box>
 
       <Dialog

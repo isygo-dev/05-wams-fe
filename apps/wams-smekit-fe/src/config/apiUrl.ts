@@ -58,7 +58,9 @@ const apiUrls = {
   apiUrl_smekit_Dashboard_Endpoint : apiUrl_SMEKIT +api_version + '/private/dashboard',
   apiUrl_smekit_Document_Endpoint : apiUrl_SMEKIT +api_version + '/private/document',
 
-  apiUrl_smekit_DocComments_Endpoint: apiUrl_SMEKIT+api_version+'/private/docComments'
+  apiUrl_smekit_DocComments_Endpoint: apiUrl_SMEKIT+api_version+'/private/docComments',
+
+  apiUrl_smekit_SharedWith_Endpoint: apiUrl_SMEKIT+api_version+'/private/sharedWith'
 }
 
 export default apiUrls

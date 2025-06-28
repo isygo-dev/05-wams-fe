@@ -29,6 +29,11 @@ const Navigation = (): VerticalNavItemsType => {
       path: '/apps/category',
     },
     {
+      title: t('doc'),
+      icon: 'tabler:grid-dots',
+      path: '/apps/DocumentsPartages',
+    },
+    {
       title: t('Authors'),
       icon: 'tabler:users',
       path: '/apps/author',

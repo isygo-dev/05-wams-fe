@@ -112,7 +112,6 @@ export const getTemplateCount = async (): Promise<number> => {
   return await response.json()
 }
 export const getTemplatePreview = async (templateId, version = 1) => {
-  console.log(" Requête de preview :", { templateId, version });
   if (!templateId) {
     throw new Error('Template ID is required');
   }

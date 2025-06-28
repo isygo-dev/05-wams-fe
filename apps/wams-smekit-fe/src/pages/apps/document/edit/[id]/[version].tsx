@@ -20,8 +20,9 @@ import { getDocumentHtmlWithMetadata, updateDocument} from '../../../../../api/D
 const EditDocumentPage: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { id: rawId, version: rawVersion } = router.query;
+  const { id: rawId, version: rawVersion , permission: rawPermission} = router.query;
   const [document, setDocument] = useState<DocumentType | null>(null);
+  const isReadOnly = useMemo(() => rawPermission === 'READ', [rawPermission]);
 
   const [htmlContent, setHtmlContent] = useState<string>('');
   const [loading, setLoading] = useState(true);
@@ -77,7 +78,6 @@ const EditDocumentPage: React.FC = () => {
 
     setSaving(true);
     try {
-      console.log('Contenu sauvegardé :', htmlContent);
       await updateDocument(documentId, { html: htmlContent });
 
       toast.success(t('Document updated successfully'));
@@ -129,19 +129,21 @@ const EditDocumentPage: React.FC = () => {
           variant="contained"
           color="primary"
           onClick={handleSave}
-          disabled={saving}
+          disabled={saving || isReadOnly}
           startIcon={saving ? <CircularProgress size={20} /> : <Icon icon="mdi:content-save" />}
         >
           {saving ? t('Saving...') : t('Save')}
         </Button>
+
       </Box>
 
       <TiptapEditor
         content={htmlContent}
         onChange={setHtmlContent}
-        readOnly={saving}
+        readOnly={saving || isReadOnly}
         documentData={document ?? null}
       />
+
     </Box>
   );
 };

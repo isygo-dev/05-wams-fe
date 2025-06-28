@@ -1,9 +1,15 @@
 import {DocumentType} from "./document";
 
+export enum IEnumPermissionLevel {
+  READ = 'READ',
+  EDIT = 'EDIT',
+
+}
 export interface SharedWithType {
   id?: number
-  userName: string
-  documentCode: DocumentType
+  user: string
+  document: DocumentType
+  permission: IEnumPermissionLevel;
 
   createDate: string
   createdBy: string

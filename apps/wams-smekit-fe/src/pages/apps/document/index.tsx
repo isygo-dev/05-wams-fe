@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -20,7 +20,7 @@ import Moment from "react-moment";
 import { GridPaginationModel } from "@mui/x-data-grid/models/gridPaginationProps";
 import localStorageKeys from "template-shared/configs/localeStorage";
 import { useRouter } from "next/navigation";
-import {  fetchDocuments } from "../../../api/Document";
+import {deleteDocument, downloadDocument, fetchDocuments} from "../../../api/Document";
 import { DocumentType } from "../../../types/document";
 import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import {checkPermission} from "template-shared/@core/api/helper/permission";
@@ -29,6 +29,12 @@ import {
   PermissionApplication,
   PermissionPage
 } from "template-shared/@core/types/helper/apiPermissionTypes";
+import toast from "react-hot-toast";
+import DeleteCommonDialog from "template-shared/@core/components/DeleteCommonDialog";
+import {IEnumPermissionLevel, SharedWithType} from "../../../types/SharedWith";
+import {ShareDocumentDialog} from "../../../views/apps/SharedWith/ShareDocumentDialog";
+import {getDocumentShares} from "../../../api/SharedWith";
+import AccountApis from "ims-shared/@core/api/ims/account";
 
 
 
@@ -39,12 +45,17 @@ interface CellType {
 
 const Documents = () => {
   const { t } = useTranslation();
-  const router = useRouter();
+  const router = useRouter()
+  const AccountApi = AccountApis(t);
   const dataGridApiRef = React.useRef<GridApi>();
-
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
+  const queryClient = useQueryClient();
+  const [shareDialog, setShareDialog] = useState(false);
+  const [documentToShare, setDocumentToShare] = useState<DocumentType | null>(null);
+  const [sharesList, setSharesList] = useState<SharedWithType[]>([]);
   const [value, setValue] = useState<string>('');
-  const [, setDeleteDialog] = useState(false);
-  const [, setSelectedId] = useState<number | undefined>(undefined);
+
   const [filteredData, setFilteredData] = useState<DocumentType[] | null>(null);
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     page: 0,
@@ -71,6 +82,36 @@ const Documents = () => {
     }
   }
 
+  const loadDocumentShares = async (documentId: number) => {
+    try {
+      const shares = await getDocumentShares(documentId);
+
+      if (!shares || shares.length === 0) {
+        setSharesList([]);
+
+        return;
+      }
+
+      const imsUsers = await AccountApi.getAccounts();
+      const enrichedShares = shares.map((share) => {
+        const userData = imsUsers?.find((u) => u.code === share.user);
+
+        return {
+          ...share,
+          userDisplayName: userData ? `${userData.firstname} ${userData.lastname}` : share.user
+        };
+      });
+
+      setSharesList(enrichedShares);
+      console.log("Liste enrichie des partages :", enrichedShares);
+
+    } catch (error) {
+      console.error("Erreur lors du chargement des partages :", error);
+      setSharesList([]);
+    }
+  };
+
+
   const getFileTypeColor = (extension?: string) => {
     if (!extension) return "text.secondary"
     const ext = extension.toLowerCase()
@@ -82,6 +123,34 @@ const Documents = () => {
       default: return "text.secondary"
     }
   }
+  const deleteDocumentMutation = useMutation({
+    mutationFn: (id: number) => deleteDocument(id),
+    onSuccess: () => {
+      toast.success(t("Document supprimé avec succès"));
+      queryClient.invalidateQueries('documents');
+      setDeleteDialog(false);
+      setSelectedId(undefined);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || t("Échec de la suppression"));
+      setDeleteDialog(false);
+      setSelectedId(undefined);
+    }
+  });
+
+
+  const downloadDocumentMutation = useMutation({
+    mutationFn: ({ id, originalFileName }: { id: number; originalFileName: string }) => {
+      return downloadDocument({ id, originalFileName });
+    },
+    onSuccess: () => {
+      toast.success(t("Document téléchargé avec succès !"));
+    },
+    onError: (error: any) => {
+      toast.error(`Erreur lors du téléchargement : ${error.message}`);
+    }
+  });
+
 
 
   const handleFilter = (val: string) => {
@@ -105,7 +174,23 @@ const Documents = () => {
     setDeleteDialog(true);
   };
 
+  const handleDelete = () => {
+    if (selectedId) {
+      deleteDocumentMutation.mutate(selectedId);
+    }
+  };
 
+  const onDownload = (row: DocumentType) => {
+    if (!row.id || !row.originalFileName) {
+      toast.error("Fichier manquant");
+
+      return;
+    }
+    downloadDocumentMutation.mutate({
+      id: row.id,
+      originalFileName: row.originalFileName
+    });
+  };
 
   const columns: GridColDef[] = [
     {
@@ -189,18 +274,33 @@ const Documents = () => {
           )}
 
           <Tooltip title={t('Action.Download')} arrow>
-        <span>
-          <IconButton
-            size="small"
-            sx={{ color: 'text.secondary' }}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-            disabled={!row.originalFileName}
-          >
-            <Icon icon='material-symbols:download' />
-          </IconButton>
-        </span>
+            <span>
+              <IconButton
+                size="small"
+                sx={{ color: 'text.secondary' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDownload(row);
+                }}
+                disabled={!row.originalFileName}
+              >
+                <Icon icon='material-symbols:download' />
+              </IconButton>
+            </span>
+          </Tooltip>
+
+          <Tooltip title="Partager le document" arrow>
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                setDocumentToShare(row);
+                setShareDialog(true);
+                loadDocumentShares(row.id);
+              }}
+            >
+              <Icon icon="mdi:share-variant" />
+            </IconButton>
           </Tooltip>
 
         </Box>
@@ -237,6 +337,39 @@ const Documents = () => {
             </Box>
         </Card>
       </Grid>
+
+      <DeleteCommonDialog
+        open={deleteDialog}
+        setOpen={setDeleteDialog}
+        selectedRowId={selectedId}
+        onDelete={handleDelete}
+        item="Document"
+      />
+      <ShareDocumentDialog
+        documentId={documentToShare?.id || 0}
+        isOpen={shareDialog}
+        onClose={() => setShareDialog(false)}
+        onShareSuccess={() => {
+          if (documentToShare) {
+            loadDocumentShares(documentToShare.id);
+          }
+        }}
+      />
+
+      {sharesList.length > 0 && (
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h6">Utilisateurs ayant accès :</Typography>
+          {sharesList.map((s) => (
+            <Box key={s.id} sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
+              <Typography>{s.userDisplayName ? s.userDisplayName : s.user}</Typography>
+              <Typography color="text.secondary">
+                {s.permission === IEnumPermissionLevel.READ ? "Lecture seule" : "Édition autorisée"}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      )}
+
 
 
     </Grid>

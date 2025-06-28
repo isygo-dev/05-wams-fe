@@ -127,27 +127,21 @@ export const updateDocument = async (id: number, data: { html: string }): Promis
   return response.json();
 };
 
-export const deleteDocument = async (id: number): Promise<number> => {
-  const response = await AppQuery(
-    `${apiUrls.apiUrl_smekit_Document_Endpoint}/${id}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
+export const deleteDocument = async (id: number) => {
+  const response = await AppQuery(`${apiUrls.apiUrl_smekit_Document_Endpoint}?id=${id}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
     }
-  );
+  });
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || 'Failed to delete document');
+    throw new Error(error.message || `Failed to delete document (Status ${response.status})`);
   }
-
-  toast.success('Document deleted successfully');
-
-  return id;
 };
+
 
 export const getDocumentById = async (id: number): Promise<DocumentType | null> => {
   const response = await AppQuery(
@@ -175,9 +169,9 @@ export const getDocumentById = async (id: number): Promise<DocumentType | null> 
   };
 };
 
-export const downloadDocument = async (id: number, fileName: string): Promise<void> => {
+export const downloadDocument = async (data: { id: number; originalFileName: string }) => {
   const response = await AppQuery(
-    `${apiUrls.apiUrl_smekit_Document_Endpoint}/${id}/download`,
+    `${apiUrls.apiUrl_smekit_Document_Endpoint}/file/download?id=${data.id}&version=1`,
     {
       method: 'GET',
     }
@@ -192,7 +186,7 @@ export const downloadDocument = async (id: number, fileName: string): Promise<vo
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = fileName;
+  link.download = data.originalFileName;
   link.style.display = 'none';
 
   document.body.appendChild(link);
@@ -200,7 +194,7 @@ export const downloadDocument = async (id: number, fileName: string): Promise<vo
   document.body.removeChild(link);
 
   URL.revokeObjectURL(url);
-  toast.success('Document downloaded successfully');
+  toast.success('Document téléchargé avec succès');
 };
 
 export const getDocumentCount = async (): Promise<number> => {

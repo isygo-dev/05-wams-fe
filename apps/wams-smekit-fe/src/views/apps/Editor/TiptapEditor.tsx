@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -20,9 +20,22 @@ import DOMPurify from 'dompurify';
 import { CommentMark } from '../documentComment/commentMark';
 import { DocumentType } from '../../../types/document';
 import {getCommentsByDocumentId, updateCommentType,} from '../../../api/DocumentComment';
-import {DocCommentType, IEnumDocCommentsStaus} from '../../../types/DocComment';
+import {DocCommentType as ImportedDocCommentType, IEnumDocCommentsStaus} from '../../../types/DocComment';
+
+interface DocCommentType {
+  id: number;
+  document?: any;
+  startOffset?: number;
+  endOffset?: number;
+  createdBy?: any;
+  user?: string;
+  textCommented?: string;
+  type?: IEnumDocCommentsStaus;
+  [key: string]: any;
+}
 import CommentSidebar from '../documentComment/CommentSidebar';
 import toast from "react-hot-toast";
+import {GrammarChecker, GrammarMark} from "./grammarMark";
 
 interface TiptapEditorProps {
   content: string;
@@ -42,6 +55,18 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
   const { t } = useTranslation();
   const [comments, setComments] = useState<DocCommentType[]>([]);
   const [showSidebar, setShowSidebar] = useState(true);
+  const [suggestionPopup, setSuggestionPopup] = useState<{
+    x: number;
+    y: number;
+    suggestions: string[];
+    position: number;
+    message: string
+  } | null>(null);
+
+  const isInitialContent = useRef(true);
+  const lastContentRef = useRef(content);
+  const clickHandlerRef = useRef<((e: MouseEvent) => void) | null>(null);
+  const globalClickHandlerRef = useRef<((e: MouseEvent) => void) | null>(null);
 
   const editor = useEditor({
     content,
@@ -84,6 +109,11 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
       TableHeader,
       TableCell,
       CommentMark,
+      GrammarMark,
+      GrammarChecker.configure({
+        debounceTime: 1500,
+        enabledTypes: ['spelling', 'grammar', 'conjugation'],
+      }),
     ],
     editorProps: {
       attributes: {
@@ -109,20 +139,90 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
       onChange?.(editor.getHTML());
     },
   });
+
   useEffect(() => {
-    if (editor && content) {
+    if (editor && content && isInitialContent.current) {
       editor.commands.setContent(content, false);
+      isInitialContent.current = false;
+      lastContentRef.current = content;
     }
   }, [editor, content]);
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const dom = editor.view.dom;
+
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+
+      if (target && target.dataset.grammarError) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const rawSuggestions = target.dataset.suggestions || '';
+        const suggestions = rawSuggestions.length > 0 ? rawSuggestions.split('||').filter(Boolean) : [];
+        const message = target.dataset.message || '';
+        const offset = parseInt(target.dataset.offset || '0');
+
+        setSuggestionPopup(null);
+
+        setTimeout(() => {
+          setSuggestionPopup({
+            x: e.clientX,
+            y: e.clientY,
+            suggestions,
+            position: offset,
+            message,
+          });
+        }, 10);
+      } else {
+        setSuggestionPopup(null);
+      }
+    };
+
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+
+      if (target.closest('[data-suggestion-popup]')) {
+        return;
+      }
+
+      if (target.dataset.grammarError) {
+        return;
+      }
+
+      setSuggestionPopup(null);
+    };
+
+    clickHandlerRef.current = handleClick;
+    globalClickHandlerRef.current = handleGlobalClick;
+
+    dom.addEventListener('click', handleClick);
+    document.addEventListener('click', handleGlobalClick);
+
+    return () => {
+      if (clickHandlerRef.current) {
+        dom.removeEventListener('click', clickHandlerRef.current);
+      }
+      if (globalClickHandlerRef.current) {
+        document.removeEventListener('click', globalClickHandlerRef.current);
+      }
+    };
+  }, [editor]);
 
   const loadComments = async () => {
     if (!editor || !documentData?.id) return;
 
     try {
-      const fetchedComments = await getCommentsByDocumentId(documentData.id);
-      setComments(fetchedComments);
+      const fetchedComments: ImportedDocCommentType[] = await getCommentsByDocumentId(documentData.id);
+      const convertedComments: DocCommentType[] = fetchedComments.map(comment => ({
+        ...comment,
+        id: comment.id || 0,
+      }));
+      setComments(convertedComments);
 
-      fetchedComments.forEach(comment => {
+      convertedComments.forEach(comment => {
         if (
           comment.startOffset != null &&
           comment.endOffset != null &&
@@ -176,8 +276,6 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
     }
   };
 
-  if (!editor) return <Box>{t('Loading editor...')}</Box>;
-
   const handleStatusChange = async (commentId: number, newType: IEnumDocCommentsStaus) => {
     try {
       await updateCommentType(commentId, newType);
@@ -187,13 +285,35 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
         )
       );
 
-      toast.success(' Statut du commentaire mis à jour avec succès');
+      toast.success('Statut du commentaire mis à jour avec succès');
     } catch (error) {
-      console.error(' Erreur lors de la mise à jour du commentaire :', error);
-      toast.error(' Échec de la mise à jour du statut');
+      console.error('Erreur lors de la mise à jour du commentaire :', error);
+      toast.error('Échec de la mise à jour du statut');
     }
   };
 
+  const handleSuggestionClick = (suggestion: string) => {
+    if (suggestionPopup && editor) {
+      if ('acceptSuggestion' in editor.commands) {
+        (editor.commands as any).acceptSuggestion(suggestionPopup.position, suggestion);
+      } else {
+        const { from, to } = editor.state.selection;
+        editor.chain().focus().deleteRange({ from, to }).insertContent(suggestion).run();
+      }
+      setSuggestionPopup(null);
+    }
+  };
+
+  const handleIgnoreError = () => {
+    if (suggestionPopup && editor) {
+      if ('ignoreError' in editor.commands) {
+        (editor.commands as any).ignoreError(suggestionPopup.position);
+      }
+      setSuggestionPopup(null);
+    }
+  };
+
+  if (!editor) return <Box>{t('Loading editor...')}</Box>;
 
   return (
     <Box
@@ -262,7 +382,6 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
           </Button>
         </Box>
       )}
-
 
       <Box
         sx={{
@@ -346,9 +465,73 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
             onStatusChange={handleStatusChange}
             currentUser={currentUser}
           />
-
         )}
       </Box>
+
+      {suggestionPopup && (
+        <Box
+          data-suggestion-popup
+          sx={{
+            position: 'fixed',
+            top: suggestionPopup.y + 5,
+            left: suggestionPopup.x + 5,
+            backgroundColor: '#fff',
+            border: '1px solid #ccc',
+            borderRadius: 1,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+            padding: 1,
+            zIndex: 2000,
+            minWidth: '200px',
+            maxWidth: '300px',
+          }}
+        >
+          <Box sx={{ fontWeight: 'bold', mb: 1, fontSize: '0.875rem' }}>
+            {suggestionPopup.message}
+          </Box>
+
+          {suggestionPopup.suggestions.length > 0 ? (
+            suggestionPopup.suggestions.map((suggestion, index) => (
+              <Button
+                key={index}
+                size="small"
+                fullWidth
+                variant="text"
+                sx={{
+                  justifyContent: 'flex-start',
+                  mb: 0.5,
+                  textTransform: 'none',
+                  fontSize: '0.875rem',
+                  '&:hover': {
+                    backgroundColor: '#f5f5f5',
+                  },
+                }}
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                {suggestion}
+              </Button>
+            ))
+          ) : (
+            <Box sx={{ fontStyle: 'italic', color: '#999', fontSize: '0.875rem' }}>
+              Aucune suggestion disponible
+            </Box>
+          )}
+
+          <Button
+            size="small"
+            color="secondary"
+            fullWidth
+            variant="outlined"
+            sx={{
+              mt: 1,
+              textTransform: 'none',
+              fontSize: '0.875rem',
+            }}
+            onClick={handleIgnoreError}
+          >
+            Ignorer
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
