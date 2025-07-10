@@ -3,10 +3,23 @@ import { AppQuery, HttpError } from "template-shared/@core/utils/fetchWrapper";
 import toast from "react-hot-toast";
 import { DocumentType } from "../../types/document";
 import { IEnumDocTempStatus } from "../../types/categoryTemplateType";
+import {checkPermission} from "template-shared/@core/api/helper/permission";
+import {
+  PermissionAction,
+  PermissionApplication,
+  PermissionPage
+} from "template-shared/@core/types/helper/apiPermissionTypes";
 
 
+
+const permission = PermissionPage.DOCUMENT
 
 export const fetchDocuments = async (page: number, pageSize: number) => {
+  if (!checkPermission(PermissionApplication.SMEKIT, permission, PermissionAction.READ)) {
+    console.warn('Permission denied on read ' + permission)
+
+    return
+  }
   try {
     const response = await AppQuery(
       `${apiUrls.apiUrl_smekit_Document_Endpoint}?page=${page}&size=${pageSize}`,
@@ -31,6 +44,65 @@ export const fetchDocuments = async (page: number, pageSize: number) => {
     return [];
   }
 }
+export const fetchDocuments1 = async (page: number, pageSize: number, createdBy: string) => {
+  if (!checkPermission(PermissionApplication.SMEKIT, permission, PermissionAction.READ)) {
+    console.warn('Permission denied on read ' + permission)
+
+    return
+  }
+  try {
+    if (!createdBy?.trim()) {
+      console.warn("Aucun utilisateur connecté, impossible de récupérer les documents");
+      return [];
+    }
+
+    const url = `${apiUrls.apiUrl_smekit_Document_Endpoint}/by-user?page=${page}&size=${pageSize}&createdBy=${encodeURIComponent(createdBy)}`;
+
+    console.log("📥 Appel API documents utilisateur :", url);
+
+    const response = await AppQuery(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("❌ Erreur API documents :", errorText);
+      throw new Error('Erreur lors du chargement des documents');
+    }
+
+    const data = await response.json();
+
+    console.log("✅ Documents reçus :", data);
+
+    if (!Array.isArray(data)) {
+      console.error("⚠️ Format inattendu :", data);
+
+      return [];
+    }
+
+    return data.map((doc: any) => ({
+      id: doc.id,
+      name: doc.name,
+      description: doc.description,
+      createDate: doc.createDate,
+      createdBy: doc.createdBy,
+      extension: doc.extension,
+      originalFileName: doc.originalFileName,
+      version: doc.version || 1,
+      ...doc
+    }));
+  } catch (error) {
+    console.error("❌ Erreur lors du chargement des documents :", error);
+
+    return [];
+  }
+};
+
+
 export const getDocumentsByPage = async (page: number, size: number): Promise<{
   content: DocumentType[];
   totalElements: number;
@@ -74,6 +146,7 @@ export const getDocumentsByPage = async (page: number, size: number): Promise<{
   }
 };
 export const createDocumentFromTemplate = async (
+
   templateId: number,
   name: string,
   content: string
@@ -107,6 +180,11 @@ export const createDocumentFromTemplate = async (
 
 
 export const updateDocument = async (id: number, data: { html: string }): Promise<DocumentType> => {
+  if (!checkPermission(PermissionApplication.SMEKIT, permission, PermissionAction.WRITE)) {
+    console.warn('Permission denied on read ' + permission)
+
+    return
+  }
   const response = await AppQuery(
     `${apiUrls.apiUrl_smekit_Document_Endpoint}/${id}/save`,
     {
@@ -128,6 +206,12 @@ export const updateDocument = async (id: number, data: { html: string }): Promis
 };
 
 export const deleteDocument = async (id: number) => {
+  if (!checkPermission(PermissionApplication.SMEKIT, permission, PermissionAction.DELETE)) {
+    console.warn('Permission denied on read ' + permission)
+
+    return
+  }
+
   const response = await AppQuery(`${apiUrls.apiUrl_smekit_Document_Endpoint}?id=${id}`, {
     method: 'DELETE',
     headers: {
@@ -170,6 +254,7 @@ export const getDocumentById = async (id: number): Promise<DocumentType | null> 
 };
 
 export const downloadDocument = async (data: { id: number; originalFileName: string }) => {
+
   const response = await AppQuery(
     `${apiUrls.apiUrl_smekit_Document_Endpoint}/file/download?id=${data.id}&version=1`,
     {

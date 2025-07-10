@@ -35,6 +35,7 @@ import DeleteCommonDialog from "template-shared/@core/components/DeleteCommonDia
 import toast from "react-hot-toast";
 import apiUrls from "../../../config/apiUrl";
 import {useRouter} from "next/navigation";
+import AuthorFilePreviewDialog from "../../../views/apps/Author/AuthorFilePreviewDialog";
 
 const initialValue: AuthorType =
   {
@@ -76,8 +77,8 @@ const Author =()=>{
     email: false,
 
   })
-  const [, setPreviewOpen] = useState(false);
-  const [, setPreviewTemplate] = useState<AuthorType | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewAuthor, setPreviewAuthor] = useState<AuthorType | null>(null);
 
   const [paginationModel, setPaginationModel] =
     useState<GridPaginationModel>({
@@ -278,7 +279,7 @@ const Author =()=>{
       flex: 1,
       renderCell: ({row}: CellType) => (
         <Box sx={{display: 'flex', alignItems: 'center'}}>
-          {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (
+          {checkPermission(PermissionApplication.SMEKIT, PermissionPage.AUTHOR, PermissionAction.WRITE) && (
             <Tooltip title={t('Action.Edit')}>
               <IconButton
                 className={Styles.sizeIcon}
@@ -291,7 +292,7 @@ const Author =()=>{
 
 
           )}
-          {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (
+          {checkPermission(PermissionApplication.SMEKIT, PermissionPage.AUTHOR, PermissionAction.DELETE) && (
             <Tooltip title={t('Action.Delete')}>
               <IconButton
                 className={Styles.sizeIcon} sx={{color: 'text.secondary'}}
@@ -300,14 +301,15 @@ const Author =()=>{
               </IconButton>
             </Tooltip>
           )}
-          {/*{checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.WRITE) && (*/}
-          {/*  <Tooltip title={t('Action.Edit')}>*/}
-          {/*    <IconButton*/}
-          {/*      className={Styles.sizeIcon} sx={{color: 'text.secondary'}} onClick={() => handleUpdateClick(row)}>*/}
-          {/*      <Icon icon='tabler:edit'/>*/}
-          {/*    </IconButton>*/}
-          {/*  </Tooltip>*/}
-          {/*)}*/}
+          {checkPermission(PermissionApplication.SMEKIT, PermissionPage.AUTHOR, PermissionAction.READ) && (
+
+            <Tooltip title={t('Aperçu')}>
+              <IconButton onClick={() => handleFilePreview(row)}>
+                <Icon icon="solar:document-bold" />
+              </IconButton>
+
+            </Tooltip>
+            )}
         </Box>
       )
     }
@@ -328,10 +330,13 @@ const Author =()=>{
       }
     }
   })
-  const handlePreviewClick = (author: AuthorType) => {
-    setPreviewTemplate(author);
+  const handleFilePreview = (author: AuthorType) => {
+    setPreviewAuthor(author);
     setPreviewOpen(true);
-  }
+  };
+  const closeFilePreview = () => {
+    setPreviewOpen(false);
+  };
   const handleDelete = () => {
     deleteAuthorMutation.mutate()
   }
@@ -371,7 +376,7 @@ const Author =()=>{
             <Grid key={index} item xs={6} sm={6} md={4} lg={12 / 5}>
               <AuthorCard
                 data={author}
-                onPreviewClick={handlePreviewClick}
+                onPreviewClick={handleFilePreview}
                 onDeleteClick={handleDeleteClick}
                 onViewClick={handleUpdateClick}
                 imageUrl={apiUrls.apiUrl_smekit_Author_ImageDownload_Endpoint}
@@ -423,8 +428,8 @@ const Author =()=>{
               value={value}
               handleFilter={handleFilter}
               toggle={toggleAddAuthor}
-              permissionApplication={PermissionApplication.IMS}
-              permissionPage={PermissionPage.APP_PARAMETER}
+              permissionApplication={PermissionApplication.SMEKIT}
+              permissionPage={PermissionPage.AUTHOR}
               permissionAction={PermissionAction.WRITE}
             />
             {renderViewBasedOnMode()}
@@ -436,6 +441,15 @@ const Author =()=>{
                 setShowDialogue={setShowDialogue}
               />
             )}
+            {previewAuthor && (
+              <AuthorFilePreviewDialog
+                open={previewOpen}
+                onCloseClick={closeFilePreview}
+                author={previewAuthor}
+              />
+            )}
+
+
 
 
 

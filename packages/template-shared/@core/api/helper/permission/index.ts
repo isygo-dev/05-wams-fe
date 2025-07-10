@@ -31,12 +31,13 @@ export const checkPermission = (application: string, page: string, action: strin
     const oldTokenDecoded = jwt.decode(token, {complete: true})
     const text = application + action + page
     const listCheck: AuthorityToken = oldTokenDecoded?.payload as AuthorityToken
+
     if (listCheck && listCheck['log-app'] !== 'SmartCode-UI') {
         const index = listCheck['granted-authority']?.findIndex(d => d === text)
         if (index > -1) {
-            return true
+            return true //temporary true
         } else {
-            return true
+            return false
         }
     } else return true
 }

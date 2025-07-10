@@ -4,10 +4,21 @@ import imsApiUrls from "ims-shared/configs/ims_apis";
 import toast from "react-hot-toast";
 import {AuthorType} from "../../types/author";
 import {CategoryType} from "../../types/category";
-import {getUserDomainFromToken} from "template-shared/@core/api/helper/permission";
+import {checkPermission, getUserDomainFromToken} from "template-shared/@core/api/helper/permission";
+import {
+  PermissionAction,
+  PermissionApplication,
+  PermissionPage
+} from "template-shared/@core/types/helper/apiPermissionTypes";
 
+const permission = PermissionPage.TEMPLATE
 
 export const fetchAllTemplate = async () => {
+  if (!checkPermission(PermissionApplication.SMEKIT, permission, PermissionAction.READ)) {
+    console.warn('Permission denied on read ' + permission)
+
+    return
+  }
   const userIdentifier = getUserDomainFromToken();
   const response = await AppQuery(`${apiUrls.apiUrl_smekit_Template_FetchAll_Endpoint}?userIdentifier=${userIdentifier}`, {
     method: 'GET'
@@ -58,6 +69,7 @@ export const getTemplatesByPage = async (page: number, size: number) => {
 }
 
 export const fetchAuthorDetails = async (id: number): Promise<AuthorType> => {
+
   const response = await AppQuery(`${apiUrls.apiUrl_smekit_Author_StorageConfigEndpoint}/${id}`, {
     method: 'GET'
   });
@@ -224,11 +236,15 @@ export const getUserConnect = async () => {
   }
 
   const user = await response.json();
-  // console.log("User connected data:", user);
 
   return user;
 };
 export const updateTemplate = async (formData: FormData) => {
+  if (!checkPermission(PermissionApplication.SMEKIT, permission, PermissionAction.WRITE)) {
+    console.warn('Permission denied on read ' + permission)
+
+    return
+  }
   const id = formData.get('id');
   if (!id) throw new Error("Template ID is required");
 
@@ -251,6 +267,11 @@ export const updateTemplate = async (formData: FormData) => {
   return response.json();
 };
 export const deleteTemplate = async (id: number) => {
+  if (!checkPermission(PermissionApplication.SMEKIT, permission, PermissionAction.DELETE)) {
+    console.warn('Permission denied on read ' + permission)
+
+    return
+  }
   const response = await AppQuery(`${apiUrls.apiUrl_smekit_Template_FetchAll_Endpoint}?id=${id}`, {
     method: 'DELETE',
     headers: {

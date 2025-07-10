@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Avatar,
-  Box,
+  Box, ToggleButton, ToggleButtonGroup,
 } from "@mui/material";
 import Icon from "template-shared/@core/components/icon";
 import TableHeader from "template-shared/views/table/TableHeader";
@@ -20,7 +20,7 @@ import Moment from "react-moment";
 import { GridPaginationModel } from "@mui/x-data-grid/models/gridPaginationProps";
 import localStorageKeys from "template-shared/configs/localeStorage";
 import { useRouter } from "next/navigation";
-import {deleteDocument, downloadDocument, fetchDocuments} from "../../../api/Document";
+import {deleteDocument, downloadDocument, fetchDocuments1} from "../../../api/Document";
 import { DocumentType } from "../../../types/document";
 import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import {checkPermission} from "template-shared/@core/api/helper/permission";
@@ -35,13 +35,32 @@ import {IEnumPermissionLevel, SharedWithType} from "../../../types/SharedWith";
 import {ShareDocumentDialog} from "../../../views/apps/SharedWith/ShareDocumentDialog";
 import {getDocumentShares} from "../../../api/SharedWith";
 import AccountApis from "ims-shared/@core/api/ims/account";
+import DocumentsPartages from "../../../views/apps/Document/DocumentsPartages";
 
 
 
 interface CellType {
   row: DocumentType;
 }
-
+const ViewToggleButtons = ({ viewMode, onViewModeChange }) => {
+  return (
+    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, margin: 2 }}>
+      <ToggleButtonGroup
+        exclusive
+        value={viewMode}
+        onChange={onViewModeChange}
+        aria-label="view mode selection"
+      >
+        <ToggleButton value="grid" aria-label="grid view">
+          <Icon icon="ic:baseline-view-list" />
+        </ToggleButton>
+        <ToggleButton value="shared" aria-label="shared view">
+          <Icon icon="ic:baseline-view-module" />
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Box>
+  );
+}
 
 const Documents = () => {
   const { t } = useTranslation();
@@ -55,6 +74,7 @@ const Documents = () => {
   const [documentToShare, setDocumentToShare] = useState<DocumentType | null>(null);
   const [sharesList, setSharesList] = useState<SharedWithType[]>([]);
   const [value, setValue] = useState<string>('');
+  const [viewMode, setViewMode] = useState<'grid' | 'shared'>('grid')
 
   const [filteredData, setFilteredData] = useState<DocumentType[] | null>(null);
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
@@ -64,11 +84,36 @@ const Documents = () => {
       : 20
   });
 
-  const { data: documents, isLoading } = useQuery(
-    ['documents', paginationModel],
-    () => fetchDocuments(paginationModel.page, paginationModel.pageSize)
+  const buildUserCode = (code?: string, domain?: string) => {
+    if (!code) return '';
+    const lowerCode = code.toLowerCase();
+    if (lowerCode.includes('@')) return lowerCode;
+    return domain ? `${lowerCode}@${domain.toLowerCase()}` : lowerCode;
+  };
+
+
+  const { data: user, isLoading: isLoadingUser } = useQuery('userData', AccountApi.getAccountProfile);
+
+  const { data: documents, isLoading: isLoadingDocs } = useQuery(
+    ['documents', paginationModel.page, paginationModel.pageSize, user?.code],
+    () => fetchDocuments1(
+      paginationModel.page,
+      paginationModel.pageSize,
+      buildUserCode(user?.code, user?.domain)
+    ),
+    {
+      enabled: !!user?.code,
+      keepPreviousData: true
+    }
   );
 
+
+
+  const handleViewModeChange = (event, newViewMode) => {
+    if (newViewMode !== null) {
+      setViewMode(newViewMode);
+    }
+  }
   const getFileTypeIcon = (extension?: string) => {
     if (!extension) return "mdi:file-outline"
     const ext = extension.toLowerCase()
@@ -162,12 +207,15 @@ const Documents = () => {
     }
 
     const filtered = documents?.filter(doc =>
-      Object.values(doc).some(value =>
+      Object.entries(doc).some(([key, value]) =>
+        (typeof value === 'string' || typeof value === 'number') &&
         String(value).toLowerCase().includes(val.toLowerCase())
       )
     );
+
     setFilteredData(filtered || null);
   };
+
 
   const handleDeleteClick = (id: number) => {
     setSelectedId(id);
@@ -258,7 +306,7 @@ const Documents = () => {
             </IconButton>
           </Tooltip>
 
-          {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (
+          {checkPermission(PermissionApplication.SMEKIT, PermissionPage.DOCUMENT, PermissionAction.DELETE) && (
             <Tooltip title={t('Action.Delete')} arrow>
               <IconButton
                 size="small"
@@ -307,6 +355,7 @@ const Documents = () => {
       )
     }
   ];
+  const rowsToDisplay = filteredData ?? documents ?? [];
 
   return (
     <Grid container spacing={6}>
@@ -314,27 +363,70 @@ const Documents = () => {
         <Card>
           <CardHeader title={t('Documents')} />
 
+          <ViewToggleButtons
+            viewMode={viewMode}
+            onViewModeChange={handleViewModeChange}
+          />
+
           <TableHeader
             value={value}
             handleFilter={handleFilter}
             dataGridApi={dataGridApiRef as React.MutableRefObject<GridApiCommunity>}
             toggle={() => {}}
+
+            permissionApplication={PermissionApplication.SMEKIT}
+            permissionPage={PermissionPage.DOCUMENT}
+            permissionAction={PermissionAction.WRITE}
           />
 
-
+          {viewMode === 'grid' && (
             <Box className={Styles.boxTable}>
               <DataGrid
                 autoHeight
-                rows={filteredData || documents || []}
+                rows={rowsToDisplay}
                 columns={columns}
                 pagination
                 paginationModel={paginationModel}
                 onPaginationModelChange={setPaginationModel}
                 pageSizeOptions={themeConfig.pageSizeOptions}
                 disableRowSelectionOnClick
-                loading={isLoading}
+                loading={isLoadingDocs}
               />
+
             </Box>
+          )}
+
+          {viewMode === 'card' && (
+            <Grid container spacing={2} sx={{ p: 2 }}>
+              {rowsToDisplay.map((doc) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={doc.id}>
+                  <Card sx={{ p: 2 }}>
+                    <Typography variant="h6">{doc.name}</Typography>
+                    <Typography variant="body2">{doc.description}</Typography>
+                    <Typography variant="caption">{doc.createdBy}</Typography>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          )}
+
+
+          {viewMode === "shared" && (
+            <DocumentsPartages
+              onPreview={(doc) => {
+                if (!doc?.id) return;
+                window.open(`/api/v1/private/document/${doc.id}/preview`, "_blank");
+              }}
+              onDownload={(doc) => {
+                if (!doc?.id) return;
+                downloadDocumentMutation.mutate({
+                  id: doc.id,
+                  originalFileName: doc.originalFileName
+                });
+              }}
+            />
+          )}
+
         </Card>
       </Grid>
 
@@ -361,7 +453,7 @@ const Documents = () => {
           <Typography variant="h6">Utilisateurs ayant accès :</Typography>
           {sharesList.map((s) => (
             <Box key={s.id} sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-              <Typography>{s.userDisplayName ? s.userDisplayName : s.user}</Typography>
+              <Typography>{s.user ? s.user : s.user}</Typography>
               <Typography color="text.secondary">
                 {s.permission === IEnumPermissionLevel.READ ? "Lecture seule" : "Édition autorisée"}
               </Typography>

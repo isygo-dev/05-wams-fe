@@ -35,7 +35,7 @@ interface DocCommentType {
 }
 import CommentSidebar from '../documentComment/CommentSidebar';
 import toast from "react-hot-toast";
-import {GrammarChecker, GrammarMark} from "./grammarMark";
+import {GrammarChecker} from "./GrammarChecker";
 
 interface TiptapEditorProps {
   content: string;
@@ -65,8 +65,9 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
 
   const isInitialContent = useRef(true);
   const lastContentRef = useRef(content);
-  const clickHandlerRef = useRef<((e: MouseEvent) => void) | null>(null);
-  const globalClickHandlerRef = useRef<((e: MouseEvent) => void) | null>(null);
+
+  // const clickHandlerRef = useRef<((e: MouseEvent) => void) | null>(null);
+  // const globalClickHandlerRef = useRef<((e: MouseEvent) => void) | null>(null);
 
   const editor = useEditor({
     content,
@@ -109,9 +110,10 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
       TableHeader,
       TableCell,
       CommentMark,
-      GrammarMark,
+
+      // GrmmarMark,
       GrammarChecker.configure({
-        debounceTime: 1500,
+        debounceTime: 500,
         enabledTypes: ['spelling', 'grammar', 'conjugation'],
       }),
     ],
@@ -151,65 +153,30 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
   useEffect(() => {
     if (!editor) return;
 
-    const dom = editor.view.dom;
+    editor.on('transaction', ({ transaction }) => {
+      const meta = transaction.getMeta('showGrammarPopup');
 
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-
-      if (target && target.dataset.grammarError) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const rawSuggestions = target.dataset.suggestions || '';
-        const suggestions = rawSuggestions.length > 0 ? rawSuggestions.split('||').filter(Boolean) : [];
-        const message = target.dataset.message || '';
-        const offset = parseInt(target.dataset.offset || '0');
-
+      if (meta) {
+        console.log("✅ setSuggestionPopup avec :", meta);
+        setSuggestionPopup({
+          x: meta.x,
+          y: meta.y,
+          suggestions: meta.suggestions,
+          position: meta.offset,
+          message: meta.message,
+          length: meta.length,
+          offsetMap: meta.offsetMap,
+        });
+      } else if (transaction.docChanged) {
+        // On ferme la popup uniquement si le document change réellement
+        console.log("ℹ️ Fermeture popup car doc modifié");
         setSuggestionPopup(null);
-
-        setTimeout(() => {
-          setSuggestionPopup({
-            x: e.clientX,
-            y: e.clientY,
-            suggestions,
-            position: offset,
-            message,
-          });
-        }, 10);
       } else {
-        setSuggestionPopup(null);
+        console.log("ℹ️ Transaction sans impact, popup conservée");
       }
-    };
-
-    const handleGlobalClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-
-      if (target.closest('[data-suggestion-popup]')) {
-        return;
-      }
-
-      if (target.dataset.grammarError) {
-        return;
-      }
-
-      setSuggestionPopup(null);
-    };
-
-    clickHandlerRef.current = handleClick;
-    globalClickHandlerRef.current = handleGlobalClick;
-
-    dom.addEventListener('click', handleClick);
-    document.addEventListener('click', handleGlobalClick);
-
-    return () => {
-      if (clickHandlerRef.current) {
-        dom.removeEventListener('click', clickHandlerRef.current);
-      }
-      if (globalClickHandlerRef.current) {
-        document.removeEventListener('click', globalClickHandlerRef.current);
-      }
-    };
+    });
   }, [editor]);
+
 
   const loadComments = async () => {
     if (!editor || !documentData?.id) return;
@@ -293,27 +260,106 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    if (suggestionPopup && editor) {
-      if ('acceptSuggestion' in editor.commands) {
-        (editor.commands as any).acceptSuggestion(suggestionPopup.position, suggestion);
-      } else {
-        const { from, to } = editor.state.selection;
-        editor.chain().focus().deleteRange({ from, to }).insertContent(suggestion).run();
-      }
-      setSuggestionPopup(null);
+    console.log("%cSuggestion cliquée :", "color: orange; font-weight: bold;", suggestion);
+
+    if (!suggestionPopup) {
+      console.warn("❌ suggestionPopup est nul !");
+      return;
     }
+
+    if (!editor) {
+      console.warn("❌ Editor est nul !");
+      return;
+    }
+
+    const { position, length, offsetMap } = suggestionPopup;
+
+    if (!offsetMap || offsetMap.length === 0) {
+      console.warn("❌ offsetMap absent ou vide !");
+      return;
+    }
+
+    const from = getPosFromTextOffset(offsetMap, position);
+    const to = getPosFromTextOffset(offsetMap, position + length);
+
+    console.log('%c--- DEBUG GRAMMAR REPLACEMENT ---', 'color: green; font-weight: bold;');
+    console.log("Texte complet :", editor.state.doc.textContent);
+    console.log("Offset map :", offsetMap);
+    console.log("Position texte :", position);
+    console.log("Longueur ciblée :", length);
+    console.log("From :", from, "To :", to);
+    console.log("Texte ciblé :", editor.state.doc.textBetween(from, to, ' '));
+    console.log("Texte avant :", editor.state.doc.textBetween(0, from, ' '));
+    console.log("Texte après :", editor.state.doc.textBetween(to, editor.state.doc.content.size, ' '));
+    console.log('--- FIN DEBUG ---');
+
+    if (from >= to || from < 0 || to > editor.state.doc.content.size) {
+      console.warn('❌ Position invalide pour le remplacement');
+      return;
+    }
+
+    editor.chain().focus().insertContentAt({ from, to }, suggestion).run();
+    setSuggestionPopup(null);
   };
+
+
 
   const handleIgnoreError = () => {
-    if (suggestionPopup && editor) {
-      if ('ignoreError' in editor.commands) {
-        (editor.commands as any).ignoreError(suggestionPopup.position);
-      }
-      setSuggestionPopup(null);
+    if (!suggestionPopup || !editor) return;
+
+    if ('ignoreError' in editor.commands) {
+      (editor.commands as any).ignoreError(suggestionPopup.position);
     }
+    setSuggestionPopup(null);
   };
 
+
+  // const handleIgnoreError = () => {
+  //   if (suggestionPopup && editor) {
+  //     if ('ignoreError' in editor.commands) {
+  //       (editor.commands as any).ignoreError(suggestionPopup.position);
+  //     }
+  //     setSuggestionPopup(null);
+  //   }
+  // };
+
   if (!editor) return <Box>{t('Loading editor...')}</Box>;
+
+  // const handleSuggestionClickWithData = (suggestion: string, offset: number, length: number) => {
+  //   if (editor) {
+  //     editor.chain()
+  //       .focus()
+  //       .deleteRange({ from: offset, to: offset + length })
+  //       .insertContentAt(offset, suggestion)
+  //       .run();
+  //
+  //     setSuggestionPopup(null);
+  //   }
+  // };
+  // function buildOffsetMap(doc: any) {
+  //   const map: { textOffset: number; pos: number }[] = [];
+  //   let accumulated = 0;
+  //
+  //   doc.descendants((node: any, pos: number) => {
+  //     if (!node.isText) return true;
+  //
+  //     const text = node.text || '';
+  //     for (let i = 0; i < text.length; i++) {
+  //       map.push({ textOffset: accumulated + i, pos: pos + i });
+  //     }
+  //     accumulated += text.length;
+  //     return true;
+  //   });
+  //
+  //   return map;
+  // }
+
+  function getPosFromTextOffset(offsetMap: { textOffset: number; pos: number }[], textOffset: number) {
+    const found = offsetMap.find((m) => m.textOffset === textOffset);
+
+    return found ? found.pos : 0;
+  }
+
 
   return (
     <Box
@@ -505,7 +551,10 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
                     backgroundColor: '#f5f5f5',
                   },
                 }}
-                onClick={() => handleSuggestionClick(suggestion)}
+                onClick={() => {
+                  console.log("✅ Bouton suggestion cliqué :", suggestion);
+                  handleSuggestionClick(suggestion);
+                }}
               >
                 {suggestion}
               </Button>
@@ -515,6 +564,7 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({
               Aucune suggestion disponible
             </Box>
           )}
+
 
           <Button
             size="small"

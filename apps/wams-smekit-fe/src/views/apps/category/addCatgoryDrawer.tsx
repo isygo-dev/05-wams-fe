@@ -197,10 +197,11 @@ const AddCategoryDrawer = ({ category, showDialogue, setShowDialogue }) => {
       domain: data.domain,
       imagePath: selectedFile ? undefined : category?.imagePath,
       tagName: tags.map(tag => ({
-        id: 'id' in tag ? tag.id : undefined,
+        id: tag && typeof tag === 'object' && 'id' in tag ? tag.id : undefined,
         tagName: tag.tagName,
-        createDate: 'createDate' in tag ? tag.createDate : new Date().toISOString(),
-        createdBy: 'createdBy' in tag ? tag.createdBy : 'currentUser',
+        createDate: tag && typeof tag === 'object' && 'createDate' in tag ? tag.createDate : new Date().toISOString(),
+        createdBy: tag && typeof tag === 'object' && 'createdBy' in tag ? tag.createdBy : 'currentUser',
+
         updateDate: new Date().toISOString(),
         updatedBy: 'currentUser'
       }))

@@ -63,7 +63,8 @@ const PinIcon: React.FC<PinIconProps> = ({ templateId, size = 'small' }) => {
   return (
     <Tooltip title={isPinned ? t("Désépingler") : t("Épingler")} arrow>
       <div style={{ position: 'relative' }}>
-        <IconButton
+
+          <IconButton
           size={size}
           onClick={handleClick}
           onMouseEnter={() => setIsHovered(true)}
@@ -83,7 +84,6 @@ const PinIcon: React.FC<PinIconProps> = ({ templateId, size = 'small' }) => {
             fontSize={size === 'large' ? 24 : size === 'medium' ? 20 : 18}
           />
         </IconButton>
-
         {(isLoading || pinMutation.isLoading) && (
           <CircularProgress
             size={size === 'large' ? 36 : size === 'medium' ? 30 : 24}

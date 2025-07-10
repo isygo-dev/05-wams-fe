@@ -226,7 +226,7 @@ const Category = () => {
             row.tagName.map((tag, index) => (
               <Chip
                 key={index}
-                label={tag.tagName}
+                label={tag.category_tag}
                 size="small"
                 sx={{
                   '& .MuiChip-label': {

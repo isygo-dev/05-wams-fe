@@ -17,16 +17,12 @@ import toast from "react-hot-toast";
 import { AuthorType } from "../../../types/author";
 import { addAuthor } from "../../../api/author";
 import {Avatar, FormHelperText, InputLabel, MenuItem, Select} from "@mui/material";
-import {checkPermission} from "template-shared/@core/api/helper/permission";
-import {
-  PermissionAction,
-  PermissionApplication,
-  PermissionPage
-} from "template-shared/@core/types/helper/apiPermissionTypes";
 import {DomainType} from "ims-shared/@core/types/ims/domainTypes";
 import DomainApis from "ims-shared/@core/api/ims/domain";
 import apiUrls from "../../../config/apiUrl";
 import MuiPhoneNumber from "material-ui-phone-number";
+import AccountApis from "ims-shared/@core/api/ims/account";
+import { useEffect } from "react";
 
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -38,6 +34,9 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const AddAuthorDrawer = ({ author, setSelectedAuthor,  showDialogue, setShowDialogue }) => {
   const { t } = useTranslation()
+  const AccountApi = AccountApis(t);
+  const { data: user } = useQuery('userData', AccountApi.getAccountProfile);
+
   const {data: domainList} = useQuery('domains', DomainApis(t).getDomains)
   const queryClient = useQueryClient();
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
@@ -114,6 +113,13 @@ const AddAuthorDrawer = ({ author, setSelectedAuthor,  showDialogue, setShowDial
     }
   });
 
+  useEffect(() => {
+    if (user?.domain) {
+      setValue("domain", user.domain);
+    }
+  }, [user]);
+
+
 
 
   return (
@@ -143,18 +149,26 @@ const AddAuthorDrawer = ({ author, setSelectedAuthor,  showDialogue, setShowDial
             <Controller
               name='domain'
               control={control}
-              rules={{ required: true }}
               render={({ field }) => (
                 <Select
                   labelId="domain-select-label"
-                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
                   label={t('Domain.Domain')}
-                  error={Boolean(errors.domain)}
                   {...field}
+                  disabled
+                  error={Boolean(errors.domain)}
                 >
                   <MenuItem value="">
                     <em>{t('None')}</em>
                   </MenuItem>
+
+                  {/* Affiche d’abord le domaine utilisateur connecté, même s’il n’est pas dans domainList */}
+                  {user?.domain && !domainList?.some(d => d.name === user.domain) && (
+                    <MenuItem value={user.domain}>
+                      {user.domain}
+                    </MenuItem>
+                  )}
+
+                  {/* Liste des domaines standards */}
                   {domainList?.map((domain: DomainType) => (
                     <MenuItem key={domain.id} value={domain.name}>
                       {domain.name}

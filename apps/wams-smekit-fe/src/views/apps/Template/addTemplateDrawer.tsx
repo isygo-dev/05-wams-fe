@@ -34,6 +34,7 @@ import {
 } from "template-shared/@core/types/helper/apiPermissionTypes";
 import { DomainType } from "ims-shared/@core/types/ims/domainTypes";
 import DomainApis from "ims-shared/@core/api/ims/domain";
+import AccountApis from "ims-shared/@core/api/ims/account";
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -122,6 +123,14 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
   const { data: domainList } = useQuery('domains', DomainApis(t).getDomains);
   const typeTv = watch('typeTv');
   const isPrivate = typeTv === IEnumTemplateVisibility.PRV;
+  const AccountApi = AccountApis(t);
+  const { data: user } = useQuery('userData', AccountApi.getAccountProfile);
+
+  useEffect(() => {
+    if (user?.domain) {
+      setValue("domain", user.domain);
+    }
+  }, [user]);
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -309,20 +318,27 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
           <FormControl fullWidth sx={{ mb: 4 }} size="small">
             <InputLabel id="domain-select-label">{t('Domain.Domain')}</InputLabel>
             <Controller
-              name='domain'
+              name="domain"
               control={control}
-              rules={{ required: true }}
               render={({ field }) => (
                 <Select
                   labelId="domain-select-label"
-                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
                   label={t('Domain.Domain')}
-                  error={Boolean(errors.domain)}
                   {...field}
+                  value={field.value || ''}
+                  error={Boolean(errors.domain)}
+                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
                 >
                   <MenuItem value="">
                     <em>{t('None')}</em>
                   </MenuItem>
+
+                  {/* Domaine utilisateur si absent de la liste */}
+                  {watch("domain") && !domainList?.some(d => d.name === watch("domain")) && (
+                    <MenuItem value={watch("domain")}>{watch("domain")}</MenuItem>
+                  )}
+
+                  {/* Domaines disponibles */}
                   {domainList?.map((domain: DomainType) => (
                     <MenuItem key={domain.id} value={domain.name}>
                       {domain.name}
@@ -337,6 +353,9 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
               </FormHelperText>
             )}
           </FormControl>
+
+
+
 
 
           <FormControl fullWidth sx={{ mb: 4 }}>

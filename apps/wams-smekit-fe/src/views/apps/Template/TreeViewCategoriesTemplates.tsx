@@ -24,6 +24,12 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import {styled} from "@mui/material/styles";
 import {useRouter} from "next/navigation";
+import {checkPermission} from "template-shared/@core/api/helper/permission";
+import {
+  PermissionAction,
+  PermissionApplication,
+  PermissionPage
+} from "template-shared/@core/types/helper/apiPermissionTypes";
 
 interface TreeViewCategoriesTemplatesProps {
   onDeleteClick?: (template: CategoryTemplateType) => void;
@@ -248,8 +254,8 @@ const TreeViewCategoriesTemplates: React.FC<TreeViewCategoriesTemplatesProps> = 
               )}
               {/* Pin */}
               <PinIcon templateId={template.id} isPinned={!!template.isFavorite} />
+              {checkPermission(PermissionApplication.SMEKIT, PermissionPage.TEMPLATE, PermissionAction.WRITE) && (
 
-              {/* Modifier le document */}
               <Tooltip title={t("Modifier le template")} placement="top">
                 <IconButton
                   size="small"
@@ -262,7 +268,7 @@ const TreeViewCategoriesTemplates: React.FC<TreeViewCategoriesTemplatesProps> = 
                   <Icon icon="tabler:edit" />
                 </IconButton>
               </Tooltip>
-
+            )}
               {/* Télécharger */}
               <Tooltip title={t("Télécharger")}>
                 <IconButton size="small" onClick={() => onDownload?.(template)}>
@@ -327,8 +333,12 @@ const TreeViewCategoriesTemplates: React.FC<TreeViewCategoriesTemplatesProps> = 
           }}><Icon icon="mdi:file-document-plus-outline" style={{ marginRight: 8 }} />{t("Créer document")}</MenuItem>
           <MenuItem onClick={() => { closeMenu(); onEditDoc?.(activeTemplate.id, activeTemplate.version || 1); }}><Icon icon="mdi:file-document-edit-outline" style={{ marginRight: 8 }} />{t("Modifier le document")}</MenuItem>
           <MenuItem onClick={() => { closeMenu(); onPreviewClick?.(activeTemplate); }}><Icon icon="mdi:eye-outline" style={{ marginRight: 8 }} />{t("Aperçu")}</MenuItem>
+          {checkPermission(PermissionApplication.SMEKIT, PermissionPage.TEMPLATE, PermissionAction.DELETE) && (
 
-          <MenuItem onClick={() => { closeMenu(); onDeleteClick?.(activeTemplate); }}><Icon icon="tabler:trash" style={{ marginRight: 8 }} />{t("Supprimer")}</MenuItem>
+          <MenuItem onClick={() => { closeMenu(); onDeleteClick?.(activeTemplate); }}>
+            <Icon icon="tabler:trash" style={{ marginRight: 8 }} />{t("Supprimer")}
+          </MenuItem>
+            )}
         </Menu>
       )}
     </TreeViewWrapper>

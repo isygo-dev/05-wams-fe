@@ -1,6 +1,6 @@
 export interface tagType {
   id: number
-  tagName: string
+  tags: string
 
   //Audit info
   createDate: string

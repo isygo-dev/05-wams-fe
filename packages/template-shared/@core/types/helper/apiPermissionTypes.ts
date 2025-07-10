@@ -6,9 +6,10 @@ export enum PermissionApplication {
     SMS = 'storage-service.',
     HRM = 'human-resources-service.',
     QUIZ = 'quiz-service.',
-    CMS = 'calendar-service',
-    LINK = 'link-service',
-    INTEGRATION = 'integration-data',
+    CMS = 'calendar-service.',
+    LINK = 'link-service.',
+    INTEGRATION = 'integration-data.',
+    SMEKIT = 'smekit-service.',
 }
 
 export enum PermissionPage {
@@ -61,6 +62,12 @@ export enum PermissionPage {
     BLOG = '.blog.',
     BLOG_TALK = '.blogtalk.',
     PROPERTY = '.property.',
+    DOCUMENT = '.document.',
+    TEMPLATE ='.template.',
+    DHASHBOARD='.dashboard.',
+    PINNEDTEMPLATE='.CustomTemplates.',
+    CATEGORY='.category.',
+    AUTHOR='.author.'
 
 }
 

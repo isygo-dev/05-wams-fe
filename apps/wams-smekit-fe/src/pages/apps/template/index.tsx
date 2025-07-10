@@ -638,7 +638,9 @@ const Template = () => {
           )}
 
           {/* Éditer */}
-          <Tooltip title={t("Modifier le template")} placement="top">
+          {checkPermission(PermissionApplication.SMEKIT, PermissionPage.TEMPLATE, PermissionAction.WRITE) && (
+
+            <Tooltip title={t("Modifier le template")} placement="top">
             <IconButton
               size="small"
               sx={{ color: 'text.secondary' }}
@@ -650,7 +652,7 @@ const Template = () => {
               <Icon icon="tabler:edit" />
             </IconButton>
           </Tooltip>
-
+          )}
           {/* Menu contextuel */}
           <IconButton
             size="small"
@@ -790,8 +792,8 @@ const Template = () => {
                 value={value}
                 handleFilter={handleFilter}
                 toggle={toggleAddTemplate}
-                permissionApplication={PermissionApplication.IMS}
-                permissionPage={PermissionPage.APP_PARAMETER}
+                permissionApplication={PermissionApplication.SMEKIT}
+                permissionPage={PermissionPage.TEMPLATE}
                 permissionAction={PermissionAction.WRITE}
               />
 
@@ -852,7 +854,7 @@ const Template = () => {
 
 
 
-                    {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.WRITE) && (
+                    {checkPermission(PermissionApplication.SMEKIT, PermissionPage.TEMPLATE, PermissionAction.WRITE) && (
                       <MenuItem onClick={(e) => {     e.stopPropagation(); handleMenuClose(); router.push(`/apps/editor/view/edit/${menuRow.id}/${menuRow.version || '1'}`); }}>
                         <Icon icon="mdi:file-document-edit-outline" style={{ marginRight: 8 }} /> {t("Éditer le document")}
                       </MenuItem>
@@ -879,7 +881,7 @@ const Template = () => {
                       <Icon icon="mdi:file-document-plus" style={{ marginRight: 8 }} /> {t("Créer document")}
                     </MenuItem>
 
-                    {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (
+                    {checkPermission(PermissionApplication.SMEKIT, PermissionPage.TEMPLATE, PermissionAction.DELETE) && (
                       <MenuItem onClick={() => { handleMenuClose(); handleDeleteClick(menuRow.id); }}>
                         <Icon icon="tabler:trash" style={{ marginRight: 8 }} /> {t("Supprimer")}
                       </MenuItem>
