@@ -5,7 +5,7 @@
 # Technology Stack
 
 | Component  | Technology |
-| ---------- | ---------- |
+|------------|------------|
 | node       | 20.18.0    |
 | react      | 17.0.38    |
 | npm        | 6.1.1      |

@@ -46,9 +46,13 @@ const Details = (props: Props) => {
         ) : null}
 
         <TitleGras color='black' titleChildren='Job.Experience'></TitleGras>
-        {profExperiences?.map(experience => <Experience experience={experience} key={experience.id} />)}
+        {profExperiences?.map(experience => (
+          <Experience experience={experience} key={experience.id} />
+        ))}
         <TitleGras color='black' titleChildren='Education'></TitleGras>
-        {educations?.map(education => <Education education={education} key={education.id} />)}
+        {educations?.map(education => (
+          <Education education={education} key={education.id} />
+        ))}
       </View>
     </>
   )

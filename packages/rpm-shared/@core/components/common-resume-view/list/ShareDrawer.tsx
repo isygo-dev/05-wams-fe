@@ -96,9 +96,8 @@ const ShareDrawer = (props: Props) => {
   useEffect(() => {
     if (accounts && Symbol.iterator in Object(accounts)) {
       setChecked(
-        accounts?.filter(
-          miniAccount =>
-            resume?.resumeShareInfos?.some(resumeShareInfo => resumeShareInfo.sharedWith === miniAccount.code)
+        accounts?.filter(miniAccount =>
+          resume?.resumeShareInfos?.some(resumeShareInfo => resumeShareInfo.sharedWith === miniAccount.code)
         )
       )
       console.log(checked)

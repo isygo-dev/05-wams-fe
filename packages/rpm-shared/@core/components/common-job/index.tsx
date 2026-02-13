@@ -157,7 +157,7 @@ const CommonJobList = () => {
   )
   const handleOpenDeleteDialog = (rowId: number) => {
     console.log(rowId)
-    setDeleteDialogOpen(true), setSelectedRowId(rowId)
+    ;(setDeleteDialogOpen(true), setSelectedRowId(rowId))
   }
 
   const router = useRouter()

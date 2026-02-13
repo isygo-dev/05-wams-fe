@@ -65,7 +65,7 @@ const CropperCommon = (props: Props) => {
       }
       setRotate(0)
       setCompletedCrop(null)
-      setImgSrc(''), onSave(blob)
+      ;(setImgSrc(''), onSave(blob))
     })
   }
 

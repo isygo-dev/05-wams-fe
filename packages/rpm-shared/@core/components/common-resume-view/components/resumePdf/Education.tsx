@@ -75,7 +75,8 @@ const Education = (props: Props) => {
           {education.yearOfGraduation ? (
             <Text style={styles.date}>
               {' '}
-              {new Date(education.yearOfGraduation).getMonth()} / {new Date(education.yearOfGraduation).getFullYear()}{' '}
+              {new Date(education.yearOfGraduation).getMonth()} /{' '}
+              {new Date(education.yearOfGraduation).getFullYear()}{' '}
             </Text>
           ) : null}
           <Text style={styles.date}>

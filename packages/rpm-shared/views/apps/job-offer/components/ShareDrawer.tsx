@@ -78,8 +78,8 @@ const ShareJobDrawer = (props: Props) => {
   useEffect(() => {
     if (job && accounts) {
       setChecked(
-        accounts?.filter(
-          miniAccount => job?.jobShareInfos?.some(jobShareInfos => jobShareInfos.sharedWith === miniAccount.code)
+        accounts?.filter(miniAccount =>
+          job?.jobShareInfos?.some(jobShareInfos => jobShareInfos.sharedWith === miniAccount.code)
         )
       )
       setFilteredData([...accounts])

@@ -110,7 +110,9 @@ const Experience = (exProps: ExpProps) => {
         <List>
           {/*<Text style={styles.titleJob}>{t('Resume.Technology')}</Text>*/}
           <Text style={{ display: 'flex' }}>
-            {experience.technology?.map((detail, i) => <Item key={i}>{detail} /</Item>)}
+            {experience.technology?.map((detail, i) => (
+              <Item key={i}>{detail} /</Item>
+            ))}
           </Text>
         </List>
       ) : null}
