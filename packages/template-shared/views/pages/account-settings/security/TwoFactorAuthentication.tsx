@@ -51,7 +51,7 @@ const TwoFactorAuthenticationCard = ({ setUpdateAuthType, user, myProfile, authT
     openDialog()
   }
   const updateAuthType = async () => {
-    const result = AccountApis(t).updateAuthType({ domain: user.domain, userName: user.code })
+    const result = AccountApis(t).updateAuthType({ tenant: user.tenant, userName: user.code })
     setOpen(false)
     setOpenDialog1(false)
     if (result) {

@@ -2,7 +2,7 @@ import { tagType } from './tags'
 
 export interface CategoryType {
   id?: number
-  domain: string
+  tenant: string
   name: string
   description: string
   type: IEnumCategoryType

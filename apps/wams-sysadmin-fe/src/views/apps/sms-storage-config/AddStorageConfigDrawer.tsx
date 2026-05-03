@@ -20,14 +20,14 @@ import { InputLabel } from '@mui/material'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import StorageConfigApis from 'sms-shared/@core/api/sms/storage-config'
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -38,7 +38,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   url: yup.string().matches(URL_PATTERN, 'Enter a valid url').required(),
   type: yup.string().required(),
   userName: yup.string().required(),
@@ -48,14 +48,14 @@ const schema = yup.object().shape({
 interface SidebarAddStorageConfigType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const SidebarAddStorageConfig = (props: SidebarAddStorageConfigType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
-  const { data: domainList, isLoading } = useQuery(`domains`, () => DomainApis(t).getDomains())
+  const { open, toggle, tenant } = props
+  const { data: tenantList, isLoading } = useQuery(`tenants`, () => TenantApis(t).getTenants())
   const mutation = useMutation({
     mutationFn: (data: StorageConfigTypeRequest) => StorageConfigApis(t).addStorageConfiguration(data),
     onSuccess: (res: StorageConfigType) => {
@@ -75,7 +75,7 @@ const SidebarAddStorageConfig = (props: SidebarAddStorageConfigType) => {
   }
 
   let defaultValues: StorageConfigTypeRequest = {
-    domain: domain,
+    tenant: tenant,
     url: '',
     type: '',
     userName: '',
@@ -95,7 +95,7 @@ const SidebarAddStorageConfig = (props: SidebarAddStorageConfigType) => {
 
   const handleClose = () => {
     defaultValues = {
-      domain: '',
+      tenant: '',
       url: '',
       type: '',
       userName: '',
@@ -127,21 +127,21 @@ const SidebarAddStorageConfig = (props: SidebarAddStorageConfigType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
@@ -149,15 +149,15 @@ const SidebarAddStorageConfig = (props: SidebarAddStorageConfigType) => {
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domainList?.map((domain: DomainType) => (
-                    <MenuItem key={domain.id} value={domain.name}>
-                      {domain.name}
+                  {tenantList?.map((tenant: Tenant) => (
+                    <MenuItem key={tenant.id} value={tenant.name}>
+                      {tenant.name}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>

@@ -1,4 +1,4 @@
 export type authRequestType = {
-  domain: string
+  tenant: string
   userName: string
 }

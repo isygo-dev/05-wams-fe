@@ -12,15 +12,15 @@ import { AccountDto, AdminStatus } from 'ims-shared/@core/types/ims/accountTypes
 import { ApplicationType } from 'ims-shared/@core/types/ims/applicationTypes'
 import { RequestLockedStatus } from '../../types/helper/calendarTypes'
 import AccountApis from 'ims-shared/@core/api/ims/account'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../ims-shared/@core/api/ims/tenant'
 import CustomerApis from 'ims-shared/@core/api/ims/customer'
 import ApplicationApis from 'ims-shared/@core/api/ims/application'
 import CalendarApis from 'cms-shared/@core/api/cms/calendar'
 import { RequestStatus } from 'template-shared/@core/types/helper/userTypes'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from '../../../../ims-shared/@core/types/ims/tenantTypes'
 import { CustomerDetailType } from 'ims-shared/@core/types/ims/customerTypes'
 
-type Item = 'Account' | 'Domain' | 'Customer' | 'Application' | 'Calendar'
+type Item = 'Account' | 'Tenant' | 'Customer' | 'Application' | 'Calendar'
 
 type Props = {
   open: boolean
@@ -69,18 +69,18 @@ const UpdateAdminStatusDialog = (props: Props) => {
       console.log(err)
     }
   })
-  const mutationDomain = useMutation({
-    mutationFn: (data: RequestStatus) => DomainApis(t).updateDomainStatus(data),
+  const mutationTenant = useMutation({
+    mutationFn: (data: RequestStatus) => TenantApis(t).updateTenantStatus(data),
     onSuccess: (res: RequestStatus) => {
       handleClose()
-      const cachedDomains: DomainType[] = queryClient.getQueryData('domains') || []
-      const index = cachedDomains.findIndex(obj => obj.id === res.id)
+      const cachedTenants: Tenant[] = queryClient.getQueryData('tenants') || []
+      const index = cachedTenants.findIndex(obj => obj.id === res.id)
       if (index !== -1) {
-        const updatedDomains = [...cachedDomains]
+        const updatedTenants = [...cachedTenants]
         const newStatus: AdminStatus = res.newReqStatus == 'DISABLED' ? AdminStatus.DISABLED : AdminStatus.ENABLED
-        updatedDomains[index].adminStatus = newStatus
+        updatedTenants[index].adminStatus = newStatus
 
-        queryClient.setQueryData('domains', updatedDomains)
+        queryClient.setQueryData('tenants', updatedTenants)
       }
     },
     onError: err => {
@@ -160,8 +160,8 @@ const UpdateAdminStatusDialog = (props: Props) => {
     const data: RequestStatus = { id: setSelectedRowId ?? 0, newReqStatus: newStatus ? 'ENABLED' : 'DISABLED' }
     if (item == 'Account') {
       mutationAccount.mutate(data)
-    } else if (item == 'Domain') {
-      mutationDomain.mutate(data)
+    } else if (item == 'Tenant') {
+      mutationTenant.mutate(data)
     } else if (item == 'Customer') {
       mutationCustomer.mutate(data)
     } else if (item == 'Application') {

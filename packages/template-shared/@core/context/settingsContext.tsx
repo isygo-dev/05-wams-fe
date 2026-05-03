@@ -48,7 +48,7 @@ export type Theme = {
 
 export type ThemeRequest = {
   accountCode: string
-  domainCode: string
+  tenantCode: string
   id?: number
   skin?: Skin
   mode?: Mode

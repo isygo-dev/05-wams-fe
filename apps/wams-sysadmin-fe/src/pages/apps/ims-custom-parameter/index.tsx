@@ -111,12 +111,12 @@ const AppParameterList = () => {
   })
 
   const defaultColumns: GridColDef[] = [
-    /*Domain column*/
+    /*Tenant column*/
     {
-      field: 'domain',
-      headerName: t('Domain.Domain') as string,
+      field: 'tenant',
+      headerName: t('Tenant.Tenant') as string,
       flex: 1,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
 
     /*Name column*/
@@ -367,7 +367,7 @@ const AppParameterList = () => {
 
       {!isLoadingProfileUser &&
         checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.WRITE) && (
-          <AddParameterDrawer open={addParameterOpen} domain={profileUser?.domain} toggle={toggleAddParameterDrawer} />
+          <AddParameterDrawer open={addParameterOpen} tenant={profileUser?.tenant} toggle={toggleAddParameterDrawer} />
         )}
 
       {checkPermission(PermissionApplication.IMS, PermissionPage.APP_PARAMETER, PermissionAction.DELETE) && (

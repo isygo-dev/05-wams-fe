@@ -198,16 +198,16 @@ const CommonJobList = () => {
   })
 
   const defaultColumns: GridColDef[] = [
-    /*Domain column*/
+    /*Tenant column*/
     {
       flex: 0.1,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 100,
-      headerName: t('Domain.Domain') as string,
+      headerName: t('Tenant.Tenant') as string,
       renderCell: ({ row }: CellType) => (
         <>
-          <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
-          {isTemplate(row.domain) ? (
+          <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
+          {isTemplate(row.tenant) ? (
             <Badge badgeContent={'T'} color='primary' sx={{ ml: 4, verticalAlign: 'top', horizontalAlign: 'right' }} />
           ) : null}
         </>
@@ -579,7 +579,7 @@ const CommonJobList = () => {
 
             {!isLoadingProfileUser &&
               checkPermission(PermissionApplication.RPM, PermissionPage.JOB_OFFER, PermissionAction.WRITE) && (
-                <AddJobDrawer open={addJobOpen} toggle={toggleAddJobDrawer} domain={profileUser?.domain} />
+                <AddJobDrawer open={addJobOpen} toggle={toggleAddJobDrawer} tenant={profileUser?.tenant} />
               )}
 
             {checkPermission(PermissionApplication.RPM, PermissionPage.JOB_OFFER, PermissionAction.DELETE) && (

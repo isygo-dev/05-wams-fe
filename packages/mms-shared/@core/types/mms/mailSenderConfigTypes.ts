@@ -1,6 +1,6 @@
 export type MailSenderConfigTypes = {
   id: number
-  domain: string
+  tenant: string
   host: string
   port: string
   username: string
@@ -14,7 +14,7 @@ export type MailSenderConfigTypes = {
 
 export type MailSenderConfigData = {
   id?: number
-  domain?: string
+  tenant?: string
   host?: string
   port?: string
   username?: string

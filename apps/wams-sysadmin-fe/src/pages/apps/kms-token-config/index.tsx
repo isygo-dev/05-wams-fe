@@ -90,14 +90,14 @@ const TokenManagement = () => {
   const columns: GridColDef[] = [
     {
       flex: 0.15,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 170,
-      headerName: t('Domain.Domain') as string,
+      headerName: t('Tenant.Tenant') as string,
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap sx={{ color: 'text.secondary' /* , textTransform: 'capitalize' */ }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -241,7 +241,7 @@ const TokenManagement = () => {
       {!isLoadingProfileUser &&
         addTokenOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.TOKEN_CONFIG, PermissionAction.WRITE) && (
-          <AddTokenConfig open={addTokenOpen} domain={profileUser?.domain} toggle={toggleAddTokenDrawer} />
+          <AddTokenConfig open={addTokenOpen} tenant={profileUser?.tenant} toggle={toggleAddTokenDrawer} />
         )}
       {editTokenOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.TOKEN_CONFIG, PermissionAction.WRITE) && (

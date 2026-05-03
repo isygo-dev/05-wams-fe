@@ -70,7 +70,7 @@ const FlowCard = (props: CardItem) => {
             {data.orderName}{' '}
           </Typography>
 
-          <Typography>{data.domain}</Typography>
+          <Typography>{data.tenant}</Typography>
           <Typography sx={{ color: 'text.secondary' }}>{data.originalFileName}</Typography>
 
           <Accordion sx={{ textAlign: 'left', boxShadow: 'none !important', width: '100%' }}>

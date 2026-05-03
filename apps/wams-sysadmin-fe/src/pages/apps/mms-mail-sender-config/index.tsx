@@ -87,14 +87,14 @@ const Config = () => {
   const defaultColumns: GridColDef[] = [
     {
       flex: 0.15,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 170,
-      headerName: t('Domain.Domain') as string,
+      headerName: t('Tenant.Tenant') as string,
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap sx={{ color: 'text.secondary' /* , textTransform: 'capitalize' */ }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -230,7 +230,7 @@ const Config = () => {
       {!isLoadingProfileUser &&
         addConfigOpen &&
         checkPermission(PermissionApplication.MMS, PermissionPage.SENDER_CONFIG, PermissionAction.WRITE) && (
-          <AddConfigDrawer open={addConfigOpen} domain={profileUser?.domain} toggle={toggleAddConfigDrawer} />
+          <AddConfigDrawer open={addConfigOpen} tenant={profileUser?.tenant} toggle={toggleAddConfigDrawer} />
         )}
       {deleteDialogOpen &&
         checkPermission(PermissionApplication.MMS, PermissionPage.SENDER_CONFIG, PermissionAction.DELETE) && (

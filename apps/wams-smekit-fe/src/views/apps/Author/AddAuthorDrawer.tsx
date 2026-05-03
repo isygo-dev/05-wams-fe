@@ -23,8 +23,8 @@ import {
   PermissionApplication,
   PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import apiUrls from '../../../config/apiUrl'
 import MuiPhoneNumber from 'material-ui-phone-number'
 
@@ -37,14 +37,14 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
   const { t } = useTranslation()
-  const { data: domainList } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList } = useQuery('tenants', TenantApis(t).getTenants)
   const queryClient = useQueryClient()
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
   const schema = yup.object().shape({
     firstname: yup.string().required(t('firstname is required')),
     lastname: yup.string().required(t('lastname is required')),
     phone: yup.string().required(t('Phone Number is required')),
-    domain: yup.string().required(t('Domain is required')),
+    tenant: yup.string().required(t('Tenant is required')),
     email: yup.string().required(t('E-mail is required'))
   })
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +79,7 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
     formData.append('firstname', data.firstname)
     formData.append('lastname', data.lastname)
     formData.append('phone', data.phone)
-    formData.append('domain', data.domain)
+    formData.append('tenant', data.tenant)
     formData.append('email', data.email)
 
     if (author?.id) {
@@ -148,33 +148,33 @@ const AddAuthorDrawer = ({ author, showDialogue, setShowDialogue }) => {
       <Box sx={{ p: 6 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }} size='small'>
-            <InputLabel id='Domaine-select-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='Tenant-select-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
-                  labelId='Domaine-select-label'
-                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
+                  labelId='Tenant-select-label'
+                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)}
                   size='small'
-                  label={t('Domaine')}
-                  name='Domaine'
+                  label={t('Tenant')}
+                  name='Tenant'
                   onChange={onChange}
                   value={value || ''}
                 >
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domainList?.map((domain: DomainType) => (
-                    <MenuItem key={domain.id} value={domain.name}>
-                      {domain.name}
+                  {tenantList?.map((tenant: Tenant) => (
+                    <MenuItem key={tenant.id} value={tenant.name}>
+                      {tenant.name}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>

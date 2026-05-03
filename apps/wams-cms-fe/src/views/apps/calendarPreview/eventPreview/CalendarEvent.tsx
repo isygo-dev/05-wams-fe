@@ -10,7 +10,7 @@ import { CalendarEventType, EventType } from 'template-shared/@core/types/helper
 
 const blankEvent: EventType = {
   id: null,
-  domain: '',
+  tenant: '',
   title: '',
   calendarName: '',
   start: '',
@@ -119,7 +119,7 @@ const Calendar = (props: CalendarEventType) => {
               clickedEvent._instance.range.start.getMinutes()
             ),
 
-            domain: clickedEvent.extendedProps.domain,
+            tenant: clickedEvent.extendedProps.tenant,
             calendarName: clickedEvent.extendedProps.calendarName,
 
             extendedProps: {
@@ -187,7 +187,7 @@ const Calendar = (props: CalendarEventType) => {
         //     droppedEvent._instance.range.start.getHours() - 1,
         //     droppedEvent._instance.range.start.getMinutes()),
         //
-        //   domain: droppedEvent.extendedProps.domain,
+        //   tenant: droppedEvent.extendedProps.tenant,
         //   calendarName: droppedEvent.extendedProps.calendarName,
         //
         //   extendedProps: {
@@ -297,7 +297,7 @@ const Calendar = (props: CalendarEventType) => {
               clickedEvent._instance.range.start.getMinutes()
             ),
 
-            domain: clickedEvent.extendedProps.domain,
+            tenant: clickedEvent.extendedProps.tenant,
             calendarName: clickedEvent.extendedProps.calendarName,
 
             extendedProps: {
@@ -362,7 +362,7 @@ const Calendar = (props: CalendarEventType) => {
         //     droppedEvent._instance.range.start.getHours() - 1,
         //     droppedEvent._instance.range.start.getMinutes()),
         //
-        //   domain: droppedEvent.extendedProps.domain,
+        //   tenant: droppedEvent.extendedProps.tenant,
         //   calendarName: droppedEvent.extendedProps.calendarName,
         //
         //   extendedProps: {

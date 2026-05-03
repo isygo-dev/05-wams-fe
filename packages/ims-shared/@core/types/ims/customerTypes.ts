@@ -9,7 +9,7 @@ export type CustomerDetailType = {
   url?: string
   email?: string
   phoneNumber?: string
-  domain: string
+  tenant: string
   accountCode?: string
   createDate?: Date
   updateDate?: Date

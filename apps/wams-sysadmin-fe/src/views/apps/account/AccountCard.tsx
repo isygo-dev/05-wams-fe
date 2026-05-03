@@ -101,7 +101,7 @@ const AccountCard = (props: CardItem) => {
           <Typography className={Styles.cardTitle} variant='h6'>
             {data.accountDetails?.firstName} {data.accountDetails?.lastName}
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>{data.domain}</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{data.tenant}</Typography>
           <Typography sx={{ color: 'text.secondary' }}>{data.email}</Typography>
           <Typography sx={{ color: 'text.secondary' }}>{data.code}</Typography>
         </Box>

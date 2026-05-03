@@ -13,7 +13,7 @@ export type ContractType = {
   vacationBalance: number
   isRenewable: boolean
   isContractRenewable: boolean
-  domain: string
+  tenant: string
   employee: number
   extension: string
   file: File
@@ -32,7 +32,7 @@ export type MinContractType = {
   contract: IEnumContractType
   startDate: Date
   endDate: Date
-  domain: string
+  tenant: string
   employee: number
   isLocked: boolean
   createDate: Date | string
@@ -69,7 +69,7 @@ export type Prime = {
 export type ContractTypeRequest = {
   id: number
   contract: IEnumContractType
-  domain: string
+  tenant: string
   employee: number
 }
 

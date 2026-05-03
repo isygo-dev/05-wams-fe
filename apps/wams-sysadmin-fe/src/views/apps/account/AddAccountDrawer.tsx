@@ -35,18 +35,18 @@ import MuiPhoneNumber from 'material-ui-phone-number'
 import EmailInputMask from 'template-shared/views/forms/form-elements/input-mask/EmailInputMask'
 import AnnexApis from 'ims-shared/@core/api/ims/annex'
 import Tooltip from '@mui/material/Tooltip'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import RolePermissionApis from 'ims-shared/@core/api/ims/role-permission'
 import AccountApis from 'ims-shared/@core/api/ims/account'
 import { AccountDto } from 'ims-shared/@core/types/ims/accountTypes'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 import { RoleTypes } from 'ims-shared/@core/types/ims/roleTypes'
 import { IEnumAnnex } from 'ims-shared/@core/types/ims/annexTypes'
 
 interface SidebarAddAccountType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -58,7 +58,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   adminStatus: yup.string().required(),
   phoneNumber: yup.string().required(),
   functionRole: yup.string().required(),
@@ -82,8 +82,8 @@ const MenuProps = {
 const SidebarAddAccount = (props: SidebarAddAccountType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
-  const { data: domainList, isFetched: isFetchedDomains } = useQuery('domains', DomainApis(t).getDomains)
+  const { open, toggle, tenant } = props
+  const { data: tenantList, isFetched: isFetchedTenants } = useQuery('tenants', TenantApis(t).getTenants)
   const { data: rolesList, isFetched: isFetchedRoles } = useQuery('roles', RolePermissionApis(t).getRoles)
   const { data: functionsRole, isLoading: isLoadingFunctionRole } = useQuery('functionsRole', () =>
     AnnexApis(t).getAnnexByTableCode(IEnumAnnex.FUNCTION_ROL)
@@ -105,7 +105,7 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
 
   const defaultValues: AccountDto = {
     email: '',
-    domain: domain,
+    tenant: tenant,
     adminStatus: 'ENABLED',
     isAdmin: false,
     roleInfo: [],
@@ -141,7 +141,7 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
     reset()
   }
 
-  return isFetchedDomains && isFetchedRoles ? (
+  return isFetchedTenants && isFetchedRoles ? (
     <Drawer
       open={open}
       anchor='right'
@@ -162,36 +162,36 @@ const SidebarAddAccount = (props: SidebarAddAccountType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   onChange={onChange}
                   value={value}
                 >
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domainList?.map((domain: DomainType) => (
-                    <MenuItem key={domain.id} value={domain.name}>
-                      {domain.name}
+                  {tenantList?.map((tenant: Tenant) => (
+                    <MenuItem key={tenant.id} value={tenant.name}>
+                      {tenant.name}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>

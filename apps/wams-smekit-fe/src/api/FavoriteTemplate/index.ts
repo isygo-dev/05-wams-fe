@@ -1,10 +1,10 @@
 import { AppQuery } from 'template-shared/@core/utils/fetchWrapper'
 import apiUrls from '../../config/apiUrl'
 import { fetchAuthorDetails, fetchCategoryDetails } from '../template'
-import { getUserDomainFromToken } from 'template-shared/@core/api/helper/permission'
+import { getSenderTenantFromToken } from 'template-shared/@core/api/helper/permission'
 
 export const toggleTemplatePin = async (templateId: number): Promise<boolean> => {
-  const userIdentifier = getUserDomainFromToken()
+  const userIdentifier = getSenderTenantFromToken()
   const response = await AppQuery(`${apiUrls.apiUrl_smekit_Template_FetchAll_Endpoint}/${templateId}/pin`, {
     method: 'POST',
     headers: {
@@ -25,7 +25,7 @@ export const toggleTemplatePin = async (templateId: number): Promise<boolean> =>
 }
 
 export const getPinnedTemplates = async (): Promise<any[]> => {
-  const userIdentifier = getUserDomainFromToken()
+  const userIdentifier = getSenderTenantFromToken()
   const response = await AppQuery(
     `${apiUrls.apiUrl_smekit_Template_FetchAll_Endpoint}/pinned?userIdentifier=${userIdentifier}`,
     {

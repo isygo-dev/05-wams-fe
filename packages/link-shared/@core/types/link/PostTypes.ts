@@ -4,7 +4,7 @@ export type PostType = {
   createdBy?: string
   updateDate?: Date
   updatedBy?: string
-  domain?: string
+  tenant?: string
   accountCode?: string
   title?: string
   talk: string

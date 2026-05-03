@@ -63,8 +63,8 @@ const ColorBox = styled(Box)<BoxProps>(({ theme }) => ({
   }
 }))
 
-interface AccountDomainCode {
-  domainCode: string
+interface AccountTenantCode {
+  tenantCode: string
   accountCode: string
 }
 
@@ -85,7 +85,7 @@ const Customizer = () => {
   const { t } = useTranslation()
   const [open, setOpen] = useState<boolean>(false)
   const { settings, saveSettings } = useSettings()
-  const [accountDomainCode] = useState<AccountDomainCode>({ domainCode: '', accountCode: '' })
+  const [accountTenantCode] = useState<AccountTenantCode>({ tenantCode: '', accountCode: '' })
   const {
     mode,
     skin,
@@ -102,7 +102,7 @@ const Customizer = () => {
   } = settings
 
   const updateThemeMutation = useMutation({
-    mutationFn: (accountDomainCode: AccountDomainCode) =>
+    mutationFn: (accountTenantCode: AccountTenantCode) =>
       ThemeApis(t).updateThemeByCode({
         themeColor: settings.themeColor,
         skin: settings.skin.toUpperCase() as typeof skin,
@@ -115,8 +115,8 @@ const Customizer = () => {
         direction: settings.direction.toUpperCase() as typeof direction,
         appBarBlur: settings.appBarBlur,
         navCollapsed: settings.navCollapsed,
-        accountCode: accountDomainCode.accountCode,
-        domainCode: accountDomainCode.domainCode
+        accountCode: accountTenantCode.accountCode,
+        tenantCode: accountTenantCode.tenantCode
       }),
 
     onSuccess: (res: Theme) => {
@@ -144,7 +144,7 @@ const Customizer = () => {
   }
   const handleClick = async () => {
     try {
-      await updateThemeMutation.mutateAsync(accountDomainCode)
+      await updateThemeMutation.mutateAsync(accountTenantCode)
 
       handleClose()
     } catch (error) {

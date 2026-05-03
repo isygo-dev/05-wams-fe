@@ -68,7 +68,7 @@ const ApplicationCard = (props: CardItem) => {
                 </Tooltip>
               )}
               {checkPermission(PermissionApplication.IMS, PermissionPage.APPLICATION, PermissionAction.WRITE) && (
-                <Tooltip title={t('Edit Domain')}>
+                <Tooltip title={t('Edit Tenant')}>
                   <IconButton size='small' sx={{ color: 'text.secondary' }} onClick={() => onEditClick(data)}>
                     <Icon icon='tabler:edit' />
                   </IconButton>

@@ -24,7 +24,7 @@ import {
   PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import ContractApis from 'hrm-shared/@core/api/hrm/contract'
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -35,7 +35,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required('Domain is required'),
+  tenant: yup.string().required('Tenant is required'),
   employee: yup.number().required('employee is required'),
   contract: yup.string().required('Contract type is required')
 })
@@ -43,11 +43,11 @@ const schema = yup.object().shape({
 export function AddContractDrawer(props) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { data: domainList, isLoading: domainLoading } = useQuery('domains', DomainApis(t).getDomainsNameList)
+  const { data: tenantList, isLoading: tenantLoading } = useQuery('tenants', TenantApis(t).getTenantsNameList)
   const defaultValues: ContractTypeRequest = {
     id: null,
     contract: null,
-    domain: props.domain,
+    tenant: props.tenant,
     employee: null
   }
 
@@ -105,29 +105,29 @@ export function AddContractDrawer(props) {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit((row: ContractTypeRequest) => onSubmit(row))}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
                 >
-                  {!domainLoading && domainList && domainList.length > 0 ? (
-                    domainList.map((domain: string) => (
-                      <MenuItem key={domain} value={domain}>
-                        {domain}
+                  {!tenantLoading && tenantList && tenantList.length > 0 ? (
+                    tenantList.map((tenant: string) => (
+                      <MenuItem key={tenant} value={tenant}>
+                        {tenant}
                       </MenuItem>
                     ))
                   ) : (
@@ -138,7 +138,7 @@ export function AddContractDrawer(props) {
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel id='demo-simple-select-helper-label'>{t('Employee.Employee')}</InputLabel>

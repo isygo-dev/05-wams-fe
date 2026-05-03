@@ -9,7 +9,7 @@ export type JobApplicationType = {
 }
 
 export type JobApplicationEventType = {
-  domain: string
+  tenant: string
   resume: ResumeTypes
   jobOffer: JobOfferType
 }

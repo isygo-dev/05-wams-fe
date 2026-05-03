@@ -1,7 +1,7 @@
 export type TokenConfigType = {
   id: number
   code: string
-  domain: string
+  tenant: string
   issuer: string
   audience: string
   signatureAlgorithm: string
@@ -12,7 +12,7 @@ export type TokenConfigType = {
 export type TokenConfigTypes = {
   id?: number
   code?: string
-  domain?: string
+  tenant?: string
   issuer?: string
   audience?: string
   signatureAlgorithm?: string
@@ -21,7 +21,7 @@ export type TokenConfigTypes = {
 }
 
 export type TokenData = {
-  domain: string
+  tenant: string
   issuer: string
   audience: string
   signatureAlgorithm: string

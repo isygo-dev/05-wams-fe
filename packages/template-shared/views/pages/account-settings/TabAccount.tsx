@@ -51,7 +51,7 @@ import imsApiUrls from 'ims-shared/configs/ims_apis'
 interface Data {
   firstName: string
   lastName: string
-  domain: string
+  tenant: string
   email: string
   phoneNumber: string
   roleInfo: RoleTypes[]
@@ -84,7 +84,7 @@ const TabAccount = (props: PropsAccountDetailType) => {
     language: 'arabic',
     timezone: 'gmt-12',
     country: 'australia',
-    domain: '',
+    tenant: '',
     functionRole: user?.functionRole,
     email: '',
     phoneNumber: '',
@@ -118,7 +118,7 @@ const TabAccount = (props: PropsAccountDetailType) => {
         setEditedAddress(user.accountDetails?.address)
       }
       setFormData({
-        domain: user.domain,
+        tenant: user.tenant,
         email: user.email,
         firstName: user.accountDetails?.firstName,
         lastName: user.accountDetails?.lastName,
@@ -207,7 +207,7 @@ const TabAccount = (props: PropsAccountDetailType) => {
     }
     editedProfile.roleInfo = [...checked]
 
-    editedProfile.domain = user.domain
+    editedProfile.tenant = user.tenant
     editedProfile.email = formData.email
     editedProfile.phoneNumber = formData.phoneNumber
     editedProfile.language = formData.language
@@ -406,10 +406,10 @@ const TabAccount = (props: PropsAccountDetailType) => {
                       <TextField
                         size='small'
                         fullWidth
-                        label={t('Domain.Domain')}
-                        placeholder='Domain'
-                        value={formData?.domain}
-                        onChange={e => handleFormChange('domain', e.target.value)}
+                        label={t('Tenant.Tenant')}
+                        placeholder='Tenant'
+                        value={formData?.tenant}
+                        onChange={e => handleFormChange('tenant', e.target.value)}
                         disabled={true}
                       />
                     </Grid>

@@ -2,7 +2,7 @@ import { WorkflowsType } from './workflowTypes'
 
 export type WorkflowsBoardType = {
   id: number
-  domain: string
+  tenant: string
   code: string
   name: string
   description: string
@@ -19,7 +19,7 @@ export type WorkflowsBoardType = {
 }
 
 export type WorkflowsBoardData = {
-  domain: string
+  tenant: string
   name: string
   description: string
   item: string
@@ -33,7 +33,7 @@ export type WorkFlowBoardType = {
   createdBy: string
   updateDate: string
   updatedBy: string
-  domain: string
+  tenant: string
   code: string
   name: string
   description: string
@@ -49,7 +49,7 @@ export type Workflow = {
   createdBy: string
   updateDate: string
   updatedBy: string
-  domain: string
+  tenant: string
   code: string
   name: string
   description: string

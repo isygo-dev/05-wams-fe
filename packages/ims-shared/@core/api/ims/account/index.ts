@@ -15,14 +15,14 @@ import imsApiUrls from 'ims-shared/configs/ims_apis'
 const AccountApis = (t: TFunction) => {
   const permission = PermissionPage.ACCOUNT
 
-  const getAccountsByDomain = async (domain: string) => {
+  const getAccountsByTenant = async (tenant: string) => {
     if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
       console.warn('Permission denied on read ' + t(permission))
 
       return
     }
 
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_UsersByDomain_EndPoint}?domain=${domain}`, {
+    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_UsersByTenant_EndPoint}?tenant=${tenant}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -260,7 +260,7 @@ const AccountApis = (t: TFunction) => {
       return
     }
 
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_AccountsStatusByDomain_EndPoint}`, {
+    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_AccountsStatusByTenant_EndPoint}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -290,7 +290,7 @@ const AccountApis = (t: TFunction) => {
     return result
   }
 
-  const getAccountEmailsByDomain = async () => {
+  const getAccountEmailsByTenant = async () => {
     if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
       console.warn('Permission denied on read ' + t(permission))
 
@@ -728,7 +728,7 @@ const AccountApis = (t: TFunction) => {
     return result
   }
 
-  const updateAuthType = async (data: { domain: string; userName: string }) => {
+  const updateAuthType = async (data: { tenant: string; userName: string }) => {
     if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
       console.warn('Permission denied on update ' + t(permission))
 
@@ -894,11 +894,11 @@ const AccountApis = (t: TFunction) => {
     getAccounts,
     getAccountsByPage,
     getAccountById,
-    getAccountsByDomain,
+    getAccountsByTenant,
     getAccountDetails,
     getAccountProfile,
     getAccountsSessionStatus,
-    getAccountEmailsByDomain,
+    getAccountEmailsByTenant,
     updateAccountLanguage,
     updateAccountAdminStatus,
     updateAccountIsAdminFlag,

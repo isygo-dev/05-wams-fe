@@ -145,10 +145,10 @@ const AuthorCard = (props: CardItem) => {
             }}
           >
             <Typography variant='body2' sx={{ fontWeight: 600 }}>
-              Domain:
+              Tenant:
             </Typography>
             <Typography variant='body2' color='text.secondary'>
-              {data.domain || 'N/A'}
+              {data.tenant || 'N/A'}
             </Typography>
           </Box>
 

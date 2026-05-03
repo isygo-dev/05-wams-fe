@@ -35,7 +35,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   type: yup.string().required(),
   pattern: yup.string().required(),
   charSetType: yup.string().required(),
@@ -110,23 +110,23 @@ const SidebarEditPwdConfig = (props: SidebarEditPwdConfigType) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   disabled
-                  error={Boolean(errors.domain)}
+                  error={Boolean(errors.tenant)}
                 />
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>

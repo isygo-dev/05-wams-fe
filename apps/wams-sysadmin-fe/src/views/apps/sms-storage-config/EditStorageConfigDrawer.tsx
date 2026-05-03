@@ -22,20 +22,20 @@ const Header = styled(Box)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   url: yup.string().matches(URL_PATTERN, 'Enter a valid url').required(),
   type: yup.string().required(),
   userName: yup.string().required(),
   password: yup.string().required()
 })
 
-interface SidebarEditDomainType {
+interface SidebarEditTenantType {
   open: boolean
   dataStorageConfig: StorageConfigType | undefined
   toggle: () => void
 }
 
-const SidebarEditStorageConfig = (props: SidebarEditDomainType) => {
+const SidebarEditStorageConfig = (props: SidebarEditTenantType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const { open, toggle, dataStorageConfig } = props
@@ -100,21 +100,21 @@ const SidebarEditStorageConfig = (props: SidebarEditDomainType) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
-                  label={t('Domain.Domain')}
+                  label={t('Tenant.Tenant')}
                   disabled
                   onChange={onChange}
-                  error={Boolean(errors.domain)}
+                  error={Boolean(errors.tenant)}
                 />
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>

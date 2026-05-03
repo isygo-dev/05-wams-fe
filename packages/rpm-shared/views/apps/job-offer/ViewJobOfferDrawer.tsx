@@ -57,7 +57,7 @@ interface JobDetailsDataProps {
 }
 
 const schema = yup.object().shape({
-  domain: yup.string(),
+  tenant: yup.string(),
   code: yup.string(),
   industry: yup.string(),
   title: yup.string(),
@@ -416,11 +416,11 @@ const ViewJobOfferDrawer: React.FC<JobDetailsDataProps> = props => {
                   <Grid item xs={12} sm={4}>
                     <FormControl fullWidth sx={{ mb: 4 }}>
                       <Controller
-                        name='domain'
+                        name='tenant'
                         control={control}
                         render={({ field }) => (
                           <TextField
-                            label={t('Domain.Domain')}
+                            label={t('Tenant.Tenant')}
                             fullWidth
                             {...field}
                             variant='outlined'
@@ -435,7 +435,7 @@ const ViewJobOfferDrawer: React.FC<JobDetailsDataProps> = props => {
                                 PermissionApplication.RPM,
                                 PermissionPage.JOB_OFFER,
                                 PermissionAction.WRITE
-                              ) && handleInputChange('domain', e.target.value)
+                              ) && handleInputChange('tenant', e.target.value)
                             }}
                             disabled={true}
                           />

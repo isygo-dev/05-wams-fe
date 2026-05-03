@@ -78,12 +78,12 @@ export const PersonnelInformation: React.FC<PersonnelInformationProps> = ({
               <div className='form-group'>
                 <TextField
                   size='small'
-                  label={t('Domain.Domain')}
-                  defaultValue={employeeDatacontext.domain || ''}
+                  label={t('Tenant.Tenant')}
+                  defaultValue={employeeDatacontext.tenant || ''}
                   fullWidth
                   variant='outlined'
                   disabled={true}
-                  {...register('domain')}
+                  {...register('tenant')}
                 />
               </div>
             </Grid>

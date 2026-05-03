@@ -143,7 +143,7 @@ const ResumeCard = (props: CardItem, direction: Direction) => {
           <Typography className={Styles.cardTitle} variant='h6'>
             {data.firstName} {data.lastName}
           </Typography>
-          <Typography sx={{ mb: 1, color: 'text.secondary' }}>{data.domain}</Typography>
+          <Typography sx={{ mb: 1, color: 'text.secondary' }}>{data.tenant}</Typography>
           <Box className='navigation-wrapper'>
             <Box
               sx={{

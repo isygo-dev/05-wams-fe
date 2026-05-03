@@ -26,7 +26,7 @@ const SidebarLeft = (props: SidebarCalLeftType) => {
     leftSidebarWidth,
     handleLeftSidebarToggle,
     handleAddEventSidebarToggle,
-    domain,
+    tenant,
     name,
     lock
   } = props
@@ -38,7 +38,7 @@ const SidebarLeft = (props: SidebarCalLeftType) => {
   }
 
   const mutationDownload = useMutation({
-    mutationFn: () => CalendarApis(t).downloadCalendarIcsFile(domain, name),
+    mutationFn: () => CalendarApis(t).downloadCalendarIcsFile(tenant, name),
     onSuccess: () => {},
     onError: err => {
       console.log(err)

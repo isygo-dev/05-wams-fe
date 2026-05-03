@@ -25,7 +25,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 import localStorageKeys from 'template-shared/configs/localeStorage'
 import WorkflowBoardItemApis from 'rpm-shared/@core/api/rpm/workflow-board/item'
 import WorkflowApis from 'rpm-shared/@core/api/rpm/workflow'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import AccountApis from 'ims-shared/@core/api/ims/account'
 import WorkflowBoardApis from 'rpm-shared/@core/api/rpm/workflow-board'
 
@@ -42,14 +42,14 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   name: yup.string().required().min(3),
   description: yup.string(),
   item: yup.string().required(),
   workflow: yup.string().required()
 })
 const defaultValues: WorkflowsBoardData = {
-  domain: '',
+  tenant: '',
   name: '',
   description: '',
   item: '',
@@ -62,14 +62,14 @@ const SidebarAddWorkflowBoard = (props: SidebarAddWorkflowBoardType) => {
   const { open, toggle } = props
   const { data: itemTypes } = useQuery(`itemTypes`, () => WorkflowBoardItemApis(t).getWorkflowBoardItemTypes())
   const { data: workflowList } = useQuery(`workflowList`, () => WorkflowApis(t).getWorkflows())
-  const { data: domains } = useQuery(`domains`, () => DomainApis(t).getDomainsNameList())
-  const [selectedDomain, setSelectedDomain] = useState('')
-  const { data: emails } = useQuery(['emails', selectedDomain], () => AccountApis(t).getAccountEmailsByDomain(), {
-    enabled: !!selectedDomain
+  const { data: tenants } = useQuery(`tenants`, () => TenantApis(t).getTenantsNameList())
+  const [selectedTenant, setSelectedTenant] = useState('')
+  const { data: emails } = useQuery(['emails', selectedTenant], () => AccountApis(t).getAccountEmailsByTenant(), {
+    enabled: !!selectedTenant
   })
 
-  const handleChangeDomain = event => {
-    setSelectedDomain(event.target.value)
+  const handleChangeTenant = event => {
+    setSelectedTenant(event.target.value)
   }
 
   const {
@@ -142,35 +142,35 @@ const SidebarAddWorkflowBoard = (props: SidebarAddWorkflowBoardType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel>{t('Domain.Domain')}</InputLabel>
+            <InputLabel>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={e => {
                     onChange(e)
-                    handleChangeDomain(e)
+                    handleChangeTenant(e)
                   }}
                   value={value || ''}
                 >
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domains?.map((domain, index) => (
-                    <MenuItem key={index} value={domain}>
-                      {domain}
+                  {tenants?.map((tenant, index) => (
+                    <MenuItem key={index} value={tenant}>
+                      {tenant}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>
@@ -316,7 +316,7 @@ const SidebarAddWorkflowBoard = (props: SidebarAddWorkflowBoardType) => {
                     }}
                     renderValue={selected => selected.map(email => email).join(', ')}
                   >
-                    {selectedDomain &&
+                    {selectedTenant &&
                       emails?.map((email, index) => (
                         <MenuItem key={index} value={email}>
                           <Checkbox checked={value.some(e => e === email)} />

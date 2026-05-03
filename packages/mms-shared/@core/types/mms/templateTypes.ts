@@ -1,6 +1,6 @@
 export type TemplateType = {
   id?: number
-  domain: string
+  tenant: string
   name: string
   description: string
   code: string
@@ -10,7 +10,7 @@ export type TemplateType = {
 }
 
 export type TemplateTypes = {
-  domain: string
+  tenant: string
   name: string
   description: string
   language: string

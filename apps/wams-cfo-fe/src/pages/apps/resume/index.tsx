@@ -14,7 +14,7 @@ const ResumeViewCfo = () => {
   const defaultResume: ResumeTypes = {
     birthDate: null,
     details: {} as ResumeDetails,
-    domain: '',
+    tenant: '',
     email: authUser?.email || '',
     address: {} as AddressTypes,
     extension: '',

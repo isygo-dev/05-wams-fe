@@ -14,8 +14,8 @@ import { MiniAccountChatType } from 'ims-shared/@core/types/ims/accountTypes'
 const Detail = () => {
   const { t } = useTranslation()
   const { data: user } = useQuery(`user`, () => AccountApis(t).getAccountProfile())
-  const { data: contactsAccount } = useQuery(['contactsAccount', user?.domain], () =>
-    AccountApis(t).getAccountsByDomain(user?.domain)
+  const { data: contactsAccount } = useQuery(['contactsAccount', user?.tenant], () =>
+    AccountApis(t).getAccountsByTenant(user?.tenant)
   )
   const router = useRouter()
   const { id } = router.query

@@ -16,7 +16,7 @@ export type RoleData = {
 export type RoleTypes = {
   id?: number
   code?: string
-  domain?: string
+  tenant?: string
   name?: string
   templateCode?: string
   description?: string

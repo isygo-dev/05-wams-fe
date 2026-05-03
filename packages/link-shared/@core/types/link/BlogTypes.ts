@@ -2,7 +2,7 @@ export type BlogType = {
   id?: any
   title?: string
   description?: string
-  domain?: any
+  tenant?: any
   accountCode: string
   createDate?: Date
   updateDate?: string | Date

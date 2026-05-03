@@ -1,6 +1,6 @@
 export type IntegrationFlowType = {
   id?: number
-  domain?: string
+  tenant?: string
   code?: string
   orderName?: string
   integrationDate?: Date
@@ -18,7 +18,7 @@ export type IntegrationFlowType = {
 
 export interface IntegrationFlowData {
   id?: number
-  domain: string
+  tenant: string
   code?: string
   orderName: string
   integrationDate?: Date

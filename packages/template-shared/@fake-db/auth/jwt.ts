@@ -75,7 +75,7 @@ mock.onPost('/jwt/register').reply(request => {
         lastName: '',
         role: 'admin',
         applications: [],
-        domainId: 0
+        tenantId: 0
       }
 
       users.push(userData)

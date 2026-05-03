@@ -88,13 +88,13 @@ const Template = () => {
     {
       flex: 0.25,
       minWidth: 280,
-      field: 'domain',
-      headerName: t('Domain.Domain') as string,
+      field: 'tenant',
+      headerName: t('Tenant.Tenant') as string,
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap sx={{ color: 'text.secondary' }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -229,7 +229,7 @@ const Template = () => {
       {!isLoadingProfileUser &&
         addTemplateOpen &&
         checkPermission(PermissionApplication.MMS, PermissionPage.MSG_TEMPLATE, PermissionAction.WRITE) && (
-          <AddTemplateDrawer open={addTemplateOpen} domain={profileUser?.domain} toggle={toggleAddTemplateDrawer} />
+          <AddTemplateDrawer open={addTemplateOpen} tenant={profileUser?.tenant} toggle={toggleAddTemplateDrawer} />
         )}
       {deleteDialogOpen &&
         checkPermission(PermissionApplication.MMS, PermissionPage.MSG_TEMPLATE, PermissionAction.DELETE) && (

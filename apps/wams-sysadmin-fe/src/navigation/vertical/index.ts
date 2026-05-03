@@ -27,10 +27,10 @@ const Navigation = (): VerticalNavItemsType => {
           permissionApplication: PermissionApplication.IMS
         },
         {
-          icon: 'gridicons:domains',
-          title: 'Domain.Domain',
-          path: '/apps/ims-domain',
-          permissionPage: PermissionPage.DOMAIN,
+          icon: 'gridicons:tenants',
+          title: 'Tenant.Tenant',
+          path: '/apps/ims-tenant',
+          permissionPage: PermissionPage.TENANT,
           permissionApplication: PermissionApplication.IMS
         },
         {

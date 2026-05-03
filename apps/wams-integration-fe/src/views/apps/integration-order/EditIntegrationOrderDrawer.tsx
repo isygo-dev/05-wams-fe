@@ -39,7 +39,7 @@ const schema = yup.object().shape({
   name: yup.string().required(),
   description: yup.string(),
   serviceName: yup.string().required(),
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   mapping: yup.string().required(),
   integrationOrder: yup.string().required()
 })
@@ -53,7 +53,7 @@ const SidebarEditIntegrationOrder = (props: SidebarEditIntegrationOrderType) => 
 
   const defaultValues: IntegrationOrderType = {
     id: dataIntegrationOrder?.id,
-    domain: dataIntegrationOrder?.domain,
+    tenant: dataIntegrationOrder?.tenant,
     code: dataIntegrationOrder?.code,
     name: dataIntegrationOrder?.name,
     description: dataIntegrationOrder?.description,
@@ -111,7 +111,7 @@ const SidebarEditIntegrationOrder = (props: SidebarEditIntegrationOrderType) => 
     formData.append('description', data.description)
     formData.append('serviceName', data.serviceName)
     formData.append('mapping', data.mapping)
-    formData.append('domain', data.domain)
+    formData.append('tenant', data.tenant)
     formData.append('integrationOrder', data.integrationOrder)
 
     const file = selectedFile || dataIntegrationOrder?.file
@@ -183,21 +183,21 @@ const SidebarEditIntegrationOrder = (props: SidebarEditIntegrationOrderType) => 
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value || ''}
-                  label={t('Domain.Domain')}
+                  label={t('Tenant.Tenant')}
                   onChange={onChange}
-                  placeholder='domain'
+                  placeholder='tenant'
                   disabled={true}
-                  error={Boolean(errors.domain)}
+                  error={Boolean(errors.tenant)}
                 />
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>

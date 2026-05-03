@@ -72,7 +72,7 @@ const initialValue: CategoryTemplateType = {
   tag: undefined,
   updateDate: '',
   updatedBy: '',
-  domain: '',
+  tenant: '',
   name: '',
   type: IEnumCategoryType.ENABLED,
   description: ''
@@ -342,7 +342,7 @@ const Template = () => {
       formData.append('id', String(updatedTemplate.id))
       formData.append('name', updatedTemplate.name)
       formData.append('description', updatedTemplate.description || '')
-      formData.append('domain', updatedTemplate.domain)
+      formData.append('tenant', updatedTemplate.tenant)
       formData.append('type', updatedTemplate.type)
       formData.append('typeTs', updatedTemplate.typeTs)
       formData.append('typeTl', updatedTemplate.typeTl)
@@ -429,10 +429,10 @@ const Template = () => {
     },
     {
       flex: 0.1,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 100,
-      headerName: t('Domain.Domain') as string,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      headerName: t('Tenant.Tenant') as string,
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
     {
       flex: 0.1,

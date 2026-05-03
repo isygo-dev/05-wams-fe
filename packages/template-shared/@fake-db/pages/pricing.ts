@@ -24,7 +24,7 @@ const data: PricingDataType = {
         'Unlimited forms and surveys',
         'Unlimited fields',
         'Basic form creation tools',
-        'Up to 2 subdomains'
+        'Up to 2 subtenants'
       ]
     },
     {
@@ -65,7 +65,7 @@ const data: PricingDataType = {
         'PayPal payments',
         'Logic Jumps',
         'File upload with 5GB storage',
-        'Custom domain support',
+        'Custom tenant support',
         'Stripe integration'
       ]
     }

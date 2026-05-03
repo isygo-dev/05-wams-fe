@@ -4,7 +4,7 @@ import { PermissionAction } from 'template-shared/@core//types/helper/apiPermiss
 
 interface AuthorityToken {
   aud: string
-  'sender-domain': string
+  'sender-tenant': string
   exp: number
   'granted-authority': string[]
   iat: number
@@ -20,7 +20,7 @@ interface TokenType {
   iat: number
   exp: number
   aud: string
-  'sender-domain': string
+  'sender-tenant': string
   'is-admin': boolean
   'log-app': string
   'sender-user': string
@@ -78,12 +78,9 @@ export const checkPermissionSideBar = (item: any) => {
   }
 }
 
-export const getUserDomainFromToken = () => {
+export const getSenderTenantFromToken = () => {
   const token = localStorage.getItem(localStorageKeys.accessToken)
-  console.log('tdtdtdd', token)
   const oldTokenDecoded = jwt.decode(token, { complete: true })
   const listCheck: TokenType = oldTokenDecoded?.payload as TokenType
-  console.log('suydbvsdb', listCheck)
-
-  return listCheck['sender-domain']
+  return listCheck['sender-tenant']
 }

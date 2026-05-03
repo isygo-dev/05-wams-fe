@@ -31,8 +31,8 @@ const CalPreviewCard = ({ calendarDetail }: CalendarsLayoutProps) => {
     data: eventsList,
     isLoading: isLoadingEvent,
     refetch
-  } = useQuery(['eventsList', calendarDetail?.domain, calendarDetail?.name], () =>
-    EventApis(t).getEventsByDomainAndCalendar(calendarDetail?.domain, calendarDetail?.name)
+  } = useQuery(['eventsList', calendarDetail?.tenant, calendarDetail?.name], () =>
+    EventApis(t).getEventsByTenantAndCalendar(calendarDetail?.tenant, calendarDetail?.name)
   )
 
   const { settings } = useSettings()
@@ -64,7 +64,7 @@ const CalPreviewCard = ({ calendarDetail }: CalendarsLayoutProps) => {
             leftSidebarWidth={leftSidebarWidth}
             handleLeftSidebarToggle={handleLeftSidebarToggle}
             handleAddEventSidebarToggle={handleAddEventSidebarToggle}
-            domain={calendarDetail?.domain}
+            tenant={calendarDetail?.tenant}
             name={calendarDetail?.name}
             lock={calendarDetail?.locked}
           />
@@ -99,7 +99,7 @@ const CalPreviewCard = ({ calendarDetail }: CalendarsLayoutProps) => {
             handleSelectEvent={handleSelectEvent}
             addEventSidebarOpen={addEventSidebarOpen}
             handleAddEventSidebarToggle={handleAddEventSidebarToggle}
-            domain={calendarDetail?.domain}
+            tenant={calendarDetail?.tenant}
             name={calendarDetail?.name}
           />
         </CalendarWrapper>

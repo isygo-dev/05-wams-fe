@@ -90,14 +90,14 @@ const Digest = () => {
   const defaultColumns: GridColDef[] = [
     {
       flex: 0.15,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 170,
-      headerName: t('Domain.Domain') as string,
+      headerName: t('Tenant.Tenant') as string,
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap sx={{ color: 'text.secondary' /* , textTransform: 'capitalize' */ }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -231,7 +231,7 @@ const Digest = () => {
       {!isLoadingProfileUser &&
         addDigestOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.DIGETS_CONFIG, PermissionAction.WRITE) && (
-          <AddDigestDrawer open={addDigestOpen} domain={profileUser?.domain} toggle={toggleAddDigestDrawer} />
+          <AddDigestDrawer open={addDigestOpen} tenant={profileUser?.tenant} toggle={toggleAddDigestDrawer} />
         )}
       {deleteDialogOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.DIGETS_CONFIG, PermissionAction.DELETE) && (

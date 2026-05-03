@@ -1,7 +1,7 @@
 export type DigestConfigTypes = {
   id: number
   code?: string
-  domain?: string
+  tenant?: string
   algorithm?: string
   iterations?: number
   saltSizeBytes?: number
@@ -21,7 +21,7 @@ export type DigestConfigTypes = {
 export type DigestConfigType = {
   id?: number
   code?: string
-  domain?: string
+  tenant?: string
   algorithm?: string
   iterations?: number
   saltSizeBytes?: number
@@ -39,7 +39,7 @@ export type DigestConfigType = {
 }
 
 export type DigestConfigData = {
-  domain: string
+  tenant: string
   algorithm: string
   iterations: number
   saltSizeBytes: number

@@ -203,13 +203,13 @@ const CommonQuizList = () => {
   })
 
   const defaultColumns: GridColDef[] = [
-    /*Domain column*/
+    /*Tenant column*/
     {
-      field: 'domain',
-      headerName: t('domain') as string,
+      field: 'tenant',
+      headerName: t('tenant') as string,
       type: 'string',
       flex: 1,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
 
     /*Code column*/
@@ -572,7 +572,7 @@ const CommonQuizList = () => {
       </Grid>
 
       {!isLoadingProfileUser && addQuizOpen && (
-        <AddQuizDrawer open={addQuizOpen} domain={profileUser?.domain} toggle={toggleAddQuizDrawer} />
+        <AddQuizDrawer open={addQuizOpen} tenant={profileUser?.tenant} toggle={toggleAddQuizDrawer} />
       )}
 
       <DeleteCommonDialog

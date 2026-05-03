@@ -195,17 +195,17 @@ const AccountList = () => {
       )
     },
 
-    /*Domain column*/
+    /*Tenant column*/
     {
-      field: 'domain',
+      field: 'tenant',
       flex: 0.15,
       minWidth: 170,
-      headerName: t('Domain.Domain') as string,
+      headerName: t('Tenant.Tenant') as string,
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap sx={{ color: 'text.secondary' }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -663,7 +663,7 @@ const AccountList = () => {
         {!isLoadingProfileUser &&
           addAccountOpen &&
           checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.WRITE) && (
-            <AddAccountDrawer open={addAccountOpen} toggle={toggleAddAccountDrawer} domain={profileUser?.domain} />
+            <AddAccountDrawer open={addAccountOpen} toggle={toggleAddAccountDrawer} tenant={profileUser?.tenant} />
           )}
         {deleteDialogOpen &&
           checkPermission(PermissionApplication.IMS, PermissionPage.ACCOUNT, PermissionAction.DELETE) && (

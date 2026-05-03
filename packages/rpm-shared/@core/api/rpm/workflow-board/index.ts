@@ -166,7 +166,7 @@ const WorkflowBoardApis = (t: TFunction) => {
     const response = await AppQuery(
       `${rpmApiUrls.apiUrl_RPM_WorkflowBoard_Watchers_EndPoint}${
         request.wfCode ? `?wfCode=${request.wfCode}&` : ''
-      }domain=${request.domain}`,
+      }tenant=${request.tenant}`,
       {
         method: 'GET',
         headers: {

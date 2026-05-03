@@ -38,7 +38,7 @@ const MailTemplateView = (templateDetailsData: templateDetailsDataType) => {
 
   const defaultValues: TemplateType = {
     id: templateDetailsData.templateDetailsData.id,
-    domain: templateDetailsData.templateDetailsData.domain,
+    tenant: templateDetailsData.templateDetailsData.tenant,
     code: templateDetailsData.templateDetailsData.code,
     name: templateDetailsData.templateDetailsData.name,
     description: templateDetailsData.templateDetailsData.description,
@@ -177,14 +177,14 @@ const MailTemplateView = (templateDetailsData: templateDetailsDataType) => {
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
-                    name='domain'
+                    name='tenant'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
                       <TextField
                         size='small'
-                        name='domain'
-                        label={t('Domain.Domain')}
+                        name='tenant'
+                        label={t('Tenant.Tenant')}
                         value={value}
                         onChange={onChange}
                         disabled
@@ -225,7 +225,7 @@ const MailTemplateView = (templateDetailsData: templateDetailsDataType) => {
                       <Select
                         size='small'
                         label={t('Name')}
-                        name='domain'
+                        name='tenant'
                         defaultValue=''
                         onChange={onChange}
                         value={value}

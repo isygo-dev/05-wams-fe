@@ -1,7 +1,7 @@
 export type PasswordConfigType = {
   id: number
   code: string
-  domain: string
+  tenant: string
   type: string
   pattern: string
   charSetType: string
@@ -14,7 +14,7 @@ export type PasswordConfigType = {
 export type PasswordConfigData = {
   id: number
   code: string
-  domain: string
+  tenant: string
   type: string
   pattern: string
   charSetType: string
@@ -27,7 +27,7 @@ export type PasswordConfigData = {
 export type PasswordConfigTypes = {
   id: number
   code: string
-  domain: string
+  tenant: string
   type: string
   pattern: string
   charSetType: string

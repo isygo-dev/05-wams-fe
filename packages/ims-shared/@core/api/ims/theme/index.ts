@@ -101,7 +101,7 @@ const ThemeApis = (t: TFunction) => {
     }
 
     const response = await AppQuery(
-      `${imsApiUrls.apiUrl_IMS_Theme_EndPoint}/find/${theme.domainCode}/${theme.accountCode}`,
+      `${imsApiUrls.apiUrl_IMS_Theme_EndPoint}/find/${theme.tenantCode}/${theme.accountCode}`,
       {
         method: 'GET',
         headers: {

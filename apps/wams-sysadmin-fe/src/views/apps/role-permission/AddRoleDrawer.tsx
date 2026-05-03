@@ -27,15 +27,15 @@ import {
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import React from 'react'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import ApplicationApis from 'ims-shared/@core/api/ims/application'
 import RolePermissionApis from 'ims-shared/@core/api/ims/role-permission'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 
 interface SidebarAddRoleType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -46,7 +46,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   name: yup.string().required(),
   description: yup.string().required(),
   templateCode: yup.string()
@@ -65,11 +65,11 @@ const MenuProps = {
 const SidebarAddRole = (props: SidebarAddRoleType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
+  const { open, toggle, tenant } = props
   const defaultValues = {
     name: '',
     description: '',
-    domain: domain,
+    tenant: tenant,
     templateCode: '',
     level: 0,
     allowedTools: [],
@@ -87,13 +87,13 @@ const SidebarAddRole = (props: SidebarAddRoleType) => {
     resolver: yupResolver(schema)
   })
 
-  const { data: domainList, isLoading: isLoadingDomain } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList, isLoading: isLoadingTenant } = useQuery('tenants', TenantApis(t).getTenants)
   const { data: applicationList, isLoading } = useQuery(`applications`, () =>
-    ApplicationApis(t).getApplicationsOfDefaultDomain()
+    ApplicationApis(t).getApplicationsOfDefaultTenant()
   )
-  const { data: rolesByDefaultDomain, isLoading: isLoadingRole } = useQuery(
+  const { data: rolesByDefaultTenant, isLoading: isLoadingRole } = useQuery(
     'dd',
-    RolePermissionApis(t).getRolesByDomainDefault
+    RolePermissionApis(t).getRolesByTenantDefault
   )
 
   const mutation = useMutation({
@@ -143,36 +143,36 @@ const SidebarAddRole = (props: SidebarAddRoleType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
                 >
-                  {!isLoadingDomain && domainList?.length > 0
-                    ? domainList?.map((domain: DomainType) => (
-                        <MenuItem key={domain.id} value={domain.name}>
-                          {domain.name}
+                  {!isLoadingTenant && tenantList?.length > 0
+                    ? tenantList?.map((tenant: Tenant) => (
+                        <MenuItem key={tenant.id} value={tenant.name}>
+                          {tenant.name}
                         </MenuItem>
                       ))
                     : null}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
@@ -226,8 +226,8 @@ const SidebarAddRole = (props: SidebarAddRoleType) => {
                   onChange={onChange}
                   value={value}
                 >
-                  {!isLoadingRole && rolesByDefaultDomain?.length > 0
-                    ? rolesByDefaultDomain?.map((name: any) => (
+                  {!isLoadingRole && rolesByDefaultTenant?.length > 0
+                    ? rolesByDefaultTenant?.map((name: any) => (
                         <MenuItem key={name.code} value={name.code}>
                           {name.name}
                         </MenuItem>

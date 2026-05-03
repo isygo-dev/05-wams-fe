@@ -216,7 +216,7 @@ const AppChat = (props: ChatProps) => {
     const token = localStorage.getItem('accessToken')
     const headers = {
       senderId: user?.id,
-      groupId: userData?.domainId, // domainId
+      groupId: userData?.tenantId, // tenantId
       Authorization: `Bearer ${token}`
     }
     temp.connect(headers, onConnect, onError)
@@ -317,7 +317,7 @@ const AppChat = (props: ChatProps) => {
         onMessageRecieve(payload)
       })
 
-      const subscriptionGroup: any = stompClient?.subscribe(`/chat/group/${userData.domainId}`, (payload: any) => {
+      const subscriptionGroup: any = stompClient?.subscribe(`/chat/group/${userData.tenantId}`, (payload: any) => {
         console.log('payload payload group', JSON.parse(payload.body))
         onMessageRecieve(payload)
       })

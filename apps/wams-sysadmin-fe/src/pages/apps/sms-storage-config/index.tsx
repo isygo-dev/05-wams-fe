@@ -89,11 +89,11 @@ const StorageConfigList = () => {
 
   const columns: GridColDef[] = [
     {
-      field: 'domain',
-      headerName: t('Domain.Domain') as string,
+      field: 'tenant',
+      headerName: t('Tenant.Tenant') as string,
       type: 'string',
       flex: 1,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
     {
       field: 'type',
@@ -197,7 +197,7 @@ const StorageConfigList = () => {
       {!isLoadingProfileUser &&
         addStorageOpen &&
         checkPermission(PermissionApplication.SMS, PermissionPage.STORAGE_CONFIG, PermissionAction.WRITE) && (
-          <AddStorageConfigDrawer open={addStorageOpen} domain={profileUser?.domain} toggle={toggleAddStorageDrawer} />
+          <AddStorageConfigDrawer open={addStorageOpen} tenant={profileUser?.tenant} toggle={toggleAddStorageDrawer} />
         )}
       {editStorageOpen &&
         checkPermission(PermissionApplication.SMS, PermissionPage.STORAGE_CONFIG, PermissionAction.WRITE) && (

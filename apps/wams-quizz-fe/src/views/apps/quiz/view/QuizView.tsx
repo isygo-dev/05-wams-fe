@@ -36,7 +36,7 @@ const QuizView = ({ quizData }) => {
   const [defaultValues, setDefaultValues] = useState<QuizDetailType>({
     id: originDetail.id,
     code: originDetail.code,
-    domain: originDetail.domain,
+    tenant: originDetail.tenant,
     name: originDetail.name,
     description: originDetail.description,
     category: originDetail.category,
@@ -60,7 +60,7 @@ const QuizView = ({ quizData }) => {
     category: yup.string().required(),
     description: yup.string(),
     tags: yup.array().required(),
-    domain: yup.string(),
+    tenant: yup.string(),
     level: yup.string(),
     sections: yup.array().of(
       yup.object().shape({
@@ -378,12 +378,12 @@ const QuizView = ({ quizData }) => {
                         <Grid item md={6} xs={12}>
                           <FormControl fullWidth sx={{ mb: 4 }}>
                             <Controller
-                              name='domain'
+                              name='tenant'
                               control={control}
                               rules={{ required: true }}
                               render={({ field }) => (
                                 <TextField
-                                  label={t('Domain.Domain')}
+                                  label={t('Tenant.Tenant')}
                                   fullWidth
                                   {...field}
                                   variant='outlined'

@@ -235,11 +235,11 @@ const EmployeeList = () => {
     },
 
     {
-      field: 'domain',
-      headerName: t('Domain.Domain') as string,
+      field: 'tenant',
+      headerName: t('Tenant.Tenant') as string,
       minWidth: 100,
       flex: 0.1,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
     {
       field: 'code',
@@ -565,7 +565,7 @@ const EmployeeList = () => {
         </Grid>
         {!isLoadingProfileUser &&
           checkPermission(PermissionApplication.HRM, PermissionPage.EMPLOYEE, PermissionAction.WRITE) && (
-            <AddEmployeeDrawer open={addEmployeeOpen} toggle={toggleAddEmployeeDrawer} domain={profileUser?.domain} />
+            <AddEmployeeDrawer open={addEmployeeOpen} toggle={toggleAddEmployeeDrawer} tenant={profileUser?.tenant} />
           )}
 
         {deleteDialogOpen &&

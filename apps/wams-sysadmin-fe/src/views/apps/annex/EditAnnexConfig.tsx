@@ -119,11 +119,11 @@ const SidebarEditAnnex = (props: EditAnnexType) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value } }) => (
-                <TextField disabled size='small' value={value} label={t('Domain.Domain')} />
+                <TextField disabled size='small' value={value} label={t('Tenant.Tenant')} />
               )}
             />
           </FormControl>

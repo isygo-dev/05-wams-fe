@@ -122,17 +122,17 @@ const RoleAccount = () => {
   })
 
   const defaultColumns: GridColDef[] = [
-    /*Domain column*/
+    /*Tenant column*/
     {
-      field: 'domain',
-      headerName: t('Domain.Domain') as string,
+      field: 'tenant',
+      headerName: t('Tenant.Tenant') as string,
       flex: 1,
 
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap variant='body2' sx={{ color: 'text.disabled' }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -388,7 +388,7 @@ const RoleAccount = () => {
       {!isLoadingProfileUser &&
         addRoleOpen &&
         checkPermission(PermissionApplication.IMS, PermissionPage.ROLE_INFO, PermissionAction.WRITE) && (
-          <AddRoleDrawer open={addRoleOpen} domain={profileUser?.domain} toggle={toggleAddRoleDrawer} />
+          <AddRoleDrawer open={addRoleOpen} tenant={profileUser?.tenant} toggle={toggleAddRoleDrawer} />
         )}
       {deleteDialogOpen &&
         checkPermission(PermissionApplication.IMS, PermissionPage.ROLE_INFO, PermissionAction.DELETE) && (

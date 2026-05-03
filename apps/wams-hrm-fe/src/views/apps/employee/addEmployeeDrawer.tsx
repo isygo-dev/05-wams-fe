@@ -19,7 +19,7 @@ import { Avatar, Checkbox, FormControlLabel, InputLabel } from '@mui/material'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import hrmApiUrls from 'hrm-shared/configs/hrm_apis'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import {
   PermissionAction,
   PermissionApplication,
@@ -42,20 +42,20 @@ const schema = yup.object().shape({
   lastName: yup.string().required(),
   email: yup.string().email().required(),
   phone: yup.string().required(),
-  domain: yup.string().required()
+  tenant: yup.string().required()
 })
 
 interface SidebarAddEmployeeType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const SidebarAddEmployee = (props: SidebarAddEmployeeType) => {
   const { t } = useTranslation()
-  const { open, toggle, domain } = props
+  const { open, toggle, tenant } = props
   const queryClient = useQueryClient()
-  const { data: domainList, isLoading } = useQuery('domains', DomainApis(t).getDomainsNameList)
+  const { data: tenantList, isLoading } = useQuery('tenants', TenantApis(t).getTenantsNameList)
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
   const [linkedUser, setLinkedUser] = useState<boolean>(true)
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +80,7 @@ const SidebarAddEmployee = (props: SidebarAddEmployeeType) => {
     formData.append('lastName', data.lastName)
     formData.append('email', data.email)
     formData.append('phone', data.phone)
-    formData.append('domain', data.domain)
+    formData.append('tenant', data.tenant)
     formData.append('isLinkedToUser', linkedUser ? 'true' : 'false')
     addEmployeMutation.mutate(formData)
     handleClose()
@@ -102,7 +102,7 @@ const SidebarAddEmployee = (props: SidebarAddEmployeeType) => {
     lastName: '',
     email: '',
     phone: '',
-    domain: domain,
+    tenant: tenant,
     imagePath: '',
     isLinkedToUser: false // Default value for checkbox
   }
@@ -146,29 +146,29 @@ const SidebarAddEmployee = (props: SidebarAddEmployeeType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit((row: EmployeeTypeRequest) => onSubmit(row))}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
                 >
-                  {!isLoading && domainList && domainList.length > 0 ? (
-                    domainList.map((domain: string) => (
-                      <MenuItem key={domain} value={domain}>
-                        {domain}
+                  {!isLoading && tenantList && tenantList.length > 0 ? (
+                    tenantList.map((tenant: string) => (
+                      <MenuItem key={tenant} value={tenant}>
+                        {tenant}
                       </MenuItem>
                     ))
                   ) : (
@@ -179,7 +179,7 @@ const SidebarAddEmployee = (props: SidebarAddEmployeeType) => {
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller

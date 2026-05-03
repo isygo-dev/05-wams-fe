@@ -160,9 +160,9 @@ const CategoryCard = (props: CardItem) => {
 
           <Typography variant='body2' color='text.secondary' sx={{ mb: 1 }}>
             <Box component='span' sx={{ fontWeight: 600 }}>
-              {t('Domaine')}:
+              {t('Tenant')}:
             </Box>{' '}
-            {data.domain || t('N/A')}
+            {data.tenant || t('N/A')}
           </Typography>
         </Box>
 

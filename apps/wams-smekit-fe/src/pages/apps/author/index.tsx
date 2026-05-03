@@ -45,7 +45,7 @@ const initialValue: AuthorType = {
   path: '',
   phone: '',
   type: '',
-  domain: '',
+  tenant: '',
   firstname: '',
   lastname: '',
   code: '',
@@ -125,7 +125,7 @@ const Author = () => {
           row.firstname.toLowerCase().includes(val.trim().toLowerCase()) ||
           row.lastname.toLowerCase().includes(val.trim().toLowerCase()) ||
           row.type.toLowerCase().includes(val.trim().toLowerCase()) ||
-          row.domain.toLowerCase().includes(val.trim().toLowerCase())
+          row.tenant.toLowerCase().includes(val.trim().toLowerCase())
       )
       if (filtered) {
         console.log(filtered)
@@ -188,10 +188,10 @@ const Author = () => {
 
     {
       flex: 0.1,
-      field: 'domaine',
+      field: 'tenant',
       minWidth: 100,
-      headerName: t('Domaine') as string,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      headerName: t('Tenant') as string,
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
     {
       flex: 0.1,

@@ -68,12 +68,12 @@ const LinkStyled = styled(Link)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   userName: yup.string().required()
 })
 
 const defaultValues = {
-  domain: typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(localStorageKeys.domain) : '',
+  tenant: typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(localStorageKeys.tenant) : '',
   userName: typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(localStorageKeys.userName) : ''
 }
 
@@ -99,7 +99,7 @@ const ForgotPasswordView = () => {
 
   const onSubmit = (data: ResetPaswordParams) => {
     const restPasswordRequest: ResetPaswordRequest = {
-      domain: data.domain,
+      tenant: data.tenant,
       userName: data.userName,
       fullName: 'USER',
       application: process.env.NEXT_PUBLIC_APP_NAME || ''
@@ -111,9 +111,9 @@ const ForgotPasswordView = () => {
         router.replace(redirectURL)
       })
       .catch(() => {
-        setError('domain', {
+        setError('tenant', {
           type: 'manual',
-          message: 'Domain or Username or Password is invalid'
+          message: 'Tenant or Username or Password is invalid'
         })
       })
   }
@@ -181,20 +181,20 @@ const ForgotPasswordView = () => {
             <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
               <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
-                  name='domain'
+                  name='tenant'
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
                     <TextField
                       value={value}
-                      label={t('Domain.Domain')}
+                      label={t('Tenant.Tenant')}
                       onChange={onChange}
-                      placeholder={t('Domain.Domain') as string}
-                      error={Boolean(errors.domain)}
+                      placeholder={t('Tenant.Tenant') as string}
+                      error={Boolean(errors.tenant)}
                     />
                   )}
                 />
-                {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+                {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
               </FormControl>
               <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller

@@ -89,7 +89,7 @@ const UpdateIsAdminDialog = (props: Props) => {
               {t('Are you sure')}
             </Typography>
 
-            <Typography>{t('You_are_making_this_user_as_an_admin_on_his_domain')}</Typography>
+            <Typography>{t('You_are_making_this_user_as_an_admin_on_his_tenant')}</Typography>
           </Box>
         </DialogContent>
         <DialogActions

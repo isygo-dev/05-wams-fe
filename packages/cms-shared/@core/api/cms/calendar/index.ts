@@ -229,14 +229,14 @@ const CalendarApis = (t: TFunction) => {
     return id
   }
 
-  const downloadCalendarIcsFile = async (domain: string, name: string) => {
+  const downloadCalendarIcsFile = async (tenant: string, name: string) => {
     if (!checkPermission(PermissionApplication.CMS, permission, PermissionAction.READ)) {
       console.warn('Permission denied on read ' + t(permission))
 
       return
     }
 
-    const response = await AppQuery(`${apiUrls.apiUrl_CMS_Calendar_Download_EndPoint}?domain=${domain}&name=${name}`, {
+    const response = await AppQuery(`${apiUrls.apiUrl_CMS_Calendar_Download_EndPoint}?tenant=${tenant}&name=${name}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',

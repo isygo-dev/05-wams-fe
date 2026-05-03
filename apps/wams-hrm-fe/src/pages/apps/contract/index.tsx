@@ -185,11 +185,11 @@ export default function () {
       )
     },
     {
-      field: 'domain',
-      headerName: t('domain') as string,
+      field: 'tenant',
+      headerName: t('tenant') as string,
       minWidth: 100,
       flex: 0.1,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
     {
       field: 'code',
@@ -432,7 +432,7 @@ export default function () {
             toggle={toggleAddContractDrawer}
             employeeList={employeeList}
             employeeLoading={employeeLoading}
-            domain={profileUser?.domain}
+            tenant={profileUser?.tenant}
           />
         )}
 

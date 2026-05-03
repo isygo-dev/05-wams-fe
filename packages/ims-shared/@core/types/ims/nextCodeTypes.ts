@@ -1,6 +1,6 @@
 export type CodificationTypes = {
   id?: number
-  domain: string
+  tenant: string
   entity: string
   attribute: string
   prefix: string
@@ -18,7 +18,7 @@ export type CodificationTypes = {
 }
 
 export type CodificationData = {
-  domain: string
+  tenant: string
   entity: string
   attribute: string
   prefix: string

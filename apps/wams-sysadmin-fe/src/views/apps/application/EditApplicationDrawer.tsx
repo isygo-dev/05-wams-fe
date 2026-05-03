@@ -25,9 +25,9 @@ import {
 import AnnexApis from 'ims-shared/@core/api/ims/annex'
 import Tooltip from '@mui/material/Tooltip'
 import ApplicationApis from 'ims-shared/@core/api/ims/application'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import { IEnumAnnex } from 'ims-shared/@core/types/ims/annexTypes'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 import imsApiUrls from 'ims-shared/configs/ims_apis'
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -65,7 +65,7 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
     const formData = new FormData()
     formData.append('id', data.id.toString())
     formData.append('title', data.title)
-    formData.append('domain', data.domain)
+    formData.append('tenant', data.tenant)
     formData.append('name', data.name)
     formData.append('url', data.url)
     formData.append('category', data.category)
@@ -96,7 +96,7 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
 
   let defaultValues: ApplicationType = { ...data }
 
-  const { data: domainList, isLoading } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList, isLoading } = useQuery('tenants', TenantApis(t).getTenants)
   const { data: categoryByCodeAnnex, isLoading: isLoadingCategoryByCodeAnnex } = useQuery('categoryByCodeAnnex', () =>
     AnnexApis(t).getAnnexByTableCode(IEnumAnnex.APP_CATEGORY)
   )
@@ -113,7 +113,7 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
 
   const handleClose = () => {
     defaultValues = {
-      domain: '',
+      tenant: '',
       title: '',
       name: '',
       url: '',
@@ -153,29 +153,29 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
           })}
         >
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
                 >
                   <MenuItem value=''></MenuItem>
                   {!isLoading &&
-                    domainList?.map((domain: DomainType) => (
-                      <MenuItem key={domain.id} value={domain.name}>
-                        {domain.name}
+                    tenantList?.map((tenant: Tenant) => (
+                      <MenuItem key={tenant.id} value={tenant.name}>
+                        {tenant.name}
                       </MenuItem>
                     ))}
                 </Select>

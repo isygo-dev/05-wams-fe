@@ -39,7 +39,7 @@ const LinkStyled = styled(Link)(({ theme }) => ({
     fontSize: '1.375rem !important'
 };*/
 const AppBarContent = (props: Props) => {
-  let domainId
+  let tenantId
   let userData
 
   // ** Props
@@ -48,8 +48,8 @@ const AppBarContent = (props: Props) => {
   if (typeof localStorage != 'undefined') {
     if (localStorage.getItem(localStorageKeys.userData)) {
       userData = JSON.parse(localStorage.getItem(localStorageKeys.userData) || '{}')
-      if (userData?.domainId) {
-        domainId = userData.domainId
+      if (userData?.tenantId) {
+        tenantId = userData.tenantId
       }
     }
   }
@@ -60,7 +60,7 @@ const AppBarContent = (props: Props) => {
         userAppBarBranding(props)
       ) : (
         <LinkStyled href='/'>
-          <Avatar src={`${imsApiUrls.apiUrl_IMS_Domain_ImageDownload_EndPoint}/${domainId}`} alt='logo' />
+          <Avatar src={`${imsApiUrls.apiUrl_IMS_Tenant_ImageDownload_EndPoint}/${tenantId}`} alt='logo' />
           <Typography
             variant='h6'
             sx={{

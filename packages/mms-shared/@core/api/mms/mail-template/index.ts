@@ -59,7 +59,7 @@ const MailTemplateApis = (t: TFunction) => {
 
     if (data.file) {
       const formData = new FormData() // Create a FormData instance
-      formData.append('domain', data.domain) // Append data to the form
+      formData.append('tenant', data.tenant) // Append data to the form
       formData.append('name', data.name) // Append data to the form
       formData.append('description', data.description) // Append data to the form
       formData.append('language', data.language) // Append language to the form
@@ -105,7 +105,7 @@ const MailTemplateApis = (t: TFunction) => {
     }
 
     const formData = new FormData() // Create a FormData instance
-    formData.append('domain', data.domain) // Append data to the form
+    formData.append('tenant', data.tenant) // Append data to the form
     formData.append('name', data.name) // Append data to the form
     formData.append('code', data.code)
     formData.append('description', data.description) // Append data to the form

@@ -88,7 +88,7 @@ const CustomerCard = (props: CardItem) => {
             {data.name}{' '}
           </Typography>
 
-          <Typography>{data.domain}</Typography>
+          <Typography>{data.tenant}</Typography>
           <Typography sx={{ color: 'text.secondary' }}>{data.url}</Typography>
 
           <Accordion sx={{ textAlign: 'left', boxShadow: 'none !important', width: '100%' }}>

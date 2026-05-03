@@ -95,7 +95,7 @@ const WorkflowBoardList = () => {
       const filtered = workflowBoards?.filter(
         row =>
           row.name.toLowerCase().includes(val.trim().toLowerCase()) ||
-          row.domain.toLowerCase().includes(val.trim().toLowerCase()) ||
+          row.tenant.toLowerCase().includes(val.trim().toLowerCase()) ||
           row.description.toLowerCase().includes(val.trim().toLowerCase()) ||
           row.code.toLowerCase().includes(val.trim().toLowerCase())
       )
@@ -111,13 +111,13 @@ const WorkflowBoardList = () => {
   })
 
   const defaultColumns: GridColDef[] = [
-    /*Domain column*/
+    /*Tenant column*/
     {
       flex: 0.1,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 100,
-      headerName: t('Domain.Domain') as string,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      headerName: t('Tenant.Tenant') as string,
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
 
     /*Code column*/

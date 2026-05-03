@@ -4,7 +4,7 @@ import { AppQuery } from 'template-shared/@core/utils/fetchWrapper'
 import rpmApiUrls from 'rpm-shared/configs/rpm_apis'
 import { ShareResumeRequestDto } from 'ims-shared/@core/types/ims/accountTypes'
 import { JobApplicationType } from 'rpm-shared/@core/types/rpm/jobApplicationType'
-import { checkPermission, getUserDomainFromToken } from 'template-shared/@core/api/helper/permission'
+import { checkPermission, getSenderTenantFromToken } from 'template-shared/@core/api/helper/permission'
 import {
   PermissionAction,
   PermissionApplication,
@@ -540,7 +540,7 @@ const ResumeApis = (t: TFunction) => {
     }
 
     const response = await AppQuery(
-      `${rpmApiUrls.apiUrl_RPM_Resume_ResumeCandidate_EndPoint}?domain=${getUserDomainFromToken()}`,
+      `${rpmApiUrls.apiUrl_RPM_Resume_ResumeCandidate_EndPoint}?tenant=${getSenderTenantFromToken()}`,
       {
         method: 'POST',
         headers: {

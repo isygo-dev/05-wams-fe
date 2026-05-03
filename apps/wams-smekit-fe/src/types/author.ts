@@ -2,7 +2,7 @@ export interface AuthorType {
   id?: number
   firstname: string
   lastname: string
-  domain: string
+  tenant: string
   code: string
   imagePath: string
   email: string

@@ -4,7 +4,7 @@ import { CategoryTemplateType, IEnumDocTempStatus } from './categoryTemplateType
 
 export interface DocumentType {
   id?: number
-  domain: string
+  tenant: string
   code: string
   name: string
   description: string

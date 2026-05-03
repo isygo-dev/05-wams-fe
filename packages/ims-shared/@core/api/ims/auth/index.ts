@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import { TFunction } from 'i18next'
 
 const AuthApis = (t: TFunction) => {
-  const loginByDomainAndUserName = async (data: authRequestType) => {
+  const loginByTenantAndUserName = async (data: authRequestType) => {
     const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_UserAccount_AuthType_EndPoint}`, {
       method: 'POST',
       headers: {
@@ -137,7 +137,7 @@ const AuthApis = (t: TFunction) => {
   }
 
   return {
-    loginByDomainAndUserName,
+    loginByTenantAndUserName,
     loginByEmail,
     resetPassword,
     resendOtpCode

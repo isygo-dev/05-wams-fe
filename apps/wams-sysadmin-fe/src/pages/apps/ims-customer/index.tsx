@@ -192,17 +192,17 @@ const CustomerList = () => {
       )
     },
 
-    /*Domain column*/
+    /*Tenant column*/
     {
-      field: 'domain',
-      headerName: t('Domain.Domain') as string,
+      field: 'tenant',
+      headerName: t('Tenant.Tenant') as string,
       flex: 1,
 
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap sx={{ color: 'text.secondary' }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -602,7 +602,7 @@ const CustomerList = () => {
       {!isLoadingProfileUser &&
         addCustomerOpen &&
         checkPermission(PermissionApplication.IMS, PermissionPage.CUSTOMER, PermissionAction.WRITE) && (
-          <AddCustomerDrawer open={addCustomerOpen} domain={profileUser?.domain} toggle={toggleAddCustomerDrawer} />
+          <AddCustomerDrawer open={addCustomerOpen} tenant={profileUser?.tenant} toggle={toggleAddCustomerDrawer} />
         )}
       {deleteDialogOpen && (
         <DeleteCommonDialog

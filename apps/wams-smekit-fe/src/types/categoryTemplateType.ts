@@ -4,7 +4,7 @@ import { tagType } from './tags'
 
 export interface CategoryTemplateType {
   id?: number
-  domain: string
+  tenant: string
   name: string
   description: string
   path: string

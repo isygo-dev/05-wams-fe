@@ -72,7 +72,7 @@ export const updateCategory = async (data: CategoryType) => {
   const { id, ...rest } = data
 
   const cleanedPayload = {
-    domain: rest.domain,
+    tenant: rest.tenant,
     name: rest.name,
     description: rest.description,
     type: rest.type,

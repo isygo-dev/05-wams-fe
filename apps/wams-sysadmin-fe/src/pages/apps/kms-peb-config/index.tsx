@@ -87,14 +87,14 @@ const Peb = () => {
   const defaultColumns: GridColDef[] = [
     {
       flex: 0.15,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 170,
-      headerName: t('Domain.Domain') as string,
+      headerName: t('Tenant.Tenant') as string,
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap sx={{ color: 'text.secondary' /* , textTransform: 'capitalize' */ }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -213,7 +213,7 @@ const Peb = () => {
       {!isLoadingProfileUser &&
         addPebOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.PEB_CONFIG, PermissionAction.WRITE) && (
-          <AddPebDrawer open={addPebOpen} domain={profileUser?.domain} toggle={toggleAddPebDrawer} />
+          <AddPebDrawer open={addPebOpen} tenant={profileUser?.tenant} toggle={toggleAddPebDrawer} />
         )}
       {editPebConfigOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.PEB_CONFIG, PermissionAction.WRITE) && (

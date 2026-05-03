@@ -77,13 +77,13 @@ const WorkflowList = () => {
   })
 
   const defaultColumns: GridColDef[] = [
-    /*Domain column*/
+    /*Tenant column*/
     {
       flex: 0.1,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 100,
-      headerName: t('Domain.Domain') as string,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      headerName: t('Tenant.Tenant') as string,
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
 
     /*Code column*/
@@ -266,7 +266,7 @@ const WorkflowList = () => {
       {!isLoadingProfileUser &&
         addWorkFlowOpen &&
         checkPermission(PermissionApplication.RPM, PermissionPage.WORKFLOW, PermissionAction.WRITE) && (
-          <AddWorkFlowDrawer open={addWorkFlowOpen} toggle={toggleAddWorkFlowDrawer} domain={profileUser?.domain} />
+          <AddWorkFlowDrawer open={addWorkFlowOpen} toggle={toggleAddWorkFlowDrawer} tenant={profileUser?.tenant} />
         )}
 
       {deleteDialogOpen &&

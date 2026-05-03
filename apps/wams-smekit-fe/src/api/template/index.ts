@@ -4,10 +4,10 @@ import imsApiUrls from 'ims-shared/configs/ims_apis'
 import toast from 'react-hot-toast'
 import { AuthorType } from '../../types/author'
 import { CategoryType } from '../../types/category'
-import { getUserDomainFromToken } from 'template-shared/@core/api/helper/permission'
+import { getSenderTenantFromToken } from 'template-shared/@core/api/helper/permission'
 
 export const fetchAllTemplate = async () => {
-  const userIdentifier = getUserDomainFromToken()
+  const userIdentifier = getSenderTenantFromToken()
   const response = await AppQuery(
     `${apiUrls.apiUrl_smekit_Template_FetchAll_Endpoint}?userIdentifier=${userIdentifier}`,
     {

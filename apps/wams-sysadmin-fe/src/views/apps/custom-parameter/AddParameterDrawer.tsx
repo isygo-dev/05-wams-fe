@@ -18,7 +18,7 @@ import { InputLabel } from '@mui/material'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 import {
   PermissionAction,
   PermissionApplication,
@@ -26,7 +26,7 @@ import {
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import CustomParameterApis from 'ims-shared/@core/api/ims/custom-parametre'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -38,20 +38,20 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 const schema = yup.object().shape({
   name: yup.string().required(),
   value: yup.string().required(),
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   description: yup.string().required()
 })
 
 interface SidebarAddParamType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const SidebarAddParam = (props: SidebarAddParamType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
+  const { open, toggle, tenant } = props
   const onSubmit = async (data: AppParameterRequest) => {
     addParameterMutation.mutate(data)
     handleClose()
@@ -73,7 +73,7 @@ const SidebarAddParam = (props: SidebarAddParamType) => {
   const defaultValues: AppParameterRequest = {
     name: '',
     value: '',
-    domain: domain,
+    tenant: tenant,
     description: ''
   }
 
@@ -93,7 +93,7 @@ const SidebarAddParam = (props: SidebarAddParamType) => {
     reset()
   }
 
-  const { data: domainList, isLoading } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList, isLoading } = useQuery('tenants', TenantApis(t).getTenants)
 
   return (
     <Drawer
@@ -117,29 +117,29 @@ const SidebarAddParam = (props: SidebarAddParamType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
                 >
-                  {!isLoading && domainList && domainList.length > 0 ? (
-                    domainList.map((domain: DomainType) => (
-                      <MenuItem key={domain.id} value={domain.name}>
-                        {domain.name}
+                  {!isLoading && tenantList && tenantList.length > 0 ? (
+                    tenantList.map((tenant: Tenant) => (
+                      <MenuItem key={tenant.id} value={tenant.name}>
+                        {tenant.name}
                       </MenuItem>
                     ))
                   ) : (
@@ -150,7 +150,7 @@ const SidebarAddParam = (props: SidebarAddParamType) => {
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller

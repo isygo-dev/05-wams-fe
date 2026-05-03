@@ -158,17 +158,17 @@ const IntegrationOrderList = () => {
   })
 
   const defaultColumns: GridColDef[] = [
-    /*Domain column*/
+    /*Tenant column*/
     {
-      field: 'domain',
-      headerName: t('Domain.Domain') as string,
+      field: 'tenant',
+      headerName: t('Tenant.Tenant') as string,
       flex: 1,
 
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap variant='body2' sx={{ color: 'text.disabled' }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -406,7 +406,7 @@ const IntegrationOrderList = () => {
       {!isLoadingProfileUser && addIntegrationOrderOpen && (
         <AddIntegrationOrderDrawer
           open={addIntegrationOrderOpen}
-          domain={profileUser?.domain}
+          tenant={profileUser?.tenant}
           toggle={toggleAddIntegrationOrderDrawer}
         />
       )}

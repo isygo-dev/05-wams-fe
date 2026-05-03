@@ -99,14 +99,14 @@ const Codification = () => {
   const defaultColumns: GridColDef[] = [
     {
       flex: 0.15,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 170,
-      headerName: t('Domain.Domain') as string,
+      headerName: t('Tenant.Tenant') as string,
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap sx={{ color: 'text.secondary' /* , textTransform: 'capitalize' */ }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -305,7 +305,7 @@ const Codification = () => {
       {!isLoadingProfileUser &&
         addCodificationOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.APP_NEXT_CODE, PermissionAction.WRITE) && (
-          <SidebarAddNextCode open={addCodificationOpen} domain={profileUser?.domain} toggle={toggleAddCodeDrawer} />
+          <SidebarAddNextCode open={addCodificationOpen} tenant={profileUser?.tenant} toggle={toggleAddCodeDrawer} />
         )}
       {deleteDialogOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.APP_NEXT_CODE, PermissionAction.DELETE) && (

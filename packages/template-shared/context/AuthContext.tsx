@@ -70,7 +70,7 @@ const AuthProvider = ({ children }: Props) => {
         setLoading(true)
 
         const dataPrams = {
-          domain: decodeToken['sender-domain'],
+          tenant: decodeToken['sender-tenant'],
           application: process.env.NEXT_PUBLIC_APP_NAME,
           userName: decodeToken['sender-user'],
           password: paramToken,
@@ -144,10 +144,10 @@ const AuthProvider = ({ children }: Props) => {
     setUser(null)
     console.log(localStorage.getItem('rememberMe') == 'true')
     if (localStorage.getItem('rememberMe') == 'true') {
-      const domain = localStorage.getItem('domain')
+      const tenant = localStorage.getItem('tenant')
       const userName = localStorage.getItem('userName')
       window.localStorage.clear()
-      localStorage.setItem('domain', domain)
+      localStorage.setItem('tenant', tenant)
       localStorage.setItem('userName', userName)
     } else {
       window.localStorage.clear()

@@ -51,7 +51,7 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({ open, toggle, dat
     expiredDate: dataParameter?.details?.passport[0]?.expiredDate || '',
     imagePath: dataParameter?.details?.passport[0]?.imagePath || '',
     issuedPlace: dataParameter?.details?.passport[0]?.issuedPlace || '',
-    domain: dataParameter?.details?.passport[0]?.domain || '',
+    tenant: dataParameter?.details?.passport[0]?.tenant || '',
     employeeDetailsId: dataParameter?.details?.passport[0]?.employeeDetailsId || null
   }
 
@@ -96,7 +96,7 @@ export const UpdatePassport: React.FC<UpdatePassportType> = ({ open, toggle, dat
       formData.set('issuedPlace', data.issuedPlace)
     }
     formData.set('employeeDetailsId', dataParameter.details.id.toString())
-    formData.set('domain', dataParameter.domain)
+    formData.set('tenant', dataParameter.tenant)
     if (data.issuedDate) {
       const issuedDateISOString =
         typeof data.issuedDate === 'string'

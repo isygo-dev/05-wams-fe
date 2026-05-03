@@ -1,7 +1,7 @@
 export type PebConfigType = {
   id: number
   code?: string
-  domain?: string
+  tenant?: string
   algorithm?: string
   keyObtentionIterations?: number
   saltGenerator?: string
@@ -13,7 +13,7 @@ export type PebConfigType = {
 }
 
 export type PebConfigData = {
-  domain: string
+  tenant: string
   algorithm: string
   keyObtentionIterations: number
   saltGenerator: string

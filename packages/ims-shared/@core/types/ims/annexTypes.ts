@@ -8,7 +8,7 @@ export enum Language {
 export type AnnexType = {
   id?: number
   tableCode?: string
-  domain?: string
+  tenant?: string
   language?: Language
   value?: string
   description?: string

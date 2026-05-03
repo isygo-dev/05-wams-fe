@@ -34,8 +34,8 @@ import {
   PermissionApplication,
   PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import CropperCommon from 'template-shared/@core/components/cropper'
 import { tagType } from '../../../types/tags'
 import { fetchAlltags } from '../../../api/tag'
@@ -51,7 +51,7 @@ const AddCategoryDrawer = ({ category, showDialogue, setShowDialogue }) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
-  const { data: domainList } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList } = useQuery('tenants', TenantApis(t).getTenants)
   const { data: tagsList = [] } = useQuery('tags', fetchAlltags)
   const [updateImage, setUpdateImage] = useState<boolean>(false)
   const [, setPhotoFile] = useState<File>()
@@ -60,7 +60,7 @@ const AddCategoryDrawer = ({ category, showDialogue, setShowDialogue }) => {
   const [currentImage] = useState<string | undefined>(undefined)
 
   const schema = yup.object().shape({
-    domain: yup.string().required(t('Domain is required')),
+    tenant: yup.string().required(t('Tenant is required')),
     name: yup.string().required(t('Name is required')),
     description: yup.string().required(t('Description is required')),
     type: yup.string().required()
@@ -171,7 +171,7 @@ const AddCategoryDrawer = ({ category, showDialogue, setShowDialogue }) => {
     formData.append('name', data.name)
     formData.append('type', data.type)
     formData.append('description', data.description)
-    formData.append('domain', data.domain)
+    formData.append('tenant', data.tenant)
 
     if (tags.length > 0) {
       const tagNamesString = tags.map(tag => tag.tagName).join(',')
@@ -197,7 +197,7 @@ const AddCategoryDrawer = ({ category, showDialogue, setShowDialogue }) => {
       name: data.name,
       type: data.type,
       description: data.description,
-      domain: data.domain,
+      tenant: data.tenant,
       imagePath: selectedFile ? undefined : category?.imagePath,
       tagName: tags.map(tag => ({
         id: 'id' in tag ? tag.id : undefined,
@@ -320,33 +320,33 @@ const AddCategoryDrawer = ({ category, showDialogue, setShowDialogue }) => {
       <Box sx={{ p: 6 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }} size='small'>
-            <InputLabel id='domain-select-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='tenant-select-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
-                  labelId='domain-select-label'
-                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
+                  labelId='tenant-select-label'
+                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)}
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   onChange={onChange}
                   value={value || ''}
                 >
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domainList?.map((domain: DomainType) => (
-                    <MenuItem key={domain.id} value={domain.name}>
-                      {domain.name}
+                  {tenantList?.map((tenant: Tenant) => (
+                    <MenuItem key={tenant.id} value={tenant.name}>
+                      {tenant.name}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>

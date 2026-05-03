@@ -27,8 +27,8 @@ export function AdministrativeInformation({ checkPermissionUpdate }) {
 
   const { register, control } = useFormContext()
   const { data: employeeList, isLoading: employeeLoading } = useQuery<EmployeeType[]>(
-    ['employeeList', employeeData?.domain],
-    () => EmployeeApis(t).getEmployeesByDomain(employeeData.domain)
+    ['employeeList', employeeData?.tenant],
+    () => EmployeeApis(t).getEmployeesByTenant(employeeData.tenant)
   )
   const filteredEmployeeList = employeeList?.filter(employee => employee.id !== employeeData.id)
 

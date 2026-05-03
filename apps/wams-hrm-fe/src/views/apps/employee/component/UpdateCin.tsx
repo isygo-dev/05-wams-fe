@@ -49,7 +49,7 @@ export const UpdateCin: React.FC<UpdateCinType> = ({ open, toggle, dataParameter
     issuedDate: dataParameter?.details?.cin[0]?.issuedDate || '',
     imagePath: dataParameter?.details?.cin[0]?.imagePath || '',
     issuedPlace: dataParameter?.details?.cin[0]?.issuedPlace || '',
-    domain: dataParameter?.details?.cin[0]?.domain || '',
+    tenant: dataParameter?.details?.cin[0]?.tenant || '',
     employeeDetailsId: dataParameter?.details?.cin[0]?.employeeDetailsId || null
   }
 
@@ -94,7 +94,7 @@ export const UpdateCin: React.FC<UpdateCinType> = ({ open, toggle, dataParameter
       formData.set('issuedPlace', data.issuedPlace)
     }
     formData.set('employeeDetailsId', dataParameter.details.id.toString())
-    formData.set('domain', dataParameter.domain)
+    formData.set('tenant', dataParameter.tenant)
     if (data.issuedDate) {
       const issuedDateISOString =
         typeof data.issuedDate === 'string'

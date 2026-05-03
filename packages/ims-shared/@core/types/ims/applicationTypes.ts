@@ -2,7 +2,7 @@ import { AdminStatus } from './accountTypes'
 
 export type ApplicationType = {
   id?: number
-  domain: string
+  tenant: string
   code?: string
   category: string
   name: string

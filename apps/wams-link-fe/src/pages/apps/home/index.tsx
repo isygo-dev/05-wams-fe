@@ -16,8 +16,8 @@ import { MiniAccountChatType } from 'ims-shared/@core/types/ims/accountTypes'
 const HomePage = () => {
   const { t } = useTranslation()
   const { data: user, isLoading: isLoadingUser } = useQuery(`user`, () => AccountApis(t).getAccountProfile())
-  const { data: contactsAccount, isLoading: isLoadingAccount } = useQuery(['contactsAccount', user?.domain], () =>
-    AccountApis(t).getAccountsByDomain(user?.domain)
+  const { data: contactsAccount, isLoading: isLoadingAccount } = useQuery(['contactsAccount', user?.tenant], () =>
+    AccountApis(t).getAccountsByTenant(user?.tenant)
   )
   const { data: posts, isLoading: isLoadingDataPosts } = useQuery(`posts`, () => PostApis(t).getPosts(0, 5))
   const [isOpen, setIsOpen] = useState(false)
@@ -33,7 +33,7 @@ const HomePage = () => {
   }
 
   const [defaultValues, setDefaultValues] = useState<PostType>({
-    domain: user?.domain,
+    tenant: user?.tenant,
     accountCode: user?.code,
     title: '',
     talk: '',

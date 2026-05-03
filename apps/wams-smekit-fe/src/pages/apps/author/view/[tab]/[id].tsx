@@ -33,7 +33,7 @@ import CloseIcon from '@mui/icons-material/Close'
 
 import Icon from 'template-shared/@core/components/icon'
 
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import apiUrls from '../../../../../config/apiUrl'
 import {
   downloadAuthorFile,
@@ -50,7 +50,7 @@ interface AuthorFormData {
   code: string
   firstname: string
   lastname: string
-  domain: string
+  tenant: string
   email: string
   phone: string
   type: string
@@ -75,7 +75,7 @@ const UpdateAuthor = () => {
     code: '',
     firstname: '',
     lastname: '',
-    domain: '',
+    tenant: '',
     email: '',
     phone: '',
     type: '',
@@ -91,7 +91,7 @@ const UpdateAuthor = () => {
   const [openPreview, setOpenPreview] = useState(false)
   const [templateToPreview, setTemplateToPreview] = useState(null)
 
-  const { data: domainList } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList } = useQuery('tenants', TenantApis(t).getTenants)
 
   const { data: templates, isLoading: isLoadingTemplates } = useQuery(
     ['authorTemplates', authorId],
@@ -342,14 +342,14 @@ const UpdateAuthor = () => {
 
                   <Grid item xs={12}>
                     <FormControl fullWidth size='small' sx={{ mb: 2 }}>
-                      <InputLabel>{t('Domaine')}</InputLabel>
-                      <Select label={t('Domain')} name='domain' value={formData.domain} onChange={handleChange}>
+                      <InputLabel>{t('Tenant')}</InputLabel>
+                      <Select label={t('Tenant')} name='tenant' value={formData.tenant} onChange={handleChange}>
                         <MenuItem value=''>
                           <em>{t('None')}</em>
                         </MenuItem>
-                        {domainList?.map(domain => (
-                          <MenuItem key={domain.id} value={domain.name}>
-                            {domain.name}
+                        {tenantList?.map(tenant => (
+                          <MenuItem key={tenant.id} value={tenant.name}>
+                            {tenant.name}
                           </MenuItem>
                         ))}
                       </Select>

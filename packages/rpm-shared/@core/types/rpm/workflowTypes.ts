@@ -3,7 +3,7 @@ import { TransitionType } from './transitionTypes'
 
 export type WorkflowsType = {
   id: number
-  domain: string
+  tenant: string
   code: string
   name: string
   category: string
@@ -20,7 +20,7 @@ export type WorkflowsType = {
 }
 
 export type WorkflowData = {
-  domain: string
+  tenant: string
   name: string
   category: string
   description: string
@@ -28,6 +28,6 @@ export type WorkflowData = {
 }
 
 export type AvailableEmailsRequest = {
-  domain: string
+  tenant: string
   wfCode: string
 }

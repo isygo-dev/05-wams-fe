@@ -26,7 +26,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required('domain is required'),
+  tenant: yup.string().required('tenant is required'),
   name: yup.string().required(),
   icsPath: yup.string(),
   description: yup.string(),
@@ -48,7 +48,7 @@ const SidebarEditCalendar = (props: SidebarEditCalendarType) => {
   if (open && props.dataCalendar !== undefined) {
     defaultValues = {
       id: props.dataCalendar.id,
-      domain: props.dataCalendar.domain,
+      tenant: props.dataCalendar.tenant,
       icsPath: props.dataCalendar.icsPath,
       name: props.dataCalendar.name,
       description: props.dataCalendar.description,
@@ -57,7 +57,7 @@ const SidebarEditCalendar = (props: SidebarEditCalendarType) => {
   } else {
     defaultValues = {
       id: 0,
-      domain: '',
+      tenant: '',
       icsPath: '',
       name: '',
       description: '',
@@ -99,7 +99,7 @@ const SidebarEditCalendar = (props: SidebarEditCalendarType) => {
 
   const handleClose = () => {
     defaultValues = {
-      domain: '',
+      tenant: '',
       icsPath: '',
       id: 0,
       name: ''
@@ -131,7 +131,7 @@ const SidebarEditCalendar = (props: SidebarEditCalendarType) => {
         <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
@@ -139,14 +139,14 @@ const SidebarEditCalendar = (props: SidebarEditCalendarType) => {
                   value={value}
                   id='form-props-read-only-input'
                   InputProps={{ readOnly: false }}
-                  label={t('Domain.Domain')}
+                  label={t('Tenant.Tenant')}
                   onChange={onChange}
-                  placeholder='domain'
-                  error={Boolean(errors.domain)}
+                  placeholder='tenant'
+                  error={Boolean(errors.tenant)}
                 />
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller

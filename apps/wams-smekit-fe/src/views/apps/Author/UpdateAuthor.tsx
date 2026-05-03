@@ -27,7 +27,7 @@ import {
   PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 
 const UpdateAuthor = ({ open, onClose, author }) => {
   const { t } = useTranslation()
@@ -38,7 +38,7 @@ const UpdateAuthor = ({ open, onClose, author }) => {
     code: author?.code || '',
     firstname: author?.firstname || '',
     lastname: author?.lastname || '',
-    domain: author?.domain || '',
+    tenant: author?.tenant || '',
     email: author?.email || '',
     phone: author?.phone || '',
     type: author?.type || '',
@@ -52,7 +52,7 @@ const UpdateAuthor = ({ open, onClose, author }) => {
 
   const [, setSelectedFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState('')
-  const { data: domainList } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList } = useQuery('tenants', TenantApis(t).getTenants)
 
   useEffect(() => {
     if (author) {
@@ -61,7 +61,7 @@ const UpdateAuthor = ({ open, onClose, author }) => {
         code: author.code || '',
         firstname: author.firstname || '',
         lastname: author.lastname || '',
-        domain: author.domain || '',
+        tenant: author.tenant || '',
         email: author.email || '',
         phone: author.phone || '',
         type: author.type || '',
@@ -202,22 +202,22 @@ const UpdateAuthor = ({ open, onClose, author }) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <FormControl fullWidth>
-                <InputLabel id='domain-select-label'>{t('Domain.Domain')}</InputLabel>
+                <InputLabel id='tenant-select-label'>{t('Tenant.Tenant')}</InputLabel>
                 <Select
-                  labelId='domain-select-label'
+                  labelId='tenant-select-label'
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
-                  value={formData.domain}
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
+                  value={formData.tenant}
                   onChange={handleChange}
-                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
+                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)}
                 >
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domainList?.map(domain => (
-                    <MenuItem key={domain.id} value={domain.name}>
-                      {domain.name}
+                  {tenantList?.map(tenant => (
+                    <MenuItem key={tenant.id} value={tenant.name}>
+                      {tenant.name}
                     </MenuItem>
                   ))}
                 </Select>

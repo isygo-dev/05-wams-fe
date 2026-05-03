@@ -17,7 +17,7 @@ export enum PermissionPage {
   ACCOUNT = '.account.',
   ACCOUNT_IMAGE = '.accountimage.',
   ACCOUNT_DETAIL = '.accountdetails.',
-  DOMAIN = '.domain.',
+  TENANT = '.tenant.',
   APPLICATION = '.app.',
   ROLE_INFO = '.roleinfo.',
   APP_PARAMETER = '.appparameter.',

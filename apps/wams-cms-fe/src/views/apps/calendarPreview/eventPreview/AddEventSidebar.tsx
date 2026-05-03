@@ -59,7 +59,7 @@ const defaultState: DefaultStateType = {
 
 const AddEventSidebar = (props: AddEventSidebarType) => {
   const { t } = useTranslation()
-  const { store, refetch, drawerWidth, calendarApi, addEventSidebarOpen, handleAddEventSidebarToggle, domain, name } =
+  const { store, refetch, drawerWidth, calendarApi, addEventSidebarOpen, handleAddEventSidebarToggle, tenant, name } =
     props
   const [values, setValues] = useState<DefaultStateType>(defaultState)
   const {
@@ -119,7 +119,7 @@ const AddEventSidebar = (props: AddEventSidebarType) => {
       end: values.endDate,
       allDay: values.allDay,
       start: values.startDate,
-      domain: domain,
+      tenant: tenant,
       calendarName: name,
       extendedProps: {
         calendar: capitalize(values.calendar),
@@ -138,7 +138,7 @@ const AddEventSidebar = (props: AddEventSidebarType) => {
         allDay: values.allDay,
         start: values.startDate,
 
-        domain: domain,
+        tenant: tenant,
         calendarName: name,
 
         extendedProps: {

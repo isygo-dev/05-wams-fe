@@ -100,7 +100,7 @@ const IntegrationOrderCard = (props: CardItem) => {
           <Typography className={Styles.cardTitle} variant='h6'>
             {data.name}
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>{data.domain}</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{data.tenant}</Typography>
           <Typography sx={{ color: 'text.secondary' }}>{data.code}</Typography>
           <Typography sx={{ color: 'text.secondary' }}>{data.integrationOrder}</Typography>
           <Typography sx={{ color: 'text.secondary' }}>{data.serviceName}</Typography>

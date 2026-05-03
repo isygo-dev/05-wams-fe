@@ -12,7 +12,7 @@ export type AccountDto = {
   origin?: string
 
   //ims definition
-  domain?: string
+  tenant?: string
   language?: string
   adminStatus?: string
   systemStatus?: string | undefined
@@ -43,7 +43,7 @@ export type MinAccountDto = {
   origin?: string
 
   //ims definition
-  domain?: string
+  tenant?: string
   language?: string
   adminStatus?: string
   systemStatus?: string | undefined

@@ -10,7 +10,7 @@ interface CardItem {
   id: number
   fileName: string
   extension: string
-  domain: string
+  tenant: string
 }
 
 const ResumePreview = (props: CardItem) => {

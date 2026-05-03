@@ -35,7 +35,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string(),
+  tenant: yup.string(),
   host: yup.string().required(),
   port: yup.number().required().integer().positive(),
   username: yup.string().required(),
@@ -53,7 +53,7 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
   const { open, toggle } = props
   let defaultValues: MailSenderConfigTypes = {
     id: 0,
-    domain: '',
+    tenant: '',
     host: '',
     port: '',
     username: '',
@@ -68,7 +68,7 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
   if (open && props.dataConfig !== undefined) {
     defaultValues = {
       id: props.dataConfig.id,
-      domain: props.dataConfig.domain,
+      tenant: props.dataConfig.tenant,
       host: props.dataConfig.host,
       port: props.dataConfig.port,
       username: props.dataConfig.username,
@@ -142,12 +142,12 @@ const SidebarEditConfig = (props: SidebarEditConfigType) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <TextField
-                  label={t('Domain.Domain')}
+                  label={t('Tenant.Tenant')}
                   fullWidth
                   {...field}
                   variant='outlined'

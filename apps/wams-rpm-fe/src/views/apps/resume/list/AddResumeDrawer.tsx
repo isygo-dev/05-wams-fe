@@ -16,7 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { Checkbox, FormControlLabel, InputLabel, MenuItem, Select } from '@mui/material'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 import {
   PermissionAction,
   PermissionApplication,
@@ -25,14 +25,14 @@ import {
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import EmailInputMask from 'template-shared/views/forms/form-elements/input-mask/EmailInputMask'
 import MuiPhoneNumber from 'material-ui-phone-number'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import ResumeApis from 'rpm-shared/@core/api/rpm/resume'
 import { ResumeTypes } from 'rpm-shared/@core/types/rpm/ResumeTypes'
 
 interface SidebarAddResumeType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 interface ResumeData {
@@ -41,7 +41,7 @@ interface ResumeData {
   lastName: string
   email: string
   phone: string
-  domain: string
+  tenant: string
   tags: string[]
   file: File | null
   originalFileName: string | undefined
@@ -58,14 +58,14 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 const SidebarAddResume = (props: SidebarAddResumeType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { data: domainList, isFetched: isFetchedDomains } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList, isFetched: isFetchedTenants } = useQuery('tenants', TenantApis(t).getTenants)
   const [linkedUser, setLinkedUser] = useState<boolean>(true)
   const [file, setFile] = useState<File | null>(null)
   const schema = yup.object().shape({
     email: yup.string().email().required(),
     firstName: yup.string().required(),
     title: yup.string().required(),
-    domain: yup.string().required(),
+    tenant: yup.string().required(),
     lastName: yup.string().required(),
     phone: yup.string().required(),
     tags: yup.array().min(1),
@@ -96,7 +96,7 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
       firstName: '',
       title: '',
       lastName: '',
-      domain: props.domain,
+      tenant: props.tenant,
       phone: '',
       tags: [],
       file: null,
@@ -118,7 +118,7 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
     formData.append('title', data.title)
     formData.append('lastName', data.lastName)
     formData.append('phone', data.phone)
-    formData.append('domain', data.domain)
+    formData.append('tenant', data.tenant)
     formData.append('firstName', data.firstName)
     formData.append('tags', data?.tags?.toString())
     formData.append('filename', file.name)
@@ -150,7 +150,7 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
 
   return (
     <>
-      {isFetchedDomains ? (
+      {isFetchedTenants ? (
         <Drawer
           open={open}
           anchor='right'
@@ -172,21 +172,21 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl fullWidth sx={{ mb: 4 }}>
-                <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+                <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
                 <Controller
-                  name='domain'
+                  name='tenant'
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
                     <Select
                       disabled={
-                        checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                        checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                           ? false
                           : true
                       }
                       size='small'
-                      label={t('Domain.Domain')}
-                      name='domain'
+                      label={t('Tenant.Tenant')}
+                      name='tenant'
                       defaultValue=''
                       onChange={onChange}
                       value={value}
@@ -194,15 +194,15 @@ const SidebarAddResume = (props: SidebarAddResumeType) => {
                       <MenuItem value=''>
                         <em>{t('None')}</em>
                       </MenuItem>
-                      {domainList?.map((domain: DomainType) => (
-                        <MenuItem key={domain.id} value={domain.name}>
-                          {domain.name}
+                      {tenantList?.map((tenant: Tenant) => (
+                        <MenuItem key={tenant.id} value={tenant.name}>
+                          {tenant.name}
                         </MenuItem>
                       ))}
                     </Select>
                   )}
                 />
-                {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+                {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
               </FormControl>
               <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller

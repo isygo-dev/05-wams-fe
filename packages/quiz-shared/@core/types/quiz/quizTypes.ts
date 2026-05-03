@@ -10,7 +10,7 @@ export type QuizType = {
   score?: number
   scale?: number
   level: string
-  domain: string
+  tenant: string
 
   //Audit info
   createDate?: Date
@@ -23,7 +23,7 @@ export type QuizDetailType = {
   id: number
   code: string
   name: string
-  domain: string
+  tenant: string
   description: string
   category: string
   sections: Section[]

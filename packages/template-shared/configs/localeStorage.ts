@@ -5,7 +5,7 @@ const localStorageKeys = {
   refreshToken: 'refreshToken',
   authorityToken: 'authorityToken',
   settings: 'settings',
-  domain: 'domain',
+  tenant: 'tenant',
   userName: 'userName',
   email: 'email',
   authType: 'authType',

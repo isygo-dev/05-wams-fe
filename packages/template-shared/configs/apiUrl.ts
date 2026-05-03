@@ -73,8 +73,8 @@ const apiUrls = {
   apiUrl_CMS_Calendar_Count_EndPoint: apiUrl_CMS + api_version + '/private/calendar/count',
   apiUrl_CMS_Calendar_Download_EndPoint: apiUrl_CMS + api_version + '/private/calendar/ics/download',
   apiUrl_CMS_Calendar_Event_EndPoint: apiUrl_CMS + api_version + '/private/calendar/event',
-  apiUrl_CMS_Calendar_EventByDomainAndCalendarName_EndPoint:
-    apiUrl_CMS + api_version + '/private/calendar/event/byDomainAndCalendarName',
+  apiUrl_CMS_Calendar_EventByTenantAndCalendarName_EndPoint:
+    apiUrl_CMS + api_version + '/private/calendar/event/ByTenantAndCalendarName',
   apiUrl_CMS_UpdateLockedCalendar_EndPoint: apiUrl_CMS + api_version + '/private/calendar/locked-status',
 
   apiUrl_SCUI,

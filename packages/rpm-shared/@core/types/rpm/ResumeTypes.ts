@@ -5,7 +5,7 @@ import { AdditionalFiles } from 'template-shared/@core/types/helper/fileTypes'
 export type ResumeTypes = {
   birthDate: Date
   details: ResumeDetails
-  domain: string
+  tenant: string
   email: string
   code?: string
   address: AddressTypes
@@ -30,7 +30,7 @@ export type ResumeTypes = {
 export type MiniResume = {
   id: number
   code: string
-  domain: string
+  tenant: string
   firstName: string
   title: string
   lastName: string

@@ -24,12 +24,12 @@ import {
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import AnnexApis from 'ims-shared/@core/api/ims/annex'
 import Tooltip from '@mui/material/Tooltip'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import ApplicationApis from 'ims-shared/@core/api/ims/application'
 import { ApplicationType } from 'ims-shared/@core/types/ims/applicationTypes'
 import { IEnumAnnex } from 'ims-shared/@core/types/ims/annexTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -48,13 +48,13 @@ const schema = yup.object().shape({
 interface SidebarAddApplicationType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const SidebarAddApplication = (props: SidebarAddApplicationType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
+  const { open, toggle, tenant } = props
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -63,7 +63,7 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
   const onSubmit = async (data: ApplicationType) => {
     const formData = new FormData()
     formData.append('title', data.title)
-    formData.append('domain', data.domain)
+    formData.append('tenant', data.tenant)
     formData.append('name', data.name)
     formData.append('url', data.url)
     formData.append('category', data.category)
@@ -89,7 +89,7 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
   })
 
   let defaultValues: ApplicationType = {
-    domain: domain,
+    tenant: tenant,
     title: '',
     name: '',
     url: '',
@@ -99,7 +99,7 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
     adminStatus: null
   }
 
-  const { data: domainList, isLoading } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList, isLoading } = useQuery('tenants', TenantApis(t).getTenants)
   const { data: categoryByCodeAnnex, isLoading: isLoadingCategoryByCodeAnnex } = useQuery('categoryByCodeAnnex', () =>
     AnnexApis(t).getAnnexByTableCode(IEnumAnnex.APP_CATEGORY)
   )
@@ -116,7 +116,7 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
 
   const handleClose = () => {
     defaultValues = {
-      domain: '',
+      tenant: '',
       title: '',
       name: '',
       url: '',
@@ -156,29 +156,29 @@ const SidebarAddApplication = (props: SidebarAddApplicationType) => {
           })}
         >
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
                 >
                   <MenuItem value=''></MenuItem>
                   {!isLoading &&
-                    domainList?.map((domain: DomainType) => (
-                      <MenuItem key={domain.id} value={domain.name}>
-                        {domain.name}
+                    tenantList?.map((tenant: Tenant) => (
+                      <MenuItem key={tenant.id} value={tenant.name}>
+                        {tenant.name}
                       </MenuItem>
                     ))}
                 </Select>

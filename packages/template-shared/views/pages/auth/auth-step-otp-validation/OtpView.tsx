@@ -113,7 +113,7 @@ const OtpView = () => {
 
   const onResendSubmit = () => {
     const request: any = {
-      domain: sessionStorage.getItem(localStorageKeys.domain),
+      tenant: sessionStorage.getItem(localStorageKeys.tenant),
       userName: sessionStorage.getItem(localStorageKeys.userName)
     }
     mutationResendOtp.mutate(request)
@@ -127,7 +127,7 @@ const OtpView = () => {
 
   const onSubmit = () => {
     const request: LoginParams = {
-      domain: sessionStorage.getItem(localStorageKeys.domain) || localStorage.getItem(localStorageKeys.domain) || '',
+      tenant: sessionStorage.getItem(localStorageKeys.tenant) || localStorage.getItem(localStorageKeys.tenant) || '',
       application: process.env.NEXT_PUBLIC_APP_NAME || '',
       userName:
         sessionStorage.getItem(localStorageKeys.userName) || localStorage.getItem(localStorageKeys.userName) || '',

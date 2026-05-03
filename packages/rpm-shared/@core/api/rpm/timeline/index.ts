@@ -19,7 +19,7 @@ const TimeLineApis = (t: TFunction) => {
       return
     }
 
-    const response = await AppQuery(`${rpmApiUrls.apiUrl_RPM_TimeLine_EndPoint}/${resume.code}/${resume.domain}`, {
+    const response = await AppQuery(`${rpmApiUrls.apiUrl_RPM_TimeLine_EndPoint}/${resume.code}/${resume.tenant}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',

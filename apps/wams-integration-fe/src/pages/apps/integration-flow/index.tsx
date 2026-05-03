@@ -152,17 +152,17 @@ const IntegrationFlow = () => {
   })
 
   const defaultColumns: GridColDef[] = [
-    /*Domain column*/
+    /*Tenant column*/
     {
-      field: 'domain',
-      headerName: t('Domain.Domain') as string,
+      field: 'tenant',
+      headerName: t('Tenant.Tenant') as string,
       flex: 1,
 
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap sx={{ color: 'text.secondary' }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -402,7 +402,7 @@ const IntegrationFlow = () => {
       {!isLoadingProfileUser &&
         addFlowOpen &&
         checkPermission(PermissionApplication.IMS, PermissionPage.INTEGRATION_FLOW, PermissionAction.WRITE) && (
-          <AddFlowDrawer open={addFlowOpen} domain={profileUser?.domain} toggle={toggleAddFlowDrawer} />
+          <AddFlowDrawer open={addFlowOpen} tenant={profileUser?.tenant} toggle={toggleAddFlowDrawer} />
         )}
       {deleteDialogOpen && (
         <DeleteCommonDialog

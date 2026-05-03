@@ -12,9 +12,9 @@ import AuthApis from 'ims-shared/@core/api/ims/auth'
 import { useTranslation } from 'react-i18next'
 import imsApiUrls from 'ims-shared/configs/ims_apis'
 
-const imageUrl = imsApiUrls.apiUrl_IMS_Domain_ImageDownload_EndPoint
+const imageUrl = imsApiUrls.apiUrl_IMS_Tenant_ImageDownload_EndPoint
 
-const DomainsPage = () => {
+const TenantsPage = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const [list, setList] = useState([])
@@ -25,14 +25,14 @@ const DomainsPage = () => {
   const [query, setQuery] = useState<string>('')
 
   const onLoginMutation = useMutation({
-    mutationFn: (data: authRequestType) => AuthApis(t).loginByDomainAndUserName(data),
+    mutationFn: (data: authRequestType) => AuthApis(t).loginByTenantAndUserName(data),
     onSuccess: (res, data) => {
-      const { domain, userName } = data
-      sessionStorage.setItem(localStorageKeys.domain, domain)
+      const { tenant, userName } = data
+      sessionStorage.setItem(localStorageKeys.tenant, tenant)
       sessionStorage.setItem(localStorageKeys.userName, userName)
       sessionStorage.setItem(localStorageKeys.rememberMe, String(rememberMe))
 
-      localStorage.setItem(localStorageKeys.domain, data.domain)
+      localStorage.setItem(localStorageKeys.tenant, data.tenant)
       localStorage.setItem(localStorageKeys.userName, data.userName)
 
       switch (res.authTypeMode) {
@@ -71,8 +71,8 @@ const DomainsPage = () => {
     return <div>Error: {error}</div>
   }
 
-  const handleCardClick = (domain, userName) => {
-    const data = { domain, userName }
+  const handleCardClick = (tenant, userName) => {
+    const data = { tenant, userName }
     onLoginMutation.mutate(data)
   }
 
@@ -81,7 +81,7 @@ const DomainsPage = () => {
     if (list !== null) {
       const filtered = list?.filter(
         row =>
-          row.domain.toLowerCase().includes(e.trim().toLowerCase()) ||
+          row.tenant.toLowerCase().includes(e.trim().toLowerCase()) ||
           row.fullName.toLowerCase().includes(e.trim().toLowerCase()) ||
           row.code.toLowerCase().includes(e.trim().toLowerCase())
       )
@@ -122,17 +122,17 @@ const DomainsPage = () => {
                           <Card
                             className={'default-link , link-card'}
                             sx={{ cursor: 'pointer' }}
-                            onClick={() => handleCardClick(data.domain, data.code)}
+                            onClick={() => handleCardClick(data.tenant, data.code)}
                           >
                             <CardContent sx={{ padding: '16px' }}>
                               <Box className={Styles.cardContentStyle}>
                                 <Avatar
                                   sx={{ width: '81px', height: '81px' }}
-                                  src={`${imageUrl}/${data.domainId}`}
+                                  src={`${imageUrl}/${data.tenantId}`}
                                   alt={data.name}
                                 />
                                 <Typography className={Styles.cardTitle} variant='subtitle1'>
-                                  {data.domain}
+                                  {data.tenant}
                                 </Typography>
                                 <Typography sx={{ color: 'text.secondary' }} variant='body2'>
                                   {data.code}
@@ -159,4 +159,4 @@ const DomainsPage = () => {
   return <Grid sx={{ justifyContent: 'center' }}>{renderArticles()}</Grid>
 }
 
-export default DomainsPage
+export default TenantsPage

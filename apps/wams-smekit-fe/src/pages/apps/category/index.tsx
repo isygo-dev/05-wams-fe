@@ -36,7 +36,7 @@ import UpdateStatus from '../../../views/apps/category/updateStatus'
 import apiUrls from '../../../config/apiUrl'
 
 const initialValue: CategoryType = {
-  domain: '',
+  tenant: '',
   name: '',
   type: IEnumCategoryType.ENABLED,
   description: '',
@@ -168,10 +168,10 @@ const Category = () => {
     },
     {
       flex: 0.1,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 100,
-      headerName: t('Domain.Domain') as string,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      headerName: t('Tenant.Tenant') as string,
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
 
     /*Name column*/
@@ -417,7 +417,7 @@ const Category = () => {
         row =>
           row.name.toLowerCase().includes(val.trim().toLowerCase()) ||
           row.type.toLowerCase().includes(val.trim().toLowerCase()) ||
-          row.domain.toLowerCase().includes(val.trim().toLowerCase()) ||
+          row.tenant.toLowerCase().includes(val.trim().toLowerCase()) ||
           (row.tagName && row.tagName.some(tag => tag.tagName.toLowerCase().includes(val.trim().toLowerCase()))) ||
           []
       )

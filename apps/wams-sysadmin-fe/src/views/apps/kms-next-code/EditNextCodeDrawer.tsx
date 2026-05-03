@@ -32,7 +32,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 
 const schema = yup.object().shape({
   code: yup.string().required(),
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   entity: yup.string().required(),
   prefix: yup.string().required(),
   suffix: yup.string().required(),
@@ -127,22 +127,22 @@ const SidebarEditNextCode = (props: SidebarEditNextCodeType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
-                  label={t('Domain.Domain')}
+                  label={t('Tenant.Tenant')}
                   onChange={onChange}
-                  placeholder='domain'
+                  placeholder='tenant'
                   disabled={true}
-                  error={Boolean(errors.domain)}
+                  error={Boolean(errors.tenant)}
                 />
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>

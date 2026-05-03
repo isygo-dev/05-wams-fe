@@ -23,20 +23,20 @@ import {
   PasswordConfigType,
   PasswordConfigTypes
 } from 'kms-shared/@core/types/kms/passwordConfigTypes'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 import {
   PermissionAction,
   PermissionApplication,
   PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import PasswordConfigApis from 'kms-shared/@core/api/kms/password-config'
 
 interface SidebarAddPwdConfigType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -47,7 +47,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   type: yup.string().required(),
   pattern: yup.string().required(),
   charSetType: yup.string().required(),
@@ -60,9 +60,9 @@ const schema = yup.object().shape({
 const SidebarAddPwdConfig = (props: SidebarAddPwdConfigType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
+  const { open, toggle, tenant } = props
   const defaultValues = {
-    domain: domain,
+    tenant: tenant,
     type: '',
     pattern: '',
     charSetType: '',
@@ -83,7 +83,7 @@ const SidebarAddPwdConfig = (props: SidebarAddPwdConfigType) => {
     resolver: yupResolver(schema)
   })
 
-  const { data: domainList, isLoading } = useQuery(`domains`, () => DomainApis(t).getDomains())
+  const { data: tenantList, isLoading } = useQuery(`tenants`, () => TenantApis(t).getTenants())
   const mutation = useMutation({
     mutationFn: (data: PasswordConfigData) => PasswordConfigApis(t).addPasswordConfiguration(data),
     onSuccess: (res: PasswordConfigType) => {
@@ -130,37 +130,37 @@ const SidebarAddPwdConfig = (props: SidebarAddPwdConfigType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
                   value={value}
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                 >
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domainList?.map((domain: DomainType) => (
-                    <MenuItem key={domain.id} value={domain.name}>
-                      {domain.name}
+                  {tenantList?.map((tenant: Tenant) => (
+                    <MenuItem key={tenant.id} value={tenant.name}>
+                      {tenant.name}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>

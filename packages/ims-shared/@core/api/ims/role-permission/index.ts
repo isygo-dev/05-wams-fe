@@ -50,14 +50,14 @@ const RolePermissionApis = (t: TFunction) => {
     return result
   }
 
-  const getRolesByDomainDefault = async () => {
+  const getRolesByTenantDefault = async () => {
     if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
       console.warn('Permission denied on read ' + t(permission))
 
       return
     }
 
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_RoleInfo_DomainDefault_EndPoint}`, {
+    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_RoleInfo_TenantDefault_EndPoint}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -231,7 +231,7 @@ const RolePermissionApis = (t: TFunction) => {
 
   return {
     getRoles,
-    getRolesByDomainDefault,
+    getRolesByTenantDefault,
     getRoleById,
     addRole,
     updateRole,

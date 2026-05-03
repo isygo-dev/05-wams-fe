@@ -385,7 +385,7 @@ const data: DataType = {
       client: 'Hulda Wright',
       title: 'Create Website',
       avatar: '/images/icons/project-icons/html-label.png',
-      description: 'Your domain name should reflect your products or services so that your...',
+      description: 'Your tenant name should reflect your products or services so that your...',
       avatarGroup: [
         { avatar: '/images/avatars/10.png', name: 'Andrew Tye' },
         { avatar: '/images/avatars/11.png', name: 'Rishi Swaat' },

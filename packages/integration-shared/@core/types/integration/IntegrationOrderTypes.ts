@@ -1,6 +1,6 @@
 export type IntegrationOrderType = {
   id?: number
-  domain: string
+  tenant: string
   code?: string
   name: string
   description: string
@@ -22,7 +22,7 @@ export type IntegrationOrderType = {
 }
 
 export type IntegrationOrderData = {
-  domain: string
+  tenant: string
   name: string
   description: string
   serviceName: string

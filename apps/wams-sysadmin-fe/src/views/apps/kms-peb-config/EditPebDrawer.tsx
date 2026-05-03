@@ -52,7 +52,7 @@ const SidebarEditPeb = (props: SidebarEditPebType) => {
   let defaultValues: PebConfigType = {
     id: 0,
     code: '',
-    domain: '',
+    tenant: '',
     algorithm: '',
     keyObtentionIterations: 0,
     saltGenerator: '',
@@ -67,7 +67,7 @@ const SidebarEditPeb = (props: SidebarEditPebType) => {
     defaultValues = {
       id: props.dataPeb.id,
       code: props.dataPeb.code,
-      domain: props.dataPeb.domain,
+      tenant: props.dataPeb.tenant,
       algorithm: props.dataPeb.algorithm,
       keyObtentionIterations: props.dataPeb.keyObtentionIterations,
       saltGenerator: props.dataPeb.saltGenerator,
@@ -160,22 +160,22 @@ const SidebarEditPeb = (props: SidebarEditPebType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <TextField
                   size='small'
                   value={value}
-                  label={t('Domain.Domain')}
+                  label={t('Tenant.Tenant')}
                   onChange={onChange}
-                  placeholder={t('domain') as string}
+                  placeholder={t('tenant') as string}
                   disabled={true}
-                  error={Boolean(errors.domain)}
+                  error={Boolean(errors.tenant)}
                 />
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <InputLabel id='demo-simple-select-helper-label'>{t('algorithm')}</InputLabel>

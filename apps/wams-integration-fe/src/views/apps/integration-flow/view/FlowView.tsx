@@ -28,7 +28,7 @@ import IntegrationFlowApis from 'integration-shared/@core/api/integration/flow'
 import Icon from 'template-shared/@core/components/icon'
 
 const schema = yup.object().shape({
-  domain: yup.string().required('Domain is required'),
+  tenant: yup.string().required('Tenant is required'),
   code: yup.string().required('Order Name is required'),
   integrationDate: yup.date().nullable(),
   originalFileName: yup.string().required('Original File Name is required'),
@@ -49,7 +49,7 @@ const FlowView = ({ flowData }: PropsType) => {
   const { reset, control, handleSubmit, trigger, setValue } = useForm({
     defaultValues: {
       id: flowData.id,
-      domain: flowData?.domain || '',
+      tenant: flowData?.tenant || '',
       code: flowData?.code || '',
       orderName: flowData?.orderName || '',
       integrationDate: flowData?.integrationDate ? new Date(flowData.integrationDate) : null,
@@ -88,7 +88,7 @@ const FlowView = ({ flowData }: PropsType) => {
   const onSubmit = async (data: IntegrationFlowType) => {
     const formData = new FormData()
     formData.append('id', data.id.toString())
-    formData.append('domain', data.domain)
+    formData.append('tenant', data.tenant)
     formData.append('code', data.code)
 
     const integrationDate = new Date(data.integrationDate)
@@ -184,14 +184,14 @@ const FlowView = ({ flowData }: PropsType) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <CardContent style={{ padding: '5px !important' }}>
               <Grid container spacing={3}>
-                {/* Domain Field */}
+                {/* Tenant Field */}
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
-                      name='domain'
+                      name='tenant'
                       control={control}
                       render={({ field: { value } }) => (
-                        <TextField disabled size='small' value={value} label={t('Domain')} />
+                        <TextField disabled size='small' value={value} label={t('Tenant')} />
                       )}
                     />
                   </FormControl>

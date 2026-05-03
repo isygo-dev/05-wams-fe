@@ -104,7 +104,7 @@ const EditWorkflow = (props: WorkflowProps) => {
   const workFlowDetails: WorkflowsType = updatedWorkflowDetails
   const [defaultValues, setDefaultValues] = useState<WorkflowsType>({
     id: workFlowDetails.id,
-    domain: workFlowDetails.domain,
+    tenant: workFlowDetails.tenant,
     code: workFlowDetails.code,
     name: workFlowDetails.name,
     description: workFlowDetails.description,
@@ -138,10 +138,10 @@ const EditWorkflow = (props: WorkflowProps) => {
     defaultValues.workflowTransitions.length === 0 ? 1 : defaultValues.workflowTransitions.length
   )
 
-  const { data: emails } = useQuery([`emails`, defaultValues.domain], () => AccountApis(t).getAccountEmailsByDomain())
+  const { data: emails } = useQuery([`emails`, defaultValues.tenant], () => AccountApis(t).getAccountEmailsByTenant())
 
-  const { data: workFlowEmails } = useQuery([`workFlowEmails`, defaultValues.domain, defaultValues.code], () =>
-    WorkflowBoardApis(t).getWorkflowBoardWatcherEmails({ domain: defaultValues.domain, wfCode: defaultValues.code })
+  const { data: workFlowEmails } = useQuery([`workFlowEmails`, defaultValues.tenant, defaultValues.code], () =>
+    WorkflowBoardApis(t).getWorkflowBoardWatcherEmails({ tenant: defaultValues.tenant, wfCode: defaultValues.code })
   )
 
   const {

@@ -41,7 +41,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string(),
+  tenant: yup.string(),
   name: yup.string().required().min(3),
   description: yup.string(),
   item: yup.string().required(),
@@ -68,9 +68,9 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
   console.log('workflowList', workflowList)
   const [selectedWorkflow, setSelectedWorkflow] = useState(props.dataWorkflowBoard?.workflow)
   console.log('selectedWorkflow', selectedWorkflow)
-  const [selectedDomain] = useState(props?.dataWorkflowBoard?.domain)
-  const { data: emails } = useQuery(['emails', selectedDomain], () => AccountApis(t).getAccountEmailsByDomain(), {
-    enabled: !!selectedDomain
+  const [selectedTenant] = useState(props?.dataWorkflowBoard?.tenant)
+  const { data: emails } = useQuery(['emails', selectedTenant], () => AccountApis(t).getAccountEmailsByTenant(), {
+    enabled: !!selectedTenant
   })
 
   const defaultValues: WorkflowsBoardType = { ...props.dataWorkflowBoard }
@@ -150,11 +150,11 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               render={({ field }) => (
                 <TextField
-                  label={t('Domain.Domain')}
+                  label={t('Tenant.Tenant')}
                   fullWidth
                   {...field}
                   variant='outlined'
@@ -302,7 +302,7 @@ const SidebarEditWorkflowBoard = (props: SidebarEditWorkflowBoardType) => {
                     }}
                     renderValue={selected => selected.map(email => email).join(', ')}
                   >
-                    {selectedDomain &&
+                    {selectedTenant &&
                       emails?.map((email, index) => (
                         <MenuItem key={index} value={email}>
                           <Checkbox checked={value.some(e => e === email)} />

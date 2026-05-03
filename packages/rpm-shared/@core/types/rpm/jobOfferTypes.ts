@@ -6,7 +6,7 @@ export type JobOfferType = {
   code: string
   title: string
   owner: string
-  domain: string
+  tenant: string
   department: string
   industry: string
   employerType: string

@@ -3,7 +3,7 @@ import { ApplicationType } from 'ims-shared/@core/types/ims/applicationTypes'
 export type ErrCallbackType = (err: { [key: string]: string }) => void
 
 export type LoginParams = {
-  domain: string
+  tenant: string
   application: string
   userName: string
   password: string
@@ -12,12 +12,12 @@ export type LoginParams = {
 }
 
 export type ResetPaswordParams = {
-  domain: string
+  tenant: string
   userName: string
 }
 
 export type ResetPaswordRequest = {
-  domain: string
+  tenant: string
   userName: string
   fullName: string
   application: string
@@ -44,7 +44,7 @@ export type UserDataType = {
   userName: string
   language?: string
   applications: ApplicationType[]
-  domainId: number
+  tenantId: number
 }
 
 export type AuthValuesType = {

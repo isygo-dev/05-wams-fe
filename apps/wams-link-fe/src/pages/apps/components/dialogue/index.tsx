@@ -111,7 +111,7 @@ const PostDialogue = ({ isOpen, setIsOpen, user, defaultValues, setDefaultValue 
             description: res.talk,
             updatedBy: res.updatedBy,
             accountCode: res.accountCode,
-            domain: res.domain
+            tenant: res.tenant
           }
           queryClient.setQueryData('blogs', updatedBlogs)
         }
@@ -143,7 +143,7 @@ const PostDialogue = ({ isOpen, setIsOpen, user, defaultValues, setDefaultValue 
             description: res.talk,
             updatedBy: res.updatedBy,
             accountCode: res.accountCode,
-            domain: res.domain
+            tenant: res.tenant
           }
           queryClient.setQueryData('blogs', updatedBlogs)
         }
@@ -171,7 +171,7 @@ const PostDialogue = ({ isOpen, setIsOpen, user, defaultValues, setDefaultValue 
       formData.append('title', data.title)
       formData.append('talk', data.talk)
       formData.append('accountCode', data.accountCode)
-      formData.append('domain', data.domain)
+      formData.append('tenant', data.tenant)
       formData.append('type', type)
       formData.append('id', data.id.toString())
 
@@ -193,7 +193,7 @@ const PostDialogue = ({ isOpen, setIsOpen, user, defaultValues, setDefaultValue 
       formData.append('title', data.title)
       formData.append('createdBy', user.fullName)
       formData.append('accountCode', user.code)
-      formData.append('domain', user.domain)
+      formData.append('tenant', user.tenant)
       formData.append('type', type)
 
       formData.append('isBlog', isChecked.toString())
@@ -220,7 +220,7 @@ const PostDialogue = ({ isOpen, setIsOpen, user, defaultValues, setDefaultValue 
           description: res.talk,
           updatedBy: res.updatedBy,
           accountCode: res.accountCode,
-          domain: res.domain
+          tenant: res.tenant
         }
         const updatedDataBlog = [...cachedDataBlog, newBlogs]
         queryClient.setQueryData('blogs', updatedDataBlog)
@@ -244,7 +244,7 @@ const PostDialogue = ({ isOpen, setIsOpen, user, defaultValues, setDefaultValue 
           description: res.talk,
           updatedBy: res.updatedBy,
           accountCode: res.accountCode,
-          domain: res.domain
+          tenant: res.tenant
         }
         const updatedDataBlog = [...cachedDataBlog, newBlogs]
         queryClient.setQueryData('blogs', updatedDataBlog)

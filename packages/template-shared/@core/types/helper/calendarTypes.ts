@@ -7,7 +7,7 @@ export type EventDateType = Date | null | undefined
 
 export type CalendarsType = {
   id?: number
-  domain: string
+  tenant: string
   code?: string
   name: string
   icsPath?: string
@@ -16,7 +16,7 @@ export type CalendarsType = {
 }
 
 export type CalendarsTypes = {
-  domain: string
+  tenant: string
   name: string
   icsPath: string
 }
@@ -62,7 +62,7 @@ export type SidebarEventLeftType = {
 
 export type EventCalendarType = {
   id: number
-  domain: string
+  tenant: string
   calendar: string
   name: string
   title?: string
@@ -72,7 +72,7 @@ export type EventCalendarType = {
 }
 
 export type AddEventCalendarType = {
-  domain: string
+  tenant: string
   calendar: string
   name: string
   title?: string
@@ -89,7 +89,7 @@ export type EventType = {
   allDay: boolean
   end: Date | string
   start: Date | string
-  domain?: string
+  tenant?: string
   calendarName?: string
   extendedProps?: {
     location?: string
@@ -106,7 +106,7 @@ export type AddEventType = {
   allDay: boolean
   end: Date | string
   start: Date | string
-  domain: string
+  tenant: string
   calendarName: string
   extendedProps: {
     calendar: string
@@ -122,7 +122,7 @@ export type SidebarCalLeftType = {
   leftSidebarOpen: boolean
   handleLeftSidebarToggle: () => void
   handleAddEventSidebarToggle: () => void
-  domain: string
+  tenant: string
   name: string
   lock: boolean
 }
@@ -141,7 +141,7 @@ export type CalendarEventType = {
 
 export type DeleteEvent = {
   id: number
-  domain: string
+  tenant: string
   calendarName: string
 }
 
@@ -198,8 +198,7 @@ export type AddEventSidebarType = {
   handleSelectEvent: (event: null | EventType) => void
   addEventSidebarOpen: boolean
   handleAddEventSidebarToggle: () => void
-  domain: string
-
+  tenant: string
   name: string
 
   //dispatch: Dispatch<any>

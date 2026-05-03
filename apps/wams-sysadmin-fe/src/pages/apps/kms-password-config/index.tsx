@@ -131,13 +131,13 @@ const PasswordConfigList = () => {
   const columns: GridColDef[] = [
     {
       flex: 0.15,
-      field: 'domain',
+      field: 'tenant',
       minWidth: 170,
-      headerName: t('Domain.Domain') as string,
+      headerName: t('Tenant.Tenant') as string,
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography noWrap sx={{ color: 'text.secondary' /* , textTransform: 'capitalize' */ }}>
-            {row.domain}
+            {row.tenant}
           </Typography>
         </Box>
       )
@@ -317,7 +317,7 @@ const PasswordConfigList = () => {
       {!isLoadingProfileUser &&
         addPwdConfigOpen &&
         checkPermission(PermissionApplication.KMS, PermissionPage.PASSWORD_CONFIG, PermissionAction.WRITE) && (
-          <AddPwdConfigDrawer open={addPwdConfigOpen} domain={profileUser?.domain} toggle={toggleAddPwdConfigDrawer} />
+          <AddPwdConfigDrawer open={addPwdConfigOpen} tenant={profileUser?.tenant} toggle={toggleAddPwdConfigDrawer} />
         )}
 
       {editPwdConfigOpen &&

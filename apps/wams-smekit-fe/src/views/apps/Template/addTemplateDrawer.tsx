@@ -32,8 +32,8 @@ import {
   PermissionApplication,
   PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -118,7 +118,7 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
 
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [authors, setAuthors] = useState<AuthorType[]>([])
-  const { data: domainList } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList } = useQuery('tenants', TenantApis(t).getTenants)
   const typeTv = watch('typeTv')
   const isPrivate = typeTv === IEnumTemplateVisibility.PRV
 
@@ -196,8 +196,8 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
       if (data.authorId) {
         formData.append('authorId', data.authorId.toString())
       }
-      if (data.domain) {
-        formData.append('domain', data.domain)
+      if (data.tenant) {
+        formData.append('tenant', data.tenant)
       }
 
       if (data.id) {
@@ -299,33 +299,33 @@ const AddTemplateDrawer = ({ categoryTemplate, showDialogue, setShowDialogue }) 
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }} size='small'>
-            <InputLabel id='domain-select-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='tenant-select-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
-                  labelId='domain-select-label'
-                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)}
+                  labelId='tenant-select-label'
+                  disabled={!checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)}
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   onChange={onChange}
                   value={value || ''}
                 >
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domainList?.map((domain: DomainType) => (
-                    <MenuItem key={domain.id} value={domain.name}>
-                      {domain.name}
+                  {tenantList?.map((tenant: Tenant) => (
+                    <MenuItem key={tenant.id} value={tenant.name}>
+                      {tenant.name}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>

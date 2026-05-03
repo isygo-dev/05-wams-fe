@@ -17,8 +17,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { InputLabel, MenuItem, Select } from '@mui/material'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import {
   PermissionAction,
   PermissionApplication,
@@ -34,7 +34,7 @@ import IntegrationOrderApis from 'integration-shared/@core/api/integration/order
 interface SidebarAddResumeType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -47,13 +47,13 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { data: domainList, isFetched: isFetchedDomains } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList, isFetched: isFetchedTenants } = useQuery('tenants', TenantApis(t).getTenants)
   const [file, setFile] = useState<File | null>(null)
   const schema = yup.object().shape({
     name: yup.string().required(),
     description: yup.string(),
     serviceName: yup.string().required(),
-    domain: yup.string().required(),
+    tenant: yup.string().required(),
     mapping: yup.string().required(),
     integrationOrder: yup.string().required(),
     file: yup.mixed().required()
@@ -72,7 +72,7 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
       description: '',
       serviceName: '',
       mapping: '',
-      domain: props.domain,
+      tenant: props.tenant,
       integrationOrder: '',
       file: null,
       fileId: '',
@@ -89,7 +89,7 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
     formData.append('description', data.description)
     formData.append('serviceName', data.serviceName)
     formData.append('mapping', data.mapping)
-    formData.append('domain', data.domain)
+    formData.append('tenant', data.tenant)
     formData.append('integrationOrder', data.integrationOrder)
     formData.append('file', file)
     formData.append('originalFileName', file.name)
@@ -128,7 +128,7 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
 
   return (
     <>
-      {isFetchedDomains ? (
+      {isFetchedTenants ? (
         <Drawer
           open={open}
           anchor='right'
@@ -150,21 +150,21 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl fullWidth sx={{ mb: 4 }}>
-                <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+                <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
                 <Controller
-                  name='domain'
+                  name='tenant'
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
                     <Select
                       disabled={
-                        checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                        checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                           ? false
                           : true
                       }
                       size='small'
-                      label={t('Domain.Domain')}
-                      name='domain'
+                      label={t('Tenant.Tenant')}
+                      name='tenant'
                       defaultValue=''
                       onChange={onChange}
                       value={value}
@@ -172,15 +172,15 @@ const SidebarAddIntegrationOrder = (props: SidebarAddResumeType) => {
                       <MenuItem value=''>
                         <em>{t('None')}</em>
                       </MenuItem>
-                      {domainList?.map((domain: DomainType) => (
-                        <MenuItem key={domain.id} value={domain.name}>
-                          {domain.name}
+                      {tenantList?.map((tenant: Tenant) => (
+                        <MenuItem key={tenant.id} value={tenant.name}>
+                          {tenant.name}
                         </MenuItem>
                       ))}
                     </Select>
                   )}
                 />
-                {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+                {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
               </FormControl>
               <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller

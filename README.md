@@ -30,3 +30,135 @@
 - Run: npm install turbo --global
 - Run: pnpm install
 - Run: pnpm run build:docker-prod
+
+# Node.js Setup via Command Line
+
+## 1. Install Node.js
+
+### Windows (PowerShell)
+
+Using winget:
+
+```
+winget install OpenJS.NodeJS
+```
+
+Using Chocolatey:
+
+```
+choco install nodejs -y
+```
+
+### Linux (Ubuntu/Debian)
+
+```
+sudo apt update
+sudo apt install -y nodejs npm
+```
+
+### macOS (Homebrew)
+
+```
+brew install node
+```
+
+---
+
+## 2. Verify Installation
+
+```
+node -v
+npm -v
+```
+
+---
+
+## 3. Create a New Project
+
+```
+mkdir my-app
+cd my-app
+npm init -y
+```
+
+---
+
+## 4. Create and Run a Test File
+
+Create file:
+
+```
+echo console.log("Hello Node") > app.js
+```
+
+Run:
+
+```
+node app.js
+```
+
+---
+
+## 5. Install Dependencies (Optional)
+
+Example:
+
+```
+npm install express
+```
+
+---
+
+## 6. Add Start Script
+
+Edit package.json:
+
+```
+{
+  "scripts": {
+    "start": "node app.js"
+  }
+}
+```
+
+Run:
+
+```
+npm start
+```
+
+---
+
+## 7. Using with IntelliJ
+
+* Open project in IntelliJ
+* Open terminal
+* Run:
+
+```
+node app.js
+```
+
+---
+
+## 8. Optional: Use NVM (Node Version Manager)
+
+Install NVM:
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+```
+
+Install Node LTS:
+
+```
+nvm install --lts
+nvm use --lts
+```
+
+---
+
+## Done ✅
+
+Your Node.js environment is ready.
+

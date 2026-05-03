@@ -32,7 +32,7 @@ const PictureCard = (props: PictureCardProps) => {
         <Avatar
           src={photoFile ? URL.createObjectURL(photoFile) : url}
           variant='rounded'
-          className={permissionPage === PermissionPage.DOMAIN ? 'cardPicture' : ''}
+          className={permissionPage === PermissionPage.TENANT ? 'cardPicture' : ''}
           sx={{ width: '100%', height: 296 }}
         />
         {checkPermission(permissionApplication, permissionPage, PermissionAction.WRITE) && (

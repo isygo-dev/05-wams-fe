@@ -88,17 +88,17 @@ const LoginPageViewByEmail = () => {
       if (res.length === 1) {
         const data: authRequestType = {
           userName: res[0].code,
-          domain: res[0].domain
+          tenant: res[0].tenant
         }
 
-        localStorage.setItem(localStorageKeys.domain, data.domain)
+        localStorage.setItem(localStorageKeys.tenant, data.tenant)
         localStorage.setItem(localStorageKeys.userName, data.userName)
         onLoginMutation.mutate(data)
       } else if (res.length > 1) {
-        queryClient.setQueryData('account-domain', res)
+        queryClient.setQueryData('account-tenant', res)
         const serializedList = JSON.stringify(res)
         router.push({
-          pathname: '/auth-step-account-domain/',
+          pathname: '/auth-step-account-tenant/',
           query: { list: serializedList }
         })
       }
@@ -109,10 +109,10 @@ const LoginPageViewByEmail = () => {
   })
 
   const onLoginMutation = useMutation({
-    mutationFn: (data: authRequestType) => AuthApis(t).loginByDomainAndUserName(data),
+    mutationFn: (data: authRequestType) => AuthApis(t).loginByTenantAndUserName(data),
     onSuccess: (res: any, data: authRequestType) => {
       if (res.authTypeMode === 'OTP') {
-        sessionStorage.setItem(localStorageKeys.domain, data.domain)
+        sessionStorage.setItem(localStorageKeys.tenant, data.tenant)
         sessionStorage.setItem(localStorageKeys.otpLength, res.otpLength)
         sessionStorage.setItem(localStorageKeys.userName, data.userName)
         sessionStorage.setItem(localStorageKeys.authType, 'OTP')
@@ -120,14 +120,14 @@ const LoginPageViewByEmail = () => {
         const redirectURL = '/auth-step-otp-validation/'
         router.replace(redirectURL as string)
       } else if (res.authTypeMode === 'PWD') {
-        sessionStorage.setItem(localStorageKeys.domain, data.domain)
+        sessionStorage.setItem(localStorageKeys.tenant, data.tenant)
         sessionStorage.setItem(localStorageKeys.userName, data.userName)
         sessionStorage.setItem(localStorageKeys.authType, 'PWD')
         sessionStorage.setItem(localStorageKeys.rememberMe, String(rememberMe))
         const redirectURL = '/auth-step-password-validation/'
         router.replace(redirectURL as string)
       } else if (res.authTypeMode === 'QRC') {
-        sessionStorage.setItem(localStorageKeys.domain, data.domain)
+        sessionStorage.setItem(localStorageKeys.tenant, data.tenant)
         sessionStorage.setItem(localStorageKeys.userName, data.userName)
         sessionStorage.setItem(localStorageKeys.authType, 'QRC')
         sessionStorage.setItem(localStorageKeys.rememberMe, String(rememberMe))

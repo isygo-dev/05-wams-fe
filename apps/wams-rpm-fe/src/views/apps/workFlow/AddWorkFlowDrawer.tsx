@@ -26,16 +26,16 @@ import {
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import WorkflowApis from 'rpm-shared/@core/api/rpm/workflow'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 
 interface SidebarAddWorkflowType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 interface WorkFlowData {
-  domain: string
+  tenant: string
   name: string
   description: string
   category: string
@@ -51,7 +51,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   name: yup.string().required().min(3),
   description: yup.string(),
   category: yup.string().required(),
@@ -61,9 +61,9 @@ const schema = yup.object().shape({
 const SidebarAddWorkFlow = (props: SidebarAddWorkflowType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
+  const { open, toggle, tenant } = props
   const defaultValues = {
-    domain: domain,
+    tenant: tenant,
     name: '',
     description: '',
     category: '',
@@ -103,7 +103,7 @@ const SidebarAddWorkFlow = (props: SidebarAddWorkflowType) => {
     reset()
   }
 
-  const { data: domains } = useQuery(`domains`, () => DomainApis(t).getDomainsNameList())
+  const { data: tenants } = useQuery(`tenants`, () => TenantApis(t).getTenantsNameList())
 
   return (
     <Drawer
@@ -127,19 +127,19 @@ const SidebarAddWorkFlow = (props: SidebarAddWorkflowType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel>{t('Domain.Domain')}</InputLabel>
+            <InputLabel>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
@@ -151,15 +151,15 @@ const SidebarAddWorkFlow = (props: SidebarAddWorkflowType) => {
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domains?.map((domain, index) => (
-                    <MenuItem key={index} value={domain}>
-                      {domain}
+                  {tenants?.map((tenant, index) => (
+                    <MenuItem key={index} value={tenant}>
+                      {tenant}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller

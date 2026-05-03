@@ -36,7 +36,7 @@ const hrmApiUrls = {
   apiUrl_HRM_Employee_Count_EndPoint: apiUrl_HRM + api_version + '/private/employee/count',
   apiUrl_HRM_Employee_StatisticGlobal_EndPoint: apiUrl_HRM + api_version + '/private/employee/stat/global',
   apiUrl_HRM_Employee_StatisticObject_EndPoint: apiUrl_HRM + api_version + '/private/employee/stat/object',
-  apiUrl_HRM_Employee_ByDomain_EndPoint: apiUrl_HRM + api_version + '/private/employee/domain',
+  apiUrl_HRM_Employee_ByTenant_EndPoint: apiUrl_HRM + api_version + '/private/employee/tenant',
   apiUrl_HRM_Employee_ByCode_EndPoint: apiUrl_HRM + api_version + '/private/employee/code',
   apiUrl_HRM_Employee_Image_EndPoint: apiUrl_HRM + api_version + '/private/employee/image',
   apiUrl_HRM_Employee_ImageDownload_EndPoint: apiUrl_HRM + api_version + '/private/employee/image/download',

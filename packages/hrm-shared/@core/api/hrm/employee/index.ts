@@ -302,14 +302,14 @@ const EmployeeApis = (t: TFunction) => {
     return result
   }
 
-  const getEmployeesByDomain = async (domain: string) => {
+  const getEmployeesByTenant = async (tenant: string) => {
     if (!checkPermission(PermissionApplication.HRM, permission, PermissionAction.READ)) {
       console.warn('Permission denied on read ' + t(permission))
 
       return
     }
 
-    const response = await AppQuery(`${hrmApiUrls.apiUrl_HRM_Employee_ByDomain_EndPoint}/${domain}`, {
+    const response = await AppQuery(`${hrmApiUrls.apiUrl_HRM_Employee_ByTenant_EndPoint}/${tenant}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -683,7 +683,7 @@ const EmployeeApis = (t: TFunction) => {
     deleteEmployeeById,
     getEmployeeById,
     getEmployeeByCode,
-    getEmployeesByDomain,
+    getEmployeesByTenant,
     updateEmployeePicture,
     updateEmployeeIdentityDocImage,
     updateEmployeeTravelDocImage,

@@ -2,7 +2,7 @@ import { CategoryTemplateType } from './categoryTemplateType'
 
 export interface FavoriteTemplateType {
   id: number
-  domain: string
+  tenant: string
   code: string
   template: CategoryTemplateType
   userId: number

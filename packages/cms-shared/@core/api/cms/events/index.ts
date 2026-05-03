@@ -19,7 +19,7 @@ import {
 const EventApis = (t: TFunction) => {
   const permission = PermissionPage.VEVENT
 
-  const getEventsByDomainAndCalendar = async (domain: string, name: string) => {
+  const getEventsByTenantAndCalendar = async (tenant: string, name: string) => {
     if (!checkPermission(PermissionApplication.CMS, permission, PermissionAction.READ)) {
       console.warn('Permission denied on read ' + t(permission))
 
@@ -27,7 +27,7 @@ const EventApis = (t: TFunction) => {
     }
 
     const response = await AppQuery(
-      `${apiUrls.apiUrl_CMS_Calendar_EventByDomainAndCalendarName_EndPoint}/${domain}/${name}`,
+      `${apiUrls.apiUrl_CMS_Calendar_EventByTenantAndCalendarName_EndPoint}/${tenant}/${name}`,
       {
         method: 'GET',
         headers: {
@@ -52,7 +52,7 @@ const EventApis = (t: TFunction) => {
         allDay: false,
         end: e.endDate,
         start: e.startDate,
-        domain: e.domain,
+        tenant: e.tenant,
         calendarName: e.calendar,
         extendedProps: {
           calendar: e.type
@@ -79,7 +79,7 @@ const EventApis = (t: TFunction) => {
     }
 
     const newEvent: AddEventCalendarType = {
-      domain: event.domain,
+      tenant: event.tenant,
       calendar: event.calendarName,
       name: event.title,
       title: event.title,
@@ -130,7 +130,7 @@ const EventApis = (t: TFunction) => {
 
     const editEvent: EventCalendarType = {
       id: event.id,
-      domain: event.domain,
+      tenant: event.tenant,
       calendar: event.calendarName,
       name: event.title,
       title: event.title,
@@ -198,7 +198,7 @@ const EventApis = (t: TFunction) => {
   }
 
   return {
-    getEventsByDomainAndCalendar,
+    getEventsByTenantAndCalendar: getEventsByTenantAndCalendar,
     addEvent,
     updateEvent,
     deleteEvent

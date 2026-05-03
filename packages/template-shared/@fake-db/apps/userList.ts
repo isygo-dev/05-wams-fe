@@ -172,7 +172,7 @@ const data: { users: UsersType[] } = {
       username: 'shallamb',
       country: 'Peru',
       contact: '(234) 464-0600',
-      email: 'shallamb@hugedomains.com',
+      email: 'shallamb@hugetenants.com',
       currentPlan: 'team',
       status: 'pending',
       avatar: '/images/avatars/5.png'

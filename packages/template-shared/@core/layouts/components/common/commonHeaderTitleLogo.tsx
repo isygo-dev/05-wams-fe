@@ -26,12 +26,12 @@ const HeaderTitle = styled(Typography)<TypographyProps>(({ theme }) => ({
 }))
 const CommonHeaderTitleLogo = (props: CommonHeaderTitleLogoProps) => {
   const { showHeaderTitle, titleStyles } = props
-  let domainId, userData
+  let tenantId, userData
   if (typeof localStorage != 'undefined') {
     if (localStorage.getItem(localStorageKeys.userData)) {
       userData = JSON.parse(localStorage.getItem(localStorageKeys.userData) || '{}')
-      if (userData?.domainId) {
-        domainId = userData.domainId
+      if (userData?.tenantId) {
+        tenantId = userData.tenantId
       }
     }
   }
@@ -39,7 +39,7 @@ const CommonHeaderTitleLogo = (props: CommonHeaderTitleLogoProps) => {
   return (
     <Box sx={{ display: 'contents' }}>
       <Avatar
-        src={`${imsApiUrls.apiUrl_IMS_Domain_ImageDownload_EndPoint}/${domainId}`}
+        src={`${imsApiUrls.apiUrl_IMS_Tenant_ImageDownload_EndPoint}/${tenantId}`}
         alt='logo'
         sx={{ width: '40px', height: '40px' }}
       />

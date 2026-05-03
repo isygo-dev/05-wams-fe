@@ -44,7 +44,7 @@ const EmployeeCard = (props: CardItem) => {
         }}
         title={
           <Typography variant='body2' color={'rgb(51 48 60)'}>
-            {data.domain} {data.code}
+            {data.tenant} {data.code}
           </Typography>
         }
         action={

@@ -24,10 +24,10 @@ import {
   PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import AnnexApis from 'ims-shared/@core/api/ims/annex'
 import { AnnexType, Language } from 'ims-shared/@core/types/ims/annexTypes'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -37,7 +37,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   tableCode: yup.string().required(),
   language: yup.string().required(),
   value: yup.string().required(),
@@ -50,19 +50,19 @@ interface SidebarAddAnnexType {
   open: boolean
   toggle: () => void
   uniqueTableCodes: string[]
-  domain: string
+  tenant: string
 }
 
 const SidebarAddAnnex = (props: SidebarAddAnnexType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, uniqueTableCodes, domain } = props
+  const { open, toggle, uniqueTableCodes, tenant } = props
   const onSubmit = async (data: AnnexType) => {
     addAnnexMutation.mutate(data)
     handleClose()
   }
 
-  const { data: domainList, isLoading: isLoadingDomain } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList, isLoading: isLoadingTenant } = useQuery('tenants', TenantApis(t).getTenants)
 
   const addAnnexMutation = useMutation({
     mutationFn: (params: AnnexType) => AnnexApis(t).addAnnex(params),
@@ -81,7 +81,7 @@ const SidebarAddAnnex = (props: SidebarAddAnnexType) => {
 
   const defaultValues: AnnexType = {
     tableCode: '',
-    domain: domain,
+    tenant: tenant,
     language: Language.EN,
     value: '',
     description: '',
@@ -138,36 +138,36 @@ const SidebarAddAnnex = (props: SidebarAddAnnexType) => {
           })}
         >
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
                 >
-                  {!isLoadingDomain && domainList?.length > 0
-                    ? domainList?.map((domain: DomainType) => (
-                        <MenuItem key={domain.id} value={domain.name}>
-                          {domain.name}
+                  {!isLoadingTenant && tenantList?.length > 0
+                    ? tenantList?.map((tenant: Tenant) => (
+                        <MenuItem key={tenant.id} value={tenant.name}>
+                          {tenant.name}
                         </MenuItem>
                       ))
                     : null}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller

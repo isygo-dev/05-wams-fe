@@ -27,9 +27,9 @@ import {
   PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from '../../../../../ims-shared/@core/types/ims/tenantTypes'
 import Tooltip from '@mui/material/Tooltip'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../ims-shared/@core/api/ims/tenant'
 import QuizApis from 'quiz-shared/@core/api/quiz/quiz'
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -45,19 +45,19 @@ const schema = yup.object().shape({
   category: yup.string().required(),
   tags: yup.array().required(),
   level: yup.string(),
-  domain: yup.string().required()
+  tenant: yup.string().required()
 })
 
 interface SidebarAddQuizType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const SidebarAddQuiz = (props: SidebarAddQuizType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
+  const { open, toggle, tenant } = props
   const { data: quizCategory } = useQuery('quizCategory', () =>
     AnnexApis(t).getAnnexByTableCode(IEnumAnnex.QUIZ_CATEGORY)
   )
@@ -74,7 +74,7 @@ const SidebarAddQuiz = (props: SidebarAddQuizType) => {
       console.log(err)
     }
   })
-  const { data: domainList, isLoading: isLoadingDomain } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList, isLoading: isLoadingTenant } = useQuery('tenants', TenantApis(t).getTenants)
   const onSubmit = async (data: QuizType) => {
     console.log('data', data)
     mutationAdd.mutate(data)
@@ -86,7 +86,7 @@ const SidebarAddQuiz = (props: SidebarAddQuizType) => {
     category: '',
     tags: [],
     level: '',
-    domain: domain
+    tenant: tenant
   }
 
   const {
@@ -107,7 +107,7 @@ const SidebarAddQuiz = (props: SidebarAddQuizType) => {
       category: '',
       tags: [],
       level: '',
-      domain: domain
+      tenant: tenant
     }
     toggle()
     reset()
@@ -139,36 +139,36 @@ const SidebarAddQuiz = (props: SidebarAddQuizType) => {
           })}
         >
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
                 >
-                  {!isLoadingDomain && domainList?.length > 0
-                    ? domainList?.map((domain: DomainType) => (
-                        <MenuItem key={domain.id} value={domain.name}>
-                          {domain.name}
+                  {!isLoadingTenant && tenantList?.length > 0
+                    ? tenantList?.map((tenant: Tenant) => (
+                        <MenuItem key={tenant.id} value={tenant.name}>
+                          {tenant.name}
                         </MenuItem>
                       ))
                     : null}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller

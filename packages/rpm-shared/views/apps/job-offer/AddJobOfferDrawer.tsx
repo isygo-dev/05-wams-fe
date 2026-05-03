@@ -17,7 +17,7 @@ import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../ims-shared/@core/api/ims/tenant'
 import {
   PermissionAction,
   PermissionApplication,
@@ -33,7 +33,7 @@ import { JobOfferType } from 'rpm-shared/@core/types/rpm/jobOfferTypes'
 interface SidebarAddJobType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -44,7 +44,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   title: yup.string().required(),
   owner: yup.string(),
   industry: yup.string().required(),
@@ -64,24 +64,24 @@ const MenuProps = {
 const SidebarAddJob = (props: SidebarAddJobType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
-  const [selectedDomain, setSelectedDomain] = useState('')
+  const { open, toggle, tenant } = props
+  const [selectedTenant, setSelectedTenant] = useState('')
   const [selectedTemplate, setSelectedTemplate] = useState<any>()
   const { data: template } = useQuery('jobTemplates', () => JobOfferTemplateApis(t).getJobOfferTemplates())
-  const { data: domains } = useQuery('domains', DomainApis(t).getDomainsNameList)
-  const { data: emails } = useQuery(['emails', selectedDomain], () => AccountApis(t).getAccountEmailsByDomain(), {
-    enabled: !!selectedDomain
+  const { data: tenants } = useQuery('tenants', TenantApis(t).getTenantsNameList)
+  const { data: emails } = useQuery(['emails', selectedTenant], () => AccountApis(t).getAccountEmailsByTenant(), {
+    enabled: !!selectedTenant
   })
 
   const { data: customers } = useQuery(`customers`, () => CustomerApis(t).getCustomers())
 
-  const handleChangeDomain = (event: any) => {
-    setSelectedDomain(event.target.value)
+  const handleChangeTenant = (event: any) => {
+    setSelectedTenant(event.target.value)
   }
   const handleChangeTemplate = (event: any) => {
     setSelectedTemplate(event.target.value)
     if (event.target.value) {
-      setSelectedDomain(event.target.value.jobOffer.domain)
+      setSelectedTenant(event.target.value.jobOffer.tenant)
       reset(event.target.value.jobOffer)
     }
   }
@@ -95,7 +95,7 @@ const SidebarAddJob = (props: SidebarAddJobType) => {
     defaultValues: {
       title: '',
       owner: '',
-      domain: domain,
+      tenant: tenant,
       industry: '',
       customer: ''
     },
@@ -166,40 +166,40 @@ const SidebarAddJob = (props: SidebarAddJobType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel>{t('Domain.Domain')}</InputLabel>
+            <InputLabel>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   disabled={
-                    checkPermission(PermissionApplication.IMS, PermissionPage.DOMAIN, PermissionAction.WRITE)
+                    checkPermission(PermissionApplication.IMS, PermissionPage.TENANT, PermissionAction.WRITE)
                       ? false
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={e => {
                     onChange(e)
-                    handleChangeDomain(e)
+                    handleChangeTenant(e)
                   }}
                   value={value}
                 >
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domains?.map((domain, index) => (
-                    <MenuItem key={index} value={domain}>
-                      {domain}
+                  {tenants?.map((tenant, index) => (
+                    <MenuItem key={index} value={tenant}>
+                      {tenant}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           <FormControl fullWidth sx={{ mb: 4 }}>
@@ -260,7 +260,7 @@ const SidebarAddJob = (props: SidebarAddJobType) => {
                     onChange(selectedEmail)
                   }}
                 >
-                  {selectedDomain &&
+                  {selectedTenant &&
                     emails?.map((email, index) => (
                       <MenuItem key={index} value={email}>
                         {email}

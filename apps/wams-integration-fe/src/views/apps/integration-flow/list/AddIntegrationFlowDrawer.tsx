@@ -15,13 +15,13 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InputLabel, MenuItem, Select } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 import DatePicker from 'react-datepicker'
 import { IntegrationFlowData } from 'integration-shared/@core/types/integration/IntegrationFlowTypes'
 import EventIcon from '@mui/icons-material/Event'
 import 'react-datepicker/dist/react-datepicker.css'
 import IntegrationOrderApis from 'integration-shared/@core/api/integration/order'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import IntegrationFlowApis from 'integration-shared/@core/api/integration/flow'
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -32,7 +32,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required('Domain is required'),
+  tenant: yup.string().required('Tenant is required'),
   orderName: yup.string().required('Order Name is required'),
   integrationDate: yup.date().nullable()
 })
@@ -40,19 +40,19 @@ const schema = yup.object().shape({
 interface SidebarAddCustomerType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const SidebarAddFlow = (props: SidebarAddCustomerType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
+  const { open, toggle, tenant } = props
   const [file, setFile] = useState<File | null>(null)
   const { data: integrationOrder, isLoading } = useQuery(
     'integrationOrder',
     IntegrationOrderApis(t).getIntegrationOrders
   )
-  const { data: domainList, isLoading: isLoadingDomain } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList, isLoading: isLoadingTenant } = useQuery('tenants', TenantApis(t).getTenants)
   const getExtension = fileName => {
     if (!fileName || typeof fileName !== 'string') {
       return ''
@@ -74,7 +74,7 @@ const SidebarAddFlow = (props: SidebarAddCustomerType) => {
   const onSubmit = (data: IntegrationFlowData) => {
     console.log('Form submitted:', data)
     const formData = new FormData()
-    formData.append('domain', domain)
+    formData.append('tenant', tenant)
     formData.append('integrationDate', data.integrationDate ? data.integrationDate.toLocaleString() : '')
     formData.append('orderName', data.orderName)
     if (file) {
@@ -107,7 +107,7 @@ const SidebarAddFlow = (props: SidebarAddCustomerType) => {
     formState: { errors }
   } = useForm<IntegrationFlowData>({
     defaultValues: {
-      domain: props.domain,
+      tenant: props.tenant,
       integrationDate: null,
       file: null,
       orderName: ''
@@ -145,31 +145,31 @@ const SidebarAddFlow = (props: SidebarAddCustomerType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(row => onSubmit(row))}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
                 <Select
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
                 >
-                  {!isLoadingDomain && domainList?.length > 0
-                    ? domainList?.map((domain: DomainType) => (
-                        <MenuItem key={domain.id} value={domain.name}>
-                          {domain.name}
+                  {!isLoadingTenant && tenantList?.length > 0
+                    ? tenantList?.map((tenant: Tenant) => (
+                        <MenuItem key={tenant.id} value={tenant.name}>
+                          {tenant.name}
                         </MenuItem>
                       ))
                     : null}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
 
           {/* Order Name Field */}

@@ -185,9 +185,9 @@ const AppCalendars = () => {
     {
       flex: 0.1,
       minWidth: 100,
-      field: 'domain',
-      headerName: t('Domain.Domain') as string,
-      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.domain}</Typography>
+      field: 'tenant',
+      headerName: t('Tenant.Tenant') as string,
+      renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row.tenant}</Typography>
     },
     {
       flex: 0.1,

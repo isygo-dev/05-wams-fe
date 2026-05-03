@@ -34,7 +34,7 @@ import ShareDrawer from './ShareDrawer'
 import TextField from '@mui/material/TextField'
 import { useFetchAllProperties } from 'template-shared/hooks/useFetchProperties'
 import TimelineLeft from '../components/ViewTimeline'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from '../../../../../ims-shared/@core/types/ims/tenantTypes'
 import HeaderCardView from 'template-shared/@core/components/card-header-view'
 import { ListItemsMenuType } from 'quiz-shared/@core/types/quiz/quizTypes'
 import StatisticsByResumeContainer from '../components/ViewStatisticByResume'
@@ -46,7 +46,7 @@ import {
   PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../ims-shared/@core/api/ims/tenant'
 import ResumeApis from 'rpm-shared/@core/api/rpm/resume'
 import rpmApiUrls from 'rpm-shared/configs/rpm_apis'
 
@@ -59,7 +59,7 @@ const ViewResumeDrawer = (props: ResumeViewProps) => {
   const { t } = useTranslation()
   const resumeDetailsData = props.resumeDetailsData
   const saveResume = props.saveResume
-  const { data: domainList, isFetched: isFetchedDomains } = useQuery('domains', DomainApis(t).getDomains)
+  const { data: tenantList, isFetched: isFetchedTenants } = useQuery('tenants', TenantApis(t).getTenants)
 
   const { result, isLoading } = useFetchAllProperties({ guiName: 'ResumeDetails' })
 
@@ -342,7 +342,7 @@ const ViewResumeDrawer = (props: ResumeViewProps) => {
     handleEditResume()
   }
 
-  return !isLoading && isFetchedDomains ? (
+  return !isLoading && isFetchedTenants ? (
     <>
       <HeaderCardView
         title={'Resume.Resume'}
@@ -431,17 +431,17 @@ const ViewResumeDrawer = (props: ResumeViewProps) => {
                             fullWidth
                             disabled
                             size='small'
-                            label={t('Domain.Domain')}
-                            name='domain'
-                            onChange={e => handleInputChange('domain', e.target.value)}
-                            value={editedData.domain}
+                            label={t('Tenant.Tenant')}
+                            name='tenant'
+                            onChange={e => handleInputChange('tenant', e.target.value)}
+                            value={editedData.tenant}
                           >
                             <MenuItem value=''>
                               <em>{t('None')}</em>
                             </MenuItem>
-                            {domainList?.map((domain: DomainType) => (
-                              <MenuItem key={domain.id} value={domain.name}>
-                                {domain.name}
+                            {tenantList?.map((tenant: Tenant) => (
+                              <MenuItem key={tenant.id} value={tenant.name}>
+                                {tenant.name}
                               </MenuItem>
                             ))}
                           </Select>
@@ -457,7 +457,7 @@ const ViewResumeDrawer = (props: ResumeViewProps) => {
                         placeholder={t('Resume.Presentation')}
                         id='textarea-standard-static'
                         sx={{ width: '100%' }}
-                        name='domain'
+                        name='tenant'
                         onChange={e => handleInputChange('presentation', e.target.value)}
                         value={editedData.presentation}
                       />
@@ -569,7 +569,7 @@ const ViewResumeDrawer = (props: ResumeViewProps) => {
                       <ResumePreview
                         id={resumeId}
                         extension={editedData.extension}
-                        domain={editedData.domain}
+                        tenant={editedData.tenant}
                         fileName={editedData.originalFileName}
                       />
                     </Box>

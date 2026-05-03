@@ -52,7 +52,7 @@ export const UpdateSecurity: React.FC<UpdateSecurityType> = ({ open, toggle, dat
     expiredDate: dataParameter?.details?.securities[0]?.expiredDate || '',
     imagePath: dataParameter?.details?.securities[0]?.imagePath || '',
     issuedPlace: dataParameter?.details?.securities[0]?.issuedPlace || '',
-    domain: dataParameter?.details?.securities[0]?.domain || '',
+    tenant: dataParameter?.details?.securities[0]?.tenant || '',
     insuranceType: dataParameter?.details?.securities[0]?.insuranceType || null,
     employeeDetailsId: dataParameter?.details?.securities[0]?.employeeDetailsId || null
   }
@@ -104,7 +104,7 @@ export const UpdateSecurity: React.FC<UpdateSecurityType> = ({ open, toggle, dat
       formData.set('issuedPlace', data.issuedPlace)
     }
     formData.set('employeeDetailsId', dataParameter.details.id.toString())
-    formData.set('domain', dataParameter.domain)
+    formData.set('tenant', dataParameter.tenant)
     if (data.issuedDate) {
       const issuedDateISOString =
         typeof data.issuedDate === 'string'

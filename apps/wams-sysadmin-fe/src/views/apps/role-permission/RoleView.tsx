@@ -202,7 +202,7 @@ const RoleView = (props: propsType) => {
     code: props.roleDetailsData.code,
     name: props.roleDetailsData.name,
     level: props.roleDetailsData.level,
-    domain: props.roleDetailsData.domain,
+    tenant: props.roleDetailsData.tenant,
     description: props.roleDetailsData.description,
     allowedTools: props.roleDetailsData.allowedTools,
     rolePermission: props.roleDetailsData.rolePermission
@@ -332,11 +332,11 @@ const RoleView = (props: propsType) => {
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
-                  name='domain'
+                  name='tenant'
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value } }) => (
-                    <TextField disabled size='small' value={value} label={t('Domain.Domain')} />
+                    <TextField disabled size='small' value={value} label={t('Tenant.Tenant')} />
                   )}
                 />
               </FormControl>

@@ -117,15 +117,15 @@ const AnnexList = () => {
       renderCell: ({ row }: CellType) => <Typography sx={{ color: 'text.secondary' }}>{row?.tableCode}</Typography>
     },
     {
-      field: 'domain',
-      headerName: t('Domain.Domain') as string,
+      field: 'tenant',
+      headerName: t('Tenant.Tenant') as string,
       flex: 1,
 
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap variant='body2' sx={{ color: 'text.disabled' }}>
-              {row.domain}
+              {row.tenant}
             </Typography>
           </Box>
         )
@@ -297,7 +297,7 @@ const AnnexList = () => {
               <AddAnnexDrawer
                 open={addAnnexOpen}
                 toggle={toggleAddAnnexDrawer}
-                domain={profileUser?.domain}
+                tenant={profileUser?.tenant}
                 uniqueTableCodes={uniqueTableCodes}
               />
             )}

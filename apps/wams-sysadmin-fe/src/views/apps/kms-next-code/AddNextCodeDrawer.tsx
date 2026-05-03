@@ -17,7 +17,7 @@ import { InputLabel } from '@mui/material'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { DomainType } from 'ims-shared/@core/types/ims/domainTypes'
+import { Tenant } from 'ims-shared/@core/types/ims/tenantTypes'
 import {
   PermissionAction,
   PermissionApplication,
@@ -25,13 +25,13 @@ import {
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
 import { checkPermission } from 'template-shared/@core/api/helper/permission'
 import { CodificationData, CodificationTypes } from 'ims-shared/@core/types/ims/nextCodeTypes'
-import DomainApis from 'ims-shared/@core/api/ims/domain'
+import TenantApis from '../../../../../../packages/ims-shared/@core/api/ims/tenant'
 import NextCodeApis from 'kms-shared/@core/api/kms/next-code'
 
 interface SidebarAddNextCodeType {
   open: boolean
   toggle: () => void
-  domain: string
+  tenant: string
 }
 
 const Header = styled(Box)<BoxProps>(({ theme }) => ({
@@ -42,7 +42,7 @@ const Header = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  domain: yup.string().required(),
+  tenant: yup.string().required(),
   entity: yup.string().required(),
   prefix: yup.string().required(),
   suffix: yup.string().required(),
@@ -54,9 +54,9 @@ const schema = yup.object().shape({
 const SidebarAddNextCode = (props: SidebarAddNextCodeType) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { open, toggle, domain } = props
+  const { open, toggle, tenant } = props
   const defaultValues: CodificationData = {
-    domain: domain,
+    tenant: tenant,
     entity: '',
     attribute: '',
     prefix: '',
@@ -78,7 +78,7 @@ const SidebarAddNextCode = (props: SidebarAddNextCodeType) => {
     resolver: yupResolver(schema)
   })
 
-  const { data: domainList, isLoading } = useQuery(`domains`, () => DomainApis(t).getDomains())
+  const { data: tenantList, isLoading } = useQuery(`tenants`, () => TenantApis(t).getTenants())
   const mutation = useMutation({
     mutationFn: (data: CodificationData) => NextCodeApis(t).addNextCode(data),
     onSuccess: (res: CodificationTypes) => {
@@ -124,9 +124,9 @@ const SidebarAddNextCode = (props: SidebarAddNextCodeType) => {
       <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth sx={{ mb: 4 }}>
-            <InputLabel id='demo-simple-select-helper-label'>{t('Domain.Domain')}</InputLabel>
+            <InputLabel id='demo-simple-select-helper-label'>{t('Tenant.Tenant')}</InputLabel>
             <Controller
-              name='domain'
+              name='tenant'
               control={control}
               rules={{ required: true }}
               render={({ field: { value, onChange } }) => (
@@ -137,8 +137,8 @@ const SidebarAddNextCode = (props: SidebarAddNextCodeType) => {
                       : true
                   }
                   size='small'
-                  label={t('Domain.Domain')}
-                  name='domain'
+                  label={t('Tenant.Tenant')}
+                  name='tenant'
                   defaultValue=''
                   onChange={onChange}
                   value={value}
@@ -146,15 +146,15 @@ const SidebarAddNextCode = (props: SidebarAddNextCodeType) => {
                   <MenuItem value=''>
                     <em>{t('None')}</em>
                   </MenuItem>
-                  {domainList?.map((domain: DomainType) => (
-                    <MenuItem key={domain.id} value={domain.name}>
-                      {domain.name}
+                  {tenantList?.map((tenant: Tenant) => (
+                    <MenuItem key={tenant.id} value={tenant.name}>
+                      {tenant.name}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             />
-            {errors.domain && <FormHelperText sx={{ color: 'error.main' }}>{errors.domain.message}</FormHelperText>}
+            {errors.tenant && <FormHelperText sx={{ color: 'error.main' }}>{errors.tenant.message}</FormHelperText>}
           </FormControl>
           <FormControl fullWidth sx={{ mb: 4 }}>
             <Controller

@@ -9,7 +9,7 @@ export type EmployeeType = {
   email: string
   imagePath: string
   phone: string
-  domain: string
+  tenant: string
   address: AddressTypes
   details: EmployeeDetailType
   contracts: ContractType[]
@@ -40,7 +40,7 @@ export type MinEmployeeType = {
   lastName: string
   email: string
   imagePath: string
-  domain: string
+  tenant: string
   numberActiveContracts: number
   employeeStatus?: EmployeeStatus
   functionRole?: string
@@ -76,7 +76,7 @@ export type Cin = {
   issuedDate: Date | string
   issuedPlace: string
   imagePath: string
-  domain: string
+  tenant: string
   employeeDetailsId: number
 }
 
@@ -88,7 +88,7 @@ export type Passport = {
   expiredDate: Date | string
   issuedPlace: string
   imagePath: string
-  domain: string
+  tenant: string
   employeeDetailsId: number
 }
 
@@ -100,7 +100,7 @@ export type InsuranceSecurity = {
   expiredDate: Date | string
   issuedPlace: string
   imagePath: string
-  domain: string
+  tenant: string
   employeeDetailsId: number
   insuranceType: IEnumInsuranceType
 }
@@ -162,7 +162,7 @@ export type EmployeeTypeRequest = {
   lastName: string
   email: string
   phone: string
-  domain: string
+  tenant: string
   imagePath: string
   isLinkedToUser: boolean
 }

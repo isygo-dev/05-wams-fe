@@ -20,7 +20,7 @@ const RoleViewdetail = () => {
     data: applicationList,
     isLoading: isLoadingRole,
     isError: isErrorRole
-  } = useQuery(`applications`, () => ApplicationApis(t).getApplicationsOfDefaultDomain())
+  } = useQuery(`applications`, () => ApplicationApis(t).getApplicationsOfDefaultTenant())
 
   if (isLoading && isLoadingRole) {
     return <div>Loading...</div>

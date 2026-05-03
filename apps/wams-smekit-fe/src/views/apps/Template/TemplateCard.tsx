@@ -302,9 +302,9 @@ const TemplateCard = (props: CardItem) => {
 
           <Typography variant='body2' color='text.secondary' sx={{ mb: 1 }}>
             <Box component='span' sx={{ fontWeight: 600 }}>
-              Domain:
+              Tenant:
             </Box>{' '}
-            {data.domain || 'N/A'}
+            {data.tenant || 'N/A'}
           </Typography>
           <Typography variant='body2' color='text.secondary'>
             <Box component='span' sx={{ fontWeight: 600 }}>

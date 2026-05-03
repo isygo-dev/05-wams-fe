@@ -1,6 +1,6 @@
 export type StorageConfigType = {
   id: number
-  domain: string
+  tenant: string
   type: string
   userName: string
   password: string
@@ -9,7 +9,7 @@ export type StorageConfigType = {
 
 export type StorageConfigTypes = {
   id?: number
-  domain?: string
+  tenant?: string
   type?: string
   userName?: string
   password?: string
@@ -17,7 +17,7 @@ export type StorageConfigTypes = {
 }
 
 export type StorageConfigTypeRequest = {
-  domain: string
+  tenant: string
   url: string
   userName: string
   type: string
