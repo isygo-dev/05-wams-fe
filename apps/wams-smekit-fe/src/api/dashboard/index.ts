@@ -1,4 +1,4 @@
-import { AppQuery } from 'template-shared/@core/utils/fetchWrapper'
+import {AppQuery} from 'template-shared/@core/utils/fetchWrapper'
 import apiUrls from '../../config/apiUrl'
 import localStorageKeys from 'template-shared/configs/localeStorage'
 

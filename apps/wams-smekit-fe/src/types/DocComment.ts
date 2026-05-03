@@ -1,4 +1,4 @@
-import { DocumentType } from './document'
+import {DocumentType} from './document'
 
 export interface DocCommentType {
   id?: number

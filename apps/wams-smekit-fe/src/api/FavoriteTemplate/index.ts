@@ -1,7 +1,7 @@
-import { AppQuery } from 'template-shared/@core/utils/fetchWrapper'
+import {AppQuery} from 'template-shared/@core/utils/fetchWrapper'
 import apiUrls from '../../config/apiUrl'
-import { fetchAuthorDetails, fetchCategoryDetails } from '../template'
-import { getSenderTenantFromToken } from 'template-shared/@core/api/helper/permission'
+import {fetchAuthorDetails, fetchCategoryDetails} from '../template'
+import {getSenderTenantFromToken} from 'template-shared/@core/api/helper/permission'
 
 export const toggleTemplatePin = async (templateId: number): Promise<boolean> => {
   const userIdentifier = getSenderTenantFromToken()
@@ -50,7 +50,7 @@ export const getPinnedTemplates = async (): Promise<any[]> => {
         template.categoryId ? fetchCategoryDetails(template.categoryId) : null
       ])
 
-      return { ...template, author, category }
+      return {...template, author, category}
     })
   )
 }

@@ -1,4 +1,4 @@
-import { tagType } from './tags'
+import {tagType} from './tags'
 
 export interface CategoryType {
   id?: number

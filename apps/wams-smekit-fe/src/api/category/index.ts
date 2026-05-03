@@ -1,6 +1,6 @@
 import apiUrls from '../../config/apiUrl'
-import { AppQuery } from 'template-shared/@core/utils/fetchWrapper'
-import { CategoryType } from '../../types/category'
+import {AppQuery} from 'template-shared/@core/utils/fetchWrapper'
+import {CategoryType} from '../../types/category'
 
 import toast from 'react-hot-toast'
 
@@ -69,7 +69,7 @@ export const addCategory = async (data: FormData): Promise<CategoryType> => {
 }
 
 export const updateCategory = async (data: CategoryType) => {
-  const { id, ...rest } = data
+  const {id, ...rest} = data
 
   const cleanedPayload = {
     tenant: rest.tenant,
@@ -77,7 +77,7 @@ export const updateCategory = async (data: CategoryType) => {
     description: rest.description,
     type: rest.type,
     imagePath: rest.imagePath,
-    tagName: rest.tagName && Array.isArray(rest.tagName) ? rest.tagName.map(tag => ({ tagName: tag.tagName })) : []
+    tagName: rest.tagName && Array.isArray(rest.tagName) ? rest.tagName.map(tag => ({tagName: tag.tagName})) : []
   }
 
   console.log('Cleaned Payload:', cleanedPayload)

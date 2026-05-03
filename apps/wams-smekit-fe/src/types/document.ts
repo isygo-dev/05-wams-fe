@@ -1,6 +1,6 @@
-import { SharedWithType } from './SharedWith'
-import { DocCommentType } from './DocComment'
-import { CategoryTemplateType, IEnumDocTempStatus } from './categoryTemplateType'
+import {SharedWithType} from './SharedWith'
+import {DocCommentType} from './DocComment'
+import {CategoryTemplateType, IEnumDocTempStatus} from './categoryTemplateType'
 
 export interface DocumentType {
   id?: number

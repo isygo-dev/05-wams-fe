@@ -1,6 +1,6 @@
-import { AppQuery, HttpError } from 'template-shared/@core/utils/fetchWrapper'
+import {AppQuery, HttpError} from 'template-shared/@core/utils/fetchWrapper'
 import apiUrls from '../../config/apiUrl'
-import { TemplateType } from 'mms-shared/@core/types/mms/templateTypes'
+import {TemplateType} from 'mms-shared/@core/types/mms/templateTypes'
 
 export const fetchAllAuthor = async () => {
   console.log('[fetchAllAuthor] Envoi de la requête GET vers :', apiUrls.apiUrl_smekit_Author_StorageConfigEndpoint)
@@ -154,7 +154,7 @@ export const uploadAuthorFile = async (file: File, authorId: number) => {
   })
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: 'Failed to upload author file' }))
+    const errorData = await response.json().catch(() => ({message: 'Failed to upload author file'}))
     throw new HttpError(errorData)
   }
 

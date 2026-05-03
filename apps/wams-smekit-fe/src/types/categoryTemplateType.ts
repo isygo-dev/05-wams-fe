@@ -1,6 +1,6 @@
-import { CategoryType } from './category'
-import { AuthorType } from './author'
-import { tagType } from './tags'
+import {CategoryType} from './category'
+import {AuthorType} from './author'
+import {tagType} from './tags'
 
 export interface CategoryTemplateType {
   id?: number

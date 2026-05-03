@@ -1,4 +1,4 @@
-import { CategoryTemplateType } from './categoryTemplateType'
+import {CategoryTemplateType} from './categoryTemplateType'
 
 export interface FavoriteTemplateType {
   id: number

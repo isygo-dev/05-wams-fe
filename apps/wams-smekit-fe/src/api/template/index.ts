@@ -1,10 +1,10 @@
 import apiUrls from '../../config/apiUrl'
-import { AppQuery, HttpError } from 'template-shared/@core/utils/fetchWrapper'
+import {AppQuery, HttpError} from 'template-shared/@core/utils/fetchWrapper'
 import imsApiUrls from 'ims-shared/configs/ims_apis'
 import toast from 'react-hot-toast'
-import { AuthorType } from '../../types/author'
-import { CategoryType } from '../../types/category'
-import { getSenderTenantFromToken } from 'template-shared/@core/api/helper/permission'
+import {AuthorType} from '../../types/author'
+import {CategoryType} from '../../types/category'
+import {getSenderTenantFromToken} from 'template-shared/@core/api/helper/permission'
 
 export const fetchAllTemplate = async () => {
   const userIdentifier = getSenderTenantFromToken()
@@ -26,7 +26,7 @@ export const fetchAllTemplate = async () => {
         template.categoryId ? fetchCategoryDetails(template.categoryId) : null
       ])
 
-      return { ...template, author, category }
+      return {...template, author, category}
     })
   )
 
@@ -259,7 +259,7 @@ export const getTemplatesByCategory = async (categoryId: number) => {
           template.categoryId ? fetchCategoryDetails(template.categoryId) : null
         ])
 
-        return { ...template, author, category }
+        return {...template, author, category}
       })
     )
 

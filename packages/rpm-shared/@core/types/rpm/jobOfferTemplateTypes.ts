@@ -1,8 +1,8 @@
-import { JobOfferType } from './jobOfferTypes'
+import {JobOfferType} from './jobOfferTypes'
 
 export type JobTemplate = {
-  id?: number
-  tenant: string
-  title: string
-  jobOffer: JobOfferType
+    id?: number
+    tenant: string
+    title: string
+    jobOffer: JobOfferType
 }

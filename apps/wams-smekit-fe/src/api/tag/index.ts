@@ -1,5 +1,5 @@
 import apiUrls from '../../config/apiUrl'
-import { AppQuery } from 'template-shared/@core/utils/fetchWrapper'
+import {AppQuery} from 'template-shared/@core/utils/fetchWrapper'
 
 export const fetchAlltags = async () => {
   console.log('[fetchAlltags] Envoi de la requête GET vers :', apiUrls.apiUrl_smekit_tag_Endpoint)
@@ -41,7 +41,7 @@ export const addTag = async (tagName: string) => {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       },
-      body: JSON.stringify({ tagName: tagName })
+      body: JSON.stringify({tagName: tagName})
     })
 
     console.log('[addTag] Statut de la réponse :', response.status)

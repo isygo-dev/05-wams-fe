@@ -1,6 +1,6 @@
 // ** Type import
-import { VerticalNavItemsType } from 'template-shared/@core/layouts/types'
-import { t } from 'i18next'
+import {VerticalNavItemsType} from 'template-shared/@core/layouts/types'
+import {t} from 'i18next'
 
 const Navigation = (): VerticalNavItemsType => {
   return [

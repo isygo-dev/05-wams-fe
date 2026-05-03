@@ -1,919 +1,919 @@
 import kmsApiUrls from 'kms-shared/configs/kms_apis'
-import { AppQuery } from 'template-shared/@core/utils/fetchWrapper'
+import {AppQuery} from 'template-shared/@core/utils/fetchWrapper'
 import toast from 'react-hot-toast'
-import { RequestIsAdmin, RequestStatus } from 'template-shared/@core/types/helper/userTypes'
-import { TFunction } from 'i18next'
-import { checkPermission } from 'template-shared/@core/api/helper/permission'
+import {RequestIsAdmin, RequestStatus} from 'template-shared/@core/types/helper/userTypes'
+import {TFunction} from 'i18next'
+import {checkPermission} from 'template-shared/@core/api/helper/permission'
 import {
-  PermissionAction,
-  PermissionApplication,
-  PermissionPage
+    PermissionAction,
+    PermissionApplication,
+    PermissionPage
 } from 'template-shared/@core/types/helper/apiPermissionTypes'
-import { AccountDetails, AccountDto } from 'ims-shared/@core/types/ims/accountTypes'
+import {AccountDetails, AccountDto} from 'ims-shared/@core/types/ims/accountTypes'
 import imsApiUrls from 'ims-shared/configs/ims_apis'
 
 const AccountApis = (t: TFunction) => {
-  const permission = PermissionPage.ACCOUNT
+    const permission = PermissionPage.ACCOUNT
 
-  const getAccountsByTenant = async (tenant: string) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
-      console.warn('Permission denied on read ' + t(permission))
+    const getAccountsByTenant = async (tenant: string) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
 
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_UsersByTenant_EndPoint}?tenant=${tenant}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const updateAccountLanguage = async (id: number, language: string) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
-
-      return
-    }
-
-    const uppercaseLanguage = language.toUpperCase()
-    const response = await AppQuery(
-      `${imsApiUrls.apiUrl_IMS_Account_UpdateLanguage_EndPoint}?id=${id}&language=${uppercaseLanguage}`,
-      {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+            return
         }
-      }
-    )
 
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.language_updated_successfully'))
-    }
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_UsersByTenant_EndPoint}?tenant=${tenant}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
 
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const getAccountDetails = async () => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
-      console.warn('Permission denied on read ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_Info_EndPoint}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const getAccountProfile = async () => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
-      console.warn('Permission denied on read ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_MyProfile_EndPoint}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const updateAccountAdminStatus = async (data: RequestStatus) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(
-      `${imsApiUrls.apiUrl_IMS_Account_UpdateStatus_EndPoint}?id=${data.id}&newStatus=${data.newReqStatus}`,
-      {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+        if (!response.ok) {
+            return
         }
-      }
-    )
 
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.admin_status_updated_successfully'))
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const updateAccountIsAdminFlag = async (data: RequestIsAdmin) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(
-      `${imsApiUrls.apiUrl_IMS_Account_UpdateIsAdmin_EndPoint}?id=${data.id}&newStatus=${data.newStatus}`,
-      {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
         }
-      }
-    )
 
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.admin_flag_updated_successfully'))
-    }
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
 
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const getAccountsSessionStatus = async () => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
-      console.warn('Permission denied on read ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_AccountsStatusByTenant_EndPoint}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const getAccountEmailsByTenant = async () => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
-      console.warn('Permission denied on read ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_Emails_EndPoint}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const getAccounts = async () => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
-      console.warn('Permission denied on read ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const getAccountsCount = async () => {
-    if (!(PermissionApplication.IMS, permission, PermissionAction.READ)) {
-      console.warn('Permission denied on read ' + t(permission))
-
-      return []
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_Count_EndPoint}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const getAccountsByPage = async (page: number, size: number) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
-      console.warn('Permission denied on read ' + t(permission))
-
-      return []
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}/${page}/${size}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const resendAccountCredentialsEmail = async id => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_ResendEmailCredentials_EndPoint}/${id}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.credentials_email_resent_successfully'))
-    }
-
-    return id
-  }
-
-  const deleteAccountById = async (id: number) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.DELETE)) {
-      console.warn('Permission denied on delete ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}?id=${id}`, {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.deleted_successfully'))
-    }
-
-    return id
-  }
-
-  const addAccount = async (data: AccountDto) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on add ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify(data)
-    })
-
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.added_successfully'))
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const updateAccount = async (data: AccountDto) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}?id=${data.id}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify(data)
-    })
-
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.email_updated_successfully'))
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const updateAccountPicture = async (data: { id: number; file: Blob }) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
-
-      return
-    }
-
-    const formData = new FormData()
-    formData.append('file', data.file as File)
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_ImageUpload_EndPoint}/${data.id}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: formData
-    })
-
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.picture_updated_successfully'))
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const getAccountById = async (id: number) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
-      console.warn('Permission denied on read ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}/${id}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-
-    if (!response.ok) {
-      return
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const updateAccountDetails = async (data: AccountDetails) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_Details_EndPoint}?id=${data.id}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify(data)
-    })
-
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.updated_successfully'))
-    }
-
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
-    }
-
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
-
-      return null
-    }
-
-    const result = await response.json()
-
-    return result
-  }
-
-  const changePassword = async (data: { oldPassword: string; newPassword: string }) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
-
-      return
-    }
-
-    const response = await AppQuery(
-      `${kmsApiUrls.apiUrl_KMS_ChangePassword_EndPoint}?oldPassword=${data.oldPassword}&newPassword=${data.newPassword}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          Accept: 'application/json'
+            return null
         }
-      }
-    )
 
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.password_updated_Successfully'))
+        const result = await response.json()
+
+        return result
     }
 
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
+    const updateAccountLanguage = async (id: number, language: string) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
+
+            return
+        }
+
+        const uppercaseLanguage = language.toUpperCase()
+        const response = await AppQuery(
+            `${imsApiUrls.apiUrl_IMS_Account_UpdateLanguage_EndPoint}?id=${id}&language=${uppercaseLanguage}`,
+            {
+                method: 'PUT',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+            }
+        )
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.language_updated_successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
+    const getAccountDetails = async () => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
 
-      return null
+            return
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_Info_EndPoint}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (!response.ok) {
+            return
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const result = await response.json()
+    const getAccountProfile = async () => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
 
-    return result
-  }
+            return
+        }
 
-  const updateAuthType = async (data: { tenant: string; userName: string }) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_MyProfile_EndPoint}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
 
-      return
+        if (!response.ok) {
+            return
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_AccountUpdateAuthType_EndPoint}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify(data)
-    })
+    const updateAccountAdminStatus = async (data: RequestStatus) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
 
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.auth_type_updated_Successfully'))
+            return
+        }
+
+        const response = await AppQuery(
+            `${imsApiUrls.apiUrl_IMS_Account_UpdateStatus_EndPoint}?id=${data.id}&newStatus=${data.newReqStatus}`,
+            {
+                method: 'PUT',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+            }
+        )
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.admin_status_updated_successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
+    const updateAccountIsAdminFlag = async (data: RequestIsAdmin) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
+
+            return
+        }
+
+        const response = await AppQuery(
+            `${imsApiUrls.apiUrl_IMS_Account_UpdateIsAdmin_EndPoint}?id=${data.id}&newStatus=${data.newStatus}`,
+            {
+                method: 'PUT',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+            }
+        )
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.admin_flag_updated_successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
+    const getAccountsSessionStatus = async () => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
 
-      return null
+            return
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_AccountsStatusByTenant_EndPoint}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (!response.ok) {
+            return
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const result = await response.json()
+    const getAccountEmailsByTenant = async () => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
 
-    return result
-  }
+            return
+        }
 
-  const uploadPicture = async (data: { id: number; file: Blob }) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_Emails_EndPoint}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
 
-      return
+        if (!response.ok) {
+            return
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const formData = new FormData()
-    formData.append('file', data.file as File)
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_ImageUpload_EndPoint}/${data.id}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: formData
-    })
+    const getAccounts = async () => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
 
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.picture_updated_Successfully'))
+            return
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (!response.ok) {
+            return
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
+    const getAccountsCount = async () => {
+        if (!(PermissionApplication.IMS, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
+
+            return []
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_Count_EndPoint}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (!response.ok) {
+            return
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
+    const getAccountsByPage = async (page: number, size: number) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
 
-      return null
+            return []
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}/${page}/${size}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (!response.ok) {
+            return
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const result = await response.json()
+    const resendAccountCredentialsEmail = async id => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
 
-    return result
-  }
+            return
+        }
 
-  const updateProfile = async (data: AccountDto) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_ResendEmailCredentials_EndPoint}/${id}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
 
-      return
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.credentials_email_resent_successfully'))
+        }
+
+        return id
     }
 
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_MyProfile_EndPoint}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify(data)
-    })
+    const deleteAccountById = async (id: number) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.DELETE)) {
+            console.warn('Permission denied on delete ' + t(permission))
 
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.profile_updated_Successfully'))
+            return
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}?id=${id}`, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.deleted_successfully'))
+        }
+
+        return id
     }
 
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
+    const addAccount = async (data: AccountDto) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on add ' + t(permission))
+
+            return
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.added_successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
+    const updateAccount = async (data: AccountDto) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
 
-      return null
+            return
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}?id=${data.id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.email_updated_successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const result = await response.json()
+    const updateAccountPicture = async (data: { id: number; file: Blob }) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
 
-    return result
-  }
+            return
+        }
 
-  const updateUserAccount = async (data: { account: AccountDto; id: number }) => {
-    if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
-      console.warn('Permission denied on update ' + t(permission))
+        const formData = new FormData()
+        formData.append('file', data.file as File)
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_ImageUpload_EndPoint}/${data.id}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: formData
+        })
 
-      return
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.picture_updated_successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_UpdateAccount_EndPoint}?id=${data.id}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify(data.account)
-    })
+    const getAccountById = async (id: number) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.READ)) {
+            console.warn('Permission denied on read ' + t(permission))
 
-    if (!response.ok) {
-      return
-    } else {
-      toast.success(t('Account.updated_Successfully'))
+            return
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_EndPoint}/${id}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        if (!response.ok) {
+            return
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    // Handle 204 No Content or empty body
-    if (response.status === 204) {
-      return [] // or return null, depending on your business logic
+    const updateAccountDetails = async (data: AccountDetails) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
+
+            return
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_Details_EndPoint}?id=${data.id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.updated_successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const contentType = response.headers.get('content-type') || ''
-    if (!contentType.includes('application/json')) {
-      console.warn('[API] Expected JSON but received:', contentType)
+    const changePassword = async (data: { oldPassword: string; newPassword: string }) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
 
-      return null
+            return
+        }
+
+        const response = await AppQuery(
+            `${kmsApiUrls.apiUrl_KMS_ChangePassword_EndPoint}?oldPassword=${data.oldPassword}&newPassword=${data.newPassword}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    Accept: 'application/json'
+                }
+            }
+        )
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.password_updated_Successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
     }
 
-    const result = await response.json()
+    const updateAuthType = async (data: { tenant: string; userName: string }) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
 
-    return result
-  }
+            return
+        }
 
-  return {
-    getAccountsCount,
-    getAccounts,
-    getAccountsByPage,
-    getAccountById,
-    getAccountsByTenant,
-    getAccountDetails,
-    getAccountProfile,
-    getAccountsSessionStatus,
-    getAccountEmailsByTenant,
-    updateAccountLanguage,
-    updateAccountAdminStatus,
-    updateAccountIsAdminFlag,
-    addAccount,
-    updateAccount,
-    updateAccountDetails,
-    updateAccountPicture,
-    deleteAccountById,
-    resendAccountCredentialsEmail,
-    changePassword,
-    updateAuthType,
-    uploadPicture,
-    updateProfile,
-    updateUserAccount
-  }
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_AccountUpdateAuthType_EndPoint}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.auth_type_updated_Successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
+    }
+
+    const uploadPicture = async (data: { id: number; file: Blob }) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
+
+            return
+        }
+
+        const formData = new FormData()
+        formData.append('file', data.file as File)
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_ImageUpload_EndPoint}/${data.id}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: formData
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.picture_updated_Successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
+    }
+
+    const updateProfile = async (data: AccountDto) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
+
+            return
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_MyProfile_EndPoint}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.profile_updated_Successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
+    }
+
+    const updateUserAccount = async (data: { account: AccountDto; id: number }) => {
+        if (!checkPermission(PermissionApplication.IMS, permission, PermissionAction.WRITE)) {
+            console.warn('Permission denied on update ' + t(permission))
+
+            return
+        }
+
+        const response = await AppQuery(`${imsApiUrls.apiUrl_IMS_Account_UpdateAccount_EndPoint}?id=${data.id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(data.account)
+        })
+
+        if (!response.ok) {
+            return
+        } else {
+            toast.success(t('Account.updated_Successfully'))
+        }
+
+        // Handle 204 No Content or empty body
+        if (response.status === 204) {
+            return [] // or return null, depending on your business logic
+        }
+
+        const contentType = response.headers.get('content-type') || ''
+        if (!contentType.includes('application/json')) {
+            console.warn('[API] Expected JSON but received:', contentType)
+
+            return null
+        }
+
+        const result = await response.json()
+
+        return result
+    }
+
+    return {
+        getAccountsCount,
+        getAccounts,
+        getAccountsByPage,
+        getAccountById,
+        getAccountsByTenant,
+        getAccountDetails,
+        getAccountProfile,
+        getAccountsSessionStatus,
+        getAccountEmailsByTenant,
+        updateAccountLanguage,
+        updateAccountAdminStatus,
+        updateAccountIsAdminFlag,
+        addAccount,
+        updateAccount,
+        updateAccountDetails,
+        updateAccountPicture,
+        deleteAccountById,
+        resendAccountCredentialsEmail,
+        changePassword,
+        updateAuthType,
+        uploadPicture,
+        updateProfile,
+        updateUserAccount
+    }
 }
 
 export default AccountApis

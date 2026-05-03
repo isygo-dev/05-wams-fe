@@ -1,86 +1,86 @@
 import jwt from 'jsonwebtoken'
 import localStorageKeys from '../../../../configs/localeStorage'
-import { PermissionAction } from 'template-shared/@core//types/helper/apiPermissionTypes'
+import {PermissionAction} from 'template-shared/@core//types/helper/apiPermissionTypes'
 
 interface AuthorityToken {
-  aud: string
-  'sender-tenant': string
-  exp: number
-  'granted-authority': string[]
-  iat: number
-  iss: string
-  'log-app': string
-  sub: string
-  'user-name': string
+    aud: string
+    'sender-tenant': string
+    exp: number
+    'granted-authority': string[]
+    iat: number
+    iss: string
+    'log-app': string
+    sub: string
+    'user-name': string
 }
 
 interface TokenType {
-  sub: string
-  iss: string
-  iat: number
-  exp: number
-  aud: string
-  'sender-tenant': string
-  'is-admin': boolean
-  'log-app': string
-  'sender-user': string
+    sub: string
+    iss: string
+    iat: number
+    exp: number
+    aud: string
+    'sender-tenant': string
+    'is-admin': boolean
+    'log-app': string
+    'sender-user': string
 }
 
 export const checkPermission = (application: string, page: string, action: string) => {
-  const token = localStorage.getItem(localStorageKeys.authorityToken)
-  const oldTokenDecoded = jwt.decode(token, { complete: true })
-  const text = application + action + page
-  const listCheck: AuthorityToken = oldTokenDecoded?.payload as AuthorityToken
-  if (listCheck && listCheck['log-app'] !== 'SmartCode-UI') {
-    const index = listCheck['granted-authority']?.findIndex(d => d === text)
-    if (index > -1) {
-      return true
-    } else {
-      return true
-    }
-  } else return true
+    const token = localStorage.getItem(localStorageKeys.authorityToken)
+    const oldTokenDecoded = jwt.decode(token, {complete: true})
+    const text = application + action + page
+    const listCheck: AuthorityToken = oldTokenDecoded?.payload as AuthorityToken
+    if (listCheck && listCheck['log-app'] !== 'SmartCode-UI') {
+        const index = listCheck['granted-authority']?.findIndex(d => d === text)
+        if (index > -1) {
+            return true
+        } else {
+            return true
+        }
+    } else return true
 }
 
 export const checkPermissionSideBar = (item: any) => {
-  /*  if (item.sectionTitle) {
+    /*  if (item.sectionTitle) {
 
-          return true
-      } else if (item.applicationConnect !== 'SmartCode-UI'|| item.applicationConnect !== 'Integration' || !item.applicationConnect) {
-          if (item.permissionSection === 'NavSectionTitle' && item.children.length > 0) {
-              const newListChild: any[] = []
-              item.children.forEach(child => {
-                  if (checkPermission(child.permissionApplication, child.permissionPage, PermissionAction.READ)) {
-                      newListChild.push(child)
-                  }
-              })
+            return true
+        } else if (item.applicationConnect !== 'SmartCode-UI'|| item.applicationConnect !== 'Integration' || !item.applicationConnect) {
+            if (item.permissionSection === 'NavSectionTitle' && item.children.length > 0) {
+                const newListChild: any[] = []
+                item.children.forEach(child => {
+                    if (checkPermission(child.permissionApplication, child.permissionPage, PermissionAction.READ)) {
+                        newListChild.push(child)
+                    }
+                })
 
-              return newListChild.length > 0
-          } else {
-              return checkPermission(item.permissionApplication, item.permissionPage, PermissionAction.READ)
-          }
-      } else return true*/
+                return newListChild.length > 0
+            } else {
+                return checkPermission(item.permissionApplication, item.permissionPage, PermissionAction.READ)
+            }
+        } else return true*/
 
-  if (item.sectionTitle) {
-    return true
-  } else if (item.applicationConnect === 'SmartCode-UI' || item.applicationConnect === 'Integration') {
-    return true
-  } else if (item.permissionSection === 'NavSectionTitle' && item.children.length > 0) {
-    const newListChild: any[] = []
-    item.children.forEach(child => {
-      if (checkPermission(child.permissionApplication, child.permissionPage, PermissionAction.READ)) {
-        newListChild.push(child)
-      }
-    })
+    if (item.sectionTitle) {
+        return true
+    } else if (item.applicationConnect === 'SmartCode-UI' || item.applicationConnect === 'Integration') {
+        return true
+    } else if (item.permissionSection === 'NavSectionTitle' && item.children.length > 0) {
+        const newListChild: any[] = []
+        item.children.forEach(child => {
+            if (checkPermission(child.permissionApplication, child.permissionPage, PermissionAction.READ)) {
+                newListChild.push(child)
+            }
+        })
 
-    return newListChild.length > 0
-  } else {
-    return checkPermission(item.permissionApplication, item.permissionPage, PermissionAction.READ)
-  }
+        return newListChild.length > 0
+    } else {
+        return checkPermission(item.permissionApplication, item.permissionPage, PermissionAction.READ)
+    }
 }
 
 export const getSenderTenantFromToken = () => {
-  const token = localStorage.getItem(localStorageKeys.accessToken)
-  const oldTokenDecoded = jwt.decode(token, { complete: true })
-  const listCheck: TokenType = oldTokenDecoded?.payload as TokenType
-  return listCheck['sender-tenant']
+    const token = localStorage.getItem(localStorageKeys.accessToken)
+    const oldTokenDecoded = jwt.decode(token, {complete: true})
+    const listCheck: TokenType = oldTokenDecoded?.payload as TokenType
+    return listCheck['sender-tenant']
 }
